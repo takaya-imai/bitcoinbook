@@ -11,7 +11,11 @@
 
 Each example is based on an actual transaction made on the bitcoin network, simulating the interactions between the users (Joe, Alice, and Bob) by sending funds from one wallet to another. While tracking a transaction through the bitcoin network and blockchain, we will use a((("blockchain explorer websites"))) _blockchain explorer_ site to visualize each step. A blockchain explorer is a web application that operates as a bitcoin search engine, in that it allows you to search for addresses, transactions, and blocks and see the relationships and flows between them.
 
+以下に出てくる例を使って、実際に行われているトランザクションをシミュレートしてみましょう。この例の登場人物はジョー、アリス、ボブで、それぞれの間であるウォレットからあるウォレットへ資産を送ることというものです。bitcoinネットワークのトランザクションやブロックチェインを追うとき、個々の詳細なステップを可視化するために((("blockchain explorer websites"))) _blockchain explorer_ sitesを使います。blockchain explorerはウェブアプリケーションで、bitcoinアドレスやトランザクション、ブロックの変化を追うことができる検索エンジンのように使えます。
+
 Popular blockchain explorers include: ((("blockchain.info website")))((("blockexplorer.com")))((("blockr.io website")))((("insight.bitpay.com")))
+
+ポピュラーなblockchain explorerは以下です。((("blockchain.info website")))((("blockexplorer.com")))((("blockr.io website")))((("insight.bitpay.com")))
 
 * http://blockchain.info[Blockchain info]
 * http://blockexplorer.com[Bitcoin Block Explorer]
