@@ -24,19 +24,29 @@ Popular blockchain explorers include: ((("blockchain.info website")))((("blockex
 
 Each of these has a search function that can take an address, transaction hash, or block number and find the equivalent data on the bitcoin network and blockchain. With each example, we will provide a URL that takes you directly to the relevant entry, so you can study it in detail.
 
+それぞれのblockchain explorerではbitcoinアドレスやトランザクションハッシュ、ブロック番号を元に検索でき、bitcoinネットワークやブロックチェイン上にあるデータと同じデータを探せます。また、それぞれの例には直接データが見れるようにURLを書いておきましたので、詳細はURLの先で確認してみてください。
+
 
 ==== Bitcoin Overview
+==== bitcoin概観
 
 In the overview diagram shown in <<bitcoin-overview>>, we see that the bitcoin system consists of users with wallets containing keys, transactions that are propagated across the network, and miners who produce (through competitive computation) the consensus blockchain, which is the authoritative ledger of all transactions. In this chapter, we will trace a single transaction as it travels across the network and examine the interactions between each part of the bitcoin system, at a high level. Subsequent chapters will delve into the technology behind wallets, mining, and merchant systems. 
 
+<<bitcoin-overview>>図にあるように、bitcoinの仕組みは秘密鍵を含むウォレットを持っているユーザやbitcoinネットワークを伝わるトランザクション、全てのトランザクションを保持している元帳であるブロックチェインを作り出すマイナーで構成されていることが分かります。この章では、bitcoinネットワークに沿って１つのトランザクションを追い、各ステップを説明します。では、ウォレット、マイニング、決済システムの背後にあるテクノロジーに入っていきましょう。
+
 [[bitcoin-overview]]
 .Bitcoin overview
+.bitcoin概観
 image::images/msbt_0201.png["Bitcoin Overview"]
 
 [[cup_of_coffee]]
 ==== Buying a Cup of Coffee
+==== コーヒー代金の支払い
 
 ((("transactions", id="ix_ch02-asciidoc1", range="startofrange")))((("transactions","simple example of", id="ix_ch02-asciidoc2", range="startofrange")))Alice, introduced in the previous chapter, is a new user who has just acquired her first bitcoin. In <<getting_first_bitcoin>>, Alice met with her friend Joe to exchange some cash for bitcoin. The transaction created by Joe funded Alice's wallet with 0.10 BTC. Now Alice will make her first retail transaction, buying a cup of coffee at Bob's coffee shop in Palo Alto, California. Bob's coffee shop recently started accepting bitcoin payments, by adding a bitcoin option to his point-of-sale system. The prices at Bob's Cafe are listed in the local currency (US dollars), but at the register, customers have the option of paying in either dollars or bitcoin. Alice places her order for a cup of coffee and Bob enters the transaction at the register. The point-of-sale system will convert the total price from US dollars to bitcoins at the prevailing market rate and display the prices in both currencies, as well as show a QR code containing a _payment request_ for this transaction (see <<payment-request-QR>>):
+
+((("transactions", id="ix_ch02-asciidoc1", range="startofrange")))((("transactions","simple example of", id="ix_ch02-asciidoc2", range="startofrange")))前の章に出てきたアリスは初めてbitcoinを手にしたところです。<<getting_first_bitcoin>>でお分かりの通り、アリスは友達のジョーと会って、キャッシュをbitcoinと交換したのです。ジョーからアリスは0.10BTCを受け取りました。アリスは今ちょうど最初のトランザクションを作成して、最近bitcoinでの支払いを始めたPalo Altoのボブのコーヒーショップでbitcoinでの支払いをするところです。ボブのコーヒーショップではアメリカドルの値段表示しかありませんが、支払いをするときにアメリカドルで払うのかbitcoinで払うのかを決められるのです。アリスはコーヒーを注文しボブはレジにこの注文を入力します。すると、POSシステムは直近のレートでアメリカドルでの代金をbitcoinでの代金に変換して、両方の金額を表示してくれます。このとき、図にあるようなQRコードも一緒に出してくれます。(<<payment-request-QR>>参照)
+
 
 ----
 Total:
@@ -46,10 +56,12 @@ $1.50 USD
 
 [[payment-request-QR]]
 .Payment request QR code (Hint: Try to scan this!)
+.Payment request QRコードをスキャンしてみてください
 image::images/msbt_0202.png["payment-request"]
 
 [[payment-request-URL]]
 .The payment request QR code encodes the following URL, defined in BIP0021:
+.このpayment request QR codeはBIP0021にあるプロトコルに沿って次のようなURLに変換されます。 
 ----
 bitcoin:1GdK9UzpHBzqzX2A9JFP3Di4weBwqgmoQA?
 amount=0.015&
@@ -72,9 +84,15 @@ A description for the payment: "Purchase at Bob's Cafe"
 
 Bob says, "That's one-dollar-fifty, or fifteen millibits."
 
+ボブは言いました。"15ドルです。bitcoinでの支払いであれば15mBTCです。"
+
 Alice uses her smartphone to scan the barcode on display. Her smartphone shows a payment of +0.0150 BTC+ to +Bob's Cafe+ and she selects +Send+ to authorize the payment. Within a few seconds (about the same amount of time as a credit card authorization), Bob would see the transaction on the register, completing the transaction.
 
+アリスがスマートフォンを使って表示されているQRコードをスキャンすると、スマートフォンに0.0150BTCと表示され支払いをするのに彼女は"送る"ボタンを押しました。数秒後レジにトランザクションが表示されボブはトランザクションの完了を確認しました(処理時間はクレジットカードでの承認に必要な時間と同じくらいです)。
+
 In the following sections we will examine this transaction in more detail, see how Alice's wallet constructed it, how it was propagated across the network, how it was verified, and finally, how Bob can spend that amount in subsequent transactions.
+
+この後の節では、もっと詳細にトランザクションの内容を説明し、アリスのウォレットがどのようにしてトランザクションを実行したのか、トランザクション情報はどのようにしてbitcoinネットワークに流れ、どのように検証されたのか、送られたbitcoinをボブは次回どのように使うことができるのか、を見ていきます。
 
 [NOTE]
 ====
@@ -83,12 +101,19 @@ The bitcoin network can transact in fractional values, e.g., from milli-bitcoins
 
 
 === Bitcoin Transactions
+=== bitcoinトランザクション
 
 ((("transactions","defined")))In simple terms, a transaction tells the network that the owner of a number of bitcoins has authorized the transfer of some of those bitcoins to another owner. The new owner can now spend these bitcoins by creating another transaction that authorizes transfer to another owner, and so on, in a chain of ownership. 
 
+((("transactions","defined")))シンプルに言って、トランザクションとはbitcoinの所有者が他の人にbitcoinを送ったことを認めたことをbitcoinネットワークに示すことです。このためそのbitcoinを受け取った新しい所有者が受け取ったbitcoinを使うには、新しい所有者が他の人にbitcoinを送ったことを認めたことを示す別のトランザクションを作らなければいけません。
+
 Transactions are like lines in a double-entry bookkeeping ledger. ((("inputs, defined")))In simple terms, each transaction contains one or more "inputs," which are debits against a bitcoin account. ((("outputs, defined")))On the other side of the transaction, there are one or more "outputs," which are credits added to a bitcoin account. The inputs and outputs (debits and credits) do not necessarily add up to the same amount. Instead, outputs add up to slightly less than inputs and the difference represents an implied "transaction fee," which is a small payment collected by the miner who includes the transaction in the ledger. A bitcoin transaction is shown as a bookkeeping ledger entry in <<transaction-double-entry>>. 
 
+トランザクションは複式簿記の個々の取引行のようなものです。((("inputs, defined")))簡単に言えば、それぞれのトランザクションは１個または複数の "inputs" を持っているため、トランザクションにはbitcoinアドレスの借り方にこの "inputs" が記載されています。((("outputs, defined")))また、それぞれのトランザクションは１個または複数の "outputs" を持っているため、トランザクションにはbitcoinアドレスの貸し方に "outputs" が記載されています。inputs と outputs (それぞれ借り方と貸し方)は同じ額になるようにならず、わずかにinputsのほうが大きいようになります。この差が取引手数料であり、元帳の中にあるトランザクションからマイナーがかき集めたものです。<<transaction-double-entry>>図には、bitcoinトランザクションを簿記的に書いてあります。
+
 The transaction also contains proof of ownership for each amount of bitcoin (inputs) whose value is transferred, in the form of a digital signature from the owner, which can be independently validated by anyone. In bitcoin terms, "spending" is signing a transaction that transfers value from a previous transaction over to a new owner identified by a bitcoin address. 
+
+トランザクションはそれぞれのトランザクションの所有権証明としての面も含んでいます。この所有権証明はデジタル署名の形になっており、このデジタル署名は所有者とは独立に誰か他の人によって検証されるようになっています。ビットコイン用語で、"bitcoinを使う"とはトランザクションに署名することです。
 
 
 [TIP]
@@ -98,6 +123,7 @@ _Transactions_ move value from _transaction inputs_ to _transaction outputs_. An
 
 [[transaction-double-entry]]
 .Transaction as double-entry bookkeeping 
+.複式簿記としてのトランザクション
 image::images/msbt_0203.png["Transaction Double-Entry"]
 
 [[blockchain-mnemonic]]
@@ -106,35 +132,57 @@ image::images/msbt_0204.png["Transaction chain"]
 
 Alice's payment to Bob's Cafe uses a previous transaction as its input. In the previous chapter Alice received bitcoin from her friend Joe in return for cash. That transaction has a number of bitcoins locked (encumbered) against Alice's key. Her new transaction to Bob's Cafe references the previous transaction as an input and creates new outputs to pay for the cup of coffee and receive change. The transactions form a chain, where the inputs from the latest transaction correspond to outputs from previous transactions. Alice's key provides the signature that unlocks those previous transaction outputs, thereby proving to the bitcoin network that she owns the funds. She attaches the payment for coffee to Bob's address, thereby "encumbering" that output with the requirement that Bob produces a signature in order to spend that amount. This represents a transfer of value between Alice and Bob. This chain of transactions, from Joe to Alice to Bob, is illustrated in <<blockchain-mnemonic>>.
 
+ボブのコーヒーショップでのアリスの支払いでは、前のジョーからのトランザクションをこのトランザクションのinputに使います。前の章で、アリスはキャッシュと引き換えにジョーからbitcoinを受け取りました。このトランザクションはアリスの秘密鍵でロックされています。アリスからボブへの新しいトランザクションは、ジョーからアリスへの前のトランザクションの内容を参照することで新しいトランザクションのinputを作り、コーヒー代の支払いとおつりの受け取りのトランザクションoutputを作成します。トランザクションはチェインの形を取っていて、最新のトランザクションのinputは前のトランザクションのoutputに対応しています。アリスの秘密鍵は前のトランザクションのoutputを解錠し、それによってこのoutputにある資金がアリスのものであるとbitcoinネットワークに示すのです。アリスは支払い記録を新しいトランザクションのoutputに付け、このoutputはボブが生成したデジタル署名で守られることになります。これによりこれが価値の転送がアリスとボブの間のものであるということを証明しています。<<blockchain-mnemonic>>図がこのトランザクションの連鎖を説明しています。????
+
+
 ==== Common Transaction Forms
+==== トランザクション形式
 
 ((("transactions","common forms of", id="ix_ch02-asciidoc3", range="startofrange")))The most common form of transaction is a simple payment from one address to another, which often includes some "change" returned to the original owner. This type of transaction has one input and two outputs and is shown in <<transaction-common>>.
 
+((("transactions","common forms of", id="ix_ch02-asciidoc3", range="startofrange")))よくあるトランザクションの形式は１つのbitcoinアドレスからもう１つのbitcoinアドレスへという形式をしており、通常送り元に戻されるおつりも含まれます。このタイプのトランザクションは１つのinputと２つのoutputを持っていて、<<transaction-common>>図のようなものです。
+
 [[transaction-common]]
 .Most common transaction
+.よくあるトランザクション
 image::images/msbt_0205.png["Common Transaction"]
 
 Another common form of transaction is one that aggregates several inputs into a single output (see <<transaction-aggregating>>). This represents the real-world equivalent of exchanging a pile of coins and currency notes for a single larger note. Transactions like these are sometimes generated by wallet applications to clean up lots of smaller amounts that were received as change for payments.
 
+別のトランザクション形式は、いくつかのinputを集めて１つのoutputにまとめる形です。(<<transaction-aggregating>>を見てください)。これは現実にあるコインや紙幣をまとめて大きな紙幣にするトランザクションと同じです。これらのトランザクションは、ときどきウォレットで作られます。おつりとして受け取った小さな額をまとめるためです。
+
 [[transaction-aggregating]]
 .Transaction aggregating funds
+.集約型トランザクション
 image::images/msbt_0206.png["Aggregating Transaction"]
 
 Finally, another transaction form that is seen often on the bitcoin ledger is a transaction that distributes one input to multiple outputs representing multiple recipients (see <<transaction-distributing>>). This type of transaction is sometimes used by commercial entities to distribute funds, such as when processing payroll payments to multiple employees.(((range="endofrange", startref="ix_ch02-asciidoc3")))
 
+もう１つの別のトランザクションの形式は１つのinputを複数のoutputに分けて複数の受取人に使う場合です(<<transaction-distributing>>参照)。このタイプのトランザクションは、企業内での給与の支払いでときどき使われます。(((range="endofrange", startref="ix_ch02-asciidoc3")))
+
 [[transaction-distributing]]
 .Transaction distributing funds
+.分散型トランザクション
 image::images/msbt_0207.png["Distributing Transaction"]
 
 === Constructing a Transaction
+=== トランザクションの構築
 
 ((("transactions","constructing", id="ix_ch02-asciidoc4", range="startofrange")))Alice's wallet application contains all the logic for selecting appropriate inputs and outputs to build a transaction to Alice's specification. Alice only needs to specify a destination and an amount and the rest happens in the wallet application without her seeing the details. ((("offline transactions")))Importantly, a wallet application can construct transactions even if it is completely offline. Like writing a check at home and later sending it to the bank in an envelope, the transaction does not need to be constructed and signed while connected to the bitcoin network. It only has to be sent to the network eventually for it to be executed.
 
+((("transactions","constructing", id="ix_ch02-asciidoc4", range="startofrange")))アリスのウォレットで、適切なinputとoutputを選ぶ処理はすでに実装されています。アリスが決めなければいけないのは、どこに送るかということと、いくら送るかということだけで、残りはウォレットが自動的に実行してくれます。((("offline transactions")))重要なこととして、ウォレットはネットワークに繋がっていなくてもトランザクションを組むことができます。ちょうど小切手だけ家で書いておいてあとで銀行に送るように、bitcoinネットワークに繋がっているときに作られたり署名されたりするわけではないのです。最終的に送られればいいだけです。
+
+
 ==== Getting the Right Inputs
+==== 正しいinputをどのように得るか
 
 ((("transactions","inputs, getting", id="ix_ch02-asciidoc5", range="startofrange")))Alice's wallet application will first have to find inputs that can pay for the amount she wants to send to Bob. Most wallet applications keep a small database of "unspent transaction outputs" that are locked (encumbered) with the wallet's own keys. Therefore, Alice's wallet would contain a copy of the transaction output from Joe's transaction, which was created in exchange for cash (see <<getting_first_bitcoin>>). A bitcoin wallet application that runs as a full-index client actually contains a copy of every unspent output from every transaction in the blockchain. This allows a wallet to construct transaction inputs as well as quickly verify incoming transactions as having correct inputs. However, because a full-index client takes up a lot of disk space, most user wallets run "lightweight" clients that track only the user's own unspent outputs. 
-	
+
+((("transactions","inputs, getting", id="ix_ch02-asciidoc5", range="startofrange")))アリスのウォレットはinputを最初に探します。というのは、ボブに送ることができる額がウォレットにあるかを確認しなければいけないためです。ほとんどのウォレットは未使用トランザクションoutputを保持するデータベースを持っていて、ウォレットの秘密鍵でロックされています。アリスのウォレットはジョーから送金された時のoutputのコピーを持っています(<<getting_first_bitcoin>>参照)。full-indexを持っているbitcoinウォレットは、ブロックチェインにある全てのトランザクションのoutputのコピーを実際持っています。これはウォレットがトランザクションinputを作成するとともにすばやく支払える額の未使用outputがあるかどうかを確認するためです。しかし、full-indexウォレットは多くのデータ容量を持っている必要があるため、ほとんどのウォレットは軽量ウォレットというウォレットの所有者の未使用outputのみを保持しているものになっています。
+
 ((("wallets","blockchain storage in")))If the wallet application does not maintain a copy of unspent transaction outputs, it can query the bitcoin network to retrieve this information, using a variety of APIs available by different providers or by asking a full-index node using the bitcoin JSON RPC API. <<example_2-1>> shows a RESTful API request, constructed as an HTTP GET command to a specific URL. This URL will return all the unspent transaction outputs for an address, giving any application the information it needs to construct transaction inputs for spending. We use the simple command-line HTTP client((("cURL HTTP client"))) _cURL_ to retrieve the response.
+
+((("wallets","blockchain storage in")))もしウォレットが未使用outputのコピーを保持していない場合、この情報を取得するためにbitcoinネットワークに聞きに行くことができます。この場合いろいろな種類のAPIを通して聞きに行ったり、full-indexを持っているnodeにJSON RPC APIを通して聞きに行ったりということができます。<<example_2-1>>はRESTfull APIを使って聞きに行ったものです。RESTful APIというのは特定のURLに対してHTTP GETコマンドを発行して情報を得るための仕組みです。このURLは、あるbitcoinアドレスが持っている未使用トランザクションoutputを全て返します。そして、この情報を元にウォレットはトランザクションinputを作成します。以下では、((("cURL HTTP client"))) _cURL_ というRESTful APIを使うためのシンプルなコマンドを使っています。
 
 [[example_2-1]]
 .Look up all the unspent outputs for Alice's bitcoin address
@@ -171,6 +219,8 @@ $ curl https://blockchain.info/unspent?active=1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK
 
 The response in <<example_2-2>> shows one unspent output (one that has not been redeemed yet) under the ownership of Alice's address +1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK+. The response includes the reference to the transaction in which this unspent output is contained (the payment from Joe) and its value in satoshis, at 10 million, equivalent to 0.10 bitcoin. With this information, Alice's wallet application can construct a transaction to transfer that value to new owner addresses.
 
+<<example_2-2>>にある通りRESTful APIから返ってきたresponseには１つの未使用outputがあります。これは、アリスのbitcoinアドレス 1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK が所有しているものです。このresponseにはトランザクションの詳細が載っていて、未使用outputがsatoshiという単位(100万satoshiが0.10bitcoinと同価値)で書かれています。この情報を元に、アリスのウォレットは他のbitcoinアドレスに送るためのトランザクションを作ることができるのです。
+
 [TIP]
 ====
 View the http://bit.ly/1tAeeGr[transaction from Joe to Alice].
@@ -178,16 +228,27 @@ View the http://bit.ly/1tAeeGr[transaction from Joe to Alice].
 
 As you can see, Alice's wallet contains enough bitcoins in a single unspent output to pay for the cup of coffee. Had this not been the case, Alice's wallet application might have to "rummage" through a pile of smaller unspent outputs, like picking coins from a purse until it could find enough to pay for coffee. In both cases, there might be a need to get some change back, which we will see in the next section, as the wallet application creates the transaction outputs (payments).(((range="endofrange", startref="ix_ch02-asciidoc5")))
 
+今まで見てきたように、アリスのウォレットはコーヒーの代金を払うのに十分な１つの未使用outputを持っていることが分かります。この場合は１つの未使用outputでしたがそうでなければ、アリスのウォレットはもっと小さい未使用outputをかき集めないといけないかもしれません。ちょうど財布の中からコインを１つずつ取り出してコーヒーの支払いができる額になるまでごそごそ探すように。いずれの場合でも、ウォレットがトランザクションoutputを作成するときにおつりをアリスに戻す必要があるかもしれません。(((range="endofrange", startref="ix_ch02-asciidoc5")))
+
 
 ==== Creating the Outputs
+==== outputの作成
 
 ((("transactions","outputs, creating")))A transaction output is created in the form of a script that creates an encumbrance on the value and can only be redeemed by the introduction of a solution to the script. In simpler terms, Alice's transaction output will contain a script that says something like, "This output is payable to whoever can present a signature from the key corresponding to Bob's public address." Because only Bob has the wallet with the keys corresponding to that address, only Bob's wallet can present such a signature to redeem this output. Alice will therefore "encumber" the output value with a demand for a signature from Bob. 
 
+((("transactions","outputs, creating")))トランザクションoutputはscriptの形で作成されます。このscriptというのは、the valueを暗号化したものであり、scriptは解法を使うことでのみ解除されます。??? より簡単に言うと、このscriptは「このoutputはボブのpublicアドレスに対応した秘密鍵から作成された署名を送れる方ならどなたにでも支払いができます」というようなことを言っています。ボブだけがボブのpublicアドレスに対応した秘密鍵を保持しているウォレットを持っているので、ボブのウォレットだけがこのoutputを復号するさきほどの署名を送れるのです。よって、アリスはoutputを復号しようとしてもボブの署名を要求されてしまい邪魔されてしまいます。
+
 This transaction will also include a second output, because Alice's funds are in the form of a 0.10 BTC output, too much money for the 0.015 BTC cup of coffee. Alice will need 0.085 BTC in change. Alice's change payment is created _by Alice's wallet_ in the very same transaction as the payment to Bob. Essentially, Alice's wallet breaks her funds into two payments: one to Bob, and one back to herself. She can then use the change output in a subsequent transaction, thus spending it later. 
+
+このトランザクションはまたおつりという２つ目のoutputも含んでいます。というのは、アリスの資産は0.10BTCになっていて、この金額はコーヒー一杯の金額0.015BTCよりも大きい金額だからです。このためアリスは、0.085BTCのおつりを受け取ることになります。アリスへのおつりの支払い処理は、アリスのウォレットによってボブへの支払い処理と一緒に作られます。アリスのウォレットは彼女の資産を２つの支払い処理に分けて行います。１つは、ボブへのもの、もう１つは彼女自身へのものです。彼女は次のトランザクションのときにおつりのoutputを使うことができます。のちほどこのoutputを使用することになります。
 
 Finally, for the transaction to be processed by the network in a timely fashion, Alice's wallet application will add a small fee. This is not explicit in the transaction; it is implied by the difference between inputs and outputs. If instead of taking 0.085 in change, Alice creates only 0.0845 as the second output, there will be 0.0005 BTC (half a millibitcoin) left over. The input's 0.10 BTC is not fully spent with the two outputs, because they will add up to less than 0.10. The resulting difference is the _transaction fee_ that is collected by the miner as a fee for including the transaction in a block and putting it on the blockchain ledger.
 
+最終的に、bitcoinネットワークでトランザクションが処理される直前に、アリスのウォレットは少ない手数料を加えます。これは支払いのときに明示的に表示されるのではなく、トランザクションでのinputとoutputとの差額として暗に表示されます。おつりとして0,085BTCを得る代わりにアリスは0.0845BTCだけをおつりとしてoutputを得るとすると、0.0005BTC(1mBTCの半分)が残ることになります。inputとしての0.10BTCは完全に２つのoutputに分けられるのではないのです。outputを全て足したとき0.10BTCよりも小さいからです。この差額は、マイナーがブロックにトランザクションを含めて、ブロックチェインにトランザクションを組み込むときに集められ取引手数料となります。
+
 The resulting transaction can be seen using a blockchain explorer web application, as shown in <<transaction-alice>>.
+
+この行われたトランザクションは、<<transaction-alice>>にある通り、blockchain explorerに見ることができます。
 
 [[transaction-alice]]
 .Alice's transaction to Bob's Cafe
@@ -200,22 +261,34 @@ View the http://bit.ly/1u0FIGs[transaction from Alice to Bob's Cafe].
 ====
 
 ==== Adding the Transaction to the Ledger
+==== トランザクションを元帳にどうやって取り込むか
 
 ((("transactions","adding to ledger")))The transaction created by Alice's wallet application is 258 bytes long and contains everything necessary to confirm ownership of the funds and assign new owners. Now, the transaction must be transmitted to the bitcoin network where it will become part of the distributed ledger (the blockchain). In the next section we will see how a transaction becomes part of a new block and how the block is "mined." Finally, we will see how the new block, once added to the blockchain, is increasingly trusted by the network as more blocks are added.
 
+((("transactions","adding to ledger")))アリスのウォレットで作られるトランザクションは258バイトで、資産の所有者を確認し新しい所有者を割り当てるのに必要な全てがここに含まれています。今、トランザクションは分散元帳であるブロックチェインの一部になるためにbitcoinネットワークに送信されなければいけません。この節では、どのようにトランザクションが新しいブロックの一部になるのか、どのようにブロックが "マイニング" されるのか、を確認していきます。そして、ブロックチェインに加えられた新しいブロックの信用が、さらに多くのブロックがブロックチェインに加えられることでどのようにますます大きくなっていくのかを見ていきます。
 
 
 ===== Transmitting the transaction
+===== トランザクションのbitcoinネットワークへの送信
 
 ((("transactions","transmitting")))((("transmitting transactions")))Because the transaction contains all the information necessary to process, it does not matter how or where it is transmitted to the bitcoin network. The bitcoin network is a peer-to-peer network, with each bitcoin client participating by connecting to several other bitcoin clients. The purpose of the bitcoin network is to propagate transactions and blocks to all participants. 
 
+((("transactions","transmitting")))((("transmitting transactions")))トランザクションはブロックチェインに取り込まれるために必要な情報を全て持っているため、どのように、またどこでそれがbitcoinネットワークに送信されるかは問題ではありません。bitcoinネットワークはpeer-to-peerネットワークであり、個々のbitcoinクライアントがいくつかの他のbitcoinクライアントとコネクトしてbitcoinネットワークに参加しています。bitcoinネットワークの目的は、トランザクションとブロックを全てのbitcoinクライアントに伝えて行くことなのです。
+
 ===== How it propagates
+===== どのようにbitcoinネットワークを伝わって行くのか
 
 ((("transactions","propagating")))Alice's wallet application can send the new transaction to any of the other bitcoin clients it is connected to over any Internet connection: wired, WiFi, or mobile. Her bitcoin wallet does not have to be connected to Bob's bitcoin wallet directly and she does not have to use the Internet connection offered by the cafe, though both those options are possible, too. Any bitcoin network node (other client) that receives a valid transaction it has not seen before will immediately forward it to other nodes to which it is connected. Thus, the transaction rapidly propagates out across the peer-to-peer network, reaching a large percentage of the nodes within a few seconds. 
 
+((("transactions","propagating")))アリスのウォレットは新しいトランザクションを、有線LANまたはWiFi、モバイルでインターネットに繋がっている任意の他のbitcoinクライアントに送信します。アリスのウォレットはボブのウォレットと直接繋がっている必要はなく、カフェが提供しているインターネットアクセスポイントを使う必要もないのです。有効なトランザクションを受け取ったbitcoinクライアントはすぐに繋がっている他のbitcoinクライアントにトランザクションを転送します。よって、このトランザクションは迅速にpeer-to-peerネットワークを伝わって行き、数秒以内にほとんどのbitcoinクライアントに到達します。
+
+
 ===== Bob's view
+===== ボブの視点でみたときは
 
 If Bob's bitcoin wallet application is directly connected to Alice's wallet application, Bob's wallet application might be the first node to receive the transaction. However, even if Alice's wallet sends the transaction through other nodes, it will reach Bob's wallet within a few seconds. Bob's wallet will immediately identify Alice's transaction as an incoming payment because it contains outputs redeemable by Bob's keys. Bob's wallet application can also independently verify that the transaction is well formed, uses previously unspent inputs, and contains sufficient transaction fees to be included in the next block. At this point Bob can assume, with little risk, that the transaction will shortly be included in a block and confirmed. 
+
+ボブのウォレットが直接アリスのウォレットと繋がっている場合は、ボブのウォレットはトランザクションを一番最初に伝えられるbitcoinクライアントとして受け取るかもしれません。しかし、たとえアリスのウォレットが他のbitcoinクライアントを通してトランザクションを送ったとしても、トランザクションは数秒以内にボブのウォレットに到達するでしょう。ボブのウォレットはすぐにアリスのトランザクションをボブへの支払いであると認識します。というのは、このトランザクションはボブの秘密鍵で復号できるoutputになっているからです。ボブのウォレットはまたボブの秘密鍵での復号と独立にこのトランザクションが正規の形式であるどうか、未使用inputを使っているかどうか、次のブロックに入る十分な取引手数料を含んでいるかどうか、を確認します。????? この時点で、ボブはこのトランザクションがブロックに含められ検証された状態であることを、小さいリスクとして短期間だけ仮定しています。
 
 [TIP]
 ====
@@ -223,45 +296,80 @@ If Bob's bitcoin wallet application is directly connected to Alice's wallet appl
 ====
 
 === Bitcoin Mining
+=== bitcoinマイニング
 
 ((("mining","blockchains")))The transaction is now propagated on the bitcoin network. It does not become part of the shared ledger (the _blockchain_) until it is verified and included in a block by a process called _mining_. See <<ch8>> for a detailed explanation. 
 
+((("mining","blockchains")))今、トランザクションはbitcoinネットワークに伝えられました。しかし、マイニングと呼ばれるプロセスを通して検証されブロックに取り込まれるまで、共有されている元帳であるブロックチェインの一部になることはできません。詳細については<<ch8>>を参照してください。
+
 The bitcoin system of trust is based on computation. Transactions are bundled into _blocks_, which require an enormous amount of computation to prove, but only a small amount of computation to verify as proven. The mining process serves two purposes in bitcoin:
+
+信用というbitcoinの仕組みは、計算によって成り立っています。トランザクションはブロックの中に取り込まれますが、取り込まれるためには膨大な計算をしなければいけません。しかし、取り込まれていることを確認するするのにはわずかな計算しか必要ありません。???? このマイニングは、以下の２つのプロセスによって行われます。
 
 * Mining creates new bitcoins in each block, almost like a central bank printing new money. The amount of bitcoin created per block is fixed and diminishes with time.
 * Mining creates trust by ensuring that transactions are only confirmed if enough computational power was devoted to the block that contains them. More blocks mean more computation, which means more trust. 
 
+* マイニングはそれぞれのブロックの中に新しいbitcoinを作り出します。これはあたかも中央銀行が新しいお金を印刷するようなものです。作り出されるbitcoinの量はブロックごとに決められており、時間とともに減少していきます。
+* マイニングは、十分な計算量がブロックにつぎ込まれた場合のみトランザクションが検証されたことを保証し信用を作り出します。多くのブロックの信用のためには多くの計算が必要であり、この多くの計算が信用を意味します。
+
+
 A good way to describe mining is like a giant competitive game of sudoku that resets every time someone finds a solution and whose difficulty automatically adjusts so that it takes approximately 10 minutes to find a solution. Imagine a giant sudoku puzzle, several thousand rows and columns in size. If I show you a completed puzzle you can verify it quite quickly. However, if the puzzle has a few squares filled and the rest are empty, it takes a lot of work to solve! The difficulty of the sudoku can be adjusted by changing its size (more or fewer rows and columns), but it can still be verified quite easily even if it is very large. The "puzzle" used in bitcoin is based on a cryptographic hash and exhibits similar characteristics: it is asymmetrically hard to solve but easy to verify, and its difficulty can be adjusted.
+
+マイニングを表すいい方法として、誰かが解法を見つけるごとにリセットされて、約10分間で解けるように難しさが自動的に調整されるような巨大な数独を考えると分かりやすいです。巨大な数独パズルを創造してみてください。数千の行と列を持つような巨大なものです。もし私があなたに完成したパズルを見せたら、完成しているかどうかを確認するのは短時間でできます。しかし、もしパズルがある部分だけ完成していて他が全て空欄であれば、解くためにとても多くの時間がかかってしまいます。数独の難しさは、行や列の数を増やしたり減らしたりすることで調整することができます。しかし、たとえ巨大な行と列を持った数独だったとしてもまだ短時間で完成しているかどうかを確認できます。bitcoinで使っているこのようなパズルは、暗号化ハッシュをベースにしており、上記の数独と同じような特徴を持っています。同じような特徴とは、解法を見つけるのはとても大変なのに確認するのは簡単という非対称性と、難しさを調整できるという特徴です。
 
 In <<user-stories>>, we introduced Jing, a computer engineering student in Shanghai. Jing is participating in the bitcoin network as a miner. Every 10 minutes or so, Jing joins thousands of other miners in a global race to find a solution to a block of transactions. Finding such a solution, the so-called proof of work, requires quadrillions of hashing operations per second across the entire bitcoin network. The algorithm for proof of work involves repeatedly hashing the header of the block and a random number with the SHA256 cryptographic algorithm until a solution matching a predetermined pattern emerges. The first miner to find such a solution wins the round of competition and publishes that block into the blockchain. 
 
+<<user-stories>>で、上海にいるコンピュータエンジニアリングをやっている学生であるジンを紹介しました。ジンはマイナーとしてbitcoinネットワークに参加しています。ジンは解法を見つけようとしている全世界にいる数千人のマイナーとともに10分毎くらいに解法を見つけています。"proof of work"とよく呼ばれるこのような解法を見つけることは、秒間数千兆回のハッシュの生成処理を必要とします。"proof of work"とは、前もって決められたパターンに合う解法が現れるまで反復的にブロックのヘッダとランダム値をSHA256暗号化アルゴリズムでハッシュ化することです。そのような解法を最初に見つけたマイナーがそのブロックの勝者となり、解法を見つけたブロックをブロックチェインに組み込みます。
+
 ((("mining","profitability of")))Jing started mining in 2010 using a very fast desktop computer to find a suitable proof of work for new blocks. As more miners started joining the bitcoin network, the difficulty of the problem increased rapidly. Soon, Jing and other miners upgraded to more specialized hardware, such as high-end dedicated graphical processing units (GPUs) cards such as those used in gaming desktops or consoles. At the time of this writing, the difficulty is so high that it is profitable only to mine with application-specific integrated circuits (ASIC), essentially hundreds of mining algorithms printed in hardware, running in parallel on a single silicon chip. Jing also joined a "mining pool," which much like a lottery pool allows several participants to share their efforts and the rewards. Jing now runs two USB-connected ASIC machines to mine for bitcoin 24 hours a day. He pays his electricity costs by selling the bitcoin he is able to generate from mining, creating some income from the profits. His computer runs a copy of bitcoind, the reference bitcoin client, as a backend to his specialized mining software.
 
+((("mining","profitability of")))ジンが2010年にとても速いデスクトップコンピュータを使ってマイニングを始めました。さらに多くのマイナーがbitcoinネットワークに参加し始めるにつれて、解法を得る難しさはすごい速度で増していきました。すぐに、ジンとその他のマイナーはさらに特殊なハードウェア(ゲーム用デスクトップコンピュータで使われるハイエンドの専用グラフィック処理装置(GPUs)など)にアップグレードしていきました。この記事を書いている時点で、ASICという数百のマイニングアルゴリズムをハードウェアで組んだものを複数使い、それらを平行に処理させなければ解けないほど難しさは大きくなってしまっています。ジンは"マイニングプール"もやっていました。このマイニングプールは、何人かの参加者で解法を見つける作業を分担することで、解法を見つけたときに得られる報酬を参加者みんなで分けて受け取るという宝くじの共同購入のようなものです。今ジンは24時間マイニングを行うために２つのUSBに接続できるASICマシンを使っています。彼は電気代をマイニングで得たbitcoinを売ることで支払いながら、収益をあげています。彼のコンピュータ上ではbitcoin clientの１つの実装であるbitcoindのコピーを走らせています。????
+
 === Mining Transactions in Blocks
+=== ブロック内のトランザクションのマイニング
 
 ((("mining","transactions in blocks")))((("transactions","mining in blocks")))A transaction transmitted across the network is not verified until it becomes part of the global distributed ledger, the blockchain. Every 10 minutes on average, miners generate a new block that contains all the transactions since the last block. New transactions are constantly flowing into the network from user wallets and other applications. As these are seen by the bitcoin network nodes, they get added to a temporary pool of unverified transactions maintained by each node. As miners build a new block, they add unverified transactions from this pool to a new block and then attempt to solve a very hard problem (a.k.a., proof of work) to prove the validity of that new block. The process of mining is explained in detail in <<mining>>.
 
+((("mining","transactions in blocks")))((("transactions","mining in blocks")))bitcoinネットワークを通して送信されたトランザクションは、グローバルに分散した元帳であるブロックチェインの一部となるまで検証された状態にはなりません。平均10分毎にマイナーはまだブロックチェインに取り込まれていないトランザクションを含むブロックを生成します。新しいトランザクションは一定の速度でウォレットやその他のソフトウェアからbitcoinネットワークに流れ込んでいき、各bitcoinノードの中にあるまだ検証されていない一時的なトランザクションプールにどんどん加えられていきます。マイナーが新しいブロックを作り上げるとき、マイナーは新しいトランザクションをこのプールから引き出して新しいブロックに追加します。そして、新しいブロックの有効性を証明するのにとても難しいproof of workをやってみているのです。このマイニングプロセスは<<mining>>で説明されています。
+
 Transactions are added to the new block, prioritized by the highest-fee transactions first and a few other criteria. Each miner starts the process of mining a new block of transactions as soon as he receives the previous block from the network, knowing he has lost that previous round of competition. He immediately creates a new block, fills it with transactions and the fingerprint of the previous block, and starts calculating the proof of work for the new block. Each miner includes a special transaction in his block, one that pays his own bitcoin address a reward of newly created bitcoins (currently 25 BTC per block). If he finds a solution that makes that block valid, he "wins" this reward because his successful block is added to the global blockchain and the reward transaction he included becomes spendable. Jing, who participates in a mining pool, has set up his software to create new blocks that assign the reward to a pool address. From there, a share of the reward is distributed to Jing and other miners in proportion to the amount of work they contributed in the last round. 
+
+トランザクションは新しいブロックに追加されますが、この新しいブロックには処理される優先順位があり、マイニング手数料が最も高いであったり、他の２、３個の判断材料からこの優先順位は決定されます。やっていた解法探索の競争に負けると、それぞれのマイナーはbitcoinネットワークから前のブロックを受け取るやいなや新しいブロックのマイニングに取りかかります。???? マイナーはすぐに新しいブロックの箱を作り、それにトランザクションと前のブロックの指紋を入れて、新しいブロックに対してproof of workをし始めます。それぞれのマイナーは彼のブロックに特別なトランザクションを含めます。これは、彼のbitcoinアドレスに新たに作られたbitcoinの報酬を支払うトランザクションです(現在は１ブロックあたり25BTCです)。もし彼がブロックが有効であることを示す解法を見つけると、彼は報酬を勝ち取ります。彼が解法を見つけたブロックがグローバルなブロックチェインに追加され、彼が報酬を得るために含めたトランザクションが利用可能になるからです。マイニングプールに参加しているジンは、ジンのソフトウェアに報酬bitcoinを貯めておくbitcoinアドレスを登録しておき、そこから提供した計算量に比例して分けられた報酬がジンやその他のマイナーに配られます。
 
 Alice's transaction was picked up by the network and included in the pool of unverified transactions. Because it had sufficient fees, it was included in a new block generated by Jing's mining pool. Approximately five minutes after the transaction was first transmitted by Alice's wallet, Jing's ASIC miner found a solution for the block and published it as block #277316, containing 419 other transactions. Jing's ASIC miner published the new block on the bitcoin network, where other miners validated it and started the race to generate the next block. 
 
+アリスのトランザクションはbitcoinネットワークによって取り上げられ、そして、まだ検証されていないトランザクションのプールに放り込まれました。そのトランザクションは十分な手数料を含んでいたため、ジンのマイニングプールによって作り出された新しいブロックに入ることになりました。アリスのウォレットがトランザクションを最初に送信してから約５分間後に、ジンのASICマイナーがブロックの解法を見つけ、他の419個のトランザクションとともに#277316ブロックに組み込まれました。ジンのASICマイナーはbitcoinネットワーク上に新しいブロックを放出し、そのbitcoinネットワークでは他のマイナーがそれを検証し次のブロックを作り出し始めるレースがスタートしました。
+
 You can see the block that includes https://blockchain.info/block-height/277316[Alice's transaction].
+
+https://blockchain.info/block-height/277316[Alice's transaction]にこのブロックの情報を見に行くことができます。
 
 A few minutes later, a new block, #277317, is mined by another miner. Because this new block is based on the previous block (#277316) that contained Alice's transaction, it added even more computation on top of that block, thereby strengthening the trust in those transactions. The block containing Alice's transaction is counted as one "confirmation" of that transaction. Each block mined on top of the one containing the transaction is an additional confirmation. As the blocks pile on top of each other, it becomes exponentially harder to reverse the transaction, thereby making it more and more trusted by the network. 
 
+数分後に、新しいブロック #277317 はもう１人のマイナーによって掘り出されました。この新しいブロックはアリスのトランザクションを含んだ前のブロック #277316 を元にしているため、新しいブロックはもっとたくさんの計算量をブロックの先頭に追加しました。それによって、信用が増すのです。???? アリスのトランザクションを含んでいるこの新しいブロックは、検証１回とカウントされます。ブロックの先頭で掘り出されアリスのトランザクションを含んでいるそれぞれのブロックはさらなる検証になります。???? このブロックが積み重なるにつれて、指数関数的にトランザクションをやり直す反対取引が難しくなり、よってbitcoinネットワークによってさらに信用されることになるのです。
+
 In the diagram in <<block-alice1>>  we can see block #277316, which contains Alice's transaction. Below it are 277,316 blocks (including block #0), linked to each other in a chain of blocks (blockchain) all the way back to block #0, known as the _genesis block_. Over time, as the "height" in blocks increases, so does the computation difficulty for each block and the chain as a whole. The blocks mined after the one that contains Alice's transaction act as further assurance, as they pile on more computation in a longer and longer chain. By convention, any block with more than six confirmations is considered irrevocable, because it would require an immense amount of computation to invalidate and recalculate six blocks. We will examine the process of mining and the way it builds trust in more detail in <<ch8>>.
+
+<<block-alice1>>図にある通り、ブロック #277316 はアリスのトランザクションを含んでいることが分かります。ブロック #277316 の下には(#0を含めて)277316ブロックあり、起源ブロックとして知られる#0まで全てがブロックのチェインとして互いに繋がっているのです。時間が経つにつれ、ブロックの"height"が増えるとそれぞれのブロックとチェイン全体に含まれる計算量は大きくなっていきます。アリスのトランザクションが含まれたブロックのあとに掘り出されたブロックはさらなる保証としてなり、チェインが長くなればなるほどもっと計算量が積み重なることになります。慣習により、６回より多くの検証がされた任意のブロックは取り返しがつかないと考えられています。というのは、６個のブロックを無効化し再計算し直すためには膨大な計算量がかかるためです。マイニングのプロセスや信用を構築する方法を第８章でさらに詳しく説明します。
 
 [[block-alice1]]
 .Alice's transaction included in block #277316
 image::images/msbt_0209.png["Alice's transaction included in a block"]
 
 === Spending the Transaction
+=== トランザクションの使用
 
 ((("transactions","spending")))Now that Alice's transaction has been embedded in the blockchain as part of a block, it is part of the distributed ledger of bitcoin and visible to all bitcoin applications. Each bitcoin client can independently verify the transaction as valid and spendable. Full-index clients can track the source of the funds from the moment the bitcoins were first generated in a block, incrementally from transaction to transaction, until they reach Bob's address. Lightweight clients can do what is called a simplified payment verification (see <<spv_nodes>>) by confirming that the transaction is in the blockchain and has several blocks mined after it, thus providing assurance that the network accepts it as valid. 
-	
+
+((("transactions","spending")))今やアリスのトランザクションがブロックチェインに埋め込まれたため、分散されたbitcoin元帳の一部になり全てのbitcoinアプリケーションから参照ができるようになりました。それぞれのbitcoinクライアントは独自にトランザクションが有効で使用可能かを確認できます。full-indexクライアントはアリスが支払ったbitcoinが最初にブロック内に生成された瞬間からアリスの資産の軌跡を追うことができ、トランザクションを１個ずつ追っていくことで最終的にボブのアドレスまでたどり着きます。軽量クライアントは"simplified payment verification"(<<spv_nodes>>参照)と呼ばれるものを行うことができ、これはトランザクションがブロックチェインの中にあることや、ブロックチェインに含まれたあとに掘り出されたいくつかのブロックがあることをもって確認しています。よって、bitcoinネットワークがトランザクションが有効であると受け入れているという保証を提供しているのです。????
+
 Bob can now spend the output from this and other transactions, by creating his own transactions that reference these outputs as their inputs and assign them new ownership. For example, Bob can pay a contractor or supplier by transferring value from Alice's coffee cup payment to these new owners. Most likely, Bob's bitcoin software will aggregate many small payments into a larger payment, perhaps concentrating all the day's bitcoin revenue into a single transaction. This would move the various payments into a single address, used as the store's general "checking" account. For a diagram of an aggregating transaction, see <<transaction-aggregating>>. 
-	
+
+ボブは、得たトランザクションoutputをinputとして取り出し、それらを新しい所有者に割り振ることで今アリスからの得たoutputやその他のoutputを使うことができます。例えば、ボブはアリスから支払われたコーヒーの代金を新しい所有者に送ることによって契約者や供給者に対して支払いができるのです。よくあることとして、ボブのbitcoinソフトウェアは多くの小さな額の支払いをより大きい額の支払いにまとめあげ、おそらく一日ごとのbitcoin収入全てをまとめて１つのトランザクションに集約します。???? これはいろいろな支払いを店舗の"会計"口座として使われている１つのbitcoinアドレスに移しています。集約トランザクションの図は"Transaction aggregating funds"を参照してみてください。
+
 As Bob spends the payments received from Alice and other customers, he extends the chain of transactions, which in turn are added to the global blockchain ledger for all to see and trust. Let's assume that Bob pays his web designer Gopesh in Bangalore for a new website page. Now the chain of transactions will look like <<block-alice2>>.(((range="endofrange", startref="ix_ch02-asciidoc0")))
+
+ボブがアリスや他のお客さんから受け取った支払いを使うにつれて、ボブはトランザクションのチェインを拡げ、このトランザクションがブロックチェインに順々に追加されていくのです。ボブは新しいウェブページを作るためにバンガロールにいるウェブデザイナー Gopeshに支払いをすると考えてみましょう。トランザクションのチェインは<<block-alice2>>図のようになっています。(((range="endofrange", startref="ix_ch02-asciidoc0")))
 
 [[block-alice2]]
 .Alice's transaction as part of a transaction chain from Joe to Gopesh
