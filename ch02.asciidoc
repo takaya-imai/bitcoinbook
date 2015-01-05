@@ -1,9 +1,13 @@
 [[ch02_bitcoin_overview]]
 == How Bitcoin Works
+== bitcoinはどのように動作するのか？
 
 === Transactions, Blocks, Mining, and the Blockchain
+=== トランザクション、ブロック、マイニング、ブロックチェイン
 
 ((("bitcoin","implementation of", id="ix_ch02-asciidoc0", range="startofrange")))The bitcoin system, unlike traditional banking and payment systems, is based on de-centralized trust. Instead of a central trusted authority, in bitcoin, trust is achieved as an emergent property from the interactions of different participants in the bitcoin system. In this chapter, we will examine bitcoin from a high level by tracking a single transaction through the bitcoin system and watch as it becomes "trusted" and accepted by the bitcoin mechanism of distributed consensus and is finally recorded on the blockchain, the distributed ledger of all transactions.
+
+((("bitcoin","implementation of", id="ix_ch02-asciidoc0", range="startofrange")))今まであるような銀行サービスや支払いの方法と違って、bitcoinは特定の機関に管理されないdecentrized-trustを基礎にしています。特定の機関による管理の代わりに、bitcoinでは信用管理をbitcoinの仕組みに参加している個々の参加者同士の相互協力から生まれる創発特性によって作っています。この章では、bitcoinの１つのトランザクションを追ってみることで、詳細にbitcoinの仕組みを説明したいと思います。また、分散された合意によるbitcoinの仕組みによってトランザクションが"信用"され受け入れられ、最後に全てのトランザクションの分散元帳であるブロックチェインにトランザクションが記録されます。
 
 Each example is based on an actual transaction made on the bitcoin network, simulating the interactions between the users (Joe, Alice, and Bob) by sending funds from one wallet to another. While tracking a transaction through the bitcoin network and blockchain, we will use a((("blockchain explorer websites"))) _blockchain explorer_ site to visualize each step. A blockchain explorer is a web application that operates as a bitcoin search engine, in that it allows you to search for addresses, transactions, and blocks and see the relationships and flows between them.
 
