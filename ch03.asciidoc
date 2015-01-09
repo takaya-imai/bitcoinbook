@@ -41,7 +41,7 @@ image::images/msbt_0302.png["bitcoin-qt first run"]
 
 
 ==== Compiling Bitcoin Core from the Source Code
-==== ソースコードアからのbitcoin coreのコンパイル
+==== ソースコードからのbitcoin coreのコンパイル
 
 ((("Bitcoin Core client","compiling from source code", id="ix_ch03-asciidoc3", range="startofrange")))((("bitcoind client", see="Bitcoin Core client")))For developers, there is also the option to download the full source code as a ZIP archive or by cloning the authoritative source repository from GitHub. ((("Bitcoin Core client","source code, downloading")))((("GitHub, downloading Bitcoin Core from"))) On the https://github.com/bitcoin/bitcoin[GitHub bitcoin page], select Download ZIP from the sidebar. Alternatively, use the git command line to create a local copy of the source code on your system. In the following example, we are cloning the source code from a Unix-like command line, in Linux or Mac OS:
 
@@ -66,7 +66,7 @@ The instructions and resulting output might vary from version to version. Follow
 When the git cloning operation has completed, you will have a complete local copy of the source code repository in the directory _bitcoin_. Change to this directory by typing +cd bitcoin+ at the prompt:
 
 git cloneが終わると、bitcoinというディレクトリの中に完全なソースコードがダウンロードされます。
-プロンプトの次に +cd bitcoin+" と打ち込んでディレクトリを移ります。
+プロンプトの次に +cd bitcoin+ と打ち込んでディレクトリを移ります。
 
 ----
 $ cd bitcoin
@@ -204,7 +204,7 @@ $
 
 If all goes well, the +configure+ command will end by creating the customized build scripts that will allow us to compile bitcoind. If there are any missing libraries or errors, the +configure+ command will terminate with an error instead of creating the build scripts. If an error occurs, it is most likely because of a missing or incompatible library. Review the build documentation again and make sure you install the missing prerequisites. Then run +configure+ again and see if that fixes the error. Next, you will compile the source code, a process that can take up to an hour to complete. During the compilation process you should see output every few seconds or every few minutes, or an error if something goes wrong. The compilation process can be resumed at any time if interrupted. Type +make+ to start compiling:
 
-全てがうまくいったら、 +configure+ コマンドはカスタマイズされた構築スクリプトを生成して終了します。何か足りないライブラリがあったりエラーがあったりすると、 +configure+ コマンドは構築スクリプトを制せうすることなくエラーを出して終了してしまいます。もしエラーが出たら、おそらくライブラリ自体がないか、またはライブラリがあってもそのバージョンのライブラリとbitcoindが相性が悪いかでしょう。構築ドキュメントをもう一度確認後足りないものをインストールし +configure+ コマンドを実行すると、エラーが解消されます。次にソースコードをコンパイルします。これには1時間ほどかかります。コンパイルが実行されている間、数秒に一回、数分に一回は表示されるメッセージを確認した方がよいです。というのは何かエラーが起きて止まってしまうことがあるからです。コンパイルはいつでも止まってしまったところから再開できます。makeと入力してコンパイルを始めましょう。
+全てがうまくいったら、 +configure+ コマンドはカスタマイズされた構築スクリプトを生成して終了します。何か足りないライブラリがあったりエラーがあったりすると、 +configure+ コマンドは構築スクリプトを生成することなくエラーを出して終了してしまいます。もしエラーが出たら、おそらくライブラリ自体がないか、またはライブラリがあってもそのバージョンのライブラリとbitcoindが相性が悪いかでしょう。構築ドキュメントをもう一度確認後足りないものをインストールし +configure+ コマンドを実行すると、エラーが解消されます。次にソースコードをコンパイルします。これには1時間ほどかかります。コンパイルが実行されている間、数秒に一回、数分に一回は表示されるメッセージを確認した方がよいです。というのは何かエラーが起きて止まってしまうことがあるからです。コンパイルはいつでも止まってしまったところから再開できます。makeと入力してコンパイルを始めましょう。
 
 ----
 $ make
@@ -419,6 +419,7 @@ walletpassphrasechange "oldpassphrase" "newpassphrase"
 ==== bitcoin coreクライアントのステータスの取得
 
 Commands: +getinfo+
+
 コマンド: +getinfo+
 
 ((("Bitcoin Core client","client status, getting")))((("bitcoin-cli command line helper","getinfo command")))((("client status, getting")))((("getinfo command (bitcoin-cli)")))Bitcoin's +getinfo+ RPC command displays basic information about the status of the bitcoin network node, the wallet, and the blockchain database. Use +bitcoin-cli+ to run it:
@@ -462,6 +463,7 @@ It will take some time, perhaps more than a day, for the bitcoind client to "cat
 ==== ウォレットセットアップと暗号化
 
 Commands: +encryptwallet+, +walletpassphrase+
+
 コマンド: +encryptwallet+, +walletpassphrase+
 
 ((("bitcoin-cli command line helper","wallet setup with")))((("bitcoin-cli command line helper","walletpassphrase command")))((("encryptwallet command (bitcoin-cli)")))((("walletpassphrase command (bitcoin-cli)")))((("wallets","setup from command line")))Before you proceed with creating keys and other commands, you should first encrypt the wallet with a password. For this example, you will use the +encryptwallet+ command with the password "foo". Obviously, replace "foo" with a strong and complex password!
@@ -528,6 +530,7 @@ $ bitcoin-cli getinfo
 ==== ウォレットバックアップ、プレインテキスト、リストア
 
 Commands: +backupwallet+, +importwallet+, +dumpwallet+
+
 コマンド: +backupwallet+, +importwallet+, +dumpwallet+
 
 ((("backups","of wallets")))((("backupwallet command (bitcoin-cli)")))((("bitcoin-cli command line helper","backupwallet command")))((("bitcoin-cli command line helper","dumpwallet command")))((("bitcoin-cli command line helper","importwallet command")))((("dumpwallet command (bitcoin-cli)")))((("importwallet command (bitcoin-cli)")))((("wallets","backing up")))((("wallets","dumping into plain text")))((("wallets","restoring")))Next, we will practice creating a wallet backup file and then restoring the wallet from the backup file. Use the +backupwallet+ command to back up, providing the filename as the parameter. Here we back up the wallet to the file _wallet.backup_:
@@ -572,7 +575,8 @@ $
 ==== ウォレットアドレスと受信トランザクション
 
 Commands: getnewaddress, getreceivedbyaddress, listtransactions, getaddressesbyaccount, getbalance
-Commands: +getnewaddress+, +getreceivedbyaddress+, +listtransactions+, +getaddressesbyaccount+, +getbalance+
+
+コマンド: +getnewaddress+, +getreceivedbyaddress+, +listtransactions+, +getaddressesbyaccount+, +getbalance+
 
 ((("addresses", id="ix_ch03-asciidoc9", range="startofrange")))((("bitcoin-cli command line helper","getaddressesbyaccount command", id="ix_ch03-asciidoc10", range="startofrange")))((("bitcoin-cli command line helper","getbalance command", id="ix_ch03-asciidoc11", range="startofrange")))((("bitcoin-cli command line helper","getnewaddress command", id="ix_ch03-asciidoc12", range="startofrange")))((("bitcoin-cli command line helper","getreceivedbyaddress command", id="ix_ch03-asciidoc13", range="startofrange")))((("bitcoin-cli command line helper","listtransactions command", id="ix_ch03-asciidoc14", range="startofrange")))((("getaddressesbyaccount command (bitcoin-cli)", id="ix_ch03-asciidoc15", range="startofrange")))((("getbalance command (bitcoin-cli)", id="ix_ch03-asciidoc16", range="startofrange")))((("getnewaddress command (bitcoin-cli)", id="ix_ch03-asciidoc17", range="startofrange")))((("getreceivedbyaddress command (bitcoin-cli)", id="ix_ch03-asciidoc18", range="startofrange")))((("listtransactions command (bitcoin-cli)", id="ix_ch03-asciidoc19", range="startofrange")))((("transactions","wallets, receiving", id="ix_ch03-asciidoc20", range="startofrange")))((("wallets","addresses of", id="ix_ch03-asciidoc21", range="startofrange")))((("wallets","receiving transactions", id="ix_ch03-asciidoc22", range="startofrange")))The bitcoin reference client maintains a pool of addresses, the size of which is displayed by +keypoolsize+ when you use the command +getinfo+. These addresses are generated automatically and can then be used as public receiving addresses or change addresses. To get one of these addresses, use the +getnewaddress+ command:
 
@@ -677,6 +681,7 @@ $ bitcoin-cli getbalance
 ==== トランザクションを解読していってみましょう
 
 Commands: +gettransaction+, +getrawtransaction+, +decoderawtransaction+
+
 コマンド: +gettransaction+, +getrawtransaction+, +decoderawtransaction+
 
 ((("bitcoin-cli command line helper","decoderawtransaction command", id="ix_ch03-asciidoc23", range="startofrange")))((("bitcoin-cli command line helper","getrawtransaction command", id="ix_ch03-asciidoc24", range="startofrange")))((("bitcoin-cli command line helper","gettransaction command", id="ix_ch03-asciidoc25", range="startofrange")))((("decoderawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc26", range="startofrange")))((("getrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc27", range="startofrange")))((("gettransaction command (bitcoin-cli)", id="ix_ch03-asciidoc28", range="startofrange")))((("transactions","decoding", id="ix_ch03-asciidoc29", range="startofrange")))((("transactions","exploring", id="ix_ch03-asciidoc30", range="startofrange")))We'll now explore the incoming transaction that was listed previously using the +gettransaction+ command. We can retrieve a transaction by its transaction hash, shown at +txid+ earlier, with the +gettransaction+ command:
@@ -838,6 +843,7 @@ Here, we see the new information in the entries +blockhash+ (the hash of the blo
 ==== ブロックの探索
 
 Commands: +getblock+, +getblockhash+
+
 コマンド: +getblock+, +getblockhash+
 
 ((("bitcoin-cli command line helper","getblock command")))((("bitcoin-cli command line helper","getblockhash command")))((("blocks","exploring")))((("getblock command (bitcoin-cli)")))((("getblockhash command (bitcoin-cli)")))Now that we know which block our transaction was included in, we can query that block. We use the +getblock+ command with the block hash as the parameter:
@@ -949,9 +955,10 @@ The +getblock+, +getblockhash+, and +gettransaction+ commands can be used to exp
 
 
 ==== Creating, Signing, and Submitting Transactions Based on pass:[<phrase role="keep-together">Unspent Outputs</phrase>]
-==== [<phrase role="keep-together">未使用アウトプット</phrase>]に基づくトランザクションの生成、署名、送信
+==== pass:[<phrase role="keep-together">未使用アウトプット</phrase>] に基づくトランザクションの生成、署名、送信
 
 Commands: +listunspent+, +gettxout+, +createrawtransaction+, +decoderawtransaction+, +signrawtransaction+, +sendrawtransaction+
+
 コマンド: +listunspent+, +gettxout+, +createrawtransaction+, +decoderawtransaction+, +signrawtransaction+, +sendrawtransaction+
 
 ((("bitcoin-cli command line helper","createrawtransaction command", id="ix_ch03-asciidoc31", range="startofrange")))((("bitcoin-cli command line helper","decoderawtransaction command", id="ix_ch03-asciidoc32", range="startofrange")))((("bitcoin-cli command line helper","gettxout command", id="ix_ch03-asciidoc33", range="startofrange")))((("bitcoin-cli command line helper","listunspent command", id="ix_ch03-asciidoc34", range="startofrange")))((("bitcoin-cli command line helper","sendrawtransaction command", id="ix_ch03-asciidoc35", range="startofrange")))((("bitcoin-cli command line helper","signrawtransaction command", id="ix_ch03-asciidoc36", range="startofrange")))((("createrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc37", range="startofrange")))((("decoderawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc38", range="startofrange")))((("gettxout command (bitcoin-cli)", id="ix_ch03-asciidoc39", range="startofrange")))((("listunspent command (bitcoin-cli)", id="ix_ch03-asciidoc40", range="startofrange")))((("sendrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc41", range="startofrange")))((("signrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc42", range="startofrange")))((("transactions","creating from the command line", id="ix_ch03-asciidoc43", range="startofrange")))((("transactions","signing from the command line", id="ix_ch03-asciidoc44", range="startofrange")))((("transactions","submitting from the command line", id="ix_ch03-asciidoc45", range="startofrange")))((("unspent transaction output (UTXO)", id="ix_ch03-asciidoc46", range="startofrange")))Bitcoin's transactions are based on the concept of spending "outputs," which are the result of previous transactions, to create a transaction chain that transfers ownership from address to address. Our wallet has now received a transaction that assigned one such output to our address. Once this is confirmed, we can spend that output. 
@@ -1276,6 +1283,7 @@ As before, we can also examine this in more detail using the +getrawtransaction+
 ((("clients, alternative", id="ix_ch03-asciidoc47", range="startofrange")))((("libraries, alternative", id="ix_ch03-asciidoc48", range="startofrange")))((("toolkits, alternative", id="ix_ch03-asciidoc49", range="startofrange")))bitcoinネットワークと通信するのに、bitcoinクライアントの大元bitcoind以外に他にもbitcoinクライアントやライブラリがあります。これらは様々なプログラミング言語で実装されていて、プログラマーにそれぞれのプログラミング言語ごとのインターフェイスを提供しています。
 
 Alternative implementations include:
+
 代替実装は以下です。
 
 https://libbitcoin.dyne.org/[libbitcoin and sx tools]:: A C++ multithreaded full-node client and library with command-line tools
@@ -1290,6 +1298,7 @@ Many more libraries exist in a variety of other programming languages and more a
 
 [[sx_tools]]
 ==== Libbitcoin and sx Tools
+==== Libbitcoinとsxツール
 
 ((("libbitcoin library")))((("libraries, alternative","libbitcoin library")))((("sx tools")))The libbitcoin library is a C++ scalable multithreaded and modular implementation that supports a full-node client and a command-line toolset called sx, which offers many of the same capabilities as the bitcoind client commands we illustrated in this chapter. The sx tools also offer some key management and manipulation tools that are not offered by bitcoind, including type-2 deterministic keys and key mnemonics. 
 
@@ -1297,6 +1306,7 @@ Many more libraries exist in a variety of other programming languages and more a
 libbitcoinライブラリはスケーラブルなマルチスレッド&モジュール型C++実装で、full-node(部分的ではなく全部のブロックチェインを保持する)とsxと呼ばれるコマンドラインベースのツールセットをサポートしています。このツールセットは、この章で説明したbitcoindのコマンドと同じものを多くサポートしています。sxツールはbitcoindで提供されていない管理ツールや操作ツール、type-2 deterministic key、key mnemonicsも持っています。????
 
 ===== Installing sx
+===== sxのインストール
 
 ((("sx tools","installing")))To install sx and the supporting library libbitcoin, download and run the online installer on a Linux system:
 
@@ -1378,6 +1388,7 @@ One key difference between btcd and bitcoind is that btcd does not include walle
 btcdとbitcoindの違いはbtcdがウォレットの機能を持っていないことで、これはとても内部的な部分でした。???? これは、あなたがbtcdを通して直接支払いをしたり受け取ったりできないことを意味します。ウォレット機能はbtcwalletとbtcguiプロジェクトによって提供されており、これらプロジェクトは両方とも活発に開発されています。その他の特筆すべき違いは、btcdがHTTP POSTリクエスト(これはbitcoindもサポートしています)とWebsocketの両方をサポートしていることで、事実btcdのRPCコネクションはデフォルトでTLS-enableになっています。
 
 ===== Installing btcd
+===== btcdのインストール
 
 ((("btcd","installing")))To install btcd for Windows, download and run the msi available at https://github.com/conformal/btcd/releases[GitHub], or run the following command on Linux, assuming you already have installed the Go language:
 
