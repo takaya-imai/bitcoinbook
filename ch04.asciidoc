@@ -7,46 +7,45 @@
 
 ((("bitcoin","establishing ownership of")))Ownership of bitcoin is established through _digital keys_, _bitcoin addresses_, and _digital signatures_. The digital keys are not actually stored in the network, but are instead created and stored by users in a file, or simple database, called a _wallet_. The digital keys in a user's wallet are completely independent of the bitcoin protocol and can be generated and managed by the user's wallet software without reference to the blockchain or access to the Internet. Keys enable many of the interesting properties of bitcoin, including de-centralized trust and control, ownership attestation, and the cryptographic-proof security model. 
 
-((("bitcoin","establishing ownership of")))
-bitcoinの所有権は、 _デジタルキー_ 、 _bitcoinアドレス_ 、 _デジタル署名_ で規定されます。
-デジタルキーはBitcoinネットワークの中では保持されておらず、デジタルキーはユーザによって作成され個々のユーザのファイルの中、または _ウォレット_ という簡単なデータベースの中に保持されます。
-ユーザのウォレットの中にあるデジタルキーは完全にbitcoinプロトコルとは独立しており、ブロックチェインへの参照またはインターネットへのアクセスを必要とすることなくユーザのウォレットで生成および管理できるようになっています。
-このキーによってbitcoinの多くの興味深い性質を可能にしており、この性質には分散型信頼やコントロール、所有権の証明、暗号学的証明によるセキュリティモデルが含まれます。
+((("bitcoin","establishing ownership of")))bitcoinの所有権は、 _デジタルキー_ 、 _bitcoinアドレス_ 、 _デジタル署名_ で規定されます。デジタルキーはBitcoinネットワークの中では保持されておらず、デジタルキーはユーザによって作成され個々のユーザのファイルの中、または _ウォレット_ という簡単なデータベースの中に保持されます。ユーザのウォレットの中にあるデジタルキーは完全にbitcoinプロトコルとは独立しており、ブロックチェインへの参照またはインターネットへのアクセスを必要とすることなくユーザのウォレットで生成および管理できるようになっています。このキーによってbitcoinの多くの興味深い性質を可能にしており、この性質には分散型信頼やコントロール、所有権の証明、暗号法的証明によるセキュリティモデルが含まれます。
 
 
 Every bitcoin transaction requires a valid signature to be included in the blockchain, which can only be generated with valid digital keys; therefore, anyone with a copy of those keys has control of the bitcoin in that account. Keys come in pairs consisting of a private (secret) key and a public key. Think of the public key as similar to a bank account number and the private key as similar to the secret PIN, or signature on a check that provides control over the account. These digital keys are very rarely seen by the users of bitcoin. For the most part, they are stored inside the wallet file and managed by the bitcoin wallet software. 
 
-全てのbitcoinトランザクションには、トランザクションをブロックチェインに含めるための有効な署名が必須であり、有効な署名は有効なデジタルキーのみによって生成できます。
-よって、このデジタルキーのコピーを持つ人であればどんな人でも、このデジタルキーに紐づく口座にあるbitcoinをコントロールできます。
-銀行の口座番号と似た公開鍵と、銀行の秘密のPINコードに秘密鍵、小切手への署名について考えてみましょう。
-これらのデジタルキーをごく稀にユーザが確認することがあるが、ほとんどの場合ウォレットのファイルの内部に格納されウォレットによって管理されるため見ることはない。
+全てのbitcoinトランザクションには、トランザクションをブロックチェインに含めるための有効な署名が必須であり、有効な署名は有効なデジタルキーのみによって生成できます。よって、このデジタルキーのコピーを持つ人であればどんな人でも、このデジタルキーに紐づく口座にあるbitcoinをコントロールできます。銀行の口座番号と似た公開鍵と、銀行の秘密のPINコードに秘密鍵、小切手への署名について考えてみましょう。これらのデジタルキーをごく稀にユーザが確認することがあるが、ほとんどの場合ウォレットのファイルの内部に格納されウォレットによって管理されるため見ることはない。
 
 In the payment portion of a bitcoin transaction, the recipient's public key is represented by its digital fingerprint, called a((("addresses, bitcoin","defined"))) _bitcoin address_, which is used in the same way as the beneficiary name on a check (i.e., "Pay to the order of"). In most cases, a bitcoin address is generated from and corresponds to a public key. However, not all bitcoin addresses represent public keys; they can also represent other beneficiaries such as scripts, as we will see later in this chapter. This way, bitcoin addresses abstract the recipient of funds, making transaction destinations flexible, similar to paper checks: a single payment instrument that can be used to pay into people's accounts, pay into company accounts, pay for bills, or pay to cash. The bitcoin address is the only representation of the keys that users will routinely see, because this is the part they need to share with the world.
 
-bitcoinトランザクションの支払いには受取人の公開鍵が表示されており、この公開鍵は _bitcoinアドレス_ と呼ばれるデジタル指紋の形で表示されます。
-このbitcoinアドレスは小切手にある受取人名と同じようにも使われます。
-ほとんどの場合、bitcoinアドレスは公開鍵に紐づいています。
-しかし、bitcoinアドレスだけが公開鍵ではありません。この後の章でも見る通り、scriptのような形でも受取人を表現できます。
-この方法では、bitcinアドレスは資金の受取人を ????
+bitcoinトランザクションの支払いには受取人の公開鍵が表示されており、この公開鍵は _bitcoinアドレス_ と呼ばれるデジタル指紋の形で表示されます。このbitcoinアドレスは小切手にある受取人名と同じようにも使われます。ほとんどの場合、bitcoinアドレスは公開鍵に紐づいています。しかし、bitcoinアドレスだけが公開鍵ではありません。この後の章でも見る通り、scriptのような形でも受取人を表現できます。この方法では、bitcinアドレスは資金の受取人を ????
 
 
 In this chapter we will introduce wallets, which contain cryptographic keys. We will look at how keys are generated, stored, and managed. We will review the various encoding formats used to represent private and public keys, addresses, and script addresses. Finally, we will look at special uses of keys: to sign messages, to prove ownership, and to create vanity addresses and paper wallets. 
 
-この章では、暗号学的キーを含むウォレットを紹介します。
-どのように鍵が生成され、格納され、管理されているのかを見ていき、秘密鍵や公開鍵、bitcoinアドレス、scriptアドレスを表すいろいろな符号化フォーマットをレビューします。
-最後に、メッセージに署名したり所有権を証明したり人に分かりやすいbitcoinアドレスやペーパーウォレットを作成したりするためのキーの特別なユーザを見ていきます。 ????
+この章では、暗号法的キーを含むウォレットを紹介します。どのように鍵が生成され、格納され、管理されているのかを見ていき、秘密鍵や公開鍵、bitcoinアドレス、scriptアドレスを表すいろいろな符号化フォーマットをレビューします。最後に、メッセージに署名したり所有権を証明したり人に分かりやすいbitcoinアドレスやペーパーウォレットを作成したりするためのキーの特別なユーザを見ていきます。 ????
 
 ==== Public Key Cryptography and Cryptocurrency
+==== 公開鍵暗号法と暗号通貨
 
 ((("keys", id="ix_ch04-asciidoc0", range="startofrange")))((("cryptocurrency")))((("keys","cryptocurrency and")))((("keys","public")))((("public key cryptography")))((("public key cryptography","implementation of")))Public key cryptography was invented in the 1970s and is a mathematical foundation for computer and information security.
 
+((("keys", id="ix_ch04-asciidoc0", range="startofrange")))((("cryptocurrency")))((("keys","cryptocurrency and")))((("keys","public")))((("public key cryptography")))((("public key cryptography","implementation of")))公開鍵の暗号法は1970年代に発明され、計算機および情報セキュリティ分野の数学的基礎になっていました。
+
+
 Since the invention of public key cryptography, several suitable mathematical functions, such as((("prime number exponentiation"))) prime number exponentiation and elliptic curve multiplication, have been discovered. These mathematical functions are practically irreversible, meaning that they are easy to calculate in one direction and infeasible to calculate in the opposite direction. Based on these mathematical functions, cryptography enables the creation of digital secrets and unforgeable digital signatures. Bitcoin uses elliptic curve multiplication as the basis for its public key cryptography.  
+
+公開鍵の暗号法が発明されてから、いくつかの適した数学的関数が発見されていきました。この数学的関数は、 ((("prime number exponentiation"))) 素数のべき乗や楕円曲線乗算などです。これらの数学的関数は現実な時間で考えると不可逆ものになっています。不可逆とは、一方向への計算は簡単でも、逆方向の計算は実行不可能なことをいいます。これらの数学的関数に基づく暗号法は、デジタル秘密や偽造不可能なデジタル署名の生成を可能にしています。Bitcoinは公開鍵の暗号法として楕円関数乗算を使っています。
  
 In bitcoin, we use public key cryptography to create a key pair that controls access to bitcoins. The key pair consists of a private key and--derived from it--a unique public key. The public key is used to receive bitcoins, and the private key is used to sign transactions to spend those bitcoins.
 
+bitcoinでは、bitcoinへのアクセスコントロールをするキーペアを生成するために公開鍵暗号法を使っています。このキーペアは秘密鍵とこの秘密鍵から一意に生成される公開鍵で構成されています。この公開鍵はbitcoinを受け取るために使われ、秘密鍵はbitcoinを使用するトランザクションに署名するのに使われます。
+
 There is a mathematical relationship between the public and the private key that allows the private key to be used to generate signatures on messages. This signature can be validated against the public key without revealing the private key.
 
+メッセージ上への署名生成に使われる秘密鍵と公開鍵の間には数学的な関係があります。この署名は秘密鍵を公開することなく公開鍵だけで検証できるようになっています。
+
 When spending bitcoins, the current bitcoin owner presents her public key and a signature (different each time, but created from the same private key) in a transaction to spend those bitcoins. Through the presentation of the public key and signature, everyone in the bitcoin network can verify and accept the transaction as valid, confirming that the person transferring the bitcoins owned them at the time of the transfer. 
+
+bitcoinを使うとき、現在のbitcoin所有者は彼女の公開鍵と署名(生成するごとに異なるものになりますが、同じ秘密鍵から生成されるもの)をbitcoinを使うトランザクション内に提供します。この公開鍵と署名の提供を通して、Bitcoinネットワークの中の全ての人はこのトランザクションが有効なものであると検証でき、bitcoinを送った人が送る時点でこのbitcoinを所有しているかどうか確認できるのです。 
 
 [TIP]
 ====
