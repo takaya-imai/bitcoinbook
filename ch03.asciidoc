@@ -1,24 +1,24 @@
 [[ch03_bitcoin_client]]
 == The Bitcoin Client
-== bitcoinクライアント
+== Bitcoinクライアント
 
 === Bitcoin Core: The Reference Implementation
-=== bitcoin core：実装
+=== Bitcoin Core：実装
 
 ((("bitcoin client", id="ix_ch03-asciidoc0", range="startofrange")))((("bitcoin client","Bitcoin Core", id="ix_ch03-asciidoc1", range="startofrange")))((("Bitcoin Core client", id="ix_ch03-asciidoc2", range="startofrange")))((("Satoshi client", see="Bitcoin Core client")))You can download the reference client _Bitcoin Core_, also known as the "Satoshi client," from bitcoin.org. The reference client implements all aspects of the bitcoin system, including wallets, a transaction verification engine with a full copy of the entire transaction ledger (blockchain), and a full network node in the peer-to-peer bitcoin network.
 
-((("bitcoin client", id="ix_ch03-asciidoc0", range="startofrange")))((("bitcoin client","Bitcoin Core", id="ix_ch03-asciidoc1", range="startofrange")))((("Bitcoin Core client", id="ix_ch03-asciidoc2", range="startofrange")))((("Satoshi client", see="Bitcoin Core client")))あなたは"Satoshi client"とも呼ばれているbitcoinクライアントの大元であるbitcoin coreをbitcoin.orgからダウンロードすることができます。このクライアントはbitcoinの仕組みのいろいろな面(ウォレット、全てのブロックチェインのコピーを保持したトランザクション確認エンジン、peer-to-peer bitcoinネットワーク内でのノード)を実装しています。
+((("bitcoin client", id="ix_ch03-asciidoc0", range="startofrange")))((("bitcoin client","Bitcoin Core", id="ix_ch03-asciidoc1", range="startofrange")))((("Bitcoin Core client", id="ix_ch03-asciidoc2", range="startofrange")))((("Satoshi client", see="Bitcoin Core client")))あなたは"Satoshi client"とも呼ばれているbitcoinクライアントの大元であるBitcoin Coreをbitcoin.orgからダウンロードすることができます。このクライアントはbitcoinの仕組みのいろいろな面(ウォレット、全てのブロックチェインのコピーを保持したトランザクション確認エンジン、peer-to-peer Bitcoinネットワーク内でのノード)を実装しています。
 
 On((("bitcoin.org","Bitcoin Core, downloading"))) http://bitcoin.org/en/choose-your-wallet[Bitcoin's Choose Your Wallet page], select Bitcoin Core to download the reference client. Depending on your operating system, you will download an executable installer. For Windows, this is either a ZIP archive or an .exe executable. For Mac OS it is a .dmg disk image. Linux versions include a PPA package for Ubuntu or a tar.gz archive. The bitcoin.org page that lists recommended bitcoin clients is shown in <<bitcoin-choose-client>>.
 
-((("bitcoin.org","Bitcoin Core, downloading"))) bitcoinクライアントの大元をダウンロードするために http://bitcoin.org/en/choose-your-wallet[Bitcoin's Choose Your Wallet page] でbitcoin coreを選びましょう。あなたが使っているOSによっては、実行可能なインストーラーがダウンロードできるでしょう。もしWindowsなら、ZIPアーカイブか.exe実行ファイルです。もしMac OSなら、.dmgディスクイメージ。Linuxなら、UbuntuのPPAパッケージかtar.gzアーカイブです。<<bitcoin-choose-client>>図にあるように、bitcin.orgには推薦されるbitcoinクライアントがリストアップされています。
+((("bitcoin.org","Bitcoin Core, downloading"))) bitcoinクライアントの大元をダウンロードするために http://bitcoin.org/en/choose-your-wallet[Bitcoin's Choose Your Wallet page] でBitcoin Coreを選びましょう。あなたが使っているOSによっては、実行可能なインストーラーがダウンロードできるでしょう。もしWindowsなら、ZIPアーカイブか.exe実行ファイルです。もしMac OSなら、.dmgディスクイメージ。Linuxなら、UbuntuのPPAパッケージかtar.gzアーカイブです。<<bitcoin-choose-client>>図にあるように、bitcin.orgには推薦されるbitcoinクライアントがリストアップされています。
 
 [[bitcoin-choose-client]]
 .Choosing a bitcoin client at bitcoin.org
 image::images/msbt_0301.png["bitcoin choose client"]
 
 ==== Running Bitcoin Core for the First Time
-==== 最初にbitcoin coreを実行するに際して
+==== 最初にBitcoin Coreを実行するに際して
 
 ((("Bitcoin Core client","running")))If you download an installable package, such as an .exe, .dmg, or PPA, you can install it the same way as any application on your operating system. For Windows, run the .exe and follow the step-by-step instructions. For Mac OS, launch the .dmg and drag the Bitcoin-QT icon into your _Applications_ folder. For Ubuntu, double-click the PPA in your File Explorer and it will open the package manager to install the package. Once you have completed installation you should have a new application  called Bitcoin-Qt in your application list. Double-click the icon to start the bitcoin client. 
 
@@ -26,7 +26,7 @@ image::images/msbt_0301.png["bitcoin choose client"]
 
 The first time you run Bitcoin Core it will start downloading the blockchain, a process that might take several days (see <<bitcoin-qt-firstload>>). Leave it running in the background until it displays "Synchronized" and no longer shows "out of sync" next to the balance.
 
-bitcoin coreを最初に起動したとき、まずブロックチェインをダウンロードし始めます。これには数日かかるかもしれません(<<bitcoin-qt-firstload>>図参照)。画面に"同期完了"と出るまでバックグラウンドで動かしておいてください。"同期完了"と出ると、もう"同期されていません"とは表示されなくなります。
+Bitcoin Coreを最初に起動したとき、まずブロックチェインをダウンロードし始めます。これには数日かかるかもしれません(<<bitcoin-qt-firstload>>図参照)。画面に"同期完了"と出るまでバックグラウンドで動かしておいてください。"同期完了"と出ると、もう"同期されていません"とは表示されなくなります。
 
 [[bitcoin-qt-firstload]]
 .Bitcoin Core screen during the blockchain initialization
@@ -41,7 +41,7 @@ image::images/msbt_0302.png["bitcoin-qt first run"]
 
 
 ==== Compiling Bitcoin Core from the Source Code
-==== ソースコードからのbitcoin coreのコンパイル
+==== ソースコードからのBitcoin Coreのコンパイル
 
 ((("Bitcoin Core client","compiling from source code", id="ix_ch03-asciidoc3", range="startofrange")))((("bitcoind client", see="Bitcoin Core client")))For developers, there is also the option to download the full source code as a ZIP archive or by cloning the authoritative source repository from GitHub. ((("Bitcoin Core client","source code, downloading")))((("GitHub, downloading Bitcoin Core from"))) On the https://github.com/bitcoin/bitcoin[GitHub bitcoin page], select Download ZIP from the sidebar. Alternatively, use the git command line to create a local copy of the source code on your system. In the following example, we are cloning the source code from a Unix-like command line, in Linux or Mac OS:
 
@@ -299,7 +299,7 @@ While you're editing this configuration file, you might want to set a few other 
 
 Now, run the Bitcoin Core client. The first time you run it, it will rebuild the bitcoin blockchain by downloading all the blocks. This is a multigigabyte file and will take an average of two days to download in full. You can shorten the((("blockchains","downloading with bittorrent clients"))) blockchain initialization time by downloading a partial copy of the blockchain using a BitTorrent client from http://bit.ly/1qkLNyh[SourceForge]. 
 
-bitcoin coreクライアントを実行してみましょう。最初に全てのブロックをダウンロードしてブロックチェインを構築し始めます。ブロックチェインのファイルは1GB以上あるため平均してダウンロードに２日くらいかかります。BitTorrentクライアントを使って部分的な((("blockchains","downloading with bittorrent clients"))) ブロックチェインを http://bit.ly/1qkLNyh[SourceForge]からダウンロードしてブロックチェイン初期化を短くすることもできます。
+Bitcoin Coreクライアントを実行してみましょう。最初に全てのブロックをダウンロードしてブロックチェインを構築し始めます。ブロックチェインのファイルは1GB以上あるため平均してダウンロードに２日くらいかかります。BitTorrentクライアントを使って部分的な((("blockchains","downloading with bittorrent clients"))) ブロックチェインを http://bit.ly/1qkLNyh[SourceForge]からダウンロードしてブロックチェイン初期化を短くすることもできます。
 
 Run bitcoind in the background with the option +-daemon+:(((range="endofrange", startref="ix_ch03-asciidoc3")))
 
@@ -328,11 +328,11 @@ Opened LevelDB successfully
 ----
 
 === Using Bitcoin Core's JSON-RPC API from the Command Line
-=== コマンドラインからbitcoin core JSON-RPC APIを使ってみよう
+=== コマンドラインからBitcoin Core JSON-RPC APIを使ってみよう
 
 ((("Bitcoin Core client","JSON-RPC API for", id="ix_ch03-asciidoc5", range="startofrange")))((("Bitcoin Core client","using from command line", id="ix_ch03-asciidoc6", range="startofrange")))((("bitcoin-cli command line helper", id="ix_ch03-asciidoc7", range="startofrange")))The Bitcoin Core client implements a JSON-RPC interface that can also be accessed using the command-line helper +bitcoin-cli+. The command line allows us to experiment interactively with the capabilities that are also available programmatically via the API. To start, invoke the +help+ command to see a list of the available bitcoin RPC commands:
 
-((("Bitcoin Core client","JSON-RPC API for", id="ix_ch03-asciidoc5", range="startofrange")))((("Bitcoin Core client","using from command line", id="ix_ch03-asciidoc6", range="startofrange")))((("bitcoin-cli command line helper", id="ix_ch03-asciidoc7", range="startofrange")))bitcoin coreクライアントにはJSON-RPC APIが実装されており、 +bitcoin-cli+ コマンドでJSON-RPC APIにアクセスすることもできます。 +bitcoin-cli+ コマンドを使うことでbitcoindと１つ１つコミュニケーションをとるようにJSON-RPC APIを使ってみることができます。また、プログラムからJSON-RPC APIを使うこともできます。始める前に、+help+ を使って利用できるRPCコマンドを確認してみましょう。
+((("Bitcoin Core client","JSON-RPC API for", id="ix_ch03-asciidoc5", range="startofrange")))((("Bitcoin Core client","using from command line", id="ix_ch03-asciidoc6", range="startofrange")))((("bitcoin-cli command line helper", id="ix_ch03-asciidoc7", range="startofrange")))Bitcoin CoreクライアントにはJSON-RPC APIが実装されており、 +bitcoin-cli+ コマンドでJSON-RPC APIにアクセスすることもできます。 +bitcoin-cli+ コマンドを使うことでbitcoindと１つ１つコミュニケーションをとるようにJSON-RPC APIを使ってみることができます。また、プログラムからJSON-RPC APIを使うこともできます。始める前に、+help+ を使って利用できるRPCコマンドを確認してみましょう。
 
 [[bitcoind_commands]]
 
@@ -416,7 +416,7 @@ walletpassphrasechange "oldpassphrase" "newpassphrase"
 
 
 ==== Getting Information on the Bitcoin Core Client Status
-==== bitcoin coreクライアントのステータスの取得
+==== Bitcoin Coreクライアントのステータスの取得
 
 Commands: +getinfo+
 
@@ -424,7 +424,7 @@ Commands: +getinfo+
 
 ((("Bitcoin Core client","client status, getting")))((("bitcoin-cli command line helper","getinfo command")))((("client status, getting")))((("getinfo command (bitcoin-cli)")))Bitcoin's +getinfo+ RPC command displays basic information about the status of the bitcoin network node, the wallet, and the blockchain database. Use +bitcoin-cli+ to run it:
 
-((("Bitcoin Core client","client status, getting")))((("bitcoin-cli command line helper","getinfo command")))((("client status, getting")))((("getinfo command (bitcoin-cli)")))bitcoinのgetinfo RPCコマンドは、bitcoinネットワークノード、ウォレット、ブロックチェインデータベースについての基本的な情報を表示してくれます。以下の +bitcoin-cli+ コマンドを実行してみましょう。
+((("Bitcoin Core client","client status, getting")))((("bitcoin-cli command line helper","getinfo command")))((("client status, getting")))((("getinfo command (bitcoin-cli)")))Bitcoinのgetinfo RPCコマンドは、Bitcoinネットワークノード、ウォレット、ブロックチェインデータベースについての基本的な情報を表示してくれます。以下の +bitcoin-cli+ コマンドを実行してみましょう。
 
 [source,bash]
 ----
@@ -452,7 +452,7 @@ $ bitcoin-cli getinfo
 
 The data is returned in((("JavaScript Object Notation (JSON)"))) JavaScript Object Notation (JSON), a format that can easily be "consumed" by all programming languages but is also quite human-readable. Among this data we see the version numbers for the bitcoin software client (90000), protocol (70002), and wallet (60000). We see the current balance contained in the wallet, which is zero. We see the current block height, showing us how many blocks are known to this client (286216). We also see various statistics about the bitcoin network and the settings related to this client. We will explore these settings in more detail in the rest of this chapter. 
 
-このデータは((("JavaScript Object Notation (JSON)"))) Javascriptオブジェクト記法(JSON)で返されます。JSONは多くのプログラミング言語で簡単に利用できるとともに、人間にとっても読みやすいものです。このデータの中に、bitcoinクライアントのバージョン情報(90000)やプロトコルバージョン情報(70002)、ウォレットバージョン情報(60000)があります。ウォレットにある現在の残高を見ると、0になっています。"blocks"とあるところには、現在の何ブロックをbitcoinクライアントが把握しているかというblock height(286216)があります。また、bitcoinネットワークに関するいろいろな統計情報も見ることができ、このクライアントの設定内容も見ることができます。この章の残りの部分で、これらの設定値についてもっと詳細に分け入ってみます。
+このデータは((("JavaScript Object Notation (JSON)"))) Javascriptオブジェクト記法(JSON)で返されます。JSONは多くのプログラミング言語で簡単に利用できるとともに、人間にとっても読みやすいものです。このデータの中に、bitcoinクライアントのバージョン情報(90000)やプロトコルバージョン情報(70002)、ウォレットバージョン情報(60000)があります。ウォレットにある現在の残高を見ると、0になっています。"blocks"とあるところには、現在の何ブロックをbitcoinクライアントが把握しているかというblock height(286216)があります。また、Bitcoinネットワークに関するいろいろな統計情報も見ることができ、このクライアントの設定内容も見ることができます。この章の残りの部分で、これらの設定値についてもっと詳細に分け入ってみます。
 
 [TIP]
 ====
@@ -836,7 +836,7 @@ Here, we see the new information in the entries +blockhash+ (the hash of the blo
 ****
 ((("transaction database index")))By default, Bitcoin Core builds a database containing _only_ the transactions related to the user's wallet. If you want to be able to access _any_ transaction with commands like +gettransaction+, you need to configure Bitcoin Core to build a complete transaction index, which can be achieved with the((("txindex option (Bitcoin Core)"))) +txindex+ option. Set +txindex=1+ in the Bitcoin Core configuration file (usually found in your home directory under _.bitcoin/bitcoin.conf_). Once you change this parameter, you need to restart bitcoind and wait for it to rebuild the index.(((range="endofrange", startref="ix_ch03-asciidoc30")))(((range="endofrange", startref="ix_ch03-asciidoc29")))(((range="endofrange", startref="ix_ch03-asciidoc28")))(((range="endofrange", startref="ix_ch03-asciidoc27")))(((range="endofrange", startref="ix_ch03-asciidoc26")))(((range="endofrange", startref="ix_ch03-asciidoc25")))(((range="endofrange", startref="ix_ch03-asciidoc24")))(((range="endofrange", startref="ix_ch03-asciidoc23"))) 
 
-((("transaction database index")))デフォルトでbitcoin coreは自身のウォレットに関係したトランザクション _のみ_ を含むデータベースを構築します。もしgettransactionコマンドなどで _任意の_ トランザクションを見れるようにしたいなら、bitcoin coreに ((("txindex option (Bitcoin Core)"))) +txindex+ というオプションを設定する必要があります。bitcoin core設定ファイル(通常はあなたのホームディレクトリの下に配置されている _.bitcoin/bitcoin.conf_ )で +txindex=1+ に設定してください。一度この変更をするとbitcoindを再起動して、indexが再構築されるまで待たなければいけません。(((range="endofrange", startref="ix_ch03-asciidoc30")))(((range="endofrange", startref="ix_ch03-asciidoc29")))(((range="endofrange", startref="ix_ch03-asciidoc28")))(((range="endofrange", startref="ix_ch03-asciidoc27")))(((range="endofrange", startref="ix_ch03-asciidoc26")))(((range="endofrange", startref="ix_ch03-asciidoc25")))(((range="endofrange", startref="ix_ch03-asciidoc24")))(((range="endofrange", startref="ix_ch03-asciidoc23")))
+((("transaction database index")))デフォルトでBitcoin Coreは自身のウォレットに関係したトランザクション _のみ_ を含むデータベースを構築します。もしgettransactionコマンドなどで _任意の_ トランザクションを見れるようにしたいなら、Bitcoin Coreに ((("txindex option (Bitcoin Core)"))) +txindex+ というオプションを設定する必要があります。Bitcoin Core設定ファイル(通常はあなたのホームディレクトリの下に配置されている _.bitcoin/bitcoin.conf_ )で +txindex=1+ に設定してください。一度この変更をするとbitcoindを再起動して、indexが再構築されるまで待たなければいけません。(((range="endofrange", startref="ix_ch03-asciidoc30")))(((range="endofrange", startref="ix_ch03-asciidoc29")))(((range="endofrange", startref="ix_ch03-asciidoc28")))(((range="endofrange", startref="ix_ch03-asciidoc27")))(((range="endofrange", startref="ix_ch03-asciidoc26")))(((range="endofrange", startref="ix_ch03-asciidoc25")))(((range="endofrange", startref="ix_ch03-asciidoc24")))(((range="endofrange", startref="ix_ch03-asciidoc23")))
 ****
 
 ==== Exploring Blocks
@@ -963,7 +963,7 @@ Commands: +listunspent+, +gettxout+, +createrawtransaction+, +decoderawtransacti
 
 ((("bitcoin-cli command line helper","createrawtransaction command", id="ix_ch03-asciidoc31", range="startofrange")))((("bitcoin-cli command line helper","decoderawtransaction command", id="ix_ch03-asciidoc32", range="startofrange")))((("bitcoin-cli command line helper","gettxout command", id="ix_ch03-asciidoc33", range="startofrange")))((("bitcoin-cli command line helper","listunspent command", id="ix_ch03-asciidoc34", range="startofrange")))((("bitcoin-cli command line helper","sendrawtransaction command", id="ix_ch03-asciidoc35", range="startofrange")))((("bitcoin-cli command line helper","signrawtransaction command", id="ix_ch03-asciidoc36", range="startofrange")))((("createrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc37", range="startofrange")))((("decoderawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc38", range="startofrange")))((("gettxout command (bitcoin-cli)", id="ix_ch03-asciidoc39", range="startofrange")))((("listunspent command (bitcoin-cli)", id="ix_ch03-asciidoc40", range="startofrange")))((("sendrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc41", range="startofrange")))((("signrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc42", range="startofrange")))((("transactions","creating from the command line", id="ix_ch03-asciidoc43", range="startofrange")))((("transactions","signing from the command line", id="ix_ch03-asciidoc44", range="startofrange")))((("transactions","submitting from the command line", id="ix_ch03-asciidoc45", range="startofrange")))((("unspent transaction output (UTXO)", id="ix_ch03-asciidoc46", range="startofrange")))Bitcoin's transactions are based on the concept of spending "outputs," which are the result of previous transactions, to create a transaction chain that transfers ownership from address to address. Our wallet has now received a transaction that assigned one such output to our address. Once this is confirmed, we can spend that output. 
 
-((("bitcoin-cli command line helper","createrawtransaction command", id="ix_ch03-asciidoc31", range="startofrange")))((("bitcoin-cli command line helper","decoderawtransaction command", id="ix_ch03-asciidoc32", range="startofrange")))((("bitcoin-cli command line helper","gettxout command", id="ix_ch03-asciidoc33", range="startofrange")))((("bitcoin-cli command line helper","listunspent command", id="ix_ch03-asciidoc34", range="startofrange")))((("bitcoin-cli command line helper","sendrawtransaction command", id="ix_ch03-asciidoc35", range="startofrange")))((("bitcoin-cli command line helper","signrawtransaction command", id="ix_ch03-asciidoc36", range="startofrange")))((("createrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc37", range="startofrange")))((("decoderawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc38", range="startofrange")))((("gettxout command (bitcoin-cli)", id="ix_ch03-asciidoc39", range="startofrange")))((("listunspent command (bitcoin-cli)", id="ix_ch03-asciidoc40", range="startofrange")))((("sendrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc41", range="startofrange")))((("signrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc42", range="startofrange")))((("transactions","creating from the command line", id="ix_ch03-asciidoc43", range="startofrange")))((("transactions","signing from the command line", id="ix_ch03-asciidoc44", range="startofrange")))((("transactions","submitting from the command line", id="ix_ch03-asciidoc45", range="startofrange")))((("unspent transaction output (UTXO)", id="ix_ch03-asciidoc46", range="startofrange")))bitcoinのトランザクションは、所有権の転送というトランザクションチェインを作るために前のトランザクションの結果である"アウトプット"を利用する形になっています。我々のウォレットは我々のbitcoinアドレスにそのようなアウトプットに紐づけるトランザクションをちょうど受け取ったところです。一度これが検証されると我々はそのアウトプットを使うことができるようになります。
+((("bitcoin-cli command line helper","createrawtransaction command", id="ix_ch03-asciidoc31", range="startofrange")))((("bitcoin-cli command line helper","decoderawtransaction command", id="ix_ch03-asciidoc32", range="startofrange")))((("bitcoin-cli command line helper","gettxout command", id="ix_ch03-asciidoc33", range="startofrange")))((("bitcoin-cli command line helper","listunspent command", id="ix_ch03-asciidoc34", range="startofrange")))((("bitcoin-cli command line helper","sendrawtransaction command", id="ix_ch03-asciidoc35", range="startofrange")))((("bitcoin-cli command line helper","signrawtransaction command", id="ix_ch03-asciidoc36", range="startofrange")))((("createrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc37", range="startofrange")))((("decoderawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc38", range="startofrange")))((("gettxout command (bitcoin-cli)", id="ix_ch03-asciidoc39", range="startofrange")))((("listunspent command (bitcoin-cli)", id="ix_ch03-asciidoc40", range="startofrange")))((("sendrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc41", range="startofrange")))((("signrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc42", range="startofrange")))((("transactions","creating from the command line", id="ix_ch03-asciidoc43", range="startofrange")))((("transactions","signing from the command line", id="ix_ch03-asciidoc44", range="startofrange")))((("transactions","submitting from the command line", id="ix_ch03-asciidoc45", range="startofrange")))((("unspent transaction output (UTXO)", id="ix_ch03-asciidoc46", range="startofrange")))Bitcoinのトランザクションは、所有権の転送というトランザクションチェインを作るために前のトランザクションの結果である"アウトプット"を利用する形になっています。我々のウォレットは我々のbitcoinアドレスにそのようなアウトプットに紐づけるトランザクションをちょうど受け取ったところです。一度これが検証されると我々はそのアウトプットを使うことができるようになります。
 
 First, we use the +listunspent+ command to show all the unspent _confirmed_ outputs in our wallet:
 
@@ -1208,11 +1208,11 @@ $ bitcoin-cli decoderawtransaction0100000001e34ac1e2baac09c366fce1c2245536bda<?p
 
 Now, the inputs used in the transaction contain a +scriptSig+, which is a digital signature proving ownership of address +1hvz...+ and removing the encumbrance on the output so that it can be spent. The signature makes this transaction verifiable by any node in the bitcoin network. 
 
-再度トランザクションを見てみると、インプットの +scriptSig+ が空ではなくテキストが含まれていることが分かります。この +scriptSig+ はbitcoinアドレス +1hvz...+ の所有者を証明している電子署名で、アウトプットの解除条件を満たしアウトプットが使用できるようになります。この署名が、bitcoinネットワーク上のいかなるノードでもこのトランザクションを検証できるようにしているのです。
+再度トランザクションを見てみると、インプットの +scriptSig+ が空ではなくテキストが含まれていることが分かります。この +scriptSig+ はbitcoinアドレス +1hvz...+ の所有者を証明している電子署名で、アウトプットの解除条件を満たしアウトプットが使用できるようになります。この署名が、Bitcoinネットワーク上のいかなるノードでもこのトランザクションを検証できるようにしているのです。
 
 Now it's time to submit the newly created transaction to the network. We do that with the command +sendrawtransaction+, which takes the raw hex string produced by +signrawtransaction+. This is the same string we just decoded:
 
-bitcoinネットワークに新しく作ったトランザクションを送信する時が来ました。 +sendrawtransaction+ コマンドを使って送信しましょう。 +sendrawtransaction+ コマンドでは +signrawtransaction+ コマンドで返ってきた16進数テキストを引数として指定します。これはさきほど平文化した16進数テキストです。
+Bitcoinネットワークに新しく作ったトランザクションを送信する時が来ました。 +sendrawtransaction+ コマンドを使って送信しましょう。 +sendrawtransaction+ コマンドでは +signrawtransaction+ コマンドで返ってきた16進数テキストを引数として指定します。これはさきほど平文化した16進数テキストです。
 
 ++++
 <screen>
@@ -1222,7 +1222,7 @@ $ bitcoin-cli sendrawtransaction0100000001e34ac1e2baac09c366fce1c2245536bda8f<?p
 
 The command +sendrawtransaction+ returns a _transaction hash (txid)_ as it submits the transaction on the network. We can now query that transaction ID with +gettransaction+:
 
-+sendrawtransaction+ コマンドは、bitcoinネットワークにトランザクションが送信されると _トランザクションハッシュ(txid)_ を返します。 +gettransaction+ コマンドでこのトランザクションIDについて問い合わせることができるようになりました。
++sendrawtransaction+ コマンドは、Bitcoinネットワークにトランザクションが送信されると _トランザクションハッシュ(txid)_ を返します。 +gettransaction+ コマンドでこのトランザクションIDについて問い合わせることができるようになりました。
 
 ++++
 <screen>
@@ -1272,7 +1272,7 @@ $ bitcoin-cli gettransaction ae74538baa914f3799081ba78429d5d84f36a0127438e9f7<?p
 
 As before, we can also examine this in more detail using the +getrawtransaction+ and +decodetransaction+ commands. These commands will return the exact same hex string that we produced and decoded previously just before we sent it on the network.(((range="endofrange", startref="ix_ch03-asciidoc46")))(((range="endofrange", startref="ix_ch03-asciidoc45")))(((range="endofrange", startref="ix_ch03-asciidoc44")))(((range="endofrange", startref="ix_ch03-asciidoc43")))(((range="endofrange", startref="ix_ch03-asciidoc42")))(((range="endofrange", startref="ix_ch03-asciidoc41")))(((range="endofrange", startref="ix_ch03-asciidoc40")))(((range="endofrange", startref="ix_ch03-asciidoc39")))(((range="endofrange", startref="ix_ch03-asciidoc38")))(((range="endofrange", startref="ix_ch03-asciidoc37")))(((range="endofrange", startref="ix_ch03-asciidoc36")))(((range="endofrange", startref="ix_ch03-asciidoc35")))(((range="endofrange", startref="ix_ch03-asciidoc34")))(((range="endofrange", startref="ix_ch03-asciidoc33")))(((range="endofrange", startref="ix_ch03-asciidoc32")))(((range="endofrange", startref="ix_ch03-asciidoc31")))(((range="endofrange", startref="ix_ch03-asciidoc7")))(((range="endofrange", startref="ix_ch03-asciidoc6")))(((range="endofrange", startref="ix_ch03-asciidoc5")))(((range="endofrange", startref="ix_ch03-asciidoc2")))(((range="endofrange", startref="ix_ch03-asciidoc1"))) 
 
-前にやったように、我々は +getrawtransaction+ コマンドと +decodetransaction+ コマンドを使ってこのトランザクションのもっと詳細も調べることができます。これらのコマンドは、トランザクションをbitcoinネットワークに送る前に生成し平文化した16進数テキストと全く同じテキストを返します。(((range="endofrange", startref="ix_ch03-asciidoc46")))(((range="endofrange", startref="ix_ch03-asciidoc45")))(((range="endofrange", startref="ix_ch03-asciidoc44")))(((range="endofrange", startref="ix_ch03-asciidoc43")))(((range="endofrange", startref="ix_ch03-asciidoc42")))(((range="endofrange", startref="ix_ch03-asciidoc41")))(((range="endofrange", startref="ix_ch03-asciidoc40")))(((range="endofrange", startref="ix_ch03-asciidoc39")))(((range="endofrange", startref="ix_ch03-asciidoc38")))(((range="endofrange", startref="ix_ch03-asciidoc37")))(((range="endofrange", startref="ix_ch03-asciidoc36")))(((range="endofrange", startref="ix_ch03-asciidoc35")))(((range="endofrange", startref="ix_ch03-asciidoc34")))(((range="endofrange", startref="ix_ch03-asciidoc33")))(((range="endofrange", startref="ix_ch03-asciidoc32")))(((range="endofrange", startref="ix_ch03-asciidoc31")))(((range="endofrange", startref="ix_ch03-asciidoc7")))(((range="endofrange", startref="ix_ch03-asciidoc6")))(((range="endofrange", startref="ix_ch03-asciidoc5")))(((range="endofrange", startref="ix_ch03-asciidoc2")))(((range="endofrange", startref="ix_ch03-asciidoc1"))) 
+前にやったように、我々は +getrawtransaction+ コマンドと +decodetransaction+ コマンドを使ってこのトランザクションのもっと詳細も調べることができます。これらのコマンドは、トランザクションをBitcoinネットワークに送る前に生成し平文化した16進数テキストと全く同じテキストを返します。(((range="endofrange", startref="ix_ch03-asciidoc46")))(((range="endofrange", startref="ix_ch03-asciidoc45")))(((range="endofrange", startref="ix_ch03-asciidoc44")))(((range="endofrange", startref="ix_ch03-asciidoc43")))(((range="endofrange", startref="ix_ch03-asciidoc42")))(((range="endofrange", startref="ix_ch03-asciidoc41")))(((range="endofrange", startref="ix_ch03-asciidoc40")))(((range="endofrange", startref="ix_ch03-asciidoc39")))(((range="endofrange", startref="ix_ch03-asciidoc38")))(((range="endofrange", startref="ix_ch03-asciidoc37")))(((range="endofrange", startref="ix_ch03-asciidoc36")))(((range="endofrange", startref="ix_ch03-asciidoc35")))(((range="endofrange", startref="ix_ch03-asciidoc34")))(((range="endofrange", startref="ix_ch03-asciidoc33")))(((range="endofrange", startref="ix_ch03-asciidoc32")))(((range="endofrange", startref="ix_ch03-asciidoc31")))(((range="endofrange", startref="ix_ch03-asciidoc7")))(((range="endofrange", startref="ix_ch03-asciidoc6")))(((range="endofrange", startref="ix_ch03-asciidoc5")))(((range="endofrange", startref="ix_ch03-asciidoc2")))(((range="endofrange", startref="ix_ch03-asciidoc1"))) 
 
 [[alt_libraries]]
 === Alternative Clients, Libraries, and Toolkits
@@ -1280,7 +1280,7 @@ As before, we can also examine this in more detail using the +getrawtransaction+
 
 ((("clients, alternative", id="ix_ch03-asciidoc47", range="startofrange")))((("libraries, alternative", id="ix_ch03-asciidoc48", range="startofrange")))((("toolkits, alternative", id="ix_ch03-asciidoc49", range="startofrange")))Beyond the reference client (bitcoind), other clients and libraries can be used to interact with the bitcoin network and data structures. These are implemented in a variety of programming languages, offering programmers native interfaces in their own language. 
 
-((("clients, alternative", id="ix_ch03-asciidoc47", range="startofrange")))((("libraries, alternative", id="ix_ch03-asciidoc48", range="startofrange")))((("toolkits, alternative", id="ix_ch03-asciidoc49", range="startofrange")))bitcoinネットワークと通信するのに、bitcoinクライアントの大元bitcoind以外に他にもbitcoinクライアントやライブラリがあります。これらは様々なプログラミング言語で実装されていて、プログラマーにそれぞれのプログラミング言語ごとのインターフェイスを提供しています。
+((("clients, alternative", id="ix_ch03-asciidoc47", range="startofrange")))((("libraries, alternative", id="ix_ch03-asciidoc48", range="startofrange")))((("toolkits, alternative", id="ix_ch03-asciidoc49", range="startofrange")))Bitcoinネットワークと通信するのに、bitcoinクライアントの大元bitcoind以外に他にもbitcoinクライアントやライブラリがあります。これらは様々なプログラミング言語で実装されていて、プログラマーにそれぞれのプログラミング言語ごとのインターフェイスを提供しています。
 
 Alternative implementations include:
 
