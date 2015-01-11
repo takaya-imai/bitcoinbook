@@ -16,7 +16,7 @@ Every bitcoin transaction requires a valid signature to be included in the block
 
 In the payment portion of a bitcoin transaction, the recipient's public key is represented by its digital fingerprint, called a((("addresses, bitcoin","defined"))) _bitcoin address_, which is used in the same way as the beneficiary name on a check (i.e., "Pay to the order of"). In most cases, a bitcoin address is generated from and corresponds to a public key. However, not all bitcoin addresses represent public keys; they can also represent other beneficiaries such as scripts, as we will see later in this chapter. This way, bitcoin addresses abstract the recipient of funds, making transaction destinations flexible, similar to paper checks: a single payment instrument that can be used to pay into people's accounts, pay into company accounts, pay for bills, or pay to cash. The bitcoin address is the only representation of the keys that users will routinely see, because this is the part they need to share with the world.
 
-bitcoinトランザクションの支払いには受取人の公開鍵が表示されており、この公開鍵は _bitcoinアドレス_ と呼ばれるデジタル指紋の形で表示されます。このbitcoinアドレスは小切手にある受取人名と同じようにも使われます。ほとんどの場合、bitcoinアドレスは公開鍵に紐づいています。しかし、bitcoinアドレスだけが公開鍵ではありません。この後の章でも見る通り、scriptのような形でも受取人を表現できます。この方法では、bitcinアドレスは資金の受取人を ????
+bitcoinトランザクションの支払いには受取人の公開鍵が表示されており、この公開鍵は _bitcoinアドレス_ と呼ばれるデジタル指紋の形で表示されます。このbitcoinアドレスは小切手にある受取人名と同じようにも使われます。ほとんどの場合、bitcoinアドレスは公開鍵から生成され公開鍵に紐づいています。しかし、bitcoinアドレスだけが公開鍵ではありません。この後の章でも見る通り、scriptのような形でも受取人を表現できます。この方法では、bitcinアドレスは資金の受取人を ????
 
 
 In this chapter we will introduce wallets, which contain cryptographic keys. We will look at how keys are generated, stored, and managed. We will review the various encoding formats used to represent private and public keys, addresses, and script addresses. Finally, we will look at special uses of keys: to sign messages, to prove ownership, and to create vanity addresses and paper wallets. 
@@ -54,8 +54,11 @@ bitcoinを使うとき、現在のbitcoin所有者は彼女の公開鍵と署名
 
 [[private_public_keys]]
 ==== Private and Public Keys
+==== 秘密鍵と公開鍵
 
 ((("keys","public/private")))((("keys","in wallets")))((("public keys")))((("wallets","public/private keys in")))A bitcoin wallet contains a collection of key pairs, each consisting of a private key and a public key. The private key (k) is a number, usually picked at random. From the private key, we use elliptic curve multiplication, a one-way cryptographic function, to generate a public key (K). From the public key (K), we use a one-way cryptographic hash function to generate a bitcoin address (A). In this section, we will start with generating the private key, look at the elliptic curve math that is used to turn that into a public key, and finally, generate a bitcoin address from the public key. The relationship between private key, public key, and bitcoin address is shown in <<k_to_K_to_A>>.
+
+((("keys","public/private")))((("keys","in wallets")))((("public keys")))((("wallets","public/private keys in")))bitcoinウォレットにはキーペアのコレクションを持っており、それぞれのキーペアは秘密鍵と公開鍵で構成されています。秘密鍵(k)は数値で、通常ランダムに選ばれます。秘密鍵から不可逆関数である楕円曲線乗算を用いて公開鍵(K)を生成します。公開鍵(K)から不可逆ハッシュ関数を用いてbitcoinアドレス(A)を生成します。この節では、秘密鍵の生成から始めて、公開鍵の生成に使われる楕円曲線の数学を見ていき、最後にbitcoinアドレスを公開鍵から生成します。秘密鍵と公開鍵、bitcoinアドレスの関係は<<k_to_K_to_A>>図に書かれています。
 
 [[k_to_K_to_A]]
 .Private key, public key, and bitcoin address
@@ -63,8 +66,11 @@ image::images/msbt_0401.png["privk_to_pubK_to_addressA"]
 
 [[private_keys]]
 ==== Private Keys
+==== 秘密鍵
 
 ((("keys","private", id="ix_ch04-asciidoc1", range="startofrange")))((("private keys", id="ix_ch04-asciidoc2", range="startofrange")))A private key is simply a number, picked at random. Ownership and control over the private key is the root of user control over all funds associated with the corresponding bitcoin address. The private key is used to create signatures that are required to spend bitcoins by proving ownership of funds used in a transaction. The private key must remain secret at all times, because revealing it to third parties is equivalent to giving them control over the bitcoins secured by that key. The private key must also be backed up and protected from accidental loss, because if it's lost it cannot be recovered and the funds secured by it are forever lost, too. 
+
+((("keys","private", id="ix_ch04-asciidoc1", range="startofrange")))((("private keys", id="ix_ch04-asciidoc2", range="startofrange")))秘密鍵は単に数値で、ランダムに選ばれます。所有権と秘密鍵管理は秘密鍵と対応したbitcoinアドレスに結びついた全ての資金の根幹をなします。????秘密鍵は署名を生成するときに使われ、この署名は資金の使うときに所有権の主張のため必要となります。秘密鍵は何時でも極秘に保っておかなければいけません。これは、もし他者に秘密鍵が漏れると、秘密鍵に対応したbitcoinアドレスの資金のコントロールを他者に与えることになってしまうためです。秘密鍵はバックアップや偶発的な紛失からの保護もしておかなければいけません。というのは、もし秘密鍵をなくしてしまうと、秘密鍵を復元することはできず、秘密鍵によってセキュリティを担保していた資金も永遠に失ってしまいます。
 
 [TIP]
 ====
@@ -72,17 +78,24 @@ image::images/msbt_0401.png["privk_to_pubK_to_addressA"]
 ====
 
 ===== Generating a private key from a random number
+===== ランダムな数値からの秘密鍵の生成
 
 ((("private keys","generating from random numbers", id="ix_ch04-asciidoc3", range="startofrange")))The first and most important step in generating keys is to find a secure source of entropy, or randomness. Creating a bitcoin key is essentially the same as "Pick a number between 1 and 2^256^." The exact method you use to pick that number does not matter as long as it is not predictable or repeatable. Bitcoin software uses the underlying operating system's random number generators to produce 256 bits of entropy (randomness). Usually, the OS random number generator is initialized by a human source of randomness, which is why you may be asked to wiggle your mouse around for a few seconds. For the truly paranoid, nothing beats dice, pencil, and paper.
 
+((("private keys","generating from random numbers", id="ix_ch04-asciidoc3", range="startofrange")))キーを生成する上で重要かつ一番最初にしなればいけないことは、キー生成の安定的なエントロピー源、または十分なランダムさを確保することです。bitcoinキーを作ることは、"1から2^256^までの間の数字を選ぶ"ということと本質的に同じです。数字を選ぶ厳格な方法は、予測可能であったり再現可能性があったりしない方法です。bitcoinソフトウェアは、256bitのエントロピー(ランダムさ)を作り出すOSのランダム値生成器を使っています。通常OSのランダム値生成器は最初人間を元にしたランダムさをベースにしています。数秒間だけマウスを小刻みに動かしてくださいとOSからお願いされたことがある方もいるかもしれないですが、このランダム値生成が理由です。????
+
 More accurately, the private key can be any number between +1+ and +n - 1+, where n is a constant (n = 1.158 * 10^77^, slightly less than 2^256^) defined as the order of the elliptic curve used in bitcoin (see <<elliptic_curve>>). To create such a key, we randomly pick a 256-bit number and check that it is less than +n - 1+. In programming terms, this is usually achieved by feeding a larger string of random bits, collected from a cryptographically secure source of randomness, into the SHA256 hash algorithm that will conveniently produce a 256-bit number. If the result is less than +n - 1+, we have a suitable private key. Otherwise, we simply try again with another random number. 
-	
+
+さらに正確に言うと、秘密鍵は+1+と+n - 1+の間の任意の整数で、nはbitcoinで使われている楕円曲線の位数として定義されている定数(n = 1.158 * 10^77^で2^256^よりわずかに小さい)です(<<elliptic_curve>>参照)。このようなキーを作るために、256bitの数値からランダムに数値を選び、選んだ数値が+n - 1+であるかをチェックしています。プログラミング用語で言うとこれは通常、暗号法的に安定なランダムさ源から集められた任意の長さを持ったより大きい文字列を取得し、256bitの数値を作る便利なSHA256ハッシュアルゴリズムに放り込むことで達成できます。???? もし結果が+n - 1+よりも小さかった場合、それが適切な秘密鍵です。もしそうでなければ、単にもう一度別のランダムな数値を取得してうまくいくまで同じことを繰り返します。
+
 [TIP]
 ====
 Do not write your own code to create a random number or use a "simple" random number generator offered by your programming language. Use a((("cryptographically secure pseudo-random number generator (CSPRNG)"))) cryptographically secure pseudo-random number generator (CSPRNG) with a seed from a source of sufficient entropy. Study the documentation of the random number generator library you choose to make sure it is cryptographically secure. Correct implementation of the CSPRNG is critical to the security of the keys.
 ====
 
 The following is a randomly generated private key (k) shown in hexadecimal format (256 binary digits shown as 64 hexadecimal digits, each 4 bits):
+
+以下はランダムに生成された秘密鍵(k)で、16進数フォーマット(それぞれ4bitずつ64個の16進数整数で表されている256bit整数)になっています。
 
 ----
 1E99423A4ED27608A15A2616A2B0E9E52CED330AC530EDCC32C8FFC6A526AEDD
@@ -96,6 +109,9 @@ The size of bitcoin's private key space, 2^256^ is an unfathomably large number.
 
 To generate a new key with the Bitcoin Core client (see <<ch03_bitcoin_client>>), use the((("getnewaddress command (bitcoin-cli)"))) +getnewaddress+ command. For security reasons it displays the public key only, not the private key. ((("dumpprivkey command (bitcoin-cli)")))((("private keys","exposing with bitcoind")))To ask bitcoind to expose the private key, use the +dumpprivkey+ command. The +dumpprivkey+ command shows the private key in a Base58 checksum-encoded format called the _Wallet Import Format_ (WIF), which we will examine in more detail in <<priv_formats>>. Here's an example of generating and displaying a private key using these two commands:
 
+Bitcoin Coreクライアントで新しいキーを生成するために前に説明した ((("getnewaddress command (bitcoin-cli)"))) +getnewaddress+ コマンドを使います(<<ch03_bitcoin_client>>参照)。セキュリティのため、公開鍵だけを表示しており秘密鍵は表示していません。((("dumpprivkey command (bitcoin-cli)")))((("private keys","exposing with bitcoind"))) bitcoindに秘密鍵を表示させるには、 +dumpprivkey+ コマンドを使ってください。 +dumpprivkey+ コマンドは _Wallet Import Format_ (WIF) と呼ばれるBase58エンコードフォーマットで秘密鍵を表示します。この詳細については<<priv_formats>>で説明します。
++getnewaddress+ コマンドと +dumpprivkey+ コマンドを使った秘密鍵の生成例と表示例を以下に示します。
+
 ----
 $ bitcoind getnewaddress
 1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy
@@ -105,12 +121,16 @@ KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
 
 The +dumpprivkey+ command opens the wallet and extracts the private key that was generated by the +getnewaddress+ command. It is not otherwise possible for bitcoind to know the private key from the public key, unless they are both stored in the wallet. 
 
++dumpprivkey+ コマンドはウォレットを開き、さきほどの +getnewaddress+ コマンドで生成された秘密鍵を抽出します。このウォレットに秘密鍵と公開鍵の両方が格納されていなければ、bitcoindが秘密鍵を公開鍵から知ることはできません。
+
 [TIP]
 =====================================================================
 The +dumpprivkey+ command is not generating a private key from a public key, as this is impossible. The command simply reveals the private key that is already known to the wallet and which was generated by the getnewaddress command. 
 =====================================================================
 
 You can also use the command-line sx tools (see <<sx_tools>>) to generate and display private keys with the sx command +newkey+: (((range="endofrange", startref="ix_ch04-asciidoc3")))(((range="endofrange", startref="ix_ch04-asciidoc2")))(((range="endofrange", startref="ix_ch04-asciidoc1")))
+
+また、sxツール(<<sx_tools>>参照)にある +newkey+ sxコマンドを使うことで秘密鍵を生成および表示することもできます。(((range="endofrange", startref="ix_ch04-asciidoc3")))(((range="endofrange", startref="ix_ch04-asciidoc2")))(((range="endofrange", startref="ix_ch04-asciidoc1")))
 
 ----
 $ sx newkey
