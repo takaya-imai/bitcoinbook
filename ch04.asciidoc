@@ -86,7 +86,7 @@ image::images/msbt_0401.png["privk_to_pubK_to_addressA"]
 
 More accurately, the private key can be any number between +1+ and +n - 1+, where n is a constant (n = 1.158 * 10^77^, slightly less than 2^256^) defined as the order of the elliptic curve used in bitcoin (see <<elliptic_curve>>). To create such a key, we randomly pick a 256-bit number and check that it is less than +n - 1+. In programming terms, this is usually achieved by feeding a larger string of random bits, collected from a cryptographically secure source of randomness, into the SHA256 hash algorithm that will conveniently produce a 256-bit number. If the result is less than +n - 1+, we have a suitable private key. Otherwise, we simply try again with another random number. 
 
-さらに正確に言うと、秘密鍵は+1+と+n - 1+の間の任意の整数で、nはbitcoinで使われている楕円曲線の位数として定義されている定数(n = 1.158 * 10^77^で2^256^よりわずかに小さい)です(<<elliptic_curve>>参照)。このようなキーを作るために、256bitの数値からランダムに数値を選び、選んだ数値が+n - 1+であるかをチェックしています。プログラミング用語で言うとこれは通常、暗号法的に安定なランダムさ源から集められた任意の長さを持ったより大きい文字列を取得し、256bitの数値を作る便利なSHA256ハッシュアルゴリズムに放り込むことで達成できます。???? もし結果が+n - 1+よりも小さかった場合、それが適切な秘密鍵です。もしそうでなければ、単にもう一度別のランダムな数値を取得してうまくいくまで同じことを繰り返します。
+さらに正確に言うと、秘密鍵は+1+と+n - 1+の間の任意の整数で、nはbitcoinで使われている楕円曲線の位数として定義されている定数(n = 1.158 * 10^77^で2^256^よりわずかに小さい)です(<<elliptic_curve>>図参照)。このようなキーを作るために、256bitの数値からランダムに数値を選び、選んだ数値が+n - 1+であるかをチェックしています。プログラミング用語で言うとこれは通常、暗号法的に安定なランダムさ源から集められた任意の長さを持ったより大きい文字列を取得し、256bitの数値を作る便利なSHA256ハッシュアルゴリズムに放り込むことで達成できます。???? もし結果が+n - 1+よりも小さかった場合、それが適切な秘密鍵です。もしそうでなければ、単にもう一度別のランダムな数値を取得してうまくいくまで同じことを繰り返します。
 
 [TIP]
 ====
@@ -109,7 +109,7 @@ The size of bitcoin's private key space, 2^256^ is an unfathomably large number.
 
 To generate a new key with the Bitcoin Core client (see <<ch03_bitcoin_client>>), use the((("getnewaddress command (bitcoin-cli)"))) +getnewaddress+ command. For security reasons it displays the public key only, not the private key. ((("dumpprivkey command (bitcoin-cli)")))((("private keys","exposing with bitcoind")))To ask bitcoind to expose the private key, use the +dumpprivkey+ command. The +dumpprivkey+ command shows the private key in a Base58 checksum-encoded format called the _Wallet Import Format_ (WIF), which we will examine in more detail in <<priv_formats>>. Here's an example of generating and displaying a private key using these two commands:
 
-Bitcoin Coreクライアントで新しいキーを生成するために前に説明した ((("getnewaddress command (bitcoin-cli)"))) +getnewaddress+ コマンドを使います(<<ch03_bitcoin_client>>参照)。セキュリティのため、公開鍵だけを表示しており秘密鍵は表示していません。((("dumpprivkey command (bitcoin-cli)")))((("private keys","exposing with bitcoind"))) bitcoindに秘密鍵を表示させるには、 +dumpprivkey+ コマンドを使ってください。 +dumpprivkey+ コマンドは _Wallet Import Format_ (WIF) と呼ばれるBase58エンコードフォーマットで秘密鍵を表示します。この詳細については<<priv_formats>>で説明します。
+Bitcoin Coreクライアントで新しいキーを生成するために前に説明した ((("getnewaddress command (bitcoin-cli)"))) +getnewaddress+ コマンドを使います(<<ch03_bitcoin_client>>図参照)。セキュリティのため、公開鍵だけを表示しており秘密鍵は表示していません。((("dumpprivkey command (bitcoin-cli)")))((("private keys","exposing with bitcoind"))) bitcoindに秘密鍵を表示させるには、 +dumpprivkey+ コマンドを使ってください。 +dumpprivkey+ コマンドは _Wallet Import Format_ (WIF) と呼ばれるBase58エンコードフォーマットで秘密鍵を表示します。この詳細については<<priv_formats>>図で説明します。
 +getnewaddress+ コマンドと +dumpprivkey+ コマンドを使った秘密鍵の生成例と表示例を以下に示します。
 
 ----
@@ -130,7 +130,7 @@ The +dumpprivkey+ command is not generating a private key from a public key, as 
 
 You can also use the command-line sx tools (see <<sx_tools>>) to generate and display private keys with the sx command +newkey+: (((range="endofrange", startref="ix_ch04-asciidoc3")))(((range="endofrange", startref="ix_ch04-asciidoc2")))(((range="endofrange", startref="ix_ch04-asciidoc1")))
 
-また、sxツール(<<sx_tools>>参照)にある +newkey+ sxコマンドを使うことで秘密鍵を生成および表示することもできます。(((range="endofrange", startref="ix_ch04-asciidoc3")))(((range="endofrange", startref="ix_ch04-asciidoc2")))(((range="endofrange", startref="ix_ch04-asciidoc1")))
+また、sxツール(<<sx_tools>>図参照)にある +newkey+ sxコマンドを使うことで秘密鍵を生成および表示することもできます。(((range="endofrange", startref="ix_ch04-asciidoc3")))(((range="endofrange", startref="ix_ch04-asciidoc2")))(((range="endofrange", startref="ix_ch04-asciidoc1")))
 
 ----
 $ sx newkey
@@ -139,22 +139,32 @@ $ sx newkey
 
 [[pubkey]]
 ==== Public Keys
+==== 公開鍵
 
 ((("keys","public")))((("public keys","generating")))The public key is calculated from the private key using elliptic curve multiplication, which is irreversible: latexmath:[\(K = k * G\)] where _k_ is the private key, _G_ is a constant point called the _generator point_ and _K_ is the resulting public key. The reverse operation, known as "finding the discrete logarithm"—calculating _k_ if you know __K__—is as difficult as trying all possible values of +k+, i.e., a brute-force search. Before we demonstrate how to generate a public key from a private key, let's look at elliptic curve cryptography in a bit more detail. 
+
+((("keys","public")))((("public keys","generating")))公開鍵は楕円曲線乗法を使って秘密鍵から計算され、不可逆な処理になっています。latexmath:[\(K = k * G\)] 但し _k_ は秘密鍵、 _G_　は _ベースポイント_ と呼ばれる定点、 _K_ は結果として出てくる公開鍵です。逆操作は、離散対数問題 - __K__ を知っていたときに _k_ を導出する問題 - として知られ、この難しさは +k+ の全ての可能な値を総当たりで調べるのと同じくらい時間がかかる問題です。秘密鍵から公開鍵を生成する方法を説明する前に、楕円曲線暗号をもうちょっと細かく見てみましょう。
 
 
 [[elliptic_curve]]
 ==== Elliptic Curve Cryptography Explained
+==== 楕円曲線暗号
 
 ((("elliptic curve cryptography", id="ix_ch04-asciidoc4", range="startofrange")))((("public key cryptography","elliptic curve cryptography", id="ix_ch04-asciidoc5", range="startofrange")))((("ECC", see="elliptic curve cryptography")))Elliptic curve cryptography is a type of asymmetric or public-key cryptography based on the discrete logarithm problem as expressed by addition and multiplication on the points of an elliptic curve. 
 
+((("elliptic curve cryptography", id="ix_ch04-asciidoc4", range="startofrange")))((("public key cryptography","elliptic curve cryptography", id="ix_ch04-asciidoc5", range="startofrange")))((("ECC", see="elliptic curve cryptography")))楕円曲線暗号は、楕円曲線上の点に対する加法と乗法で表現される離散対数問題をベースに作られた非対称型暗号方式または公開鍵暗号方式です。
+
 <<ecc-curve>> is an example of an elliptic curve, similar to that used by bitcoin.
+
+<<ecc-curve>>図はbitcoinで使われているものと似ている楕円曲線の例です。
 
 [[ecc-curve]]
 .An elliptic curve
 image::images/msbt_0402.png["ecc-curve"]
 
 Bitcoin uses a specific elliptic curve and set of mathematical constants, as defined in a standard called((("secp256k1 curve standard"))) +secp256k1+, established by the((("National Institute of Standards and Technology (NIST)"))) National Institute of Standards and Technology (NIST). The +secp256k1+ curve is defined by the following function, which produces an elliptic curve:
+
+Bitcoinは特別な楕円曲線を使っており、((("National Institute of Standards and Technology (NIST)"))) National Institute of Standards and Technology (NIST)で標準化された ((("secp256k1 curve standard"))) +secp256k1+ と呼ばれる集合を使っています。 +secp256k1+ 曲線は次のような関数で定義されており、この関数は楕円曲線になっています。
 
 [latexmath]
 ++++
@@ -174,13 +184,19 @@ or
 
 The _mod p_ (modulo prime number p) indicates that this curve is over a finite field of prime order _p_, also written as latexmath:[\(\mathbb{F}_p\)], where p = 2^256^ – 2^32^ – 2^9^ – 2^8^ – 2^7^ – 2^6^ – 2^4^ – 1, a very large prime number. 
 
+_mod p_ (素数pを法とした剰余)とは、この曲線が位数が素数_p_の有限体をなしていることを示しており、latexmath:[\(\mathbb{F}_p\)] 但し p = 2^256^ – 2^32^ – 2^9^ – 2^8^ – 2^7^ – 2^6^ – 2^4^ – 1(とても大きい素数) のようにも書かれます。
+
 Because this curve is defined over a finite field of prime order instead of over the real numbers, it looks like a pattern of dots scattered in two dimensions, which makes it difficult to visualize. However, the math is identical as that of an elliptic curve over the real numbers. As an example, <<ecc-over-F17-math>> shows the same elliptic curve over a much smaller finite field of prime order 17, showing a pattern of dots on a grid. The +secp256k1+ bitcoin elliptic curve can be thought of as a much more complex pattern of dots on a unfathomably large grid. 
+
+この曲線は実数ではなく素数位数の有限体をなしているため、二次元に散りばめられたドットパターンのように見えます。しかし、この数学は実数上に定義された楕円曲線の数学と同等です。例として、<<ecc-over-F17-math>>図はより小さい位数17の有限体をなす楕円曲線を示していて、グリッド上のドットパターンになっています。 +secp256k1+ bitcoin楕円曲線は、底が知れないほど大きなグリッド上にもっと複雑に描かれたドットパターンと考えることができます。
 
 [[ecc-over-F17-math]]
 .Elliptic curve cryptography: visualizing an elliptic curve over F(p), with p=17
 image::images/msbt_0403.png["ecc-over-F17-math"]
 
 So, for example, the following is a point P with coordinates (x,y) that is a point on the +secp256k1+ curve. You can check this yourself using Python:
+
+例えば、以下は +secp256k1+ 曲線上の点Pです。これが +secp256k1+ 曲線上にあることは以下のPythonコードを使ってあなた自身で確かめることができます。
 ----
 P = (55066263022277343669578718895168534326250603453777594175500187360389116729240, 32670510020758816978083085130507043184471273380659243275938904335757337482424) 
 ----
@@ -201,21 +217,40 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 In elliptic curve math, there is a point called the((("point at infinity (ECC)"))) "point at infinity," which roughly corresponds to the role of 0 in addition. On computers, it's sometimes represented by x = y = 0 (which doesn't satisfy the elliptic curve equation, but it's an easy separate case that can be checked).
 
+楕円曲線では、((("point at infinity (ECC)"))) "無限遠点"と呼ばれる点があります。この点は簡単に言って足し算での0に対応しています。コンピュータ上では、ときどき x = y = 0 と表現されます(これは楕円曲線方程式を満たしていませんが、????)
+
 There is also((("+ operator")))((("elliptic curve cryptography","addition operator"))) a pass:[+] operator, called "addition," which has some properties similar to the traditional addition of real numbers that grade school children learn. Given two points P~1~ and P~2~ on the elliptic curve, there is a third point P~3~ = P~1~ + P~2~, also on the elliptic curve.
+
+((("+ operator")))((("elliptic curve cryptography","addition operator"))) pass:[+] 演算子は加法と呼ばれ、小学校で習う実数に対する加法と似たいくつかの性質を持ちます。楕円曲線上にある２つの点 P~1~ と P~2~ が与えられたとき、３つ目の点 P~3~ = P~1~ + P~2~ があり楕円曲線上にあります。
 
 Geometrically, this third point P~3~ is calculated by drawing a line between P~1~ and P~2~. This line will intersect the elliptic curve in exactly one additional place. Call this point P~3~' = (x, y). Then reflect in the x-axis to get P~3~ = (x, –y).
 
+幾何学的には、３つ目の点 P~3~ は P~1~ と P~2~ を通る直線を描くことによって計算されます。この直線は必ず楕円曲線と別のところで交差します。この交差した点を P~3~' = (x, y) とすると、 P~3~ はX軸に対して反転したところにある点 P~3~ = (x, –y) になります。
+
 There are a couple of special cases that explain the need for the "point at infinity."
+
+無限遠点に関して２つの説明しなければいけない特別な場合があります。
 
 If P~1~ and P~2~ are the same point, the line "between" P~1~ and P~2~ should extend to be the tangent on the curve at this point P~1~. This tangent will intersect the curve in exactly one new point. You can use techniques from calculus to determine the slope of the tangent line. These techniques curiously work, even though we are restricting our interest to points on the curve with two integer coordinates!
 
+もし P~1~ と P~2~ が同じ点だったとすると、 P~1~ と P~2~ を"通る"直線は P~1~ で曲線に接する接線となるはずです。この接線は曲線と新しい点と必ず交わります。接線の傾きを決めるのに微積分のテクニックを使うことができます。奇妙にも、実数ではなく整数座標で構成される曲線にしたとしても微積分のテクニックはうまくいくのです！
+
 In some cases (i.e., if P~1~ and P~2~ have the same x values but different y values), the tangent line will be exactly vertical, in which case P3 = "point at infinity."
+
+いくつかの場合( P~1~ と P~2~ が同じX座標を持ちY座標が違う場合など)、接線は厳密に垂直となり P3 は無限遠点となります。
 
 If P~1~ is the "point at infinity," then the sum P~1~ + P~2~ = P~2~. Similary, if P~2~ is the point at infinity, then P~1~ + P~2~ = P~1~. This shows how the point at infinity plays the role of 0.
 
+もし P~1~ が無限遠点である場合、和は P~1~ + P~2~ = P~2~ となります。同様に、もし P~2~ が無限遠点である場合、P~1~ + P~2~ = P~1~ となります。これが示していることは、無限遠点が0の役割をしているということです。
+
 It turns out that pass:[+] is associative, which means that (A+B)+C = A+(B+C). That means we can write A+B+C without parentheses without any ambiguity. 
 
+pass:[+] が (A+B)+C = A+(B+C) という結合則を満たすことがわかります。これは括弧をなくても何のあいまいさもなく A+B+C と書けることを意味します。
+
 Now that we have defined addition, we can define multiplication in the standard way that extends addition. For a point P on the elliptic curve, if k is a whole number, then kP = P + P + P + ... + P (k times). Note that k is sometimes confusingly called an "exponent" in this case.(((range="endofrange", startref="ix_ch04-asciidoc5")))(((range="endofrange", startref="ix_ch04-asciidoc4"))) 
+
+加法が定義されたので、加法を拡張する標準的な方法に沿って乗法を定義できます。
+楕円曲線上の点Pに対して、もしkが整数だとすると、kP = P + P + P + ... + P (k回)。この場合、紛らわしいことにkがときどきべき指数と呼ばれるのです。(((range="endofrange", startref="ix_ch04-asciidoc5")))(((range="endofrange", startref="ix_ch04-asciidoc4")))
 
 [[public_key_derivation]]
 ==== Generating a Public Key 
