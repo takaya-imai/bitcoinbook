@@ -249,13 +249,15 @@ pass:[+] が (A+B)+C = A+(B+C) という結合則を満たすことがわかり�
 
 Now that we have defined addition, we can define multiplication in the standard way that extends addition. For a point P on the elliptic curve, if k is a whole number, then kP = P + P + P + ... + P (k times). Note that k is sometimes confusingly called an "exponent" in this case.(((range="endofrange", startref="ix_ch04-asciidoc5")))(((range="endofrange", startref="ix_ch04-asciidoc4"))) 
 
-加法が定義されたので、加法を拡張する標準的な方法に沿って乗法を定義できます。
-楕円曲線上の点Pに対して、もしkが整数だとすると、kP = P + P + P + ... + P (k回)。この場合、紛らわしいことにkがときどきべき指数と呼ばれるのです。(((range="endofrange", startref="ix_ch04-asciidoc5")))(((range="endofrange", startref="ix_ch04-asciidoc4")))
+加法が定義されたので、加法を拡張する標準的な方法に沿って乗法を定義できます。楕円曲線上の点Pに対して、もしkが整数だとすると、kP = P + P + P + ... + P (k回)。この場合、紛らわしいことにkがときどきべき指数と呼ばれるのです。(((range="endofrange", startref="ix_ch04-asciidoc5")))(((range="endofrange", startref="ix_ch04-asciidoc4")))
 
 [[public_key_derivation]]
 ==== Generating a Public Key 
+==== 公開鍵の生成
 
 ((("keys","public, generating", id="ix_ch04-asciidoc6", range="startofrange")))((("public keys","generating", id="ix_ch04-asciidoc7", range="startofrange")))Starting with a private key in the form of a randomly generated number _k_, we multiply it by a predetermined point on the curve called the((("generator point")))((("secp256k1 curve standard","generator point definition in"))) _generator point_ _G_ to produce another point somewhere else on the curve, which is the corresponding public key _K_. The generator point is specified as part of the +secp256k1+ standard and is always the same for all keys in bitcoin: 
+
+((("keys","public, generating", id="ix_ch04-asciidoc6", range="startofrange")))((("public keys","generating", id="ix_ch04-asciidoc7", range="startofrange")))秘密鍵をランダムに生成された数値 _k_ とすると、あらかじめ決められた ((("generator point")))((("secp256k1 curve standard","generator point definition in"))) _ベースポイント_ _G_ を _k_ に掛けることで楕円曲線上のもう１つの点を得ます。このもう１つの点は公開鍵 _K_ に対応するものです。ベースポイントは +secp256k1+ 標準で決められており、bitcoinでの全ての公開鍵に対して常に同じです。
 
 [latexmath]
 ++++
@@ -266,6 +268,8 @@ Now that we have defined addition, we can define multiplication in the standard 
 
 where k is the private key, G is the generator point, and K is the resulting public key, a point on the curve. Because the generator point is always the same for all bitcoin users, a private key k multiplied with G will always result in the same public key K. The relationship between k and K is fixed, but can only be calculated in one direction, from k to K. That's why a bitcoin address (derived from K) can be shared with anyone and does not reveal the user's private key (k). 
 
+但し、kは秘密鍵、Gはベースポイント、Kは結果として出てくる公開鍵で楕円曲線上にある点です。ベースポイントはどのbitcoinユーザでの同じであるため、秘密鍵kが同じであれば公開鍵は同じになります。kとKの関係は固定されていますが、kからKという一方向でのみ計算できます。これは、(Kから得られる)bitcoinアドレスがどの人にも共有され得るからで、bitcoinアドレスから秘密鍵kを知ることはできません。
+
 [TIP]
 ====
 A private key can be converted into a public key, but a public key cannot be converted back into a private key because the math only works one way. 
@@ -273,11 +277,15 @@ A private key can be converted into a public key, but a public key cannot be con
 
 Implementing the((("elliptic curve multiplication"))) elliptic curve multiplication, we take the private key k generated previously and multiply it with the generator point G to find the public key K:
 
+((("elliptic curve multiplication"))) 楕円曲線乗法を実装すると、前に生成した秘密鍵kをベースポイントGに掛けることで公開鍵Kがわかります。
+
 ----
 K = 1E99423A4ED27608A15A2616A2B0E9E52CED330AC530EDCC32C8FFC6A526AEDD * G
 ----
 
 Public Key K is defined as a point +K = (x,y)+:
+
+公開鍵Kは +K = (x,y)+ のように定義されます。
 
 ----
 K = (x, y) 
@@ -290,7 +298,12 @@ y = 07CF33DA18BD734C600B96A72BBC4749D5141C90EC8AC328AE52DDFE2E505BDB
 
 To visualize multiplication of a point with an integer, we will use the simpler elliptic curve over the real numbers—remember, the math is the same. Our goal is to find the multiple kG of the generator point G. That is the same as adding G to itself, k times in a row. In elliptic curves, adding a point to itself is the equivalent of drawing a tangent line on the point and finding where it intersects the curve again, then reflecting that point on the x-axis. 
 
+点への整数の乗法を可視化するために、数理的な構造が同じ実数に対する簡単な楕円曲線を使います。ゴールは、ベースポイントGで決められるkGを見つけることです。これは、GにG自身をk回足すことと同じです。
+楕円曲線で自分自身に足すとは、点に接する接線をを描きその接線がもう一度楕円曲線に交わる点、X軸に対して対称な点、を見つけることです。
+
 <<ecc_illustrated>> shows the process for deriving G, 2G, 4G, as a geometric operation on the curve.
+
+<<ecc_illustrated>>図は、楕円曲線上で幾何学的な操作を繰り返すことでG, 2G, 4Gを導きだすプロセスを表しています。
 
 [TIP]
 ====
