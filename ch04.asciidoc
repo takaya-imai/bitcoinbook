@@ -315,8 +315,11 @@ Most bitcoin implementations use the((("OpenSSL cryptographic library"))) http:/
 image::images/msbt_0404.png["ecc_illustrated"]
 
 === Bitcoin Addresses
+=== bitcoinアドレス
 
 ((("addresses, bitcoin", id="ix_ch04-asciidoc8", range="startofrange")))((("addresses, bitcoin","generally", id="ix_ch04-asciidoc9", range="startofrange")))A bitcoin address is a string of digits and characters that can be shared with anyone who wants to send you money. Addresses produced from public keys consist of a string of numbers and letters, beginning with the digit "1". Here's an example of a bitcoin address:
+
+((("addresses, bitcoin", id="ix_ch04-asciidoc8", range="startofrange")))((("addresses, bitcoin","generally", id="ix_ch04-asciidoc9", range="startofrange")))bitcoinアドレスは、あなたにお金を送りたい人誰にでも共有されえる、数値と文字で構成された文字列です。公開鍵から作られるbitcoinアドレスは数値と文字による文字列でなっており、1からはじまるものです。以下はbitcoinアドレスの例です。
 
 ----
 1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy
@@ -325,9 +328,17 @@ image::images/msbt_0404.png["ecc_illustrated"]
 
 The bitcoin address is what appears most commonly in a transaction as the "recipient" of the funds. If we were to compare a bitcoin transaction to a paper check, the bitcoin address is the beneficiary, which is what we write on the line after "Pay to the order of." On a paper check, that beneficiary can sometimes be the name of a bank account holder, but can also include corporations, institutions, or even cash. Because paper checks do not need to specify an account, but rather use an abstract name as the recipient of funds, that makes paper checks very flexible as payment instruments. Bitcoin transactions use a similar abstraction, the bitcoin address, to make them very flexible. A bitcoin address can represent the owner of a private/public key pair, or it can represent something else, such as a payment script, as we will see in <<p2sh>>. For now, let's examine the simple case, a bitcoin address that represents, and is derived from, a public key.
 
+bitcoinアドレスは、資金の受取人としてトランザクションに共通に現れるものです。もし小切手とbitcoinトランザクションを比べたとすると、bitcoinアドレスは"Pay to the order of"のあとに書かれる受益者名です。小切手上では、この受益者は時々銀行口座を持っている人の名前になりますが、または企業名や機関名、現金????にさえなります。小切手では口座を特定する必要はないので、むしろ資金の受取人として口座を指す抽象名を使います。この抽象名は小切手での支払いを使いやすくしています。bitcoinトランザクションではbitcoinアドレスという似た抽象名を使い、bitcoinトランザクションを使いやすいものにしています。bitcoinアドレスは秘密鍵/公開鍵の所有者を表し、または<<p2sh>>にある支払いscriptのような他の何かを表すものです。とりあえずbitcoinアドレスが公開鍵を表し、またbitcoinアドレスが公開鍵から生成される簡単な場合から説明していきましょう。
+
+
 The bitcoin address is derived from the public key through the use of one-way cryptographic hashing. A "hashing algorithm" or simply "hash algorithm" is a one-way function that produces a fingerprint or "hash" of an arbitrary-sized input. Cryptographic hash functions are used extensively in bitcoin: in bitcoin addresses, in script addresses, and in the mining proof-of-work algorithm. The algorithms used to make a bitcoin address from a public key are the((("Secure Hash Algorithm (SHA)"))) Secure Hash Algorithm (SHA) and the((("RACE Integrity Primitives Evaluation Message Digest (RIPEMD)"))) RACE Integrity Primitives Evaluation Message Digest (RIPEMD), specifically((("RIPEMD160")))((("SHA256"))) SHA256 and RIPEMD160. 
 
+bitcoinアドレスは一方向暗号法的ハッシュ化を使うことで公開鍵から生成されます。"ハッシュ化アルゴリズム"または簡単に"ハッシュアルゴリズム"は、指紋または任意のサイズの"ハッシュ"を作り出す一方向関数です。暗号法的ハッシュ関数は、bitcoin、bitcoinアドレス、scriptアドレス、proof-of-workマイニングアルゴリズムの中で使われます。公開鍵からbitcoinアドレスを作るときに使うアルゴリズムは、 ((("Secure Hash Algorithm (SHA)"))) Secure Hash Algorithm (SHA) と ((("RACE Integrity Primitives Evaluation Message Digest (RIPEMD)"))) RACE Integrity Primitives Evaluation Message Digest (RIPEMD) で、中でも ((("RIPEMD160")))((("SHA256"))) SHA256 と RIPEMD160 が使われます。
+
 Starting with the public key K, we compute the SHA256 hash and then compute the RIPEMD160 hash of the result, producing a 160-bit (20-byte) number:
+
+公開鍵KのSHA256ハッシュを計算し、さらにこの結果のRIPEMD160ハッシュを計算することで、160bit(20バイト)の数字を作り出します。
+
 [latexmath]
 ++++
 \begin{equation}
@@ -336,6 +347,8 @@ Starting with the public key K, we compute the SHA256 hash and then compute the 
 ++++
 where K is the public key and A is the resulting bitcoin address. 
 
+但し、Kは公開鍵、Aは結果として出てきたbitcoinアドレスです。
+
 
 [TIP]
 ====
@@ -343,6 +356,8 @@ where K is the public key and A is the resulting bitcoin address.
 ====
 
 Bitcoin addresses are almost always presented to users in an encoding called((("addresses, bitcoin","Base58 encoding", id="ix_ch04-asciidoc10", range="startofrange")))((("addresses, bitcoin","Base58Check encoding", id="ix_ch04-asciidoc11", range="startofrange")))((("Base58 encoding", id="ix_ch04-asciidoc12", range="startofrange")))((("Base58Check encoding", id="ix_ch04-asciidoc13", range="startofrange"))) "Base58Check" (see <<base58>>), which uses 58 characters (a Base58 number system) and a checksum to help human readability, avoid ambiguity, and protect against errors in address transcription and entry. Base58Check is also used in many other ways in bitcoin, whenever there is a need for a user to read and correctly transcribe a number, such as a bitcoin address, a private key, an encrypted key, or a script hash. In the next section we will examine the mechanics of Base58Check encoding and decoding, and the resulting representations. <<pubkey_to_address>> illustrates the conversion of a public key into a bitcoin address.(((range="endofrange", startref="ix_ch04-asciidoc13")))
+
+bitcoinアドレスは、((("addresses, bitcoin","Base58 encoding", id="ix_ch04-asciidoc10", range="startofrange")))((("addresses, bitcoin","Base58Check encoding", id="ix_ch04-asciidoc11", range="startofrange")))((("Base58 encoding", id="ix_ch04-asciidoc12", range="startofrange")))((("Base58Check encoding", id="ix_ch04-asciidoc13", range="startofrange"))) "Base58Check" と呼ばれる形にエンコードされた状態でほぼ常に使われます(<<base58>>参照)。"Base58Check"では、58個の文字(Base58)とチェックサムを使いますが、これは人間にとって読みやすくしたり、曖昧さを避けたり、転写時のエラーを防いだりするためです。Base58Checkはまた、bitcoinで他の用途でも使われます。bitcoinアドレス、秘密鍵、暗号化されたキー、scriptハッシュなど、ユーザが読む必要があったり、数字を正しく転写しなければいけなかったりするときはいつでもです。次の節では、Base58Checkのエンコード、デコードの仕組みと結果として出てくる表現を説明します。<<pubkey_to_address>>図は公開鍵からbitcoinアドレスへの変換を説明しています。(((range="endofrange", startref="ix_ch04-asciidoc13")))
 
 [[pubkey_to_address]]
 .Public key to bitcoin address: conversion of a public key into a bitcoin address 
