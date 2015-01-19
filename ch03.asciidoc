@@ -452,7 +452,7 @@ $ bitcoin-cli getinfo
 
 The data is returned in((("JavaScript Object Notation (JSON)"))) JavaScript Object Notation (JSON), a format that can easily be "consumed" by all programming languages but is also quite human-readable. Among this data we see the version numbers for the bitcoin software client (90000), protocol (70002), and wallet (60000). We see the current balance contained in the wallet, which is zero. We see the current block height, showing us how many blocks are known to this client (286216). We also see various statistics about the bitcoin network and the settings related to this client. We will explore these settings in more detail in the rest of this chapter. 
 
-このデータは((("JavaScript Object Notation (JSON)"))) Javascriptオブジェクト記法(JSON)で返されます。JSONは多くのプログラミング言語で簡単に利用できるとともに、人間にとっても読みやすいものです。このデータの中に、bitcoinクライアントのバージョン情報(90000)やプロトコルバージョン情報(70002)、ウォレットバージョン情報(60000)があります。ウォレットにある現在の残高を見ると、0になっています。"blocks"とあるところには、現在の何ブロックをbitcoinクライアントが把握しているかというblock height(286216)があります。また、Bitcoinネットワークに関するいろいろな統計情報も見ることができ、このクライアントの設定内容も見ることができます。この章の残りの部分で、これらの設定値についてもっと詳細に分け入ってみます。
+このデータは((("JavaScript Object Notation (JSON)"))) Javascriptオブジェクト記法(JSON)で返されます。JSONは多くのプログラミング言語で簡単に利用できるとともに、人間にとっても読みやすいものです。このデータの中に、bitcoinクライアントのバージョン情報(90000)やプロトコルバージョン情報(70002)、ウォレットバージョン情報(60000)があります。ウォレットにある現在の残高を見ると、0になっています。"blocks"とあるところには、現在の何ブロックをbitcoinクライアントが把握しているかというブロック高(286216)があります。また、Bitcoinネットワークに関するいろいろな統計情報も見ることができ、このクライアントの設定内容も見ることができます。この章の残りの部分で、これらの設定値についてもっと詳細に分け入ってみます。
 
 [TIP]
 ====
@@ -908,7 +908,7 @@ The block contains 367 transactions and as you can see, the 18th transaction lis
 
 We can also retrieve a block by its block height using the +getblockhash+ command, which takes the block height as the parameter and returns the block hash for that block:
 
-また、 +getblockhash+ コマンドの引数でblock heightを指定することでブロックハッシュを取得することもできます。
+また、 +getblockhash+ コマンドの引数でブロック高を指定することでブロックハッシュを取得することもできます。
 
 ++++
 <screen>
