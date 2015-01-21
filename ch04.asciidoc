@@ -21,7 +21,7 @@ bitcoinトランザクションの支払いには受取人の公開鍵が表示�
 
 In this chapter we will introduce wallets, which contain cryptographic keys. We will look at how keys are generated, stored, and managed. We will review the various encoding formats used to represent private and public keys, addresses, and script addresses. Finally, we will look at special uses of keys: to sign messages, to prove ownership, and to create vanity addresses and paper wallets. 
 
-この章では、暗号法的キーを含むウォレットを紹介します。どのように鍵が生成され、格納され、管理されているのかを見ていき、秘密鍵や公開鍵、bitcoinアドレス、scriptアドレスを表すいろいろな符号化フォーマットをレビューします。最後に、メッセージに署名したり所有権を証明したり人に分かりやすいbitcoinアドレスやペーパーウォレットを作成したりするためのキーの特別なユーザを見ていきます。 ????
+この章では、暗号法的キーを含むウォレットを紹介します。どのように鍵が生成され、格納され、管理されているのかを見ていき、秘密鍵や公開鍵、bitcoinアドレス、scriptアドレスを表すいろいろな符号化形式をレビューします。最後に、メッセージに署名したり所有権を証明したり文字列指定のあるbitcoinアドレスやペーパーウォレットを作成したりするためのキーの特別なユーザを見ていきます。 ????
 
 ==== Public Key Cryptography and Cryptocurrency
 ==== 公開鍵暗号法と暗号通貨
@@ -95,7 +95,7 @@ Do not write your own code to create a random number or use a "simple" random nu
 
 The following is a randomly generated private key (k) shown in hexadecimal format (256 binary digits shown as 64 hexadecimal digits, each 4 bits):
 
-以下はランダムに生成された秘密鍵(k)で、16進数フォーマット(それぞれ4bitずつ64個の16進数整数で表されている256bit整数)になっています。
+以下はランダムに生成された秘密鍵(k)で、16進数形式(それぞれ4bitずつ64個の16進数整数で表されている256bit整数)になっています。
 
 ----
 1E99423A4ED27608A15A2616A2B0E9E52CED330AC530EDCC32C8FFC6A526AEDD
@@ -109,7 +109,7 @@ The size of bitcoin's private key space, 2^256^ is an unfathomably large number.
 
 To generate a new key with the Bitcoin Core client (see <<ch03_bitcoin_client>>), use the((("getnewaddress command (bitcoin-cli)"))) +getnewaddress+ command. For security reasons it displays the public key only, not the private key. ((("dumpprivkey command (bitcoin-cli)")))((("private keys","exposing with bitcoind")))To ask bitcoind to expose the private key, use the +dumpprivkey+ command. The +dumpprivkey+ command shows the private key in a Base58 checksum-encoded format called the _Wallet Import Format_ (WIF), which we will examine in more detail in <<priv_formats>>. Here's an example of generating and displaying a private key using these two commands:
 
-Bitcoin Coreクライアントで新しいキーを生成するために前に説明した ((("getnewaddress command (bitcoin-cli)"))) +getnewaddress+ コマンドを使います(<<ch03_bitcoin_client>>図参照)。セキュリティのため、公開鍵だけを表示しており秘密鍵は表示していません。((("dumpprivkey command (bitcoin-cli)")))((("private keys","exposing with bitcoind"))) bitcoindに秘密鍵を表示させるには、 +dumpprivkey+ コマンドを使ってください。 +dumpprivkey+ コマンドは _Wallet Import Format_ (WIF) と呼ばれるBase58エンコードフォーマットで秘密鍵を表示します。この詳細については<<priv_formats>>図で説明します。
+Bitcoin Coreクライアントで新しいキーを生成するために前に説明した ((("getnewaddress command (bitcoin-cli)"))) +getnewaddress+ コマンドを使います(<<ch03_bitcoin_client>>図参照)。セキュリティのため、公開鍵だけを表示しており秘密鍵は表示していません。((("dumpprivkey command (bitcoin-cli)")))((("private keys","exposing with bitcoind"))) bitcoindに秘密鍵を表示させるには、 +dumpprivkey+ コマンドを使ってください。 +dumpprivkey+ コマンドは _Wallet Import Format_ (WIF) と呼ばれるBase58符号化形式で秘密鍵を表示します。この詳細については<<priv_formats>>図で説明します。
 +getnewaddress+ コマンドと +dumpprivkey+ コマンドを使った秘密鍵の生成例と表示例を以下に示します。
 
 ----
@@ -337,7 +337,7 @@ bitcoinアドレスは一方向暗号法的ハッシュ化を使うことで公�
 
 Starting with the public key K, we compute the SHA256 hash and then compute the RIPEMD160 hash of the result, producing a 160-bit (20-byte) number:
 
-公開鍵KのSHA256ハッシュを計算し、さらにこの結果のRIPEMD160ハッシュを計算することで、160bit(20バイト)の数字を作り出します。
+公開鍵KのSHA256ハッシュを計算し、さらにこの結果のRIPEMD160ハッシュを計算することで、160bit(20byte)の数字を作り出します。
 
 [latexmath]
 ++++
@@ -357,7 +357,7 @@ where K is the public key and A is the resulting bitcoin address.
 
 Bitcoin addresses are almost always presented to users in an encoding called((("addresses, bitcoin","Base58 encoding", id="ix_ch04-asciidoc10", range="startofrange")))((("addresses, bitcoin","Base58Check encoding", id="ix_ch04-asciidoc11", range="startofrange")))((("Base58 encoding", id="ix_ch04-asciidoc12", range="startofrange")))((("Base58Check encoding", id="ix_ch04-asciidoc13", range="startofrange"))) "Base58Check" (see <<base58>>), which uses 58 characters (a Base58 number system) and a checksum to help human readability, avoid ambiguity, and protect against errors in address transcription and entry. Base58Check is also used in many other ways in bitcoin, whenever there is a need for a user to read and correctly transcribe a number, such as a bitcoin address, a private key, an encrypted key, or a script hash. In the next section we will examine the mechanics of Base58Check encoding and decoding, and the resulting representations. <<pubkey_to_address>> illustrates the conversion of a public key into a bitcoin address.(((range="endofrange", startref="ix_ch04-asciidoc13")))
 
-bitcoinアドレスは、((("addresses, bitcoin","Base58 encoding", id="ix_ch04-asciidoc10", range="startofrange")))((("addresses, bitcoin","Base58Check encoding", id="ix_ch04-asciidoc11", range="startofrange")))((("Base58 encoding", id="ix_ch04-asciidoc12", range="startofrange")))((("Base58Check encoding", id="ix_ch04-asciidoc13", range="startofrange"))) "Base58Check" と呼ばれる形にエンコードされた状態でほぼ常に使われます(<<base58>>参照)。"Base58Check"では、58個の文字(Base58)とチェックサムを使いますが、これは人間にとって読みやすくしたり、曖昧さを避けたり、転写時のエラーを防いだりするためです。Base58Checkはまた、bitcoinで他の用途でも使われます。bitcoinアドレス、秘密鍵、暗号化されたキー、scriptハッシュなど、ユーザが読む必要があったり、数字を正しく転写しなければいけなかったりするときはいつでもです。次の節では、Base58Checkのエンコード、デコードの仕組みと結果として出てくる表現を説明します。<<pubkey_to_address>>図は公開鍵からbitcoinアドレスへの変換を説明しています。(((range="endofrange", startref="ix_ch04-asciidoc13")))
+bitcoinアドレスは、((("addresses, bitcoin","Base58 encoding", id="ix_ch04-asciidoc10", range="startofrange")))((("addresses, bitcoin","Base58Check encoding", id="ix_ch04-asciidoc11", range="startofrange")))((("Base58 encoding", id="ix_ch04-asciidoc12", range="startofrange")))((("Base58Check encoding", id="ix_ch04-asciidoc13", range="startofrange"))) "Base58Check" と呼ばれる形に符号化された状態でほぼ常に使われます(<<base58>>参照)。"Base58Check"では、58個の文字(Base58)とチェックサムを使いますが、これは人間にとって読みやすくしたり、曖昧さを避けたり、転写時のエラーを防いだりするためです。Base58Checkはまた、bitcoinで他の用途でも使われます。bitcoinアドレス、秘密鍵、暗号化されたキー、scriptハッシュなど、ユーザが読む必要があったり、数字を正しく転写しなければいけなかったりするときはいつでもです。次の節では、Base58Checkの符号化、平文化の仕組みと結果として出てくる表現を説明します。<<pubkey_to_address>>図は公開鍵からbitcoinアドレスへの変換を説明しています。(((range="endofrange", startref="ix_ch04-asciidoc13")))
 
 [[pubkey_to_address]]
 .Public key to bitcoin address: conversion of a public key into a bitcoin address 
@@ -365,9 +365,12 @@ image::images/msbt_0405.png["pubkey_to_address"]
 
 [[base58]]
 ==== Base58 and Base58Check Encoding
+==== Base58とBase58Check符号化
 
 
 In order to represent long numbers in a compact way, using fewer symbols, many computer systems use mixed-alphanumeric representations with a base (or radix) higher than 10. For example, whereas the traditional decimal system uses the 10 numerals 0 through 9, the hexadecimal system uses 16, with the letters A through F as the six additional symbols. A number represented in hexadecimal format is shorter than the equivalent decimal representation. Even more compact,((("Base-64 representation"))) Base-64 representation uses 26 lower-case letters, 26 capital letters, 10 numerals, and two more characters such as "\+" and "/" to transmit binary data over text-based media such as email. Base-64 is most commonly used to add binary attachments to email. Base58 is a text-based binary-encoding format developed for use in bitcoin and used in many other cryptocurrencies. It offers a balance between compact representation, readability, and error detection and prevention. Base58 is a subset of Base64, using the upper- and lowercase letters and numbers, but omitting some characters that are frequently mistaken for one another and can appear identical when displayed in certain fonts. Specifically, Base58 is Base64 without the 0 (number zero), O (capital o), l (lower L), I (capital i), and the symbols "\+" and "/". Or, more simply, it is a set of lower and capital letters and numbers without the four (0, O, l, I) just mentioned.
+
+大きな数字をコンパクトに表すために、いくつかの記号を使うことで、多くのコンピュータでは10以上を基数とするアルファベットと数字を混ぜた表現を使っています。例えば、伝統的な十進数では0から9までの10個の数字を使う一方、１６進数ではAからFの文字を使うことで16個の数字を使います。１６進数で表される数字は十進数で表すよりも短くなります。((("Base-64 representation"))) Base-64 では、26個の小文字、26個の大文字、10個の数字、バイナリデータをemailのようなテキストベースの通信で送るための"\+" や "/" のような２種類の文字を使います。Base-64 はemailにバイナリデータを添付するのによく使われます。Base58 はbitcoinで使うために開発されたテキストベースの符号化形式で、他の暗号通貨でも使われています。これはコンパクトな表現、可読性、エラー発見および防止のためです。Base58はBase64の部分集合でアルファベットの大文字小文字、数字が使われます。しかし、あるフォントで表示したときに同じように見えて、よく間違えてしまういくつかの文字は省かれています。Base58はBase64から0(数字の0)、O(大文字o)、l(小文字L)、I(大文字i)、記号"\+"や"/"を除いたもの、つまり、(0, O, l, I)を除いたアルファベットの大文字小文字、数字の集合になっています。
 
 [[base58alphabet]]
 .bitcoin's Base58 alphabet
@@ -380,9 +383,15 @@ In order to represent long numbers in a compact way, using fewer symbols, many c
 
 To add extra security against typos or transcription errors, Base58Check is a Base58 encoding format, frequently used in bitcoin, which has a built-in error-checking code. The checksum is an additional four bytes added to the end of the data that is being encoded. The checksum is derived from the hash of the encoded data and can therefore be used to detect and prevent transcription and typing errors. When presented with a Base58Check code, the decoding software will calculate the checksum of the data and compare it to the checksum included in the code. If the two do not match, that indicates that an error has been introduced and the Base58Check data is invalid. For example, this prevents a mistyped bitcoin address from being accepted by the wallet software as a valid destination, an error that would otherwise result in loss of funds.
 
+書き間違いや転写エラーをさらに防ぐため、Base58CheckはBase58符号化形式になっていて、エラーチェックコードが組み込まれたbitcoinでよく使われています。チェックサムは、符号化されようとしているデータの最後に追加される4byteです。このチェックサムは符号化されたデータのハッシュから作られ、転写エラーやタイピングエラーを検出したり防いだりするのに使われます。Base58Checkで符号化されたデータが与えられた場合、平文化ソフトウェアは符号化されようとしているデータのチェックサムを計算し、含まれているチェックサムと比較します。もし２つが一致しなかった場合、これはエラーが混入してしまったかBase58Checkデータが無効だということを示しています。例えば、これはウォレットが有効な記述だと判断して受け付けてしまったミスタイプしたbitcoinアドレスを無効と判断できるようにします。
+
 ((("data, converting to Base58Check")))To convert data (a number) into a Base58Check format, we first add a prefix to the data, called the "version byte," which serves to easily identify the type of data that is encoded. For example, in the case of a bitcoin address the prefix is zero (0x00 in hex), whereas the prefix used when encoding a private key is 128 (0x80 in hex). A list of common version prefixes is shown in <<base58check_versions>>.
 
+((("data, converting to Base58Check")))数値データをBase58Check形式に変換するために、まずデータの先頭に"version byte"と呼ばれている文字を追加します。このversion byteは、簡単に符号化されたデータの種類を特定できるように付加されています。例えば、bitcoinアドレスの場合先頭はゼロ(１６進数で0x00)で、一方秘密鍵を符号化するときは先頭は128(１６進数で0x80)です。共通に使われているversion byteのリストは<<base58check_versions>>を参照してください。
+
 Next, we compute the "double-SHA" checksum, meaning we apply the SHA256 hash-algorithm twice on the previous result (prefix and data):
+
+次に、"double-SHA"チェックサムを計算してみましょう。これは、SHA256ハッシュアルゴリズムを前の結果(接頭byteとデータ)に２回適用するという意味です。
  
 ----
 checksum = SHA256(SHA256(prefix+data)) 
@@ -390,13 +399,20 @@ checksum = SHA256(SHA256(prefix+data))
 
 From the resulting 32-byte hash (hash-of-a-hash), we take only the first four bytes. These four bytes serve as the error-checking code, or((("checksum"))) checksum. The checksum is concatenated (appended) to the end. 
 
+結果として出てくる32byteハッシュ(ハッシュのハッシュ)から最初の4byteだけを取り出します。これらの4byteのエラーチェックコードとして、または((("checksum"))) チェックサムとして使用されます。このチェックサムは最後に付加されます。
+
+
 The result is composed of three items: a prefix, the data, and a checksum. This result is encoded using the Base58 alphabet described previously. <<base58check_encoding>> illustrates the Base58Check encoding process.
+
+結果は３つの部分、接頭byte、データ、チェックサムによって構成されていて、前に書いたBase58のアルファベットを使って符号化されています。<<base58check_encoding>>図はBase58Check符号化のプロセスを説明しています。
 
 [[base58check_encoding]]
 .Base58Check encoding: a Base58, versioned, and checksummed format for unambiguously encoding bitcoin data
 image::images/msbt_0406.png["Base58CheckEncoding"]
 
 In bitcoin, most of the data presented to the user is Base58Check-encoded to make it compact, easy to read, and easy to detect errors. The version prefix in Base58Check encoding is used to create easily distinguishable formats, which when encoded in Base58 contain specific characters at the beginning of the Base58Check-encoded payload. These characters make it easy for humans to identify the type of data that is encoded and how to use it. This is what differentiates, for example, a Base58Check-encoded bitcoin address that starts with a 1 from a Base58Check-encoded private key WIF format that starts with a 5. Some example version prefixes and the resulting Base58 characters are shown in <<base58check_versions>>.((("Base58Check encoding","prefixes, listed")))
+
+bitcoinでは、ユーザから渡されるほとんどのデータは、コンパクトにするためや読みやすくするため、エラーを検知しやすくするためにBase58Check符号化されています。Base58Checkでのversion 接頭byteは、簡単に形式を区別するために使われており、Base58で符号化されるときにBase58Check符号化payloadの最初に特定の文字を付けられています。これらの文字は、どんな種類のデータを符号化したのかデータをどう使うのかを人間が分かるようにしています。1から始まるものはBase58Check符号化されたbitcoinアドレス、5から始まるものはBase58Check符号化された秘密鍵WIF形式です。
 
 [[base58check_versions]]
 .Base58Check version prefix and encoded result examples
@@ -414,6 +430,9 @@ In bitcoin, most of the data presented to the user is Base58Check-encoded to mak
 
 Let's look at the complete process of creating a bitcoin address, from a private key, to a public key (a point on the elliptic curve), to a double-hashed address and finally, the Base58Check encoding. The C++ code in <<addr_example>> shows the complete step-by-step process, from private key to Base58Check-encoded bitcoin address. The code example uses the libbitcoin library introduced in <<alt_libraries>> for some helper functions.((("Base58Check encoding","bitcoin address, complete code for")))
 
+bitcoinアドレスを生成する完全な手順を見てみましょう。秘密鍵から始まって、公開鍵(楕円曲線上の点)を作り、二重ハッシュ化アドレスを作り、最後にBase58Check符号化します。<<addr_example>>にあるC++コードは、秘密鍵からBase58Check符号化bitcoinアドレスまでの完全な逐一手順を示しています。このサンプルコードは、いくつかの補助関数のために<<alt_libraries>>で紹介したlibbitcoinライブラリを使っています。((("Base58Check encoding","bitcoin address, complete code for")))
+
+
 [[addr_example]]
 .Creating a Base58Check-encoded bitcoin address from a private key
 ====
@@ -424,6 +443,8 @@ include::code/addr.cpp[]
 ====
 
 The code uses a predefined private key so that it produces the same bitcoin address every time it is run, as shown in <<addr_example_run>>.(((range="endofrange", startref="ix_ch04-asciidoc12")))(((range="endofrange", startref="ix_ch04-asciidoc11")))(((range="endofrange", startref="ix_ch04-asciidoc10")))(((range="endofrange", startref="ix_ch04-asciidoc9")))
+
+このコードは事前に決められた秘密鍵を使って、動作させるたびに毎回同じbitcoinアドレスが生成されるようになっています。具体的な動かし方は<<addr_example_run>>に示されている通りです。
 
 [[addr_example_run]]
 .Compiling and running the addr code
