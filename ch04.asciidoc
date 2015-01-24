@@ -7,7 +7,7 @@
 
 ((("bitcoin","establishing ownership of")))Ownership of bitcoin is established through _digital keys_, _bitcoin addresses_, and _digital signatures_. The digital keys are not actually stored in the network, but are instead created and stored by users in a file, or simple database, called a _wallet_. The digital keys in a user's wallet are completely independent of the bitcoin protocol and can be generated and managed by the user's wallet software without reference to the blockchain or access to the Internet. Keys enable many of the interesting properties of bitcoin, including de-centralized trust and control, ownership attestation, and the cryptographic-proof security model. 
 
-((("bitcoin","establishing ownership of")))bitcoinの所有権は、 _デジタルキー_ 、 _bitcoinアドレス_ 、 _デジタル署名_ で規定されます。デジタルキーはBitcoinネットワークの中では保持されておらず、デジタルキーはユーザによって作成され個々のユーザのファイルの中、または _ウォレット_ という簡単なデータベースの中に保持されます。ユーザのウォレットの中にあるデジタルキーは完全にbitcoinプロトコルとは独立しており、ブロックチェインへの参照またはインターネットへのアクセスを必要とすることなくユーザのウォレットで生成および管理できるようになっています。このキーによってbitcoinの多くの興味深い性質を可能にしており、この性質には分散型信頼やコントロール、所有権の証明、暗号法的証明によるセキュリティモデルが含まれます。
+((("bitcoin","establishing ownership of")))bitcoinの所有権は、 _デジタルキー_ 、 _bitcoinアドレス_ 、 _デジタル署名_ で規定されます。デジタルキーはBitcoinネットワークの中では保持されておらず、デジタルキーはユーザによって作成され個々のユーザのファイルの中、または _ウォレット_ という簡単なデータベースの中に保持されます。ユーザのウォレットの中にあるデジタルキーは完全にbitcoinプロトコルとは独立しており、ブロックチェインへの参照またはインターネットへのアクセスを必要とすることなくユーザのウォレットで生成および管理できるようになっています。このキーによってbitcoinの多くの興味深い性質を可能にしており、この性質には分散型信頼やコントロール、所有権の証明、暗号学的証明によるセキュリティモデルが含まれます。
 
 
 Every bitcoin transaction requires a valid signature to be included in the blockchain, which can only be generated with valid digital keys; therefore, anyone with a copy of those keys has control of the bitcoin in that account. Keys come in pairs consisting of a private (secret) key and a public key. Think of the public key as similar to a bank account number and the private key as similar to the secret PIN, or signature on a check that provides control over the account. These digital keys are very rarely seen by the users of bitcoin. For the most part, they are stored inside the wallet file and managed by the bitcoin wallet software. 
@@ -21,23 +21,23 @@ bitcoinトランザクションの支払いには受取人の公開鍵が表示�
 
 In this chapter we will introduce wallets, which contain cryptographic keys. We will look at how keys are generated, stored, and managed. We will review the various encoding formats used to represent private and public keys, addresses, and script addresses. Finally, we will look at special uses of keys: to sign messages, to prove ownership, and to create vanity addresses and paper wallets. 
 
-この章では、暗号法的キーを含むウォレットを紹介します。どのように鍵が生成され、格納され、管理されているのかを見ていき、秘密鍵や公開鍵、bitcoinアドレス、scriptアドレスを表すいろいろな符号化形式をレビューします。最後に、メッセージに署名したり所有権を証明したり文字列指定のあるbitcoinアドレスやペーパーウォレットを作成したりするためのキーの特別なユーザを見ていきます。 ????
+この章では、暗号学的キーを含むウォレットを紹介します。どのように鍵が生成され、格納され、管理されているのかを見ていき、秘密鍵や公開鍵、bitcoinアドレス、scriptアドレスを表すいろいろな符号化形式をレビューします。最後に、メッセージに署名したり所有権を証明したり文字列指定のあるbitcoinアドレスやペーパーウォレットを作成したりするためのキーの特別なユーザを見ていきます。 ????
 
 ==== Public Key Cryptography and Cryptocurrency
-==== 公開鍵暗号法と暗号通貨
+==== 公開鍵暗号と暗号通貨
 
 ((("keys", id="ix_ch04-asciidoc0", range="startofrange")))((("cryptocurrency")))((("keys","cryptocurrency and")))((("keys","public")))((("public key cryptography")))((("public key cryptography","implementation of")))Public key cryptography was invented in the 1970s and is a mathematical foundation for computer and information security.
 
-((("keys", id="ix_ch04-asciidoc0", range="startofrange")))((("cryptocurrency")))((("keys","cryptocurrency and")))((("keys","public")))((("public key cryptography")))((("public key cryptography","implementation of")))公開鍵の暗号法は1970年代に発明され、計算機および情報セキュリティ分野の数学的基礎になっていました。
+((("keys", id="ix_ch04-asciidoc0", range="startofrange")))((("cryptocurrency")))((("keys","cryptocurrency and")))((("keys","public")))((("public key cryptography")))((("public key cryptography","implementation of")))公開鍵暗号は1970年代に発明され、計算機および情報セキュリティ分野の数学的基礎になっていました。
 
 
 Since the invention of public key cryptography, several suitable mathematical functions, such as((("prime number exponentiation"))) prime number exponentiation and elliptic curve multiplication, have been discovered. These mathematical functions are practically irreversible, meaning that they are easy to calculate in one direction and infeasible to calculate in the opposite direction. Based on these mathematical functions, cryptography enables the creation of digital secrets and unforgeable digital signatures. Bitcoin uses elliptic curve multiplication as the basis for its public key cryptography.  
 
-公開鍵の暗号法が発明されてから、いくつかの適した数学的関数が発見されていきました。この数学的関数は、 ((("prime number exponentiation"))) 素数のべき乗や楕円曲線乗算などです。これらの数学的関数は現実な時間で考えると不可逆ものになっています。不可逆とは、一方向への計算は簡単でも、逆方向の計算は実行不可能なことをいいます。これらの数学的関数に基づく暗号法は、デジタル秘密や偽造不可能なデジタル署名の生成を可能にしています。Bitcoinは公開鍵の暗号法として楕円関数乗算を使っています。
+公開鍵暗号が発明されてから、いくつかの適した数学的関数が発見されていきました。この数学的関数は、 ((("prime number exponentiation"))) 素数のべき乗や楕円曲線乗算などです。これらの数学的関数は現実な時間で考えると不可逆ものになっています。不可逆とは、一方向への計算は簡単でも、逆方向の計算は実行不可能なことをいいます。これらの数学的関数に基づく暗号は、デジタル秘密や偽造不可能なデジタル署名の生成を可能にしています。Bitcoinは公開鍵暗号として楕円関数乗算を使っています。
  
 In bitcoin, we use public key cryptography to create a key pair that controls access to bitcoins. The key pair consists of a private key and--derived from it--a unique public key. The public key is used to receive bitcoins, and the private key is used to sign transactions to spend those bitcoins.
 
-bitcoinでは、bitcoinへのアクセスコントロールをするキーペアを生成するために公開鍵暗号法を使っています。このキーペアは秘密鍵とこの秘密鍵から一意に生成される公開鍵で構成されています。この公開鍵はbitcoinを受け取るために使われ、秘密鍵はbitcoinを使用するトランザクションに署名するのに使われます。
+bitcoinでは、bitcoinへのアクセスコントロールをするキーペアを生成するために公開鍵暗号を使っています。このキーペアは秘密鍵とこの秘密鍵から一意に生成される公開鍵で構成されています。この公開鍵はbitcoinを受け取るために使われ、秘密鍵はbitcoinを使用するトランザクションに署名するのに使われます。
 
 There is a mathematical relationship between the public and the private key that allows the private key to be used to generate signatures on messages. This signature can be validated against the public key without revealing the private key.
 
@@ -86,7 +86,7 @@ image::images/msbt_0401.png["privk_to_pubK_to_addressA"]
 
 More accurately, the private key can be any number between +1+ and +n - 1+, where n is a constant (n = 1.158 * 10^77^, slightly less than 2^256^) defined as the order of the elliptic curve used in bitcoin (see <<elliptic_curve>>). To create such a key, we randomly pick a 256-bit number and check that it is less than +n - 1+. In programming terms, this is usually achieved by feeding a larger string of random bits, collected from a cryptographically secure source of randomness, into the SHA256 hash algorithm that will conveniently produce a 256-bit number. If the result is less than +n - 1+, we have a suitable private key. Otherwise, we simply try again with another random number. 
 
-さらに正確に言うと、秘密鍵は+1+と+n - 1+の間の任意の整数で、nはbitcoinで使われている楕円曲線の位数として定義されている定数(n = 1.158 * 10^77^で2^256^よりわずかに小さい)です(<<elliptic_curve>>図参照)。このようなキーを作るために、256bitの数値からランダムに数値を選び、選んだ数値が+n - 1+であるかをチェックしています。プログラミング用語で言うとこれは通常、暗号法的に安定なランダムさ源から集められた任意の長さを持ったより大きい文字列を取得し、256bitの数値を作る便利なSHA256ハッシュアルゴリズムに放り込むことで達成できます。???? もし結果が+n - 1+よりも小さかった場合、それが適切な秘密鍵です。もしそうでなければ、単にもう一度別のランダムな数値を取得してうまくいくまで同じことを繰り返します。
+さらに正確に言うと、秘密鍵は+1+と+n - 1+の間の任意の整数で、nはbitcoinで使われている楕円曲線の位数として定義されている定数(n = 1.158 * 10^77^で2^256^よりわずかに小さい)です(<<elliptic_curve>>図参照)。このようなキーを作るために、256bitの数値からランダムに数値を選び、選んだ数値が+n - 1+であるかをチェックしています。プログラミング用語で言うとこれは通常、暗号学的に安定なランダムさ源から集められた任意の長さを持ったより大きい文字列を取得し、256bitの数値を作る便利なSHA256ハッシュアルゴリズムに放り込むことで達成できます。???? もし結果が+n - 1+よりも小さかった場合、それが適切な秘密鍵です。もしそうでなければ、単にもう一度別のランダムな数値を取得してうまくいくまで同じことを繰り返します。
 
 [TIP]
 ====
@@ -333,7 +333,7 @@ bitcoinアドレスは、資金の受取人としてトランザクションに�
 
 The bitcoin address is derived from the public key through the use of one-way cryptographic hashing. A "hashing algorithm" or simply "hash algorithm" is a one-way function that produces a fingerprint or "hash" of an arbitrary-sized input. Cryptographic hash functions are used extensively in bitcoin: in bitcoin addresses, in script addresses, and in the mining proof-of-work algorithm. The algorithms used to make a bitcoin address from a public key are the((("Secure Hash Algorithm (SHA)"))) Secure Hash Algorithm (SHA) and the((("RACE Integrity Primitives Evaluation Message Digest (RIPEMD)"))) RACE Integrity Primitives Evaluation Message Digest (RIPEMD), specifically((("RIPEMD160")))((("SHA256"))) SHA256 and RIPEMD160. 
 
-bitcoinアドレスは一方向暗号法的ハッシュ化を使うことで公開鍵から生成されます。"ハッシュ化アルゴリズム"または簡単に"ハッシュアルゴリズム"は、指紋または任意のサイズの"ハッシュ"を作り出す一方向関数です。暗号法的ハッシュ関数は、bitcoin、bitcoinアドレス、scriptアドレス、proof-of-workマイニングアルゴリズムの中で使われます。公開鍵からbitcoinアドレスを作るときに使うアルゴリズムは、 ((("Secure Hash Algorithm (SHA)"))) Secure Hash Algorithm (SHA) と ((("RACE Integrity Primitives Evaluation Message Digest (RIPEMD)"))) RACE Integrity Primitives Evaluation Message Digest (RIPEMD) で、中でも ((("RIPEMD160")))((("SHA256"))) SHA256 と RIPEMD160 が使われます。
+bitcoinアドレスは一方向暗号学的ハッシュ化を使うことで公開鍵から生成されます。"ハッシュ化アルゴリズム"または簡単に"ハッシュアルゴリズム"は、指紋または任意のサイズの"ハッシュ"を作り出す一方向関数です。暗号学的ハッシュ関数は、bitcoin、bitcoinアドレス、scriptアドレス、proof-of-workマイニングアルゴリズムの中で使われます。公開鍵からbitcoinアドレスを作るときに使うアルゴリズムは、 ((("Secure Hash Algorithm (SHA)"))) Secure Hash Algorithm (SHA) と ((("RACE Integrity Primitives Evaluation Message Digest (RIPEMD)"))) RACE Integrity Primitives Evaluation Message Digest (RIPEMD) で、中でも ((("RIPEMD160")))((("SHA256"))) SHA256 と RIPEMD160 が使われます。
 
 Starting with the public key K, we compute the SHA256 hash and then compute the RIPEMD160 hash of the result, producing a 160-bit (20-byte) number:
 
@@ -391,7 +391,7 @@ To add extra security against typos or transcription errors, Base58Check is a Ba
 
 Next, we compute the "double-SHA" checksum, meaning we apply the SHA256 hash-algorithm twice on the previous result (prefix and data):
 
-次に、"double-SHA"チェックサムを計算してみましょう。これは、SHA256ハッシュアルゴリズムを前の結果(接頭byteとデータ)に２回適用するという意味です。
+次に、"double-SHA"チェックサムを計算してみましょう。これは、SHA256ハッシュアルゴリズムを前の結果(prefixとデータ)に２回適用するという意味です。
  
 ----
 checksum = SHA256(SHA256(prefix+data)) 
@@ -404,7 +404,7 @@ From the resulting 32-byte hash (hash-of-a-hash), we take only the first four by
 
 The result is composed of three items: a prefix, the data, and a checksum. This result is encoded using the Base58 alphabet described previously. <<base58check_encoding>> illustrates the Base58Check encoding process.
 
-結果は３つの部分、接頭byte、データ、チェックサムによって構成されていて、前に書いたBase58のアルファベットを使って符号化されています。<<base58check_encoding>>図はBase58Check符号化のプロセスを説明しています。
+結果は３つの部分、prefix、データ、チェックサムによって構成されていて、前に書いたBase58のアルファベットを使って符号化されています。<<base58check_encoding>>図はBase58Check符号化のプロセスを説明しています。
 
 [[base58check_encoding]]
 .Base58Check encoding: a Base58, versioned, and checksummed format for unambiguously encoding bitcoin data
@@ -412,7 +412,7 @@ image::images/msbt_0406.png["Base58CheckEncoding"]
 
 In bitcoin, most of the data presented to the user is Base58Check-encoded to make it compact, easy to read, and easy to detect errors. The version prefix in Base58Check encoding is used to create easily distinguishable formats, which when encoded in Base58 contain specific characters at the beginning of the Base58Check-encoded payload. These characters make it easy for humans to identify the type of data that is encoded and how to use it. This is what differentiates, for example, a Base58Check-encoded bitcoin address that starts with a 1 from a Base58Check-encoded private key WIF format that starts with a 5. Some example version prefixes and the resulting Base58 characters are shown in <<base58check_versions>>.((("Base58Check encoding","prefixes, listed")))
 
-bitcoinでは、ユーザから渡されるほとんどのデータは、コンパクトにするためや読みやすくするため、エラーを検知しやすくするためにBase58Check符号化されています。Base58Checkでのversion 接頭byteは、簡単に形式を区別するために使われており、Base58で符号化されるときにBase58Check符号化payloadの最初に特定の文字を付けられています。これらの文字は、どんな種類のデータを符号化したのかデータをどう使うのかを人間が分かるようにしています。1から始まるものはBase58Check符号化されたbitcoinアドレス、5から始まるものはBase58Check符号化された秘密鍵WIF形式です。
+bitcoinでは、ユーザから渡されるほとんどのデータは、コンパクトにするためや読みやすくするため、エラーを検知しやすくするためにBase58Check符号化されています。Base58Checkでのversion prefixは、簡単に形式を区別するために使われており、Base58で符号化されるときにBase58Check符号化payloadの最初に特定の文字を付けられています。これらの文字は、どんな種類のデータを符号化したのかデータをどう使うのかを人間が分かるようにしています。1から始まるものはBase58Check符号化されたbitcoinアドレス、5から始まるものはBase58Check符号化された秘密鍵WIF形式です。
 
 [[base58check_versions]]
 .Base58Check version prefix and encoded result examples
@@ -461,13 +461,19 @@ Address: 1PRTTaJesdNovgne6Ehcdu1fpEdX7913CK
 ====
 
 ==== Key Formats
+==== キー形式
 
 ((("addresses, bitcoin","key formats", id="ix_ch04-asciidoc14", range="startofrange")))((("keys","formats of", id="ix_ch04-asciidoc15", range="startofrange")))Both private and public keys can be represented in a number of different formats. These representations all encode the same number, even though they look different. These formats are primarily used to make it easy for people to read and transcribe keys without introducing errors.
 
+((("addresses, bitcoin","key formats", id="ix_ch04-asciidoc14", range="startofrange")))((("keys","formats of", id="ix_ch04-asciidoc15", range="startofrange")))秘密鍵も公開鍵も多くの違った形式で表現されています。見た目が違っていたとしても、これらの表現は全て同じ数値に符号化されます。これらの形式は基本的に人々が読みやすくなる、エラーなく転写できるようになるために使われます。
+
 [[priv_formats]]
 ===== Private key formats
+===== 秘密鍵形式
 
 ((("private keys","format")))((("sx tools","modifying private key formats with")))The private key can be represented in a number of different formats, all of which correspond to the same 256-bit number. <<table_4-2>> shows three common formats used to represent private keys.
+
+((("private keys","format")))((("sx tools","modifying private key formats with")))秘密鍵は多くの違った形式で表現されていて、これらは全て同じ256bitの数値に対応しています。<<table_4-2>>に秘密鍵を表現するために使われる３つの形式を示します。
 
 [[table_4-2]]
 .Private key representations (encoding formats)
@@ -481,6 +487,8 @@ Address: 1PRTTaJesdNovgne6Ehcdu1fpEdX7913CK
 
 <<table_4-3>> shows the private key generated in these three formats.
 
+<<table_4-3>>は、これら３つの形式で生成された秘密鍵を示しています。
+
 [[table_4-3]]
 .Example: Same key, different formats
 [options="header"]
@@ -493,11 +501,18 @@ Address: 1PRTTaJesdNovgne6Ehcdu1fpEdX7913CK
 
 All of these representations are different ways of showing the same number, the same private key. They look different, but any one format can easily be converted to any other format. 
 
+これら全ての表現は、同じ数値、同じ秘密鍵を表す違った形式になっています。ぱっと見は違っていますが、どれもそれ以外の形式に簡単に変換できます。
+
 ===== Decode from Base58Check to hex
+===== Base58Checkから１６進数への平文化
 
 ((("Base58Check encoding","decoding to hex")))((("sx tools","decoding Base58Check to/from hex")))The sx tools package (See <<sx_tools>>) makes it easy to write shell scripts and command-line "pipes" that manipulate bitcoin keys, addresses, and transactions. You can use sx tools to decode the Base58Check format on the command line.
 
+((("Base58Check encoding","decoding to hex")))((("sx tools","decoding Base58Check to/from hex")))sxツール(<<sx_tools>>参照)は、bitcoinキーやアドレス、トランザクションを操作するシェルスクリプトやコマンドラインのパイプラインを簡単に書けるようにするツールです。sxツールを使うとコマンドラインでBase58Checkを平文化できます。
+
 We use the((("base58check-decode command (sx tools)"))) +base58check-decode+ command:
+
+((("base58check-decode command (sx tools)"))) +base58check-decode+ コマンドを使ってみましょう。
 ----
 $ sx base58check-decode 5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn
 1e99423a4ed27608a15a2616a2b0e9e52ced330ac530edcc32c8ffc6a526aedd 128
@@ -505,17 +520,25 @@ $ sx base58check-decode 5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn
 
 The result is the hexadecimal key, followed by the Wallet Import Format (WIF) version prefix 128.
 
+出力された結果は１６進数のキーで、Wallet Import Format(WIF)のversion prefixである128の前にあるものです。
+
 ===== Encode from hex to Base58Check
+===== １６進数からBase58Check符号化
 
 ((("Base58Check encoding","from hex")))To encode into Base58Check (the opposite of the previous command), we provide the hex private key, followed by the((("Base58Check encoding","WIF prefix for")))((("Wallet Import Format (WIF)"))) Wallet Import Format (WIF) version prefix 128:
+
+((("Base58Check encoding","from hex")))Base58Checkに符号化する(前のコマンドと逆)ために、１６進数の秘密鍵を ((("Base58Check encoding","WIF prefix for")))((("Wallet Import Format (WIF)"))) Wallet Import Format (WIF) のversion prefixである128の前に置いて実行します。
 ----
 $ sx base58check-encode 1e99423a4ed27608a15a2616a2b0e9e52ced330ac530edcc32c8ffc6a526aedd 128
 5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn
 ----
 
 ===== Encode from hex (compressed key) to Base58Check encoding
+===== １６進数(圧縮されたキー)からBase58Checkへの符号化
 
 ((("compressed keys","encoding/decoding from Base58Check")))To encode into Base58Check as a "compressed" private key (see <<comp_priv>>), we add the suffix +01+ to the end of the hex key and then encode as above:
+
+((("compressed keys","encoding/decoding from Base58Check")))"圧縮された"秘密鍵(<<comp_priv>>参照)をBase58Checkで符号化するために、１６進数キーの最後にsuffix +01+ を付加し、上記のように符号化します。
 ----
 $ sx base58check-encode 1e99423a4ed27608a15a2616a2b0e9e52ced330ac530edcc32c8ffc6a526aedd01 128
 KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
@@ -523,13 +546,23 @@ KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
 
 The resulting WIF-compressed format starts with a "K". This denotes that the private key within has a suffix of "01" and will be used to produce compressed public keys only (see <<comp_pub>>).
 
+生成されたWIF圧縮形式は"K"から始まります。これは、元の秘密鍵の最後に"01"が付いていることを意味し、圧縮された公開鍵のみを生成するために使われます(<<comp_pub>>参照)。
+
 ===== Public key formats
+===== 公開鍵形式
 
 ((("public keys","formats of")))Public keys are also presented in different ways, most importantly as either _compressed_ or _uncompressed_ public keys. 
 
+((("public keys","formats of")))
+公開鍵もまた違った形で表現され、 _圧縮された_公開鍵または_圧縮されていない_公開鍵があります。
+
 As we saw previously, the public key is a point on the elliptic curve consisting of a pair of coordinates +(x,y)+. It is usually presented with the prefix((("Wallet Import Format (WIF)","for uncompressed keys"))) +04+ followed by two 256-bit numbers, one for the _x_ coordinate of the point, the other for the _y_ coordinate. The prefix +04+ is used to distinguish uncompressed public keys from compressed public keys that begin with a +02+ or a +03+.
 
+前に見たように、公開鍵は楕円曲線上の点であり、+(x,y)+ というペアの形で構成されます。これは普通prefixに((("Wallet Import Format (WIF)","for uncompressed keys"))) +04+が伴って表されます。この+04+のあとに256bitの２つの数字、１つは_x_座標、もう１つは_y_座標、が続きます。prefix +04+ は圧縮されていない公開鍵を圧縮された公開鍵と区別するために使われます。圧縮された公開鍵は +02+ 、+03+ から始まります。
+
 Here's the public key generated by the private key we created earlier, shown as the coordinates +x+ and +y+:
+
+ここで、さきほど作った秘密鍵から公開鍵を生成してみましょう。以下に+x+座標と+y+座標を示します。
 
 ----
 x = F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A
@@ -538,18 +571,27 @@ y = 07CF33DA18BD734C600B96A72BBC4749D5141C90EC8AC328AE52DDFE2E505BDB
 
 Here's the same public key shown as a 520-bit number (130 hex digits) with the prefix +04+ followed by +x+ and then +y+ coordinates, as +04 x y+:
 
+以下は、520bitの数値(130桁の１６進数整数)として表したさきほどと同じ公開鍵です。これは+04+のprefixが付いており、そのあとに +04 x y+のように+x+座標と+y+座標が続きます。
+
 ----
 K = 04F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A<?pdf-cr?>07CF33DA18BD734C600B96A72BBC4749D5141C90EC8AC328AE52DDFE2E505BDB
 ----
 
 [[comp_pub]]
 ===== Compressed public keys
+===== 圧縮された公開鍵
 
 ((("compressed public keys", id="ix_ch04-asciidoc16", range="startofrange")))((("public keys","compressed", id="ix_ch04-asciidoc17", range="startofrange")))Compressed public keys were introduced to bitcoin to reduce the size of transactions and conserve disk space on nodes that store the bitcoin blockchain database. Most transactions include the public key, required to validate the owner's credentials and spend the bitcoin. Each public key requires 520 bits (prefix \+ x \+ y), which when multiplied by several hundred transactions per block, or tens of thousands of transactions per day, adds a significant amount of data to the blockchain. 
 
+((("compressed public keys", id="ix_ch04-asciidoc16", range="startofrange")))((("public keys","compressed", id="ix_ch04-asciidoc17", range="startofrange")))圧縮された公開鍵は、トランザクションのサイズの削減やブロックチェインを保持しているノード上のディスクスペースの保護のためにbitcoinに導入されました。ほとんどのトランザクションは、所有者の証明書を検証したりbitcoinを使うために公開鍵を含んでいます。それぞれの圧縮されていない公開鍵は520bit(prefix \+ x \+ y)を必要とするため、ブロックごとに数百トランザクション、１日に数万トランザクションというトランザクションを重ねると巨大なデータがブロックチェインに追加されていくことになってしまいます。
+
 As we saw in the section <<pubkey>>, a public key is a point (x,y) on an elliptic curve. Because the curve expresses a mathematical function, a point on the curve represents a solution to the equation and, therefore, if we know the _x_ coordinate we can calculate the _y_ coordinate by solving the equation y^2^ mod p = (x^3^ + 7) mod p. That allows us to store only the _x_ coordinate of the public key point, omitting the _y_ coordinate and reducing the size of the key and the space required to store it by 256 bits. An almost 50% reduction in size in every transaction adds up to a lot of data saved over time!
 
+<<pubkey>>で見てきたように、公開鍵は楕円曲線上の点 (x,y) です。楕円曲線は数学的な関数として表現されるため、楕円曲線上の点は<<pubkey>>にある方程式の解であり、もし_x_座標が分かるとすると_y_座標は y^2^ mod p = (x^3^ + 7) mod p を解くことで計算できます。このため、公開鍵の点として単に_x_座標だけを保持すればよく、_y_座標を省略してキーのサイズと256bitを保持するのに必要なスペースを削減することができます。これによりトランザクションのデータサイズにして50%弱の削減ができます。
+
 Whereas uncompressed public keys have a prefix of +04+, ((("Wallet Import Format (WIF)","for compressed keys")))compressed public keys start with either a +02+ or a +03+ prefix. Let's look at why there are two possible prefixes: because the left side of the equation is y^2^, that means the solution for y is a square root, which can have a positive or negative value. Visually, this means that the resulting _y_ coordinate can be above the x-axis or below the x-axis. As you can see from the graph of the elliptic curve in <<ecc-curve>>, the curve is symmetric, meaning it is reflected like a mirror by the x-axis. So, while we can omit the _y_ coordinate we have to store the _sign_ of y (positive or negative), or in other words, we have to remember if it was above or below the x-axis because each of those options represents a different point and a different public key. When calculating the elliptic curve in binary arithmetic on the finite field of prime order p, the _y_ coordinate is either even or odd, which corresponds to the positive/negative sign as explained earlier. Therefore, to distinguish between the two possible values of y, we store a compressed public key with the prefix +02+ if the +y+ is even, and +03+ if it is odd, allowing the software to correctly deduce the _y_ coordinate from the _x_ coordinate and uncompress the public key to the full coordinates of the point. Public key compression is illustrated in <<pubkey_compression>>. 
+
+圧縮されていない公開鍵が+04+から始まるのに対して、((("Wallet Import Format (WIF)","for compressed keys")))圧縮されている公開鍵は+02+または+03+から始まります。なぜ２つのprefixがあるのかというと、方程式の左側にはy^2^があるので、x座標からy座標を導こうとするとyの解は正負それぞれの符号を持った平方根になってしまい１つに決めることができません。イメージ的には、_y_座標がx軸の上側と下側の両方の値を取り得ることを意味します。<<ecc-curve>>図にある楕円曲線から分かるように、楕円曲線はx軸に対して鏡のように折り返す操作に対して対称です。このため、_y_座標の絶対値は省略できてもy座標の_符号_は省略できず保存しておく必要があります。別のいい方をすると、これら符号はそれぞれ違った点、違った公開鍵を表すので、点がx軸の上にあったか下にあったかを覚えておかなければいけません。素数位数pの有限体上で二進数演算を用いて楕円曲線を計算すると、_y_座標は偶数または奇数になり、これらはさきほど説明した正/負に対応しています。よって、yの２つの可能な値を区別するには、+y+が偶数なら+02+を圧縮された公開鍵の先頭に付与、+y+が奇数なら+03+を先頭に付与するようにします。これによって、ソフトウェアは_y_座標を_x_座標から正しく導くことができ、公開鍵を圧縮することができるのです。公開鍵の圧縮は<<pubkey_compression>>図で説明されています。
 
 [[pubkey_compression]]
 .Public key compression
@@ -557,26 +599,43 @@ image::images/msbt_0407.png["pubkey_compression"]
 
 ((("public keys","compression")))Here's the same public key generated previously, shown as a compressed public key stored in 264 bits (66 hex digits) with the prefix +03+ indicating the _y_ coordinate is odd:
 
+((("public keys","compression")))前に生成した公開鍵と同じものを以下に示します。以下は、_y_座標が奇数であることを示している+03+をprefixとして持つ264bit(66桁の１６進数)の圧縮された公開鍵です。
+
 ----
 K = 03F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A
 ----
 
 ((("addresses, bitcoin","converting compressed keys to")))((("compressed keys","converting to bitcoin addresses")))This compressed public key corresponds to the same private key, meaning that it is generated from the same private key. However, it looks different from the uncompressed public key. More importantly, if we convert this compressed public key to a bitcoin address using the double-hash function (+RIPEMD160(SHA256(K))+) it will produce a _different_ bitcoin address. This can be confusing, because it means that a single private key can produce a public key expressed in two different formats (compressed and uncompressed) that produce two different bitcoin addresses. However, the private key is identical for both bitcoin addresses.
 
+((("addresses, bitcoin","converting compressed keys to")))((("compressed keys","converting to bitcoin addresses")))圧縮されていない公開鍵と違うように見えますが、この圧縮された公開鍵は同じ秘密鍵から生成されたものです。重要なこととして、もし圧縮された公開鍵を二重ハッシュ化関数 (+RIPEMD160(SHA256(K))+) を使ってbitcoinアドレスに変換したとすると、_違った_bitcoinアドレスが生成されるでしょう。これは１つの秘密鍵が２つの形式(圧縮と非圧縮)の公開鍵を生成し、それぞれの公開鍵を用いて別々のbitcoinアドレスを生成してしまうためですが、これは混乱させる元になってしまいます。
+
 ((("blockchains","size of, and compressed public keys")))Compressed public keys are gradually becoming the default across bitcoin clients, which is having a significant impact on reducing the size of transactions and therefore the blockchain. However, not all clients support compressed public keys yet. Newer clients that support compressed public keys have to account for transactions from older clients that do not support compressed public keys. This is especially important when a wallet application is importing private keys from another bitcoin wallet application, because the new wallet needs to scan the blockchain to find transactions corresponding to these imported keys. Which bitcoin addresses should the bitcoin wallet scan for? The bitcoin addresses produced by uncompressed public keys, or the bitcoin addresses produced by compressed public keys? Both are valid bitcoin addresses, and can be signed for by the private key, but they are different addresses!
+
+((("blockchains","size of, and compressed public keys")))圧縮された公開鍵は次第にbitcoinクライアントでデフォルトになりつつあります。圧縮された公開鍵に対応することで、トランザクションのサイズおよびブロックチェインのサイズを削減することに十分なインパクトがあるのです。しかし、全てのクライアントが圧縮された公開鍵に対応している訳ではありません。圧縮された公開鍵に対応している最近のクライアントは圧縮された公開鍵に対応していない古いクライアントから来たトランザクションを解釈しなければいけません。これはウォレットがもう１つのウォレットから秘密鍵をインポートするときに特に重要です。というのは、新しいウォレットがインポートされた秘密鍵に対応したトランザクションを見つけるためにブロックチェインをスキャンしなければいけないためです。ウォレットはどのbitcoinアドレスをスキャンするべきでしょうか？圧縮されていない公開鍵から生成されたbitcoinアドレスでしょうか？それとも、圧縮された公開鍵から生成されたbitcoinアドレスでしょうか？両方とも有効なアドレスで、両方とも秘密鍵で署名されますが、これらは異なったbitcoinアドレスです！
 
 ((("Wallet Import Format (WIF)","newer bitcoin wallets and")))To resolve this issue, when private keys are exported from a wallet, the Wallet Import Format that is used to represent them is implemented differently in newer bitcoin wallets, to indicate that these private keys have been used to produce _compressed_ public keys and therefore _compressed_ bitcoin addresses. This allows the importing wallet to distinguish between private keys originating from older or newer wallets and search the blockchain for transactions with bitcoin addresses corresponding to the uncompressed, or the compressed, public keys, respectively. Let's look at how this works in more detail, in the next section.(((range="endofrange", startref="ix_ch04-asciidoc17")))(((range="endofrange", startref="ix_ch04-asciidoc16"))) 
 
+((("Wallet Import Format (WIF)","newer bitcoin wallets and")))この問題を解決するために、秘密鍵をウォレットからエクスポートする場合、今までと異なり最近のウォレットではWallet Import Formatで出力されます。Wallet Import Formatは、_圧縮された_公開鍵が秘密鍵から作られたということを示しており、bitcoinアドレスは_圧縮された_ものということが分かるのです。これによって、インポートされる側のウォレットは古いウォレットから来た秘密鍵か新しいウォレットから来た秘密鍵かを区別でき、公開鍵が圧縮されていてもいなくても公開鍵に対応したbitcoinアドレスが含まれているトランザクションをブロックチェインから探し出すことができます。次の節で、どのようにこれが動いているのか詳細を見てみましょう。(((range="endofrange", startref="ix_ch04-asciidoc17")))(((range="endofrange", startref="ix_ch04-asciidoc16")))
+
 [[comp_priv]]
 ===== Compressed private keys
+===== 圧縮された秘密鍵
 
 ((("compressed private keys")))((("private keys","compressed")))Ironically, the term "compressed private key" is misleading, because when a private key is exported as WIF-compressed it is actually one byte _longer_ than an "uncompressed" private key. That is because it has the added 01 suffix, which signifies it comes from a newer wallet and should only be used to produce compressed public keys. Private keys are not compressed and cannot be compressed. The term "compressed private key" really means "private key from which compressed public keys should be derived," whereas "uncompressed private key" really means "private key from which uncompressed public keys should be derived." You should only refer to the export format as "WIF-compressed" or "WIF" and not refer to the private key as "compressed" to avoid further confusion.
 
+((("compressed private keys")))((("private keys","compressed")))皮肉にも、"圧縮された秘密鍵"という言葉は誤解を与えてしまいます。というのは、秘密鍵がWIF圧縮形式でエクスポートされた場合、実際には"圧縮されていない"秘密鍵より１byte_長い_からです。これは、01を秘密鍵の最後に付加しているためで、01は秘密鍵が新しいウォレットから来たこと、秘密鍵から圧縮された公開鍵を生成すべきであることを意味しています。秘密鍵自体は圧縮されておらず、また圧縮することはできません。"圧縮された秘密鍵"という言葉は、本当は"圧縮された公開鍵を生成するために使うべき秘密鍵"という意味です。WIF圧縮形式やWIF形式をエクスポートをするときの形式という意味でのみ使うべきで、混乱を避けるために、"圧縮された"という言葉を秘密鍵に対して使うべきではないのです。
+
 Remember, these formats are _not_ used interchangeably. In a newer wallet that implements compressed public keys, the private keys will only ever be exported as WIF-compressed (with a K or L prefix). If the wallet is an older implementation and does not use compressed public keys, the private keys will only ever be exported as WIF (with a 5 prefix). The goal here is to signal to the wallet importing these private keys whether it must search the blockchain for compressed or uncompressed public keys and addresses.
+
+WIF圧縮形式とWIF形式は片方しか使えないということを覚えておいてください。圧縮された公開鍵を実装した新しいウォレットでは、秘密鍵はWIF圧縮形式(先頭がKまたはL)としてのみエクスポートされます。もしウォレットが古い実装のもので圧縮された公開鍵が使えないものであれば、秘密鍵はWIF形式(先頭が5)としてのみエクスポートされます。ここでのゴールは、圧縮された公開鍵またはbitcoinアドレスに対してブロックチェインを探索しなければいけないか、圧縮されていないものに対して探索しなければいけないかをウォレットに教えることです。
 
 If a bitcoin wallet is able to implement compressed public keys, it will use those in all transactions. The private keys in the wallet will be used to derive the public key points on the curve, which will be compressed. The compressed public keys will be used to produce bitcoin addresses and those will be used in transactions. When exporting private keys from a new wallet that implements compressed public keys, the Wallet Import Format is modified, with the addition of a one-byte suffix +01+ to the private key. The resulting Base58Check-encoded private key is called a "Compressed WIF" and starts with the letter K or L, instead of starting with "5" as is the case with WIF-encoded (non-compressed) keys from older wallets. 
 
+もしウォレットが圧縮された公開鍵を実装していれば、全てのトランザクションで圧縮された方の方法を使うでしょう。秘密鍵は楕円曲線上の公開鍵点を導出し、この公開鍵は圧縮されます。圧縮された公開鍵はbitcoinアドレスを生成することに使われ、bitcoinアドレスはトランザクションの中で使われます。圧縮された公開鍵を実装した新しいウォレットから秘密鍵をエクスポートするとき、Wallet Import Formatは秘密鍵の最後に1byteの+01+が付加される形に修正されます。結果として出力されるBase58Check符号化秘密鍵は"圧縮されたWIF形式"と呼ばれ、古いウォレットでのWIF形式(非圧縮)の場合の"5"の代わりにKまたはLから始まります。
+
 <<table_4-4>> shows the same key, encoded in WIF and WIF-compressed formats.
+
+<<table_4-4>>は同じキーを表しており、WIF形式とWIF圧縮形式で符号化されています。
 
 [[table_4-4]]
 .Example: Same key, different formats
