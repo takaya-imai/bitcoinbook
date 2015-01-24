@@ -655,8 +655,11 @@ If a bitcoin wallet is able to implement compressed public keys, it will use tho
 ====
 
 === Implementing Keys and Addresses in Python  
+=== Pythonでのキーとbitcoinアドレスの実装
 
 ((("addresses, bitcoin","implementing in Python", id="ix_ch04-asciidoc18", range="startofrange")))((("keys","implementing in Python", id="ix_ch04-asciidoc19", range="startofrange")))((("pybitcointools", id="ix_ch04-asciidoc20", range="startofrange")))((("Python","implementing addresses in", id="ix_ch04-asciidoc21", range="startofrange")))((("Python","implementing keys in", id="ix_ch04-asciidoc22", range="startofrange")))The most comprehensive bitcoin library in Python is https://github.com/vbuterin/pybitcointools[pybitcointools] by((("Buterin, Vitalik"))) Vitalik Buterin. In <<key-to-address_script>>, we use the pybitcointools library (imported as "bitcoin") to generate and display keys and addresses in various formats.
+
+((("addresses, bitcoin","implementing in Python", id="ix_ch04-asciidoc18", range="startofrange")))((("keys","implementing in Python", id="ix_ch04-asciidoc19", range="startofrange")))((("pybitcointools", id="ix_ch04-asciidoc20", range="startofrange")))((("Python","implementing addresses in", id="ix_ch04-asciidoc21", range="startofrange")))((("Python","implementing keys in", id="ix_ch04-asciidoc22", range="startofrange")))Pythonで書かれた最も総合的なbitcoinライブラリは((("Buterin, Vitalik"))) Vitalik Buterin によって書かれた https://github.com/vbuterin/pybitcointools[pybitcointools] です。<<key-to-address_script>>の中で、pybitcointoolsライブラリ("bitcoin"としてimportされています)を使ってキーとbitcoinアドレスをいろいろな形式で生成しています。
 
 [[key-to-address_script]]
 .Key and address generation and formatting with the pybitcointools library
@@ -668,6 +671,8 @@ include::code/key-to-address-ecc-example.py[]
 ====
 
 <<key-to-address_script_run>> shows  the output from running this code.
+
+<<key-to-address_script_run>>はこのコードを実行した結果を示しています。
 
 [[key-to-address_script_run]]
 .Running key-to-address-ecc-example.py
@@ -703,6 +708,8 @@ Compressed Bitcoin Address (b58check) is:
 
 <<ec_math>> ((("elliptic curve cryptography","in Python")))((("Python ECDSA library")))is another example, using the Python ECDSA library for the elliptic curve math and without using any specialized bitcoin libraries.
 
+<<ec_math>> ((("elliptic curve cryptography","in Python")))((("Python ECDSA library"))) はもう１つのコード例です。このコードでは、楕円曲線での計算にPython ECDSAライブラリを使い、いかなる特別なbitcoinライブラリも使っていません。
+
 [[ec_math]]
 .A script demonstrating elliptic curve math used for bitcoin keys
 ====
@@ -713,6 +720,8 @@ include::code/ec-math.py[]
 ====
 
 <<ec_math_run>> shows the output produced by running this script.(((range="endofrange", startref="ix_ch04-asciidoc22")))(((range="endofrange", startref="ix_ch04-asciidoc21")))(((range="endofrange", startref="ix_ch04-asciidoc20")))(((range="endofrange", startref="ix_ch04-asciidoc19")))(((range="endofrange", startref="ix_ch04-asciidoc18")))
+
+<<ec_math_run>>はこのコードを実行した結果を示しています。(((range="endofrange", startref="ix_ch04-asciidoc22")))(((range="endofrange", startref="ix_ch04-asciidoc21")))(((range="endofrange", startref="ix_ch04-asciidoc20")))(((range="endofrange", startref="ix_ch04-asciidoc19")))(((range="endofrange", startref="ix_ch04-asciidoc18")))
 
 [[ec_math_run]]
 .Installing the Python ECDSA library and running the ec_math.py script
