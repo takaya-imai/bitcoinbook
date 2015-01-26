@@ -7,7 +7,7 @@
 
 ((("bitcoin client", id="ix_ch03-asciidoc0", range="startofrange")))((("bitcoin client","Bitcoin Core", id="ix_ch03-asciidoc1", range="startofrange")))((("Bitcoin Core client", id="ix_ch03-asciidoc2", range="startofrange")))((("Satoshi client", see="Bitcoin Core client")))You can download the reference client _Bitcoin Core_, also known as the "Satoshi client," from bitcoin.org. The reference client implements all aspects of the bitcoin system, including wallets, a transaction verification engine with a full copy of the entire transaction ledger (blockchain), and a full network node in the peer-to-peer bitcoin network.
 
-((("bitcoin client", id="ix_ch03-asciidoc0", range="startofrange")))((("bitcoin client","Bitcoin Core", id="ix_ch03-asciidoc1", range="startofrange")))((("Bitcoin Core client", id="ix_ch03-asciidoc2", range="startofrange")))((("Satoshi client", see="Bitcoin Core client")))あなたは"Satoshi client"とも呼ばれているbitcoinクライアントの大元であるBitcoin Coreをbitcoin.orgからダウンロードすることができます。このクライアントはbitcoinの仕組みのいろいろな面(ウォレット、全てのブロックチェインのコピーを保持したトランザクション確認エンジン、peer-to-peer Bitcoinネットワーク内でのノード)を実装しています。
+((("bitcoin client", id="ix_ch03-asciidoc0", range="startofrange")))((("bitcoin client","Bitcoin Core", id="ix_ch03-asciidoc1", range="startofrange")))((("Bitcoin Core client", id="ix_ch03-asciidoc2", range="startofrange")))((("Satoshi client", see="Bitcoin Core client")))あなたは"Satoshi client"とも呼ばれているbitcoinクライアントの大元であるBitcoin Coreをbitcoin.orgからダウンロードすることができます。このクライアントはbitcoinの仕組みのいろいろな面(ウォレット、全てのブロックチェーンのコピーを保持したトランザクション確認エンジン、peer-to-peer Bitcoinネットワーク内でのノード)を実装しています。
 
 On((("bitcoin.org","Bitcoin Core, downloading"))) http://bitcoin.org/en/choose-your-wallet[Bitcoin's Choose Your Wallet page], select Bitcoin Core to download the reference client. Depending on your operating system, you will download an executable installer. For Windows, this is either a ZIP archive or an .exe executable. For Mac OS it is a .dmg disk image. Linux versions include a PPA package for Ubuntu or a tar.gz archive. The bitcoin.org page that lists recommended bitcoin clients is shown in <<bitcoin-choose-client>>.
 
@@ -26,7 +26,7 @@ image::images/msbt_0301.png["bitcoin choose client"]
 
 The first time you run Bitcoin Core it will start downloading the blockchain, a process that might take several days (see <<bitcoin-qt-firstload>>). Leave it running in the background until it displays "Synchronized" and no longer shows "out of sync" next to the balance.
 
-Bitcoin Coreを最初に起動したとき、まずブロックチェインをダウンロードし始めます。これには数日かかるかもしれません(<<bitcoin-qt-firstload>>図参照)。画面に"同期完了"と出るまでバックグラウンドで動かしておいてください。"同期完了"と出ると、もう"同期されていません"とは表示されなくなります。
+Bitcoin Coreを最初に起動したとき、まずブロックチェーンをダウンロードし始めます。これには数日かかるかもしれません(<<bitcoin-qt-firstload>>図参照)。画面に"同期完了"と出るまでバックグラウンドで動かしておいてください。"同期完了"と出ると、もう"同期されていません"とは表示されなくなります。
 
 [[bitcoin-qt-firstload]]
 .Bitcoin Core screen during the blockchain initialization
@@ -299,7 +299,7 @@ While you're editing this configuration file, you might want to set a few other 
 
 Now, run the Bitcoin Core client. The first time you run it, it will rebuild the bitcoin blockchain by downloading all the blocks. This is a multigigabyte file and will take an average of two days to download in full. You can shorten the((("blockchains","downloading with bittorrent clients"))) blockchain initialization time by downloading a partial copy of the blockchain using a BitTorrent client from http://bit.ly/1qkLNyh[SourceForge]. 
 
-Bitcoin Coreクライアントを実行してみましょう。最初に全てのブロックをダウンロードしてブロックチェインを構築し始めます。ブロックチェインのファイルは1GB以上あるため平均してダウンロードに２日くらいかかります。BitTorrentクライアントを使って部分的な((("blockchains","downloading with bittorrent clients"))) ブロックチェインを http://bit.ly/1qkLNyh[SourceForge]からダウンロードしてブロックチェイン初期化を短くすることもできます。
+Bitcoin Coreクライアントを実行してみましょう。最初に全てのブロックをダウンロードしてブロックチェーンを構築し始めます。ブロックチェーンのファイルは1GB以上あるため平均してダウンロードに２日くらいかかります。BitTorrentクライアントを使って部分的な((("blockchains","downloading with bittorrent clients"))) ブロックチェーンを http://bit.ly/1qkLNyh[SourceForge]からダウンロードしてブロックチェーン初期化を短くすることもできます。
 
 Run bitcoind in the background with the option +-daemon+:(((range="endofrange", startref="ix_ch03-asciidoc3")))
 
@@ -424,7 +424,7 @@ Commands: +getinfo+
 
 ((("Bitcoin Core client","client status, getting")))((("bitcoin-cli command line helper","getinfo command")))((("client status, getting")))((("getinfo command (bitcoin-cli)")))Bitcoin's +getinfo+ RPC command displays basic information about the status of the bitcoin network node, the wallet, and the blockchain database. Use +bitcoin-cli+ to run it:
 
-((("Bitcoin Core client","client status, getting")))((("bitcoin-cli command line helper","getinfo command")))((("client status, getting")))((("getinfo command (bitcoin-cli)")))Bitcoinのgetinfo RPCコマンドは、Bitcoinネットワークノード、ウォレット、ブロックチェインデータベースについての基本的な情報を表示してくれます。以下の +bitcoin-cli+ コマンドを実行してみましょう。
+((("Bitcoin Core client","client status, getting")))((("bitcoin-cli command line helper","getinfo command")))((("client status, getting")))((("getinfo command (bitcoin-cli)")))Bitcoinのgetinfo RPCコマンドは、Bitcoinネットワークノード、ウォレット、ブロックチェーンデータベースについての基本的な情報を表示してくれます。以下の +bitcoin-cli+ コマンドを実行してみましょう。
 
 [source,bash]
 ----
@@ -790,7 +790,7 @@ The transaction decode shows all the components of this transaction, including t
 
 We can further explore the blockchain by examining the previous transaction referenced by its txid in this transaction using the same commands (e.g., +gettransaction+). Jumping from transaction to transaction we can follow a chain of transactions back as the coins are transmitted from owner address to owner address. 
 
-+gettransaction+ コマンドなどを通して、ブロックチェインの中にあるこのtxid(9ca8から始まる)の中身をさらに分け入っていくことができます。トランザクションからトランザクションへ次々に見ていくと、ある所有者からある所有者へのbitcoinが転送されていくトランザクションのチェインをたどることができるのです。
++gettransaction+ コマンドなどを通して、ブロックチェーンの中にあるこのtxid(9ca8から始まる)の中身をさらに分け入っていくことができます。トランザクションからトランザクションへ次々に見ていくと、ある所有者からある所有者へのbitcoinが転送されていくトランザクションのチェインをたどることができるのです。
 
 Once the transaction we received has been confirmed by inclusion in a block, the +gettransaction+ command will return additional information, showing the _block hash (identifier)_ in which the transaction was included:
 
@@ -904,7 +904,7 @@ $ bitcoin-cli getblock 000000000000000051d2e759c63a26e247f185ecb7926ed7a6624b<?p
 
 The block contains 367 transactions and as you can see, the 18th transaction listed (+9ca8f9...+) is the txid of the one crediting 50 millibits to our address. The +height+ entry tells us this is the 286384th block in the blockchain. 
 
-このブロックには367個のトランザクションが含まれていて、見て分かるように18番目の9ca8f9から始まるトランザクションが、我々のbitcoinアドレスに50mbitsを返金したトランザクションtxidです。 +height+ パラメータはこのブロックがブロックチェインの286384番目のブロックであることを示しています。
+このブロックには367個のトランザクションが含まれていて、見て分かるように18番目の9ca8f9から始まるトランザクションが、我々のbitcoinアドレスに50mbitsを返金したトランザクションtxidです。 +height+ パラメータはこのブロックがブロックチェーンの286384番目のブロックであることを示しています。
 
 We can also retrieve a block by its block height using the +getblockhash+ command, which takes the block height as the parameter and returns the block hash for that block:
 
@@ -951,7 +951,7 @@ $ bitcoin-cli getblock 000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1<?p
 
 The +getblock+, +getblockhash+, and +gettransaction+ commands can be used to explore the blockchain database, programmatically. 
 
-+getblock+ 、 +getblockhash+ 、 +gettransaction+ コマンドはプログラムからブロックチェインを探索するために使われます。
++getblock+ 、 +getblockhash+ 、 +gettransaction+ コマンドはプログラムからブロックチェーンを探索するために使われます。
 
 
 ==== Creating, Signing, and Submitting Transactions Based on pass:[<phrase role="keep-together">Unspent Outputs</phrase>]
@@ -1303,7 +1303,7 @@ Many more libraries exist in a variety of other programming languages and more a
 ((("libbitcoin library")))((("libraries, alternative","libbitcoin library")))((("sx tools")))The libbitcoin library is a C++ scalable multithreaded and modular implementation that supports a full-node client and a command-line toolset called sx, which offers many of the same capabilities as the bitcoind client commands we illustrated in this chapter. The sx tools also offer some key management and manipulation tools that are not offered by bitcoind, including type-2 deterministic keys and key mnemonics. 
 
 ((("libbitcoin library")))((("libraries, alternative","libbitcoin library")))((("sx tools")))
-libbitcoinライブラリはスケーラブルなマルチスレッド&モジュール型C++実装で、full-node(部分的ではなく全部のブロックチェインを保持する)とsxと呼ばれるコマンドラインベースのツールセットをサポートしています。このツールセットは、この章で説明したbitcoindのコマンドと同じものを多くサポートしています。sxツールはbitcoindで提供されていない管理ツールや操作ツール、type-2 deterministic key、key mnemonicsも持っています。????
+libbitcoinライブラリはスケーラブルなマルチスレッド&モジュール型C++実装で、full-node(部分的ではなく全部のブロックチェーンを保持する)とsxと呼ばれるコマンドラインベースのツールセットをサポートしています。このツールセットは、この章で説明したbitcoindのコマンドと同じものを多くサポートしています。sxツールはbitcoindで提供されていない管理ツールや操作ツール、type-2 deterministic key、key mnemonicsも持っています。????
 
 ===== Installing sx
 ===== sxのインストール
@@ -1381,7 +1381,7 @@ For examples using the command-line utilities ku and tx, see <<appdxbitcoinimppr
 ==== btcd
 ((("btcd")))((("clients, alternative","btcd")))btcd is a full-node bitcoin implementation written in((("Go programming language"))) Go. It currently downloads, validates, and serves the blockchain using the exact rules (including bugs) for block acceptance as the reference implementation, bitcoind. It also properly relays newly mined blocks, maintains a transaction pool, and relays individual transactions that have not yet made it into a block. It ensures that all individual transactions admitted to the pool follow the rules required and also includes the vast majority of the more strict checks that filter transactions based on miner requirements ("standard" transactions).
 
-((("btcd")))((("clients, alternative","btcd")))btcdは ((("Go programming language"))) Go 言語で書かれているfull-nodeのbitcoin実装です。現在btcdは、bitcoin実装の大元であるbitcoindのように、厳密なブロックの受け入れルール(バグが含まれているものの)を使ってブロックチェインのダウンロード、検証、提供をしています。また、適切に新しく掘り出されたブロックをリレーしたり、トランザクションプールを管理したり、ブロックにまだ組み込まれていない個別のトランザクションをリレーしたりもします。トランザクションプールに入っている全ての個別トランザクションは、先ほどの厳密な受け入れルールに従わなければならず、またマイナー必要条件に基づきトランザクションをフィルターするさらに厳しく広く使われているチェックも含みます。 ????
+((("btcd")))((("clients, alternative","btcd")))btcdは ((("Go programming language"))) Go 言語で書かれているfull-nodeのbitcoin実装です。現在btcdは、bitcoin実装の大元であるbitcoindのように、厳密なブロックの受け入れルール(バグが含まれているものの)を使ってブロックチェーンのダウンロード、検証、提供をしています。また、適切に新しく掘り出されたブロックをリレーしたり、トランザクションプールを管理したり、ブロックにまだ組み込まれていない個別のトランザクションをリレーしたりもします。トランザクションプールに入っている全ての個別トランザクションは、先ほどの厳密な受け入れルールに従わなければならず、またマイナー必要条件に基づきトランザクションをフィルターするさらに厳しく広く使われているチェックも含みます。 ????
 
 One key difference between btcd and bitcoind is that btcd does not include wallet functionality, and this was a very intentional design decision. This means you can't actually make or receive payments directly with btcd. That functionality is provided by the btcwallet and btcgui projects, which are both under active development. Other notable differences between btcd and bitcoind include btcd support for both HTTP POST requests (such as bitcoind) and the preferred Websockets, and the fact that btcd's RPC connections are TLS-enabled by default.
 
