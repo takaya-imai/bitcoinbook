@@ -888,20 +888,35 @@ The root seed is input into the HMAC-SHA512 algorithm and the resulting hash is 
 ルートシードはHMAC-SHA512アルゴリズムへのインプットであり、結果として出力されたハッシュは_マスター秘密鍵_ (m)と _マスターチェーンコード_ を生成することに使われます。マスター秘密鍵(m)は対応したマスター公開鍵(M)を生成し、このときこの章で最初で見た標準的な楕円曲線乗法プロセス +m * G+ が使われます。チェーンコードは親キーから子キーを生成するプロセスの中でエントロピーを導入するために使われます。????
 
 ===== Private child key derivation
+===== プライベートchild key derivation
 
 ((("child key derivation (CKD) function")))((("child private keys")))((("hierarchical deterministic wallets (HD wallets)","CKD function and")))((("private keys","CKD function and")))((("seeded wallets","CKD function and")))Hierarchical deterministic wallets use a _child key derivation_ (CKD) function to derive children keys from parent keys. 
 
+((("child key derivation (CKD) function")))((("child private keys")))((("hierarchical deterministic wallets (HD wallets)","CKD function and")))((("private keys","CKD function and")))((("seeded wallets","CKD function and")))階層的決定性ウォレットは_child key derivation_(CKD)関数を使って親キーから子キーを生成します。
+
 The child key derivation functions are based on a one-way hash function that combines: 
+
+child key derivation関数は一方向ハッシュ関数をベースにしており、以下の組み合わせによって成っています。
 
 * A parent private or public key (ECDSA uncompressed key)
 * A seed called a chain code (256 bits)
 * An index number (32 bits)
 
+* 子秘密鍵または子公開鍵(ECDSA非圧縮キー)
+* チェーンコード(256bit)と呼ばれるシード
+* インデックス(32bit)
+
 The chain code is used to introduce seemingly random data to the process, so that the index is not sufficient to derive other child keys. Thus, having a child key does not make it possible to find its siblings, unless you also have the chain code. The initial chain code seed (at the root of the tree) is made from random data, while subsequent chain codes are derived from each parent chain code. 
+
+チェーンコードは表面的にランダムなデータを導入するのに使われ、インデックスはその他の子キーを生成するのに十分ではないです。???? このため、子キーを保持することは、もしチェーンコードも持っていないとすると、他の子キーを見つけることができなくなってしまいます。???? 次のチェーンコードがそれぞれの親チェーンコードから導ける間、最初のチェーンコードシード(ツリー構造のルート)はランダムなデータから作られます。???? 
 
 These three items are combined and hashed to generate children keys, as follows.
 
+以下のように、これらの３つの要素は組み合わされ子キーを生成するためにハッシュ化されます。
+
 The parent public key, chain code, and the index number are combined and hashed with the HMAC-SHA512 algorithm to produce a 512-bit hash. The resulting hash is split into two halves. The right-half 256 bits of the hash output become the chain code for the child. The left-half 256 bits of the hash and the index number are added to the parent private key to produce the child private key. In <<CKDpriv>>, we see this illustrated with the index set to 0 to produce the 0'th (first by index) child of the parent.
+
+親公開鍵、チェーンコード、インデックスは組み合わされ、512bitハッシュを生成するためにHMAC-SHA512アルゴリズムでハッシュ化されます。出力されたハッシュは２つの部分に分けられます。右半分の256bitは子チェーンコードになり、左半分の256bitとインデックスは親秘密鍵となります。<<CKDpriv>>図は、インデックスが0のときの0番目の子を作り出す状況を表しています。
 
 [[CKDpriv]]
 .Extending a parent private key to create a child private key
@@ -909,13 +924,22 @@ image::images/msbt_0411.png["ChildPrivateDerivation"]
 
 Changing the index allows us to extend the parent and create the other children in the sequence, e.g., Child 0, Child 1, Child 2, etc. Each parent key can have 2 billion children keys. 
 
+インデックスを変えることで、子0、子1、子2...と子を作り出していくことができ、それぞれの親キーは２０億個の子キーを持つことができます。
+
 Repeating the process one level down the tree, each child can in turn become a parent and create its own children, in an infinite number of generations. 
 
+このプロセスを繰り返すことで、ツリー構造を無限に下っていくことができ、それぞれの子が次々に親となり自身の子供を作っていきます。
+
 ===== Using derived child keys
+===== 生成された子キーの使用
 
 ((("child key derivation (CKD) function","using")))((("child private keys","using")))((("security","child private keys and")))Child private keys are indistinguishable from nondeterministic (random) keys. Because the derivation function is a one-way function, the child key cannot be used to find the parent key. The child key also cannot be used to find any siblings. If you have the n~th~ child, you cannot find its siblings, such as the n–1 child or the n+1 child, or any other children that are part of the sequence. Only the parent key and chain code can derive all the children. Without the child chain code, the child key cannot be used to derive any grandchildren either. You need both the child private key and the child chain code to start a new branch and derive grandchildren. 
 
+((("child key derivation (CKD) function","using")))((("child private keys","using")))((("security","child private keys and")))それぞれ子秘密鍵たちは互いにどういう関係にあるかを知ることができません。HMAC-SHA512は一方向関数であるため、子キーは親キーを探すことができずまた、子キーは自分の兄弟を探すこともできません。もし~n番目~の子があったとしても、n-1番目の子やn+1番目の子、それ以外のいかなる子も探すことができません。ただ唯一親キーとチェーンコードだけが全ての子を作り出すことができます。もし子チェーンコードがないと、子キーは孫キーを作ることもできません。子秘密鍵と子チェーンコードの両方があって初めて孫を作り出すことができるのです。
+
 So what can the child private key be used for on its own? It can be used to make a public key and a bitcoin address. Then, it can be used to sign transactions to spend anything paid to that address.  
+
+子秘密鍵は何のために使われるのでしょうか？子秘密鍵は公開鍵とbitcoinアドレスを作ることに使われます。また、支払いに使われるトランザクションに署名をするときにも使われます。
 
 [TIP]
 ====
@@ -923,12 +947,19 @@ A child private key, the corresponding public key, and the bitcoin address are a
 ====
 
 ===== Extended keys
+===== 拡張キー
 
 ((("extended keys")))((("hierarchical deterministic wallets (HD wallets)","extended keys")))((("keys","extended")))As we saw earlier, the key derivation function can be used to create children at any level of the tree, based on the three inputs: a key, a chain code, and the index of the desired child. The two essential ingredients are the key and chain code, and combined these are called an _extended key_. The term "extended key" could also be thought of as "extensible key" because such a key can be used to derive children. 
 
+((("extended keys")))((("hierarchical deterministic wallets (HD wallets)","extended keys")))((("keys","extended")))前に見たように、キー導出関数は子供を作ることに使われ、キー、チェーンコード、インデックスという３つのインプットに基づき計算されます。本質的に必要なインプットはキーとチェーンコードで、これらを組み合わせたものは_拡張キー_と呼ばれています。拡張キーという言葉はまた、"拡張可能キー"と呼ばれることもあります。なぜなら、このキーで子供を生成できるからです。
+
 Extended keys are stored and represented simply as the concatenation of the 256-bit key and 256-bit chain code into a 512-bit sequence. There are two types of extended keys. An extended private key is the combination of a private key and chain code and can be used to derive child private keys (and from them, child public keys). An extended public key is a public key and chain code, which can be used to create child public keys, as described in <<public_key_derivation>>.
 
+拡張キーは単に256bitのキーと256bitのチェーンコードを単にくっつけて512bitにしたものです。拡張キーには２つの種類があります。拡張秘密鍵は秘密鍵とチェーンコードの組み合わせで、子秘密鍵(そして、これから子公開鍵も)を生成することに使われます。拡張公開鍵は公開鍵とチェーンコードの組み合わせで、子公開鍵を生成することに使われます。詳細については<<public_key_derivation>>に記載しています。
+
 Think of an extended key as the root of a branch in the tree structure of the HD wallet. With the root of the branch, you can derive the rest of the branch. The extended private key can create a complete branch, whereas the extended public key can only create a branch of public keys.
+
+拡張キーをツリー構造の枝のルートと考えてみましょう。枝のルートを使って、枝の残りを生成することができます。拡張秘密鍵は完全な枝を作ることができますが、一方拡張公開鍵は公開鍵の枝しか作ることができません。????
 
 [TIP]
 ====
@@ -937,13 +968,19 @@ An extended key consists of a private or public key and chain code. An extended 
 
 ((("Base58Check encoding","extended keys and")))Extended keys are encoded using Base58Check, to easily export and import between different BIP0032-compatible wallets. The Base58Check coding for extended keys uses a special version number that results in the prefix "xprv" and "xpub" when encoded in Base58 characters, to make them easily recognizable. Because the extended key is 512 or 513 bits, it is also much longer than other Base58Check-encoded strings we have seen previously.
 
+((("Base58Check encoding","extended keys and")))拡張キーはBase58Checkで符号化され、BIP0032互換ウォレットの間でエクスポートとインポートを簡単に行うことができます。拡張キーのBase58Checkはprefixとして"xprv"と"xpub"という特別なversion byteを使います。拡張キーは512または513bitなので、前に見たBase58Check符号化文字列よりも長くなっています。
+
 Here's an example of an extended private key, encoded in Base58Check:
+
+ここにBase58Checkで符号化された拡張秘密鍵の例を示します。
 
 ----
 xprv9tyUQV64JT5qs3RSTJkXCWKMyUgoQp7F3hA1xzG6ZGu6u6Q9VMNjGr67Lctvy5P8oyaYAL9CAWrUE9i6GoNMKUga5biW6Hx4tws2six3b9c
 ----
 
 Here's the corresponding extended public key, also encoded in Base58Check:
+
+以下はこの拡張秘密鍵に対応した拡張公開鍵です。これもBase58Checkで符号化されています。
 
 ----
 xpub67xpozcx8pe95XVuZLHXZeG6XWXHpGq6Qv5cmNfi7cS5mtjJ2tgypeQbBs2UAR6KECeeMVKZBPLrtJunSDMstweyLXhRgPxdp14sk9tJPW9
@@ -952,16 +989,27 @@ xpub67xpozcx8pe95XVuZLHXZeG6XWXHpGq6Qv5cmNfi7cS5mtjJ2tgypeQbBs2UAR6KECeeMVKZBPLr
 
 [[public__child_key_derivation]]
 ===== Public child key derivation
+===== パブリックchild key derivation
 
 ((("child key derivation (CKD) function","public")))((("hierarchical deterministic wallets (HD wallets)","public child key derivation")))((("public child key derivation")))As mentioned  previously, a very useful characteristic of hierarchical deterministic wallets is the ability to derive public child keys from public parent keys, _without_ having the private keys. This gives us two ways to derive a child public key: either from the child private key, or directly from the parent public key. 
 
+((("child key derivation (CKD) function","public")))((("hierarchical deterministic wallets (HD wallets)","public child key derivation")))((("public child key derivation")))前に書いたように、階層的決定性ウォレットには秘密鍵を使うこと_なく_公開親キーから公開子キーを作り出せるというとても有用な特徴を持っています。この性質から、子公開鍵を作る方法に２種類あることが分かります。子公開鍵を子秘密鍵から作るか、親公開鍵から作るかです。
+
 An extended public key can be used, therefore, to derive all of the _public_ keys (and only the public keys) in that branch of the HD wallet structure.
+
+このため、拡張公開鍵は全ての_公開_鍵(そして公開鍵のみ)を生成することができます。
 
 ((("private keys","deployments without")))This shortcut can be used to create very secure public-key-only deployments where a server or application has a copy of an extended public key and no private keys whatsoever. That kind of deployment can produce an infinite number of public keys and bitcoin addresses, but cannot spend any of the money sent to those addresses. Meanwhile, on another, more secure server, the extended private key can derive all the corresponding private keys to sign transactions and spend the money. 
 
+((("private keys","deployments without")))これにより、拡張公開鍵のコピーだけを持ち全く秘密鍵を持たないサーバやアプリケーションで、とても安全な公開鍵のみの生成ができるようになります。この仕組みを使うと、制限なく公開鍵とbitcoinアドレスを作り出すことができますが、これらのbitcoinアドレスに送られるお金を使うことができません。一方、より安全なサーバでは拡張秘密鍵を使ってさきほどのbitcoinに対応した秘密鍵を生成でき、トランザクションに署名することでお金を使うことができます。
+
 ((("ecommerce servers, keys for")))((("shopping carts, public keys for")))One common application of this solution is to install an extended public key on a web server that serves an ecommerce application. The web server can use the public key derivation function to create a new bitcoin address for every transaction (e.g., for a customer shopping cart). The web server will not have any private keys that would be vulnerable to theft. Without HD wallets, the only way to do this is to generate thousands of bitcoin addresses on a separate secure server and then preload them on the ecommerce server. That approach is cumbersome and requires constant maintenance to ensure that the ecommerce server doesn't "run out" of keys.
 
+((("ecommerce servers, keys for")))((("shopping carts, public keys for")))この応用としては、Eコマースを提供するwebサーバに拡張公開鍵を置くことがあります。webサーバは公開鍵の生成関数を使ってbitcoinアドレスをトランザクションごと(例えば顧客のショッピングカートごと)に新しいbitcoinアドレスを作ることができます。しかし、このwebサーバは盗難の攻撃を受けやすい秘密鍵を持っていません。HDウォレットを使わない場合、これを実行する唯一の方法は、切り離された安全なサーバで数千のbitcoinアドレスを生成し、あらかじめEコマースサーバ上にbitcoinアドレスを読み込んでおく方法です。この方法は扱いにくく、bitcoinアドレスをあらかじめ読み込むために定期的なメンテナンスが必要となってしまいます。
+
 ((("cold-storage wallets","public child key derivation and")))((("hardware wallets","public child key derivation and")))Another common application of this solution is for cold-storage or hardware wallets. In that scenario, the extended private key can be stored on a paper wallet or hardware device (such as a((("Trezor wallet","public key derivation and"))) Trezor hardware wallet), while the extended public key can be kept online. The user can create "receive" addresses at will, while the private keys are safely stored offline. To spend the funds, the user can use the extended private key on an offline signing bitcoin client or sign transactions on the hardware wallet device (e.g., Trezor). <<CKDpub>> illustrates the mechanism for extending a parent public key to derive child public keys. 
+
+((("cold-storage wallets","public child key derivation and")))((("hardware wallets","public child key derivation and")))別の応用としては、コールドストレージまたはハードウェアウォレットへの応用です。この応用では、拡張秘密鍵はペーパーウォレットまたはハードウェアデバイス(例えば、((("Trezor wallet","public key derivation and"))) Trezor hardware wallet)に保存されます。一方、拡張公開鍵はオンライン上に保持されます。ユーザは"受け取り用"のbitcoinアドレスを自由に作ることができますが、秘密鍵は安全にオフラインに保存されます。資金を使うには、ユーザはオフラインの署名用bitcoinクライアント上で秘密鍵を使って行うか、ハードウェアウォレットデバイス上でトランザクションに署名するかをしなければいけません。<<CKDpub>>図は親公開鍵から子公開鍵を生成するメカニズムを説明しています。
 
 [[CKDpub]]
 .Extending a parent public key to create a child public key
