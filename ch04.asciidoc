@@ -1020,19 +1020,11 @@ image::images/msbt_0412.png["ChildPublicDerivation"]
 
 ((("child key derivation (CKD) function","hardened")))((("hardened child key derivation")))((("hierarchical deterministic wallets (HD wallets)","hardened child key derivation")))((("security","extended public keys and")))((("security","hardened child key derivation")))The ability to derive a branch of public keys from an extended public key is very useful, but it comes with a potential risk. Access to an extended public key does not give access to child private keys. However, because the extended public key contains the chain code, if a child private key is known, or somehow leaked, it can be used with the chain code to derive all the other child private keys. A single leaked child private key, together with a parent chain code, reveals all the private keys of all the children. Worse, the child private key together with a parent chain code can be used to deduce the parent private key. 
 
-((("child key derivation (CKD) function","hardened")))((("hardened child key derivation")))((("hierarchical deterministic wallets (HD wallets)","hardened child key derivation")))((("security","extended public keys and")))((("security","hardened child key derivation")))
-拡張公開鍵から公開鍵のブランチを生成する方法はとても有用ですが、潜在的リスクも持っています。
-拡張公開鍵にさわれても子秘密鍵にはさわれません。
-しかし、拡張公開鍵はチェーンコードを含んでいるため、もし子秘密鍵が知られているまたは漏洩してしまった場合、このチェーンコードを使ってその他全ての子秘密鍵を導けてしまうのです。????
-親チェーンコードを伴った１つの子秘密鍵の漏洩により、全ての子供の秘密鍵が明らかになってしまいます。悪いことに、親チェーンコードを伴った子秘密鍵は親秘密鍵を推測することに使われえます。
+((("child key derivation (CKD) function","hardened")))((("hardened child key derivation")))((("hierarchical deterministic wallets (HD wallets)","hardened child key derivation")))((("security","extended public keys and")))((("security","hardened child key derivation")))拡張公開鍵から公開鍵のブランチを生成する方法はとても有用ですが、潜在的リスクも持っています。拡張公開鍵にさわれても子秘密鍵にはさわれません。しかし、拡張公開鍵はチェーンコードを含んでいるため、もし子秘密鍵が知られているまたは漏洩してしまった場合、このチェーンコードを使ってその他全ての子秘密鍵を導けてしまうのです。???? 親チェーンコードを伴った１つの子秘密鍵の漏洩により、全ての子供の秘密鍵が明らかになってしまいます。悪いことに、親チェーンコードを伴った子秘密鍵は親秘密鍵を推測することに使われえます。
 
 To counter this risk, HD wallets use an alternative derivation function called _hardened derivation_, which "breaks" the relationship between parent public key and child chain code. The hardened derivation function uses the parent private key to derive the child chain code, instead of the parent public key. This creates a "firewall" in the parent/child sequence, with a chain code that cannot be used to compromise a parent or sibling private key. The hardened derivation function looks almost identical to the normal child private key derivation, except that the parent private key is used as input to the hash function, instead of the parent public key, as shown in the diagram in <<CKDprime>>.
 
-このリスクへの解決策として、HDウォレットは_強化生成_と呼ばれるもう１つの生成関数を使っています。
-この関数は、親公開鍵と子チェーンコードの間の関係を"壊す"ものです。
-強化生成関数は親公開鍵の代わりに親秘密鍵を使って子チェーンコードを生成します。
-これは親秘密鍵または兄弟秘密鍵が漏洩しないようなチェーンコードを使って親と子の間に"ファイヤーウォール"を作ります。
-強化生成関数は通常のchild key derivationとほとんど同じように見えますが、<<CKDprime>>図に示すように親公開鍵の代わりに親秘密鍵がハッシュ関数のインプットとして使われる点が異なります。
+このリスクへの解決策として、HDウォレットは_強化生成_と呼ばれるもう１つの生成関数を使っています。この関数は、親公開鍵と子チェーンコードの間の関係を"壊す"ものです。強化生成関数は親公開鍵の代わりに親秘密鍵を使って子チェーンコードを生成します。これは親秘密鍵または兄弟秘密鍵が漏洩しないようなチェーンコードを使って親と子の間に"ファイヤーウォール"を作ります。強化生成関数は通常のchild key derivationとほとんど同じように見えますが、<<CKDprime>>図に示すように親公開鍵の代わりに親秘密鍵がハッシュ関数のインプットとして使われる点が異なります。
 
 
 [[CKDprime]]
@@ -1041,22 +1033,33 @@ image::images/msbt_0413.png["ChildHardPrivateDerivation"]
 
 When the hardened private derivation function is used, the resulting child private key and chain code are completely different from what would result from the normal derivation function. The resulting "branch" of keys can be used to produce extended public keys that are not vulnerable, because the chain code they contain cannot be exploited to reveal any private keys. Hardened derivation is therefore used to create a "gap" in the tree above the level where extended public keys are used. 
 
-強化プライベート生成関数で出力される子秘密鍵とチェーンコードは通常の生成関数から得られる結果と完全に異なります。
-結果として出てくるキーの"ブランチ"は脆弱ではない拡張公開鍵を生成します。なぜなら、チェーンコード
+強化プライベート生成関数で出力される子秘密鍵とチェーンコードは、通常の生成関数から得られる結果とは完全に異なります。結果として出てくるキーの"ブランチ"は脆弱ではない拡張公開鍵を生成します。なぜなら、この拡張公開鍵に含まれているチェーンコードは、いかなる秘密鍵も攻撃できないようになっているからです。よって、強化生成は拡張公開鍵が使われるレベルよりも上のツリーに行けないようにする"ギャップ"を作り出すのです。
 
 In simple terms, if you want to use the convenience of an extended public key to derive branches of public keys, without exposing yourself to the risk of a leaked chain code, you should derive it from a hardened parent, rather than a normal parent. As a best practice, the level-1 children of the master keys are always derived through the hardened derivation, to prevent compromise of the master keys. 
 
+簡単にいうと、もし拡張公開鍵の利便性を使いたくて、しかもチェーンコードの漏洩リスクを回避したいのであれば、通常の親ではなく強化された親から拡張公開鍵を生成すべきです。ベストプラクティスとしては、レベル１のマスターキーの子供が常に強化生成を通して生成されるようにしておくことがよいでしょう。 
+
 ===== Index numbers for normal and hardened derivation
+===== 通常および強化生成のインデックス
 
 ((("hardened child key derivation","indexes for")))((("public child key derivation","indexes for")))The index number used in the derivation function is a 32-bit integer. To easily distinguish between keys derived through the normal derivation function versus keys derived through hardened derivation, this index number is split into two ranges. ((("child private keys","index numbers for")))Index numbers between 0 and 2^31^–1 (0x0 to 0x7FFFFFFF) are used _only_ for normal derivation. Index numbers between 2^31^ and 2^32^–1 (0x80000000 to 0xFFFFFFFF) are used _only_ for hardened derivation. Therefore, if the index number is less than 2^31^, that means the child is normal, whereas if the index number is equal or above 2^31^, the child is hardened. 
 
+((("hardened child key derivation","indexes for")))((("public child key derivation","indexes for")))生成関数で使われているインデックスは32bitの整数です。通常の生成関数を通して得られたキーと強化された生成関数を通して得られたキーを簡単に区別するために、このインデックスを２つの範囲に分けておきます。((("child private keys","index numbers for")))0から2^31^-1(0x0 から 0x7FFFFFFF)までのインデックスは通常の生成関数に_のみ_使われます。2^31^から2^32-1(0x80000000 から 0xFFFFFFFF)は強化生成関数に_のみ_使われます。よって、もしインデックスが2^31^より小さければ、子は通常の生成関数から生成されたもの、一方もしインデックスが2^31^と等しいかそれより上であれば、子は強化された生成関数から生成されたものです。
+
 To make the index number easier to read and display, the index number for hardened children is displayed starting from zero, but with a prime symbol. The first normal child key is therefore displayed as 0, whereas the first hardened child (index 0x80000000) is displayed as pass:[<markup>0'</markup>]. In sequence then, the second hardened key would have index 0x80000001 and would be displayed as 1', and so on. When you see an HD wallet index i', that means 2^31^+i.
 
+読んだり表示したりしやすいように、強化された子供に対するインデックスは0から始まるダッシュ付きの数字で表されます。最初の通常生成関数による子キーは0と表示され、一方最初の強化生成関数による子キー(インデックス 0x80000000)はpass:[<markup>0'</markup>]と表示されます。次に、二番目の強化キーはインデックス 0x80000001 を持ち 1' を表示されます。HDウォレットのインデックス i' を見たときは、これは2^31^+iを表していると考えてください。
+
 ===== HD wallet key identifier (path)
+===== HDウォレットキー識別子(path)
 
 ((("hierarchical deterministic wallets (HD wallets)","identifier for")))((("hierarchical deterministic wallets (HD wallets)","paths for")))Keys in an HD wallet are identified using a "path" naming convention, with each level of the tree separated by a slash (/) character (see <<table_4-8>>). Private keys derived from the master private key start with "m". Public keys derived from the master public key start with "M". Therefore, the first child private key of the master private key is m/0. The first child public key is M/0. The second grandchild of the first child is m/0/1, and so on. 
+
+((("hierarchical deterministic wallets (HD wallets)","identifier for")))((("hierarchical deterministic wallets (HD wallets)","paths for")))HDウォレットにあるキーは、"path"命名規則を使って一意に指定されます。このpath命名規則は、ツリーのレベルをスラッシュ(/)で区切って表します(<<table_4-8>>参照)。マスター秘密鍵から得られた秘密鍵は"m"から始まります。マスター公開鍵から得られた公開鍵は"M"から始まります。このため、マスター秘密鍵の最初の子秘密鍵はm/0で、最初の子公開鍵はM/0、最初の子の二番目の孫はm/0/1などとなります。
  
 The "ancestry" of a key is read from right to left, until you reach the master key from which it was derived. For example, identifier m/x/y/z describes the key that is the z-th child of key m/x/y, which is the y-th child of key m/x, which is the x-th child of m.
+
+キーの"先祖"をたどるには右から左に読み、それが得られたマスターキーに到達するまで読んでいきます。例えば、識別子 m/x/y/z はz番目の m/x/y の子キーを表し、また m/x/y は m/x のy番目の子キー、m/x は m のx番目の子キーを表します。
 
 [[table_4-8]]
 .HD wallet path examples
