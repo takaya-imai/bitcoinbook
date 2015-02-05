@@ -1020,7 +1020,7 @@ image::images/msbt_0412.png["ChildPublicDerivation"]
 
 ((("child key derivation (CKD) function","hardened")))((("hardened child key derivation")))((("hierarchical deterministic wallets (HD wallets)","hardened child key derivation")))((("security","extended public keys and")))((("security","hardened child key derivation")))The ability to derive a branch of public keys from an extended public key is very useful, but it comes with a potential risk. Access to an extended public key does not give access to child private keys. However, because the extended public key contains the chain code, if a child private key is known, or somehow leaked, it can be used with the chain code to derive all the other child private keys. A single leaked child private key, together with a parent chain code, reveals all the private keys of all the children. Worse, the child private key together with a parent chain code can be used to deduce the parent private key. 
 
-((("child key derivation (CKD) function","hardened")))((("hardened child key derivation")))((("hierarchical deterministic wallets (HD wallets)","hardened child key derivation")))((("security","extended public keys and")))((("security","hardened child key derivation")))拡張公開鍵から公開鍵のブランチを生成する方法はとても有用ですが、潜在的リスクも持っています。拡張公開鍵にさわれても子秘密鍵にはさわれません。しかし、拡張公開鍵はチェーンコードを含んでいるため、もし子秘密鍵が知られているまたは漏洩してしまった場合、このチェーンコードを使ってその他全ての子秘密鍵を導けてしまうのです。???? 親チェーンコードを伴った１つの子秘密鍵の漏洩により、全ての子供の秘密鍵が明らかになってしまいます。悪いことに、親チェーンコードを伴った子秘密鍵は親秘密鍵を推測することに使われえます。
+((("child key derivation (CKD) function","hardened")))((("hardened child key derivation")))((("hierarchical deterministic wallets (HD wallets)","hardened child key derivation")))((("security","extended public keys and")))((("security","hardened child key derivation")))拡張公開鍵から公開鍵のブランチを生成する方法はとても有用ですが、潜在的リスクも持っています。拡張公開鍵にさわれても子秘密鍵にはさわれません。しかし、拡張公開鍵はチェーンコードを含んでいるため、もし子秘密鍵が知られているまたは漏洩してしまった場合、このチェーンコードを使ってその他全ての子秘密鍵を導けてしまうのです。親チェーンコードを伴った１つの子秘密鍵の漏洩により、全ての子供の秘密鍵が明らかになってしまいます。悪いことに、親チェーンコードを伴った子秘密鍵は親秘密鍵を推測することに使われえます。
 
 To counter this risk, HD wallets use an alternative derivation function called _hardened derivation_, which "breaks" the relationship between parent public key and child chain code. The hardened derivation function uses the parent private key to derive the child chain code, instead of the parent public key. This creates a "firewall" in the parent/child sequence, with a chain code that cannot be used to compromise a parent or sibling private key. The hardened derivation function looks almost identical to the normal child private key derivation, except that the parent private key is used as input to the hash function, instead of the parent public key, as shown in the diagram in <<CKDprime>>.
 
@@ -1033,11 +1033,11 @@ image::images/msbt_0413.png["ChildHardPrivateDerivation"]
 
 When the hardened private derivation function is used, the resulting child private key and chain code are completely different from what would result from the normal derivation function. The resulting "branch" of keys can be used to produce extended public keys that are not vulnerable, because the chain code they contain cannot be exploited to reveal any private keys. Hardened derivation is therefore used to create a "gap" in the tree above the level where extended public keys are used. 
 
-強化プライベート生成関数で出力される子秘密鍵とチェーンコードは、通常の生成関数から得られる結果とは完全に異なります。結果として出てくるキーの"ブランチ"は脆弱ではない拡張公開鍵を生成します。なぜなら、この拡張公開鍵に含まれているチェーンコードは、いかなる秘密鍵も攻撃できないようになっているからです。よって、強化生成は拡張公開鍵が使われるレベルよりも上のツリーに行けないようにする"ギャップ"を作り出すのです。
+強化プライベート生成関数で出力される子秘密鍵とチェーンコードは、通常の生成関数から得られる結果とは完全に異なります。結果として出てくるキーの"ブランチ"は脆弱ではない拡張公開鍵を生成します。なぜなら、この拡張公開鍵に含まれているチェーンコードは、いかなる秘密鍵も攻撃できないようになっているからです。よって、強化生成は拡張公開鍵が使われる階層よりも上のツリーに行けないようにする"ギャップ"を作り出すのです。
 
 In simple terms, if you want to use the convenience of an extended public key to derive branches of public keys, without exposing yourself to the risk of a leaked chain code, you should derive it from a hardened parent, rather than a normal parent. As a best practice, the level-1 children of the master keys are always derived through the hardened derivation, to prevent compromise of the master keys. 
 
-簡単にいうと、もし拡張公開鍵の利便性を使いたくて、しかもチェーンコードの漏洩リスクを回避したいのであれば、通常の親ではなく強化された親から拡張公開鍵を生成すべきです。ベストプラクティスとしては、レベル１のマスターキーの子供が常に強化生成を通して生成されるようにしておくことがよいでしょう。 
+簡単にいうと、もし拡張公開鍵の利便性を使いたくて、しかもチェーンコードの漏洩リスクを回避したいのであれば、通常の親ではなく強化された親から拡張公開鍵を生成すべきです。ベストプラクティスとしては、マスターキーの１階層目の子供を常に強化生成を通して生成されるようにしておくことがよいでしょう。 
 
 ===== Index numbers for normal and hardened derivation
 ===== 通常および強化生成のインデックス
@@ -1055,7 +1055,7 @@ To make the index number easier to read and display, the index number for harden
 
 ((("hierarchical deterministic wallets (HD wallets)","identifier for")))((("hierarchical deterministic wallets (HD wallets)","paths for")))Keys in an HD wallet are identified using a "path" naming convention, with each level of the tree separated by a slash (/) character (see <<table_4-8>>). Private keys derived from the master private key start with "m". Public keys derived from the master public key start with "M". Therefore, the first child private key of the master private key is m/0. The first child public key is M/0. The second grandchild of the first child is m/0/1, and so on. 
 
-((("hierarchical deterministic wallets (HD wallets)","identifier for")))((("hierarchical deterministic wallets (HD wallets)","paths for")))HDウォレットにあるキーは、"path"命名規則を使って一意に指定されます。このpath命名規則は、ツリーのレベルをスラッシュ(/)で区切って表します(<<table_4-8>>参照)。マスター秘密鍵から得られた秘密鍵は"m"から始まります。マスター公開鍵から得られた公開鍵は"M"から始まります。このため、マスター秘密鍵の最初の子秘密鍵はm/0で、最初の子公開鍵はM/0、最初の子の二番目の孫はm/0/1などとなります。
+((("hierarchical deterministic wallets (HD wallets)","identifier for")))((("hierarchical deterministic wallets (HD wallets)","paths for")))HDウォレットにあるキーは、"path"命名規則を使って一意に指定されます。このpath命名規則は、ツリーの階層をスラッシュ(/)で区切って表します(<<table_4-8>>参照)。マスター秘密鍵から得られた秘密鍵は"m"から始まります。マスター公開鍵から得られた公開鍵は"M"から始まります。このため、マスター秘密鍵の最初の子秘密鍵はm/0で、最初の子公開鍵はM/0、最初の子の二番目の孫はm/0/1などとなります。
  
 The "ancestry" of a key is read from right to left, until you reach the master key from which it was derived. For example, identifier m/x/y/z describes the key that is the z-th child of key m/x/y, which is the y-th child of key m/x, which is the x-th child of m.
 
@@ -1074,22 +1074,37 @@ The "ancestry" of a key is read from right to left, until you reach the master k
 |=======
 
 ===== Navigating the HD wallet tree structure
+===== HDウォレットツリー構造をたどってみよう
 
 ((("BIP0043")))((("hierarchical deterministic wallets (HD wallets)","navigating")))((("hierarchical deterministic wallets (HD wallets)","tree structure for")))The HD wallet tree structure offers tremendous flexibility. Each parent extended key can have 4 billion children: 2 billion normal children and 2 billion hardened children. Each of those children can have another 4 billion children, and so on. The tree can be as deep as you want, with an infinite number of generations. With all that flexibility, however, it becomes quite difficult to navigate this infinite tree. It is especially difficult to transfer HD wallets between implementations, because the possibilities for internal organization into branches and subbranches are endless. 
 
+((("BIP0043")))((("hierarchical deterministic wallets (HD wallets)","navigating")))((("hierarchical deterministic wallets (HD wallets)","tree structure for")))HDウォレットツリー構造は非常に大きな柔軟性を持っています。それぞれの親拡張キーは40億個の子供を持つことができます(20億個の通常の子供と20億個の強化された子供)。それぞれの子供は、もう１つ40億個の子供を持つことができ、これがどんどん続きます。ツリーは好きなだけ深くすることができ、制限なく世代を作っていくことができます。制限なく作っていくことはできますが、しかし、無限のツリーをたどろうとするととても時間がかかってしまします。特にHDウォレットを他のウォレットに移そうとするときとても大変です。
+
 Two Bitcoin Improvement Proposals (BIPs) offer a solution to this complexity, by creating some proposed standards for the structure of HD wallet trees. BIP0043 proposes the use of the first hardened child index as a special identifier that signifies the "purpose" of the tree structure. Based on BIP0043, an HD wallet should use only one level-1 branch of the tree, with the index number identifying the structure and namespace of the rest of the tree by defining its purpose. For example, an HD wallet using only branch m/i'/ is intended to signify a specific purpose and that purpose is identified by index number "i".
+
+この複雑さを解決する２つのBitcoin Improvement Proposals (BIPs)が提案されています。１つ目のBIP0043は、ツリー構造の"目的"が明確化された特別な識別子を最初の拡張された子インデックスとして使うということを提案しています。BIP0043に基づけば、HDウォレットはツリーの１階層目に１つだけブランチを持ち、その他の階層は目的が定義された構造や名前空間を持つインデックスを伴うはずです。例えば、１階層目にm/i'/ のブランチだけを持っているHDウォレットは特定の目的に沿ったウォレットとして使われることを想定されており、この目的はインデックス "i" で指定される目的になります。
 
 ((("multiaccount structure")))Extending that specification, BIP0044 proposes a multiaccount structure as "purpose" number +44'+ under BIP0043. All HD wallets following the BIP0044 structure are identified by the fact that they only used one branch of the tree: m/44'/. 
 
+((("multiaccount structure")))この提案を拡張することで、BIP0044はBIP0043の元での"目的"を表す数字 +44'+ を定義しており、これは複数の口座を保持する目的を表すものです。ウォレットがBIP0044の構造に従っているかどうかは、１階層目が m/44'/だけになっていることから確認できます。 
+
 BIP0044 specifies the structure as consisting of five predefined tree levels:
+
+BIP0044では、以下のように５つの事前に定義された階層構造を提案しています。
 
 +m / purpose' / coin_type' / account' / change / address_index+
 
 ((("coin type level (multiaccount structure)")))((("purpose level (multiaccount structure)")))The first-level "purpose" is always set to +44'+. The second-level "coin_type" specifies the type of cryptocurrency coin, allowing for multicurrency HD wallets where each currency has its own subtree under the second level. There are three currencies defined for now: Bitcoin is m/44'/0', Bitcoin Testnet is pass:[<markup>m/44'/1'</markup>]; and Litecoin is pass:[<markup>m/44'/2'</markup>]. 
 
+((("coin type level (multiaccount structure)")))((("purpose level (multiaccount structure)")))最初の階層"purpose"は常に+44'+になります。第２階層"coin_type"は暗号通貨コインの種類を表し、個々の通貨が第２階層以下に独自のサブツリーを持つような複数の通貨を扱えるHDウォレットを作ることができるようになっています。現在は３つの通貨が定義されており、Bitcoinは m/44'/0'、Bitcoin Testnetは pass:[<markup>m/44'/1'</markup>]、Litecoinはpass:[<markup>m/44'/2'</markup>]になっています。
+
 ((("account level (multiaccount structure)")))The third level of the tree is "account," which allows users to subdivide their wallets into separate logical subaccounts, for accounting or organizational purposes. For example, an HD wallet might contain two bitcoin "accounts": pass:[<markup>m/44'/0'/0'</markup>] and pass:[<markup>m/44'/0'/1'</markup>]. Each account is the root of its own subtree. 
 
+((("account level (multiaccount structure)")))第３階層"account"は、ユーザが複数の口座を使えるようにし、会計や組織的な目的で使えるようにしています。例えば、HDウォレットは２つのbitcoin "口座" pass:[<markup>m/44'/0'/0'</markup>]、pass:[<markup>m/44'/0'/1'</markup>] を持つかもしれません。それぞれの口座はそれぞれ自身のサブツリーのルートになっています。
+
 ((("change level (multiaccount structure)")))On the fourth level, "change," an HD wallet has two subtrees, one for creating receiving addresses and one for creating change addresses. Note that whereas the previous levels used hardened derivation, this level uses normal derivation. This is to allow this level of the tree to export extended public keys for use in a nonsecured environment. Usable addresses are derived by the HD wallet as children of the fourth level, making the fifth level of the tree the "address_index." For example, the third receiving address for bitcoin payments in the primary account would be M/44'/0'/0'/0/2. <<table_4-9>> shows a few more examples.
+
+((("change level (multiaccount structure)")))第４階層"charge"では、HDウォレットは２つのサブツリーを持つことができ、１つは受取用アドレスで１つはおつり用アドレスです。前の階層では強化生成が使われたのですが、この階層では通常の生成が使われています。これは、拡張公開鍵を安全ではない環境で使うようにするためです。???? 使うことのできないアドレスが第４階層の子供としてHDウォレットから生成され、第５階層"address_index"を作ります。例えば、最初の口座の三番目のbitcoin受け取り用アドレスはM/44'/0'/0'/0/2になります。<<table_4-9>>にいくつかの例を示します。
 
 [[table_4-9]]
 .BIP0044 HD wallet structure examples
@@ -1102,8 +1117,11 @@ BIP0044 specifies the structure as consisting of five predefined tree levels:
 |=======
 
 ===== Experimenting with HD wallets using sx tools
+===== sxツールを使ったHDウォレットの実験
 
 ((("hierarchical deterministic wallets (HD wallets)","sx tools and")))((("sx tools","HD wallets and")))Using the command-line tool +sx+, introduced in <<ch03_bitcoin_client>>, you can experiment with generating and extending BIP0032 deterministic keys, as well as displaying them in different formats: (((range="endofrange", startref="ix_ch04-asciidoc25b")))(((range="endofrange", startref="ix_ch04-asciidoc25a")))(((range="endofrange", startref="ix_ch04-asciidoc25")))(((range="endofrange", startref="ix_ch04-asciidoc24")))(((range="endofrange", startref="ix_ch04-asciidoc23")))
+
+((("hierarchical deterministic wallets (HD wallets)","sx tools and")))((("sx tools","HD wallets and")))<<ch03_bitcoin_client>>で紹介したコマンドラインツール +sx+ を使うと、異なった形式での表現と同時にBIP0032決定性キーを生成したり拡張したりする実験をしてみることができます。
 
 ====
 [source, bash]
@@ -1125,20 +1143,34 @@ xprv9yL8ndfdPVeDWJenF18oiHguRUj8jHmVrqqD97YQHeTcR3LCeh53q5PXPkLsy2kRaqgwoS6YZBLa
 ====
 
 === Advanced Keys and Addresses
+=== 最近のキーとアドレスの進展
 
 In the following sections we will look at advanced forms of keys and addresses, such as encrypted private keys, script and multisignature addresses, vanity addresses, and paper wallets.
 
+次の節では、暗号化秘密鍵、scriptとマルチシグネチャーアドレス、文字列指定のあるbitcoinアドレス(vanity address)、ペーパーウォレットなどキーとアドレスの最近の進展を見ていきます。
+
 ==== Encrypted Private Keys (BIP0038)
+==== 暗号化秘密鍵(BIP0038)
 
 ((("BIP0038")))((("encrypted private keys")))((("private keys","encrypted")))((("security","encrypted private keys")))((("security","of private keys")))Private keys must remain secret. The need for _confidentiality_ of the private keys is a truism that is quite difficult to achieve in practice, because it conflicts with the equally important security objective of _availability_. ((("security","of wallet backups")))Keeping the private key private is much harder when you need to store backups of the private key to avoid losing it. A private key stored in a wallet that is encrypted by a password might be secure, but that wallet needs to be backed up. At times, users need to move keys from one wallet to another—to upgrade or replace the wallet software, for example. Private key backups might also be stored on paper (see <<paper_wallets>>) or on external storage media, such as a USB flash drive. But what if the backup itself is stolen or lost? These conflicting security goals led to the introduction of a portable and convenient standard for encrypting private keys in a way that can be understood by many different wallets and bitcoin clients, standardized by Bitcoin Improvement Proposal 38  or BIP0038 (see <<bip0038>>). 
-    
+
+((("BIP0038")))((("encrypted private keys")))((("private keys","encrypted")))((("security","encrypted private keys")))((("security","of private keys")))秘密鍵は極秘にしておかなければいけません。ただ秘密鍵の_機密性_は、実用上達成することが大変難しいことはよく知られていることです。というのは、機密性といつでも安全に使えることの両立が難しいためです。((("security","of wallet backups")))秘密鍵を秘密に保つことは、秘密鍵のバックアップを保持し紛失を避けるようにするとさらに難しくなります。ウォレットにあるパスワードで暗号化された秘密鍵は安全かもしれませんが、ウォレットはバックアップしておかなければいけないのです。ときどき、例えばウォレットをアップグレードする、または別のウォレットに変えるために、ユーザはキーを１つのウォレットから別のウォレットに移動する必要が出てきます。秘密鍵のバックアップもまた紙(<<paper_wallets>>参照)、またはUSBフラッシュメモリのような外部ストレージに保存されるかもしれません。しかし、バックアップそのもが盗まれたり紛失してしまったらどうなるでしょうか？これらの両立が難しいセキュリティ問題を解決するために、持ち出し可能で便利な暗号化秘密鍵が考案されました。この暗号化秘密鍵は、多くのウォレットやbitcoinクライアントに実装されており、Bitcoin Improvement Proposal 38またはBIP0038(<<bip0038>>参照)で標準化されています。
+
 BIP0038 proposes a common standard for encrypting private keys with a passphrase and encoding them with Base58Check so that they can be stored securely on backup media, transported securely between wallets, or kept in any other conditions where the key might be exposed. The standard for encryption uses the((("Advanced Encryption Standard (AES)"))) Advanced Encryption Standard (AES), a standard established by the National Institute of Standards and Technology (NIST) and used broadly in data encryption implementations for commercial and military applications. 
+
+BIP0038は、安全なバックアップメディアへの保存およびウォレット間の転送ができるように、またキーが晒される可能性のある状況にも対応できるように、パスフレーズで秘密鍵を暗号化しさらにBase58Checkでエンコードする標準規格を提案しています。この暗号化基準は、((("Advanced Encryption Standard (AES)"))) Advanced Encryption Standard (AES)を採用しています。AESはNational Institute of Standards and Technology (NIST)によって開発され、商用または軍用アプリケーションの暗号化実装に広く使われているものです。
 
 ((("Wallet Import Format (WIF)","from BIP0038 encryption")))A BIP0038 encryption scheme takes as input a bitcoin private key, usually encoded in the Wallet Import Format (WIF), as a Base58Check string with a prefix of "5".  Additionally, the BIP0038 encryption scheme takes a passphrase—a long password—usually composed of several words or a complex string of alphanumeric characters. The result of the BIP0038 encryption scheme is a Base58Check-encoded encrypted private key that begins with the prefix +6P+. If you see a key that starts with +6P+, that means it is encrypted and requires a passphrase in order to convert (decrypt) it back into a WIF-formatted private key (prefix +5+) that can be used in any wallet. Many wallet applications now recognize BIP0038-encrypted private keys and will prompt the user for a passphrase to decrypt and import the key. Third-party applications, such as the incredibly useful browser-based http://bitaddress.org[Bit Address] (Wallet Details tab), can be used to decrypt BIP0038 keys. 
 
+((("Wallet Import Format (WIF)","from BIP0038 encryption")))BIP0038暗号化スキームでは、インプットとしてbitcoin秘密鍵を取り、通常prefix "5" を伴ったBase58Checkを使いWallet Import Format (WIF)にエンコードされます。さらにBIP0038暗号化スキームでは、アルファベットと数字が混ざった複雑な文字列で構成されるパスコードという長いパスワードを使います。BIP0038暗号化スキームの結果として、+6P+ から始まるBase58Checkでエンコードされた暗号化秘密鍵が得られます。もしキーが+6P+から始まっていれば、それは暗号化されており、どのウォレットでも使えるWIF形式秘密鍵(+5+から始まる)に戻すためにはパスフレーズが必要だということが分かります。現在多くのウォレットはBIP0038暗号化秘密鍵を実装しており、キーをインポートし復号化するときにパスフレーズを求められるでしょう。非常に使いやすいブラウザベースの http://bitaddress.org[Bit Address] (Wallet Details tab) などのサードパーティーのアプリケーションでもBIP0038キーを復号化することができます。
+
 ((("paper wallets","BIP0038 encryption and")))The most common use case for BIP0038 encrypted keys is for paper wallets that can be used to back up private keys on a piece of paper. As long as the user selects a strong passphrase, a paper wallet with BIP0038 encrypted private keys is incredibly secure and a great way to create offline bitcoin storage (also known as "cold storage").
 
+((("paper wallets","BIP0038 encryption and")))BIP0038暗号化キーの最も多くの利用用途は、秘密鍵を紙にバックアップするときです。ユーザが協力なパスフレーズを選んでいる限りBIP0038暗号化秘密鍵を伴ったペーパーウォレットは非常に安全で、オフラインbitcoinストレージ("コールドウォレット"と呼ばれてもいます)を作るための最高の方法です。
+
 Test the encrypted keys in <<table_4-10>> using((("bitaddress.org"))) bitaddress.org to see how you can get the decrypted key by entering the passphrase.
+
+パスフレーズを入れることでどのように復号化されたキーを得るかを理解するために ((("bitaddress.org"))) bitaddress.org を使って<<table_4-10>>にある暗号化されたキーをテストしてみてください。
 
 [[table_4-10]]
 .Example of BIP0038 encrypted private key 
