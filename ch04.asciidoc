@@ -1183,19 +1183,27 @@ Test the encrypted keys in <<table_4-10>> using((("bitaddress.org"))) bitaddress
 
 [[p2sh_addresses]]
 ==== Pay-to-Script Hash (P2SH) and Multi-Sig Addresses 
+==== Pay-to-Script Hash (P2SH) とマルチシグネチャーアドレス
 
 ((("addresses, bitcoin","multi-signature addresses")))((("addresses, bitcoin","Pay-to-Script Hash (P2SH)")))((("multi-signature addresses")))((("Pay-to-Script Hash (P2SH)")))As we know, traditional bitcoin addresses begin with the number “1” and are derived from the public key, which is derived from the private key.  Although anyone can send bitcoin to a “1” address, that bitcoin can only be spent by presenting the corresponding private key signature and public key hash. 
 
+((("addresses, bitcoin","multi-signature addresses")))((("addresses, bitcoin","Pay-to-Script Hash (P2SH)")))((("multi-signature addresses")))((("Pay-to-Script Hash (P2SH)")))知っての通り、初期から使われているbitcoinアドレスは“1”から始まり、秘密鍵から得られた公開鍵から得られます。誰もがbitcoinを“1”から始まるbitcoinアドレスに送れますが、このbitcoinは対応する秘密鍵署名と公開鍵ハッシュを使うことでのみ使用できます。
+
 Bitcoin addresses that begin with the number “3” are pay-to-script hash (P2SH) addresses, sometimes erroneously called multi-signature or multi-sig addresses. They designate the beneficiary of a bitcoin transaction as the hash of a script, instead of the owner of a public key. The feature was introduced in January 2012 with Bitcoin Improvement Proposal 16, or BIP0016 (see <<bip0016>>), and is being widely adopted because it provides the opportunity to add functionality to the address itself. Unlike transactions that "send" funds to traditional “1” bitcoin addresses, also known as((("BIP0016")))((("Pay-to-Public-Key-Hash (P2PKH)"))) pay-to-public-key-hash (P2PKH), funds sent to “3” addresses require something more than the presentation of one public key hash and one private key signature as proof of ownership. The requirements are designated at the time the address is created, within the script, and all inputs to this address will be encumbered with the same requirements.
+
+“3”から始まるbitcoinアドレスはpay-to-script hash (P2SH)アドレスであり、ときどき間違ってマルチシグネチャーアドレスまたはマルチシグアドレスと呼ばれます。これらではbitcoinトランザクションの受取人を、公開鍵の所有者の代わりにscriptのハッシュを使って指定します。この特徴は、2012年にBitcoin Improvement Proposal 16または BIP0016 (<<bip0016>>参照)で導入され、幅広く採用されています。というのは、この特徴により、アドレス自体に機能を追加することができるようになったためです。“1”から始まるbitcoinアドレスに資金を“送る”トランザクション(((("BIP0016")))((("Pay-to-Public-Key-Hash (P2PKH)"))) pay-to-public-key-hash (P2PKH)とも呼ばれる)と違って、“3”で始まるbitcoinアドレスに送った資金のトランザクションでは、公開鍵ハッシュと秘密鍵署名以外の別のものも要求されます。要求されるものはbitcoinアドレスを作ったときにscriptの中で指定され、このbitcoinアドレスへの全てのインプットでそれらが要求されます。
     
 A pay-to-script hash address is created from a transaction script, which defines who can spend a transaction output (for more detail, see <<p2sh>>). Encoding a pay-to-script hash address involves using the same double-hash function as used during creation of a bitcoin address, only applied on the script instead of the public key:
-    
+
+pay-to-scriptハッシュアドレスはトランザクションscriptから生成され、トランザクションアウトプットを誰が使えるかということを定義しています(詳細については<<p2sh>>参照)。pay-to-scriptハッシュアドレスのエンコードはbitcoinアドレスを生成するときに使われる二重ハッシュ関数と同じ関数を使って行われ、公開鍵の代わりにscriptにのみ適用されます。
+ 
 ----
 script hash = RIPEMD160(SHA256(script))
 ----
     
 ((("script hashes")))The resulting "script hash" is encoded with Base58Check with a version prefix of 5, which results in an encoded address starting with a +3+. An example of a P2SH address is +32M8ednmuyZ2zVbes4puqe44NZumgG92sM+. 
 
+((("script hashes")))出力された"script hash"はversion prefix 5でBase58Checkエンコーディングされ、これは+3+から始まるものになっています。P2SHアドレスの例は、+32M8ednmuyZ2zVbes4puqe44NZumgG92sM+ です。
 
 [TIP]
 ====
@@ -1360,6 +1368,7 @@ Other designs feature additional copies of the key and address, in the form of d
 [[paper_wallet_spw]]
 .An example of a paper wallet with additional copies of the keys on a backup "stub."
 image::images/msbt_0418.png[]
+
 
 
 
