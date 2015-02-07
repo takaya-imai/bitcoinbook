@@ -1211,22 +1211,37 @@ P2SH is not necessarily the same as a multi-signature standard transaction. A P2
 ====
 
 ===== Multi-signature addresses and P2SH
+===== マルチシグネチャーアドレスとP2SH
 
 Currently, the most common implementation of the P2SH function is the multi-signature address script. As the name implies, the underlying script requires more than one signature to prove ownership and therefore spend funds. The bitcoin multi-signature feature is designed to require M signatures (also known as the “threshold”) from a total of N keys, known as an M-of-N multi-sig, where M is equal to or less than N. For example, Bob the coffee shop owner from <<ch01_intro_what_is_bitcoin>> could use a multi-signature address requiring 1-of-2 signatures from a key belonging to him and a key belonging to his spouse, ensuring either of them could sign to spend a transaction output locked to this address. This would be similar to a “joint account” as implemented in traditional banking where either spouse can spend with a single signature. Or Gopesh, the web designer paid by Bob to create a website, might have a 2-of-3 multi-signature address for his business that ensures that no funds can be spent unless at least two of the business partners sign a transaction. 
 
+現在、P2SHの最も一般的な実装は、マルチシグネチャーアドレスscriptです。この名前が示しているように、scriptは所有権を証明し資金を利用するための署名以外も要求します。bitcoinマルチシグネチャーは、N個のキーから作られるM個の署名(thresholdとも呼ばれます)を要求し、これはM-of-N multi-sigと呼ばれています。ここで、MはNと等しいか小さい数です。例えば、<<ch01_intro_what_is_bitcoin>>に出てきたコーヒーショップのオーナーのボブは、彼のキーと彼の奥さんのキーから作られる1-of-2 signatureを要求するマルチシグネチャーアドレスを使うことができ、このアドレスに紐づいたトランザクションアウトプットを使うには彼または奥さんのどちらか一方のキーで署名すればよいのです。Gopesh(ボブのウェブサイトを作ったウェブデザイナ)がビジネス用に2-of-3マルチシグネチャーアドレスを持っていたとすると、少なくともビジネスパートナーの２人がトランザクションに署名しなければこのアドレスに紐づく資金を使うことができません。
+
 We will explore how to create transactions that spend funds from P2SH (and multi-signature) addresses in <<transactions>>.
 
+<<transactions>>で、P2SH(とマルチシグネチャー)でのトランザクションの作成方法について説明します。
+
 ==== Vanity Addresses
+==== 文字列指定のあるbitcoinアドレス(Vanity Address)
 
 ((("addresses, bitcoin","vanity", id="ix_ch04-asciidoc26", range="startofrange")))((("vanity addresses", id="ix_ch04-asciidoc27", range="startofrange")))Vanity addresses are valid bitcoin addresses that contain human-readable messages. For example, +1LoveBPzzD72PUXLzCkYAtGFYmK5vYNR33+ is a valid address that contains the letters forming the word "Love" as the first four Base-58 letters. Vanity addresses require generating and testing billions of candidate private keys, until one derives a bitcoin address with the desired pattern. Although there are some optimizations in the vanity generation algorithm, the process essentially involves picking a private key at random, deriving the public key, deriving the bitcoin address, and checking to see if it matches the desired vanity pattern, repeating billions of times until a match is found. 
 
+((("addresses, bitcoin","vanity", id="ix_ch04-asciidoc26", range="startofrange")))((("vanity addresses", id="ix_ch04-asciidoc27", range="startofrange")))文字列指定のあるbitcoinアドレス(Vanity Address)は人間が読むことができるメッセージを含んだbitcoinアドレスです。例えば、+1LoveBPzzD72PUXLzCkYAtGFYmK5vYNR33+ には、最初の四文字に"Love"という単語が含まれています。Vanity addressでは、bitcoinアドレスに望んだパターンが出るまで何回も秘密鍵を生成しチェックしなければいけません。vanity addressを生成するいくつかの効率的な方法があるものの、基本的に秘密鍵をランダムに生成して公開鍵、bitcoinアドレスを導出、vanityパターンに合っているかチェックするということを数十億回繰り返す必要があります。
+
 Once a vanity address matching the desired pattern is found, the private key from which it was derived can be used by the owner to spend bitcoins in exactly the same way as any other address. Vanity addresses are no less or more secure than any other address. They depend on the same Elliptic Curve Cryptography (ECC) and Secure Hash Algorithm (SHA) as any other address. You can no more easily find the private key of an address starting with a vanity pattern than you can any other address.
+
+一度望んだパターンを含むvanity addressが見つかると、それを導出した秘密鍵はvanity address以外のときと全く同じ方法でbitcoinの使用に使われます。vanity addressの安全性は他のアドレスと全く変わりません。vanity address以外のときと同じように安全性はElliptic Curve Cryptography (ECC)とSecure Hash Algorithm (SHA)に依っています。vanity addressはvanity address以外のアドレスよりも作ることが難しいのです。
 
 In <<ch01_intro_what_is_bitcoin>>, we introduced Eugenia, a children's charity director operating in the Philippines. Let's say that Eugenia is organizing a bitcoin fundraising drive and wants to use a vanity bitcoin address to publicize the fundraising. Eugenia will create a vanity address that starts with "1Kids" to promote the children's charity fundraiser. Let's see how this vanity address will be created and what it means for the security of Eugenia's charity. 
 
+<<ch01_intro_what_is_bitcoin>>でフィリピンで子供たちのチャリティー活動を行っているEugeniaを紹介しました。Eugeniaがbitcoinによる寄付を募るためにvanity addressを作りたいと考えているとしましょう。Eugeniaは"1Kids"から始まるvanity addressを作ることにしました。どのようにvanity addressが作られ、Eugeniaのチャリティー活動のセキュリティにどう影響するか見ていきましょう。
+
 ===== Generating vanity addresses
+===== vanity addressの生成
 
 ((("vanity addresses","generating", id="ix_ch04-asciidoc28", range="startofrange")))It's important to realize that a bitcoin address is simply a number represented by symbols in the Base58 alphabet. The search for a pattern like "1Kids" can be seen as searching for an address in the range from +1Kids11111111111111111111111111111+ to +1Kidszzzzzzzzzzzzzzzzzzzzzzzzzzzzz+. There are approximately 58^29^ (approximately 1.4 * 10^51^) addresses in that range, all starting with "1Kids". <<table_4-11>> shows the range of addresses that have the prefix 1Kids.
+
+((("vanity addresses","generating", id="ix_ch04-asciidoc28", range="startofrange")))bitcoinアドレスはBase58文字で表されている数字であるため、"1Kids"のようなパターンの探索は、+1Kids11111111111111111111111111111+から+1Kidszzzzzzzzzzzzzzzzzzzzzzzzzzzzz+の範囲に入るアドレスを探すことになります。近似的に58^29^(約1.4 * 10^51^)個のアドレスがこの範囲にあり、全て"1Kids"から始まっています。<<table_4-11>>は1Kidsから始まるアドレスの範囲を示しています。
 
 [[table_4-11]]
 .The range of vanity addresses starting with "1Kids"
@@ -1236,6 +1251,8 @@ In <<ch01_intro_what_is_bitcoin>>, we introduced Eugenia, a children's charity d
 |=======
 
 Let's look at the pattern "1Kids" as a number and see how frequently we might find this pattern in a bitcoin address (see <<table_4-12>>). An average desktop computer PC, without any specialized hardware, can search approximately 100,000 keys per second.
+
+特別なハードウェアではなく一般的なデスクトップパソコンでだいたい秒間100000個のキーを探すことができると想定すると、どれくらいの時間で望んだパターンを含むbitcoinアドレスが現れるでしょうか(<<table_4-12>>参照)。
 
 [[table_4-12]]
 .The frequency of a vanity pattern (1KidsCharity) and average time-to-find on a desktop PC
@@ -1258,9 +1275,15 @@ Let's look at the pattern "1Kids" as a number and see how frequently we might fi
 
 As you can see, Eugenia won't be creating the vanity address "1KidsCharity" any time soon, even if she had access to several thousand computers. Each additional character increases the difficulty by a factor of 58. Patterns with more than seven characters are usually found by specialized hardware, such as custom-built desktops with multiple((("graphical processing units (GPUs)"))) graphical processing units (GPUs). These are often repurposed bitcoin mining "rigs" that are no longer profitable for bitcoin mining but can be used to find vanity addresses. Vanity searches on GPU systems are many orders of magnitude faster than on a general-purpose CPU. 
 
+このように、たとえ数千台のコンピュータが使えたとしてもEugeniaは"1KidsCharity"を含むvanity addressをすぐに作ることはできないでしょう。望むパターンの文字数が１個増えると見つける難しさは58倍になります。７文字より多いパターンだと通常特別に設計されたハードウェアが必要になり、複数の((("graphical processing units (GPUs)"))) graphical processing units (GPUs)を積んだカスタムデスクトップが必要になります。特別に設計されたハードウェアとして、bitcoinマイニングではもう利益を生まなくなった"rigs"をvanity address生成に転用することがよくあります。GPUで組まれたものを使うと、汎用CPUに比べてはるかに速く計算できるのです。
+
 ((("vanity-miners")))Another way to find a vanity address is to outsource the work to a pool of vanity miners, such as the pool at http://vanitypool.appspot.com[Vanity Pool]. A pool is a service that allows those with GPU hardware to earn bitcoin searching for vanity addresses for others. For a small payment (0.01 bitcoin or approximately $5 at the time of this writing), Eugenia can outsource the search for a seven-character pattern vanity address and get results in a few hours instead of having to run a CPU search for months. 
 
+((("vanity-miners")))vanity addressを見つけるもう１つの方法は、vanityマイナープールに依頼することです。例えば、http://vanitypool.appspot.com[Vanity Pool] です。これはGPUハードウェアを使ってvanity addressを見つけ出すことで儲けを出そうとしている集団です。少ない費用(0.01bitcoin、この執筆段階では約$5)でEugeniaは７文字のパターンを持つvanity addressの探索を外注に出すことができ、数時間後に結果を得ることができるようになります。
+
 Generating a vanity address is a brute-force exercise: try a random key, check the resulting address to see if it matches the desired pattern, repeat until successful. <<vanity_miner_code>> shows an example of a "vanity miner," a program designed to find vanity addresses, written in C++. The example uses the((("libbitcoin library","finding vanity addresses with"))) libbitcoin library, which we introduced in <<alt_libraries>>.
+
+vanity addressの生成は、１つずつを確認していく総当たり方式です。１個１個ランダムにキーを作ってみて、望んだパターンに合っているか確認します。<<vanity_miner_code>> は"vanityマイナー"の例で、C++で書かれたvanity addressを探すプログラムです。例では<<alt_libraries>>で紹介した((("libbitcoin library","finding vanity addresses with"))) libbitcoinライブラリを使っています。
 
 [[vanity_miner_code]]
 .Vanity address miner
@@ -1272,6 +1295,8 @@ include::code/vanity-miner.cpp[]
 ====
 
 The example code must be compiled using a C++ compiler and linked against the libbitcoin library (which must be first installed on that system). To run the example, run the ++vanity-miner++ executable with no parameters (see <<vanity_miner_run>>) and it will attempt to find a vanity address starting with "1kid".
+
+この例コードでは、C++コンパイラとlibbitcoinライブラリを使ってコンパイルする必要があります。例コードを動作させるには、++vanity-miner++実行ファイルを引数なしで実行(<<vanity_miner_run>>参照)し、実行すると"1kid"から始まるvanity addressを見つけ始めます。
 
 [[vanity_miner_run]]
 .Compiling and running the vanity-miner example
@@ -1301,13 +1326,22 @@ sys	0m0.035s
 
 The example code will take a few seconds to find a match for the three-character pattern "kid", as we can see when we use the +time+ Unix command to measure the execution time. Change the +search+ pattern in the source code and see how much longer it takes for four- or five-character patterns!(((range="endofrange", startref="ix_ch04-asciidoc28")))
 
+例コードは３文字のパターン"kid"と合うbitcoinアドレスを探すのに数秒かかります。これはUnixコマンド +time+ で計測したものです。ソースコードの中にある+search+パターンを変えて、４文字または５文字パターンにするとどれくらい処理に時間がかかるようになるかやってみてください！(((range="endofrange", startref="ix_ch04-asciidoc28")))
+
 ===== Vanity address security
+===== Vanity addressの安全性
 
 ((("security","of vanity addresses")))((("security","vanity addresses and")))((("vanity addresses","security and")))Vanity addresses can be used to enhance _and_ to defeat security measures; they are truly a double-edged sword. Used to improve security, a distinctive address makes it harder for adversaries to substitute their own address and fool your customers into paying them instead of you. Unfortunately, vanity addresses also make it possible for anyone to create an address that _resembles_ any random address, or even another vanity address, thereby fooling your customers. 
 
+((("security","of vanity addresses")))((("security","vanity addresses and")))((("vanity addresses","security and")))vanity addressはセキュリティを増す方向に_も_下げる方向にも働きます。まさに諸刃の剣なのです。セキュリティを改善する方向に使われるとすると、特色があり見て分かりやすいアドレスであるため、悪意ある者があなたのお客さんをだまし自身のアドレスに支払いをさせることが難しくなります。他方セキュリティを下げる方向に使われるとすると、vanity addressでは誰でも似たアドレスを作ることができるため、似たアドレスを使ってお客さんをだますこともできてしまいます。
+
 Eugenia could advertise a randomly generated address (e.g., +1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy+) to which people can send their donations. Or, she could generate a vanity address that starts with 1Kids, to make it more distinctive. 
 
+Eugeniaは、ランダムに生成されたbitcoinアドレス(例えば、+1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy+)を使って寄付を募ることもできます。また、1Kidsから始まるvanity addressを作って、区別しやすいアドレスにすることもできます。
+
 In both cases, one of the risks of using a single fixed address (rather than a separate dynamic address per donor) is that a thief might be able to infiltrate your website and replace it with his own address, thereby diverting donations to himself. If you have advertised your donation address in a number of different places, your users may visually inspect the address before making a payment to ensure it is the same one they saw on your website, on your email, and on your flyer. In the case of a random address like +1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy+, the average user will perhaps inspect the first few characters "1J7mdg" and be satisfied that the address matches. Using a vanity address generator, someone with the intent to steal by substituting a similar-looking address can quickly generate addresses that match the first few characters, as shown in <<table_4-13>>.
+
+どちらの場合でも、１つだけのアドレス(寄付者ごとに区分けされたアドレスではなく)を使うことのリスクの１つは、侵入者があなたのウェブサイトに侵入しbitcoinアドレスを侵入者のbitcoinアドレスに置き換えてしまうことです。もし寄付用のbitcoinアドレスをすでに多くの場所に貼り出しているとしたら、寄付者は寄付をする前に、前にウェブサイトやメール、チラシで見たbitcoinアドレスと同じであるかを確認するかもしれません。+1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy+のようなランダムなbitcoinアドレスを使っている場合、大方の人はおそらく最初の数文字、"1J7mdg" だけを見てbitcoinアドレスが合っているか判断するでしょう。vanity addressを使っていると、見た目が似ているbitcoinアドレスですりかえようとしている誰かが、最初の数文字だけ合っているbitcoinアドレスをすばやく作ることができてしまいます。
 
 [[table_4-13]]
 .Generating vanity addresses to match a random address
@@ -1320,12 +1354,19 @@ In both cases, one of the risks of using a single fixed address (rather than a s
 
 So does a vanity address increase security? If Eugenia generates the vanity address +1Kids33q44erFfpeXrmDSz7zEqG2FesZEN+, users are likely to look at the vanity pattern word _and a few characters beyond_, for example noticing the "1Kids33" part of the address. That would force an attacker to generate a vanity address matching at least six characters (two more), expending an effort that is 3,364 times (58 &#x00D7; 58) higher than the effort Eugenia expended for her four-character vanity. Essentially, the effort Eugenia expends (or pays a vanity pool for) "pushes" the attacker into having to produce a longer pattern vanity. If Eugenia pays a pool to generate an 8-character vanity address, the attacker would be pushed into the realm of 10 characters, which is infeasible on a personal computer and expensive even with a custom vanity-mining rig or vanity pool. What is affordable for Eugenia becomes unaffordable for the attacker, especially if the potential reward of fraud is not high enough to cover the cost of the vanity address generation.(((range="endofrange", startref="ix_ch04-asciidoc27")))(((range="endofrange", startref="ix_ch04-asciidoc26"))) 
 
+vanity addressはセキュリティを向上させるのでしょうか？Eugeniaがvanity address +1Kids33q44erFfpeXrmDSz7zEqG2FesZEN+ を作ったとすると、人々はvanityパターンの単語 _と次の数文字_ だけを見て正しいかどうかを見ます。例えば、"1Kids33"だけです。悪意ある者は６文字か８文字だけ合っているvanity addressを作り、3,364回(58 &#x00D7; 58)????
+
 [[paper_wallets]]
 ==== Paper Wallets
+==== ペーパーウォレット
 
 ((("backups","paper wallets", id="ix_ch04-asciidoc29", range="startofrange")))((("cold-storage wallets","paper wallets as", id="ix_ch04-asciidoc30", range="startofrange")))((("paper wallets", id="ix_ch04-asciidoc31", range="startofrange")))((("wallets","paper", id="ix_ch04-asciidoc32", range="startofrange")))Paper wallets are bitcoin private keys printed on paper. Often the paper wallet also includes the corresponding bitcoin address for convenience, but this is not necessary because it can be derived from the private key. Paper wallets are a very effective way to create backups or offline bitcoin storage, also known as "cold storage." As a backup mechanism, a paper wallet can provide security against the loss of key due to a computer mishap such as a hard drive failure, theft, or accidental deletion. As a "cold storage" mechanism, if the paper wallet keys are generated offline and never stored on a computer system, they are much more secure against hackers, key-loggers, and other online computer threats. 
 
+((("backups","paper wallets", id="ix_ch04-asciidoc29", range="startofrange")))((("cold-storage wallets","paper wallets as", id="ix_ch04-asciidoc30", range="startofrange")))((("paper wallets", id="ix_ch04-asciidoc31", range="startofrange")))((("wallets","paper", id="ix_ch04-asciidoc32", range="startofrange")))ペーパーウォレットは秘密鍵を紙の上に印刷したものです。よくペーパーウォレットは利便性のため対応するbitcoinアドレスも含まれています。しかし、bitcoinアドレスは秘密鍵から導出できるためこれは必須ではありません。ペーパーウォレットはバックアップやオフラインbitcoinストレージを作るとても効率的な方法で、"コールドストレージ"とも呼ばれています。ペーパーウォレットはハードドライブの破損、盗難、また間違ってデータを削除してしまった場合などによるキーの紛失に対するバックアップとして機能します。もしペーパーウォレットのキーがオフラインで生成されてコンピュータ上に保存されていないとすると、ペーパーウォレットはハッカーやキーロガー、その他のオンライン上の脅威などに対する安全性が増す"コールドストレージ"として機能します。
+
 Paper wallets come in many shapes, sizes, and designs, but at a very basic level are just a key and an address printed on paper. <<table_4-14>> shows the simplest form of a paper wallet.
+
+ペーパーウォレットにはいろいろな形、大きさ、デザインがありますが、基本的に秘密鍵とbitcoinアドレスが紙に印刷されているだけのものです。<<table_4-14>>は最も簡単なペーパーウォレットを示しています。
 
 [[table_4-14]]
 .Simplest form of a paper wallet—a printout of the bitcoin address and private key.
@@ -1338,11 +1379,15 @@ Paper wallets come in many shapes, sizes, and designs, but at a very basic level
 
 ((("bitaddress.org","paper wallets, generating")))Paper wallets can be generated easily using a tool such as the client-side JavaScript generator at _bitaddress.org_. This page contains all the code necessary to generate keys and paper wallets, even while completely disconnected from the Internet. To use it, save the HTML page on your local drive or on an external USB flash drive. Disconnect from the Internet and open the file in a browser. Even better, boot your computer using a pristine operating system, such as a CD-ROM bootable Linux OS. Any keys generated with this tool while offline can be printed on a local printer over a USB cable (not wirelessly), thereby creating paper wallets whose keys exist only on the paper and have never been stored on any online system. Put these paper wallets in a fireproof safe and "send" bitcoin to their bitcoin address, to implement a simple yet highly effective "cold storage" solution. <<paper_wallet_simple>> shows a paper wallet generated from the bitaddress.org site.
 
+((("bitaddress.org","paper wallets, generating")))ペーパーウォレットは_bitaddress.org_でのクライアント側JavaScriptツールなどを使って簡単に作ることができます。このページには、インターネットに接続していなくてもペーパーウォレットが作れるコードが含まれています。それを使うために、HTMLページをローカルドライブ、または外部USBフラッシュドライブに保存してください。インターネットから切り離された状態で、ブラウザで保存したHTMLページを開いてみてください。より最適な状況を作り出すためには、CD-ROMで起動できるLinux OSのようなもっと簡素なオペレーティングシステムを使って起動し直してください。ツールを使って生成したどんなキーでもUSBケーブル(無線ではなく)で繋がれたローカルプリンタで印刷することができます。これにより、オンラインから切り離されたペーパーウォレットを作ることができます。これらのペーパーウォレットを耐火金庫に入れ、bitcoinをペーパーウォレット上のbitcoinアドレスに"送り"ます。ペーパーウォレットはとてもシンプルですが、極めて効果的な"コールドストレージ"です。
+
 [[paper_wallet_simple]]
 .An example of a simple paper wallet from bitaddress.org
 image::images/msbt_0414.png[]
 
 The disadvantage of the simple paper wallet system is that the printed keys are vulnerable to theft. A thief who is able to gain access to the paper can either steal it or photograph the keys and take control of the bitcoins locked with those keys. A more sophisticated paper wallet storage system uses BIP0038 encrypted private keys. The keys printed on the paper wallet are protected by a passphrase that the owner has memorized. Without the passphrase, the encrypted keys are useless. Yet, they still are superior to a passphrase-protected wallet because the keys have never been online and must be physically retrieved from a safe or other physically secured storage. <<paper_wallet_encrypted>> shows a paper wallet with an encrypted private key (BIP0038) created on the bitaddress.org site. 
+
+簡単なペーパーウォレットの不利な点は、盗難される可能性があることです。盗難者は紙を盗む、またはペーパーウォレットの写真を撮ることでこれらのキーに紐づいているbitcoinをコントロールできるようになります。より洗練されたペーパーウォレットストレージはBIP0038暗号化秘密鍵を使う方法です。ペーパーウォレットに印刷されたキーは、所有者が記憶しているパスフレーズによって守られています。パスフレーズなしでは、暗号化されたキーを使うことはできません。暗号化秘密鍵を使ったペーパーウォレットは単なるパスフレーズで保護されたウォレットよりも安全です。というのは、オンラインに晒されることがないということと、金庫またはその他の安全なストレージから物理的に取り出さなければいけないということがあるためです。<<paper_wallet_encrypted>>図はbitaddress.org上で作られた暗号化秘密鍵(BIP0038)によるペーパーウォレットを示しています。
 
 [[paper_wallet_encrypted]]
 .An example of an encrypted paper wallet from bitaddress.org. The passphrase is "test."
@@ -1355,6 +1400,8 @@ image::images/msbt_0415.png[]
 
 Paper wallets come in many designs and sizes, with many different features. Some are intended to be given as gifts and have seasonal themes, such as Christmas and New Year's themes. Others are designed for storage in a bank vault or safe with the private key hidden in some way, either with opaque scratch-off stickers, or folded and sealed with tamper-proof adhesive foil. Figures pass:[<xref linkend="paper_wallet_bpw" xrefstyle="select: labelnumber"/>] through pass:[<xref linkend="paper_wallet_spw" xrefstyle="select: labelnumber"/>] show various examples of paper wallets with security and backup features.
 
+ペーパーウォレットは多くのデザイン、大きさがあり、また多くの異なる特徴をそれぞれ持っています。いくつかはギフトとして使われることを想定したものであり、クリスマスや新年など季節ごとのテーマを持ったデザインが施されています。また、他のいくつかは銀行の格納庫、または金庫に置くことを想定されたもの、削るスクラッチがついたものなどがあります。図 pass:[<xref linkend="paper_wallet_bpw" xrefstyle="select: labelnumber"/>] から 図 pass:[<xref linkend="paper_wallet_spw" xrefstyle="select: labelnumber"/>] はいろいろな種類のペーパーウォレットを紹介しています。
+
 [[paper_wallet_bpw]]
 .An example of a paper wallet from bitcoinpaperwallet.com with the private key on a folding flap.
 image::images/msbt_0416.png[]
@@ -1364,6 +1411,8 @@ image::images/msbt_0416.png[]
 image::images/msbt_0417.png[]
 
 Other designs feature additional copies of the key and address, in the form of detachable stubs similar to ticket stubs, allowing you to store multiple copies to protect against fire, flood, or other natural disasters.(((range="endofrange", startref="ix_ch04-asciidoc32")))(((range="endofrange", startref="ix_ch04-asciidoc31")))(((range="endofrange", startref="ix_ch04-asciidoc30")))(((range="endofrange", startref="ix_ch04-asciidoc29"))) 
+
+他のデザインでは、チケットのように切り離し可能になっていて、火事や洪水など自然災害があってもいいようにキーとbitcoinアドレスの複数のコピーが持てるようになっているものもあります。(((range="endofrange", startref="ix_ch04-asciidoc32")))(((range="endofrange", startref="ix_ch04-asciidoc31")))(((range="endofrange", startref="ix_ch04-asciidoc30")))(((range="endofrange", startref="ix_ch04-asciidoc29")))
 
 [[paper_wallet_spw]]
 .An example of a paper wallet with additional copies of the keys on a backup "stub."
