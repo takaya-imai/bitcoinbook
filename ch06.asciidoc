@@ -1,13 +1,21 @@
 [[bitcoin_network_ch06]]
 == The Bitcoin Network
+== The Bitcoin Network
 
 === Peer-to-Peer Network Architecture
+=== Peer-to-Peer ネットワーク
 
 ((("bitcoin network", id="ix_ch06-asciidoc0", range="startofrange")))((("bitcoin network","architecture of")))((("peer-to-peer networks")))Bitcoin is structured as a peer-to-peer network architecture on top of the Internet. The term peer-to-peer, or P2P, means that the computers that participate in the network are peers to each other, that they are all equal, that there are no "special" nodes, and that all nodes share the burden of providing network services. The network nodes interconnect in a mesh network with a "flat" topology. There is no server, no centralized service, and no hierarchy within the network. Nodes in a peer-to-peer network both provide and consume services at the same time with reciprocity acting as the incentive for participation. Peer-to-peer networks are inherently resilient, decentralized, and open. The preeminent example of a P2P network architecture was the early Internet itself, where nodes on the IP network were equal. Today's Internet architecture is more hierarchical, but the Internet Protocol still retains its flat-topology essence. Beyond bitcoin, the largest and most successful application of P2P technologies is file sharing with Napster as the pioneer and BitTorrent as the most recent evolution of the architecture.
 
+((("bitcoin network", id="ix_ch06-asciidoc0", range="startofrange")))((("bitcoin network","architecture of")))((("peer-to-peer networks")))Bitcoinはインターネット上のpeer-to-peerネットワークとして構築されています。peer-to-peer、またはP2Pという言葉は、ネットワークに参加しているコンピュータがそれぞれ同等の立場を持ち、"特別な"ノードがなく、全てのノードがサービス負荷を負担し合っていることを指します。ネットワークノードは"フラット"なトポロジーを持つメッシュネットワークの中で互いに繋がっています。ここにサーバ、どこかに中央を持つサービス、ネットワーク内の階層はありません。peer-to-peerネットワーク内のノードは、サービスを提供もしまた同時に消費もすることで、ネットワークへ参加することのインセンティブとしての相互利益を保っています。peer-to-peerネットワークは本質的に活発であり、非中央的でオープンです。P2Pネットワークの代表的な例は初期インターネットそのもので、IPネットワーク上のノードは全て平等でした。今日のインターネットの構造はより階層的になりましたが、インターネットプロトコルはまだフラットトポロジーのエッセンスを保っています。Bitcoinが現れる前にP2Pテクノロジーを使った最も大きく最も成功したサービスはファイル共有であり、パイオニアとしてはNapster、最近の発展の牽引としてはBitTorrentなどがあります。
+
 Bitcoin's P2P network architecture is much more than a topology choice. Bitcoin is a peer-to-peer digital cash system by design, and the network architecture is both a reflection and a foundation of that core characteristic. Decentralization of control is a core design principle and that can only be achieved and maintained by a flat, decentralized P2P consensus network. 
 
+Bitcoinは計画的に構築されたpeer-to-peerのデジタルキャッシュシステムで、ネットワークアーキテクチャはBIPによる自己反映型、Bitcoin Foundationによる統率型の両方の形で決められていきます。????非中央的コントロールはBitcoinのコアデザインの原則であり、フラットで非中央的なP2Pコンセンサスネットワークによってメンテナンスされています。
+
 ((("bitcoin network","defined")))The term "bitcoin network" refers to the collection of nodes running the bitcoin P2P protocol. In addition to the bitcoin P2P protocol, there are other protocols such as((("Stratum (STM) mining protocol"))) Stratum, which are used for mining and lightweight or mobile wallets. These additional protocols are provided by gateway routing servers that access the bitcoin network using the bitcoin P2P protocol, and then extend that network to nodes running other protocols. For example, Stratum servers connect Stratum mining nodes via the Stratum protocol to the main bitcoin network and bridge the Stratum protocol to the bitcoin P2P protocol. We use the term "extended bitcoin network" to refer to the overall network that includes the bitcoin P2P protocol, pool-mining protocols, the Stratum protocol, and any other related protocols connecting the components of the bitcoin system. 
+
+((("bitcoin network","defined")))"Bitcoin network"という言葉は、Bitcoin P2Pプロトコルが動作しているノード全体を指します。Bitcoin P2Pプロトコルに加えて、((("Stratum (STM) mining protocol"))) Stratumのような他のプロトコルもあり、Stratumはマイニング、軽量またはモバイルのウォレットに使われたりします。これらの他のプロトコルは、Bitcoin P2Pプロトコルを使っているBitcoinネットワークにアクセスするサーバをルーティングするゲートウェイで使われています。また、これにより他のプロトコルで動くノードにネットワークを拡げることができます。???? 例えば、StratumサーバはStratumマイニングノードをStratumプロトコルを通してメインのBitcoinネットワークに接続させ、StratumプロトコルとBitcoin P2Pプロトコルの橋渡しをします。Bitcoin P2Pプロトコル、プールマイニングプロトコル、Stratumプロトコル、およびBitcoinシステムの各要素を繋げるその他の関連したプロトコルを全て含む全ネットワークを"拡張されたBitcoinネットワーク"という言葉で表します。
 
 === Nodes Types and Roles
 
