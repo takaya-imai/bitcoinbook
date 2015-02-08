@@ -18,8 +18,11 @@ Bitcoinは計画的に構築されたpeer-to-peerのデジタルキャッシュ�
 ((("bitcoin network","defined")))"Bitcoin network"という言葉は、Bitcoin P2Pプロトコルが動作しているノード全体を指します。Bitcoin P2Pプロトコルに加えて、((("Stratum (STM) mining protocol"))) Stratumのような他のプロトコルもあり、Stratumはマイニング、軽量またはモバイルのウォレットに使われたりします。これらの他のプロトコルは、Bitcoin P2Pプロトコルを使っているBitcoinネットワークにアクセスするサーバをルーティングするゲートウェイで使われています。また、これにより他のプロトコルで動くノードにネットワークを拡げることができます。???? 例えば、StratumサーバはStratumマイニングノードをStratumプロトコルを通してメインのBitcoinネットワークに接続させ、StratumプロトコルとBitcoin P2Pプロトコルの橋渡しをします。Bitcoin P2Pプロトコル、プールマイニングプロトコル、Stratumプロトコル、およびBitcoinシステムの各要素を繋げるその他の関連したプロトコルを全て含む全ネットワークを"拡張されたBitcoinネットワーク"という言葉で表します。
 
 === Nodes Types and Roles
+=== ノードタイプと役割
 
 ((("bitcoin network","nodes")))((("nodes","roles of")))((("nodes","types of")))Although nodes in the bitcoin P2P network are equal, they may take on different roles depending on the functionality they are supporting. A bitcoin node is a collection of functions: routing, the blockchain database, mining, and wallet services. A full node with all four of these functions is shown in <<full_node_reference>>.
+
+((("bitcoin network","nodes")))((("nodes","roles of")))((("nodes","types of")))Bitcoin P2Pネットワーク内のノードは平等ではありますが、これらはいくつかの役割に分かれています。bitcoinノードは、ルーティング、ブロックチェーンデータベース、マイニング、ウォレットという機能の集合体です。これらの機能４つを全て持つfull-nodeが<<full_node_reference>>図で示されています。
 
 [[full_node_reference]]
 .A bitcoin network node with all four functions: wallet, miner, full blockchain database, and network routing
@@ -27,15 +30,27 @@ image::images/msbt_0601.png["FullNodeReferenceClient_Small"]
 
 All nodes include the routing function to participate in the network and might include other functionality. All nodes validate and propagate transactions and blocks, and discover and maintain connections to peers. In the full-node example in <<full_node_reference>>, the routing function is indicated by an orange circle named "Network Routing Node." 
 
+全てのノードはBitcoinネットワークに参加するためにルーティング機能を必ず持っていて、その他の機能は持っていたり持っていなかったりします。全てのノードはトランザクションとブロックを検証して伝搬し、その他のノードを発見してコネクションを常に保っています。<<full_node_reference>>図のfull-node例では、ルーティング機能を"Network Routing Node"と書いてあるオレンジの円で示しています。
+
 Some nodes, called full nodes, also maintain a complete and up-to-date copy of the blockchain. Full nodes can autonomously and authoritatively verify any transaction without external reference. Some nodes maintain only a subset of the blockchain and verify transactions using a method called((("simplified payment verification (SPV) nodes","defined"))) _simplified payment verification_, or SPV. These nodes are known as SPV or lightweight nodes. In the full-node example in the figure, the full-node blockchain database function is indicated by a blue circle named "Full Blockchain." In <<bitcoin_network>>, SPV nodes are drawn without the blue circle, showing that they do not have a full copy of the blockchain. 
+
+full-nodeと呼ばれるいくつかのノードは、完全で最新のブロックチェーンの管理もしています。full-nodeは外部への参照をすることなく閉じられた形で匿名的かつ厳然にトランザクションを検証します。いくつかのノードはブロックチェーンの一部の管理のみを行っており、((("simplified payment verification (SPV) nodes","defined"))) _simplified payment verification_ または SPV と呼ばれている方法でトランザクションを検証します。これらのノードはSPVまたは軽量ノードと呼ばれています。さきほどの図にあったfull-node例では、full-nodeのブロックチェーンデータベースを"Full Blockchain"と書いてあるブルーの円で示しています。<<bitcoin_network>>図では、SPVノードがブルーの円がない形で描かれており、これはブロックチェーンの完全なコピーを持たないということを表しています。
 
 Mining nodes compete to create new blocks by running specialized hardware to solve the proof-of-work algorithm. Some mining nodes are also full nodes, maintaining a full copy of the blockchain, while others are lightweight nodes participating in pool mining and depending on a pool server to maintain a full node. The mining function is shown in the full node as a black circle named "Miner."
 
+マイニングノードは新しいブロックを作り出す競争をしており、proof-of-workアルゴリズムを解くための特別なハードウェアを動作させて行っています。いくつかのマイニングノードはfull-nodeでもあり、ブロックチェーンの完全なコピーを管理しています。一方それ以外はマイニングプールに参加している軽量ノードであり、full-nodeを管理しているプールサーバに依存しています。 
+
 User wallets might be part of a full node, as is usually the case with desktop bitcoin clients. Increasingly, many user wallets, especially those running on resource-constrained devices such as smartphones, are SPV nodes. The wallet function is shown in <<full_node_reference>> as a green circle named "Wallet".
+
+ユーザウォレットは一部がfull nodeになっており、通常デスクトップbitcoinクライアントという形でfull nodeになっています。スマートフォンなどリソースが限られているデバイスでは多くのユーザウォレットがSPVノードになっています。ウォレット機能は<<full_node_reference>>図にある"Wallet"と書かれたグリーンの円で示されています。
 
 In addition to the main node types on the bitcoin P2P protocol, there are servers and nodes running other protocols, such as specialized mining pool protocols and lightweight client-access protocols. 
 
+Bitcoin P2Pプロトコル上の主なノードタイプに加えて、その他のプロトコルで動作しているノードもあります。例えば、マイニングプール特化型プロトコルや軽量クライアントアクセスプロトコルなどです。
+
 <<node_type_ledgend>> shows the most common node types on the extended bitcoin network.
+
+<<node_type_ledgend>>は拡張されたBitcoinネットワーク上の主なノードタイプを示しています。
 
 === The Extended Bitcoin Network
 
