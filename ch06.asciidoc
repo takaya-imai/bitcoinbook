@@ -30,7 +30,7 @@ image::images/msbt_0601.png["FullNodeReferenceClient_Small"]
 
 All nodes include the routing function to participate in the network and might include other functionality. All nodes validate and propagate transactions and blocks, and discover and maintain connections to peers. In the full-node example in <<full_node_reference>>, the routing function is indicated by an orange circle named "Network Routing Node." 
 
-全てのノードはBitcoinネットワークに参加するためにルーティング機能を必ず持っていて、その他の機能は持っていたり持っていなかったりします。全てのノードはトランザクションとブロックを検証して伝搬し、その他のノードを発見してコネクションを常に保っています。<<full_node_reference>>図のfull-node例では、ルーティング機能を"Network Routing Node"と書いてあるオレンジの円で示しています。
+全てのノードはBitcoinネットワークに参加するためにルーティング機能を必ず持っていて、その他の機能は持っていたり持っていなかったりします。全てのノードはトランザクションとブロックを検証して伝搬し、その他のピアを発見してコネクションを常に保っています。<<full_node_reference>>図のfull-node例では、ルーティング機能を"Network Routing Node"と書いてあるオレンジの円で示しています。
 
 Some nodes, called full nodes, also maintain a complete and up-to-date copy of the blockchain. Full nodes can autonomously and authoritatively verify any transaction without external reference. Some nodes maintain only a subset of the blockchain and verify transactions using a method called((("simplified payment verification (SPV) nodes","defined"))) _simplified payment verification_, or SPV. These nodes are known as SPV or lightweight nodes. In the full-node example in the figure, the full-node blockchain database function is indicated by a blue circle named "Full Blockchain." In <<bitcoin_network>>, SPV nodes are drawn without the blue circle, showing that they do not have a full copy of the blockchain. 
 
@@ -76,10 +76,15 @@ image::images/msbt_0602.png["BitcoinNodeTypes"]
 image::images/msbt_0603.png["BitcoinNetwork"]
 
 === Network Discovery
+=== ネットワークをどのように発見するのか
 
 ((("bitcoin network","discovery", id="ix_ch06-asciidoc1", range="startofrange")))((("network discovery", id="ix_ch06-asciidoc2", range="startofrange")))((("nodes","network discovery and", id="ix_ch06-asciidoc3", range="startofrange")))((("peer-to-peer networks","discovery by new nodes", id="ix_ch06-asciidoc4", range="startofrange")))When a new node boots up, it must discover other bitcoin nodes on the network in order to participate. To start this process, a new node must discover at least one existing node on the network and connect to it. The geographic location of other nodes is irrelevant; the bitcoin network topology is not geographically defined. Therefore, any existing bitcoin nodes can be selected at random. 
 
+((("bitcoin network","discovery", id="ix_ch06-asciidoc1", range="startofrange")))((("network discovery", id="ix_ch06-asciidoc2", range="startofrange")))((("nodes","network discovery and", id="ix_ch06-asciidoc3", range="startofrange")))((("peer-to-peer networks","discovery by new nodes", id="ix_ch06-asciidoc4", range="startofrange")))新しいノードが立ち上がったとき、Bitcoinネットワークに参加するには他のbitcoinノードを見つけなければいけません。このプロセスを始めるために、新しいノードは少なくとも１個のノードを見つけ接続しなければいけません。他のノードの地理的な位置は関係ありません。というのは、Bitcoinネットワークのトポロジーは地理と関連づけて決められてはいないからです。このため、ランダムにノードが選ばれ得ます。
+
 ((("peer-to-peer networks","connections")))To connect to a known peer, nodes establish a TCP connection, usually to port 8333 (the port generally known as the one used by bitcoin), or an alternative port if one is provided. Upon establishing a connection, the node will start a "handshake" (see <<network_handshake>>) by transmitting a((("version message")))  +version+ message, which contains basic identifying information, including:
+
+((("peer-to-peer networks","connections")))知られているピアに接続するために、ノードはTCPコネクションを確立し、通常8333番ポート(一般にbitcoinによって使われているポート)または提供されているなら代替のポートを使います。コネクションを確立すると、ノードは((("version message"))) +version+ messageを送信することで"handshake"を始めます(<<network_handshake>>参照)。version messageはと、以下のような基本的な識別情報を含んでいるものです。
 
 +PROTOCOL_VERSION+:: A constant that defines the bitcoin P2P protocol version the client "speaks" (e.g., 70002)
 +nLocalServices+:: A list of local services supported by the node, currently just +NODE_NETWORK+
@@ -89,11 +94,25 @@ image::images/msbt_0603.png["BitcoinNetwork"]
 +subver+:: A sub-version showing the type of software running on this node (e.g., "/Satoshi:0.9.2.1/")+
 +BestHeight+:: The block height of this node's blockchain
 
++PROTOCOL_VERSION+:: クライアントが"会話をする"Bitcoin P2Pプロトコルバージョンを示す定数 (例えば 70002)
++nLocalServices+:: ノードがサポートしているローカルサービスのリスト、現状+NODE_NETWORK+のみ
++nTime+:: 現在時刻
++addrYou+:: このノードから見えるリモートノードのIP address
++addrMe+:: ローカルノードのIP address
++subver+:: このノード上で動作しているソフトウェアの種類を示すサブバージョン (例えば "/Satoshi:0.9.2.1/")+
++BestHeight+:: このノードのブロックチェーンのブロック高
+
 (See http://bit.ly/1qlsC7w[GitHub] for an example of the +version+ network message.)
+
+(+version+ network messageの例については http://bit.ly/1qlsC7w[GitHub] 参照)
 
 The peer node responds with +verack+ to acknowledge and establish a connection, and optionally sends its own +version+ message if it wishes to reciprocate the connection and connect back as a peer. 
 
+ピアノードはコネクションを承認し確立するために+verack+を返します。場合によっては、もしコネクションのお返しにピアとして接続し直す場合は自身の+version+ messageを送ります。????
+
 How does a new node find peers? Although there are no special nodes in bitcoin, there are some long-running stable nodes that are listed in the client as((("nodes","seed")))((("seed nodes"))) _seed nodes_. Although a new node does not have to connect with the seed nodes, it can use them to quickly discover other nodes in the network. In the Bitcoin Core client, the option to use the seed nodes is controlled by the option switch +-dnsseed+, which is set to 1, to use the seed nodes, by default. Alternatively, a bootstrapping node that knows nothing of the network must be given the IP address of at least one bitcoin node, after which it can establish connections through further introductions. The command-line argument +-seednode+ can be used to connect to one node just for introductions, using it as a DNS seed. After the initial seed node is used to form introductions, the client will disconnect from it and use the newly discovered peers. 
+
+新しいノードはどのようにしてピアを見つけるのでしょうか？Bitcoinネットワークに特別なノードはないですが、((("nodes","seed")))((("seed nodes"))) _シードノード_ となっている長期間にわたって安定的に稼働しているいくつかのノードがあります。新しいノードが必ずシードノードとコネクションを作らなければいけないことはありませんが、Bitcoinネットワークの他のノードをすばやく見つけるためにそれらを使うことができます。Bitcoin Coreクライアントではシードノードを使うオプションが+-dnsseed+として提供されています。初期値ではこのオプションが1になっており、初期値の状態だとシードノードを使うことになります。それ以外の方法としては、ブートストラッピングノードのIP addressを新しいノードに与え、ブートストラッピングノードに接続します。コマンドライン引数 +-seednode+ はこの１つのノードに接続するために使われます。初期導入処理が終わった後にクライアントはブートストラッピングノードとの接続を切り、新しく発見されたピアを使うようになります。????
 
 [[network_handshake]]
 .The initial handshake between peers
@@ -101,6 +120,7 @@ image::images/msbt_0604.png["NetworkHandshake"]
 
 Once one or more connections are established, the new node will send an((("addr message"))) +addr+ message containing its own IP address to its neighbors. The neighbors will, in turn, forward the +addr+ message to their neighbors, ensuring that the newly connected node becomes well known and better connected. Additionally, the newly connected node can send +getaddr+ to the neighbors, asking them to return a list of IP addresses of other peers. That way, a node can find peers to connect to and advertise its existence on the network for other nodes to find it. <<address_propagation>> shows the address discovery protocol. 
 
+一度１つまたはそれ以上のコネクションを確立すると、新しいノードは((("addr message"))) +addr+ messageという自身のIP addressが含まれた情報を隣接ノードに送信します。隣接ノードは次々に+addr+ messageを彼らの近くのノードに転送し、確実に新しく接続されたノードがwell knownになるようにします。また、新しく接続されたノードは+getaddr+を隣接ノードに送ることができ、他のピアのIP addressリストを返してもらうようにお願いすることもできます。そうすれば、ノードは接続するピアを新たに見つけることができ、その存在を他のノードに知らせることができるのです。<<address_propagation>>図はアドレスを発見する手順を示しています。
 
 [[address_propagation]]
 .Address propagation and discovery
@@ -108,7 +128,11 @@ image::images/msbt_0605.png["AddressPropagation"]
 
 A node must connect to a few different peers in order to establish diverse paths into the bitcoin network. Paths are not reliable—nodes come and go—and so the node must continue to discover new nodes as it loses old connections as well as assist other nodes when they bootstrap. Only one connection is needed to bootstrap, because the first node can offer introductions to its peer nodes and those peers can offer further introductions. It's also unnecessary and wasteful of network resources to connect to more than a handful of nodes. After bootstrapping, a node will remember its most recent successful peer connections, so that if it is rebooted it can quickly reestablish connections with its former peer network. If none of the former peers respond to its connection request, the node can use the seed nodes to bootstrap again. 
 
+ノードは２、３個の異なったピアと接続し、Bitcoinネットワークへの多様なパスを確立しなければいけません。このパスは信頼できるものではなく、ブートストラップ時に他のノードをアシストすると同時に古いコネクションを失ったときにはノードは常に新しいノードを見つけ続けなければいけません。最初に接続するノードはそのピアノードに導入手順を提供するため、ブートストラップするためには少なくとも１個のコネクションがなければなりません。???? ブートストラップを終えた後ノードは最も最近うまくコネクションをはれたピアを覚えておき、リブートしたときにすばやく覚えておいたピアとコネクションをはります。どの前のピアもコネクションリクエストに答えなければ、そのノードは再度シードノードを使うことができます。
+
 On a node running the Bitcoin Core client, you can list the peer connections with the command((("getpeerinfo command"))) +getpeerinfo+:
+
+Bitcoin Coreクライアントが動作しているノードでは、((("getpeerinfo command"))) +getpeerinfo+ のコマンドを使ってピアコネクションを表示することができます。
 
 [source,bash]
 ----
@@ -154,7 +178,11 @@ $ bitcoin-cli getpeerinfo
 
 ((("peer-to-peer networks","automatic management, overriding")))To override the automatic management of peers and to specify a list of IP addresses, users can provide the option +-connect=<IPAddress>+ and specify one or more IP addresses. If this option is used, the node will only connect to the selected IP addresses, instead of discovering and maintaining the peer connections automatically. 
 
+((("peer-to-peer networks","automatic management, overriding")))自動的に行われるピア管理ではなく特定のピアのIP addressを指定するために+-connect=<IPAddress>+オプションが用意されていて、１つまたは複数のIP addressを指定できます。このオプションが使われると、自動的にピアを見つけたりすることはせずにノードは選択されたIP addressにしか接続しないようになります。
+
 If there is no traffic on a connection, nodes will periodically send a message to maintain the connection. If a node has not communicated on a connection for more than 90 minutes, it is assumed to be disconnected and a new peer will be sought. Thus, the network dynamically adjusts to transient nodes and network problems, and can organically grow and shrink as needed without any central control.(((range="endofrange", startref="ix_ch06-asciidoc4")))(((range="endofrange", startref="ix_ch06-asciidoc3")))(((range="endofrange", startref="ix_ch06-asciidoc2")))(((range="endofrange", startref="ix_ch06-asciidoc1")))
+
+コネクション上に何もトラフィックがない場合、ノードは定期的にコネクション維持のためメッセージを送ります。90分以上何の通信もしなかったコネクションがあった場合、ノードはコネクションが切れたとみなし新しいピアを探し始めます。このように、Bitcoinネットワークは常に一時的なノードやネットワークの問題を調整しながら、中央のコントロールなしに必要に応じて有機的に成長または縮小を繰り返します。
 
 === Full Nodes
 
