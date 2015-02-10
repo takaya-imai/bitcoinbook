@@ -185,14 +185,23 @@ If there is no traffic on a connection, nodes will periodically send a message t
 コネクション上に何もトラフィックがない場合、ノードは定期的にコネクション維持のためメッセージを送ります。90分以上何の通信もしなかったコネクションがあった場合、ノードはコネクションが切れたとみなし新しいピアを探し始めます。このように、Bitcoinネットワークは常に一時的なノードやネットワークの問題を調整しながら、中央のコントロールなしに必要に応じて有機的に成長または縮小を繰り返します。
 
 === Full Nodes
+=== Full Nodes
 
 ((("blockchains","full nodes and")))((("full nodes")))((("nodes","full")))Full nodes are nodes that maintain a full blockchain with all transactions. More accurately, they probably should be called "full blockchain nodes." In the early years of bitcoin, all nodes were full nodes and currently the Bitcoin Core client is a full blockchain node. In the past two years, however, new forms of bitcoin clients have been introduced that do not maintain a full blockchain but run as lightweight clients. We'll examine these in more detail in the next section. 
 
+((("blockchains","full nodes and")))((("full nodes")))((("nodes","full")))full nodeは全てのトランザクションを持っている完全なブロックチェーンを管理しているノードです。もっと正確に言うと、full nodeはおそらく"フルブロックチェーンノード"と呼ばれるべきです。Bitcoinの初期の頃全てのノードはfull nodeでしたが、現在はBitcoin Coreがフルブロックチェーンノードです。これは２年前からBitcoinクライアントの新しい形が導入されてきたためです。新しい形というのは完全なブロックチェーンを管理する形ではなく軽量クライアントとして動かすという形です。次の節でこの詳細を説明します。
+
 ((("blockchains","on full nodes")))Full blockchain nodes maintain a complete and up-to-date copy of the bitcoin blockchain with all the transactions, which they independently build and verify, starting with the very first block (genesis block) and building up to the latest known block in the network. A full blockchain node can independently and authoritatively verify any transaction without recourse or reliance on any other node or source of information. The full blockchain node relies on the network to receive updates about new blocks of transactions, which it then verifies and incorporates into its local copy of the blockchain. 
+
+((("blockchains","on full nodes")))フルブロックチェーンノードは完全で最新のブロックチェーンコピーを管理しており、これらノードは独立に最初のブロック(起源ブロック)から最新のブロックまでを構築し検証します。フルブロックチェーンノードはBitcoinネットワークから新しいトランザクションのブロックを受け取り、それらを検証した後ブロックチェーンのローカルコピーに追加していきます。
 
 Running a full blockchain node gives you the pure bitcoin experience: independent verification of all transactions without the need to rely on, or trust, any other systems. It's easy to tell if you're running a full node because it requires 20+ gigabytes of persistent storage (disk space) to store the full blockchain. If you need a lot of disk and it takes two to three days to sync to the network, you are running a full node. That is the price of complete independence and freedom from central authority. 
 
+フルブロックチェーンノードを動作させてみると分かるように、他のノードを全く信頼することも頼ることもなく全てのトランザクションの検証が独立に進められていきます。フルブロックチェーンを保持するために20GB強のストレージが必要であるため、フルブロックチェーンノードを走らせるには多くのディスク容量とBitcoinネットワークからブロックチェーンをダウンロードするための２、３日の時間が必要です。
+
 There are a few alternative implementations of full blockchain bitcoin clients, built using different programming languages and software architectures. However, the most common implementation is the reference client((("Bitcoin Core client","and full nodes"))) Bitcoin Core, also known as the Satoshi client. More than 90% of the nodes on the bitcoin network run various versions of Bitcoin Core. It is identified as "Satoshi" in the sub-version string sent in the +version+ message and shown by the command +getpeerinfo+ as we saw earlier; for example, +/Satoshi:0.8.6/+.
+
+いくつかのフルブロックチェーンbitcoinクライアントの代替実装があり、別のプログラミング言語やソフトウェア設計で構築されています。しかし、多くの実装は((("Bitcoin Core client","and full nodes"))) Bitcoin Coreであり、サトシクライアントと呼ばれています。Bitcoinネットワーク上の90%以上のノードがBitcoin Coreのいろいろなバージョンで動作しています。このバージョンは+/Satoshi:0.8.6/+のように表示され、"Satoshi"のあとに、前に見た+getpeerinfo+コマンドの結果に出てくるsubversionが付加された形になっています。
 
 === Exchanging "Inventory"
 
