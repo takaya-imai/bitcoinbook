@@ -417,36 +417,55 @@ Whereas the transaction and orphan pools represent a single node's local perspec
 トランザクションプールとorphanプールはそれぞれのノードでの状態が異なりノードがいつ起動したか再起動したかによって変わってきますが、UTXOプールはBitcoinネットワーク内で合意されたものであり、ノードごとの違いはわずかです。さらに、トランザクションプールとorphanプールは未検証トランザクションのみを含み、UTXOプールは検証済アウトプットのみを含みます。
 
 === Alert Messages
+=== アラートメッセージ
 
 ((("alert messages")))((("bitcoin network","alert messages")))Alert messages are a seldom used function, but are nevertheless implemented in most nodes. Alert messages are bitcoin's "emergency broadcast system," a means by which the core bitcoin developers can send an emergency text message to all bitcoin nodes. This feature is implemented to allow the core developer team to notify all bitcoin users of a serious problem in the bitcoin network, such as a critical bug that requires user action. The alert system has only been used a handful of times, most notably in early 2013 when a critical database bug caused a multiblock fork to occur in the bitcoin blockchain. 
 
+((("alert messages")))((("bitcoin network","alert messages")))アラートメッセージは稀にしか使われない機能ですが、それにも関わらずほとんどのノードに実装されています。アラートメッセージはBitcoinの"緊急放送システム"で、コアのBitcoin開発者たちが緊急メッセージを全てのBitcoinノードに送れます。この機能を使うことで、コアのBitcoin開発者たちがBitcoinネットワーク内の重大な問題を全てのbitcoinユーザに通知できるようになっています。例えばユーザが何らかのアクションをとらなければならないクリティカルなバグのようなものを通知するためです。このアラートシステムはほんの数回だけしか使われておらず、最も大きなものとしては2013年初期にあったクリティカルなデータベースバグのときで、ブロックチェーンの分岐が起きてしまったときに使用されています。
+
 Alert messages are propagated by the +alert+ message. The alert message contains several fields, including:
+
+アラートメッセージは +alert+ messageによって伝搬されます。アラートメッセージは以下にあるフィールドを含んでいます。
 
 ID::
 An alert identified so that duplicate alerts can be detected
+アラートを一意に指定するID
 
 Expiration::
 A time after which the alert expires
+アラートが失効するまでの時間
 
 RelayUntil::
 A time after which the alert should not be relayed
+アラートが中継されなくなるまでの時間
 
 MinVer, MaxVer::
 The range of bitcoin protocol versions that this alert applies to
+アラートが適用されるBitcoinプロトコルバージョンの範囲
 
 subVer::
 The client software version that this alert applies to
+アラートが適用されるクライアントバージョン
 
 Priority::
 An alert priority level, currently unused
+アラートの優先レベル、現在使用されていない
 
 Alerts are cryptographically signed by a public key. The corresponding private key is held by a few select members of the core development team. The digital signature ensures that fake alerts will not be propagated on the network.
 
+アラートは暗号学的に公開鍵で署名されています。公開鍵に対応した秘密鍵は何人かの選ばれたコア開発メンバーによって保持されています。このデジタル署名によってBitcoinネットワークを嘘のアラートが伝搬しないようになっています。
+
 Each node receiving this alert message will verify it, check for expiration, and propagate it to all its peers, thus ensuring rapid propagation across the entire network. In addition to propagating the alert, the nodes might implement a user interface function to present the alert to the user. 
+
+アラートメッセージを受け取ったノードはそれを検証し、有効期間をチェックし、全てのピアにアラートメッセージを伝搬します。このため、Bitcoinネットワーク上をすばやく伝搬することができるようになっています。
 
 ((("Bitcoin Core client","alerts, configuring")))In the Bitcoin Core client, the alert is configured with the command-line option +-alertnotify+, which specifies a command to run when an alert is received. The alert message is passed as a parameter to the +alertnotify+ command. Most commonly, the +alertnotify+ command is set to generate an email message to the administrator of the node, containing the alert message. The alert is also displayed as a pop-up dialog in the graphical user interface (bitcoin-Qt) if it is running. 
 
+((("Bitcoin Core client","alerts, configuring")))Bitcoin Coreクライアント内に、このアラートを表示することができるコマンドラインオプション +-alertnotify+ があり、アラートを受け取ったときに実行するコマンドを指定できます。アラートメッセージは +alertnotify+ コマンドにパラメーターとして渡されます。よくある設定は、 +alertnotify+ コマンドにノードの管理者にアラートメッセージを含むEメールを送る設定です。このアラートはまたグラフィカルなユーザインターフェイス(bitcoin-Qt)が動いていればポップアップダイアログとしても表示されます。
+
 Other implementations of the bitcoin protocol might handle the alert in different ways. ((("mining","hardware, alerts and")))Many hardware-embedded bitcoin mining systems do not implement the alert message function because they have no user interface. It is strongly recommended that miners running such mining systems subscribe to alerts via a mining pool operator or by running a lightweight node just for alert purposes.(((range="endofrange", startref="ix_ch06-asciidoc0"))) 
+
+bitcoinプロトコルの他の実装では、アラートを別の形で受け取られているかもしれません。((("mining","hardware, alerts and")))多くのハードウェアに埋め込まれたbitcoinマイニングシステムではアラートメッセージ機能は実装されていません。というのは、ユーザインターフェイスがないためです。このようなマイニングシステムを動作させているマイナーは、マイニングプールオペレーターを通してアラートを受け取るか、アラートのためだけに軽量ノードを動作させておくことを強く推奨します。
 
 
 
