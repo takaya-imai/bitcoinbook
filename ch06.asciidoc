@@ -3,7 +3,7 @@
 == The Bitcoin Network
 
 === Peer-to-Peer Network Architecture
-=== Peer-to-Peer ネットワーク
+=== Peer-to-Peer ネットワーク設計
 
 ((("bitcoin network", id="ix_ch06-asciidoc0", range="startofrange")))((("bitcoin network","architecture of")))((("peer-to-peer networks")))Bitcoin is structured as a peer-to-peer network architecture on top of the Internet. The term peer-to-peer, or P2P, means that the computers that participate in the network are peers to each other, that they are all equal, that there are no "special" nodes, and that all nodes share the burden of providing network services. The network nodes interconnect in a mesh network with a "flat" topology. There is no server, no centralized service, and no hierarchy within the network. Nodes in a peer-to-peer network both provide and consume services at the same time with reciprocity acting as the incentive for participation. Peer-to-peer networks are inherently resilient, decentralized, and open. The preeminent example of a P2P network architecture was the early Internet itself, where nodes on the IP network were equal. Today's Internet architecture is more hierarchical, but the Internet Protocol still retains its flat-topology essence. Beyond bitcoin, the largest and most successful application of P2P technologies is file sharing with Napster as the pioneer and BitTorrent as the most recent evolution of the architecture.
 
@@ -283,8 +283,7 @@ SPVノードは関連あるトランザクションのみを取得するので�
 
 Shortly after the introduction of SPV/lightweight nodes, the bitcoin developers added a feature called _bloom filters_ to address the privacy risks of SPV nodes. Bloom filters allow SPV nodes to receive a subset of the transactions without revealing precisely which addresses they are interested in, through a filtering mechanism that uses probabilities rather than fixed patterns.(((range="endofrange", startref="ix_ch06-asciidoc6")))(((range="endofrange", startref="ix_ch06-asciidoc5a")))(((range="endofrange", startref="ix_ch06-asciidoc5"))) 
 
-SPV/軽量ノードが導入された後少しして、bitcoinの開発者たちは _bloom filters_ と呼ばれるプライバシーを漏らさない機能を追加しました。bloom filtersは、SPVノードと関連あるbitcoinアドレスがどれかを漏らすことなくトランザクションの部分集合を取得する方法です。ただし、このフィルタリングメカニズムは正確なものではなく確率を利用したものです。
-
+SPV/軽量ノードが導入された後少しして、bitcoinの開発者たちは _bloom filters_ と呼ばれるプライバシーを漏らさない機能を追加しました。bloom filtersは、SPVノードと関連あるbitcoinアドレスがどれかを漏らすことなくトランザクションの部分集合を取得する方法です。ただし、このフィルタリングメカニズムは正確なものではなく確率を利用したものです。(((range="endofrange", startref="ix_ch06-asciidoc6")))(((range="endofrange", startref="ix_ch06-asciidoc5a")))(((range="endofrange", startref="ix_ch06-asciidoc5")))
 
 === Bloom Filters
 === Bloom Filters
@@ -371,12 +370,19 @@ Bitcoin's implementation of bloom filters is described in Bitcoin Improvement Pr
 bloom filterのbitcoinでの実装は Bitcoin Improvement Proposal 37 (BIP0037) に記述されています。<<appdxbitcoinimpproposals>>を参照するか、またはhttp://bit.ly/1x6qCiO[GitHub]に行ってみてください。
 
 === Bloom Filters and Inventory Updates
+=== Bloom FiltersとInventory更新
 
 ((("inventory updates, bloom filters and")))Bloom filters are used to filter the transactions (and blocks containing them) that an SPV node receives from its peers. SPV nodes will create a filter that matches only the addresses held in the SPV node's wallet. The SPV node will then send a((("filterload message"))) +filterload+ message to the peer, containing the bloom filter to use on the connection. After a filter is established, the peer will then test each transaction's outputs against the bloom filter. Only transactions that match the filter are sent to the node. 
 
+((("inventory updates, bloom filters and")))bloom filterはSPVノードが受け取るトランザクション(およびそれらを含んでいるブロック)をフィルタリングするために使われます。SPVノードはSPVノードのウォレットにあるbitcoinアドレスのみにマッチするフィルタを作成します。SPVノードはbloom filterを含んでいる((("filterload message"))) +filterload+ messageをピアに送ります。bloom filterが送られると、ピアはそれぞれのトランザクションのアウトプットを送られてきたbloom filterでチェックします。bloom filterにマッチしたトランザクションだけがSPVノードに送られます。
+
 In response to a +getdata+ message from the node, peers will send a +merkleblock+ message that contains only block headers for blocks matching the filter and a merkle path (see <<merkle_trees>>) for each matching transaction. The peer will then also send +tx+ messages containing the transactions matched by the filter.
 
+kgetdata+ messageに対するレスポンスとして、ピアはbloom filterにマッチしたブロックのヘッダとマッチしたトランザクションそれぞれに対するmerkle path(<<merkle_trees>>参照)を含む +merkleblock+ message をSPVノードに送ります。ピアはまたbloom filterにマッチしたトランザクションを含む +tx+ messages も送ります。
+
 The node setting the bloom filter can interactively add patterns to the filter by sending a((("filteradd message"))) +filteradd+ message. To clear the bloom filter, the node can send a((("filterclear message"))) +filterclear+ message. Because it is not possible to remove a pattern from a bloom filter, a node has to clear and resend a new bloom filter if a pattern is no longer desired.(((range="endofrange", startref="ix_ch06-asciidoc9")))(((range="endofrange", startref="ix_ch06-asciidoc8")))(((range="endofrange", startref="ix_ch06-asciidoc7"))) 
+
+SPVノードが新たにパターンを増やす場合は ((("filteradd message"))) +filteradd+ message をピアに送ることでパターンをbloom filterに追加できます。またbloom filterを削除するためには、((("filterclear message"))) +filterclear+ message をピアに送ります。bloom filterからあるパターンだけを削除することはできないので、この場合SPVノードは一度bloom filterを削除してから新しいbloom filterを送り直します。(((range="endofrange", startref="ix_ch06-asciidoc9")))(((range="endofrange", startref="ix_ch06-asciidoc8")))(((range="endofrange", startref="ix_ch06-asciidoc7")))
 
 [[transaction_pools]]
 === Transaction Pools
