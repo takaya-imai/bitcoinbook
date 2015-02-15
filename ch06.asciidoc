@@ -386,20 +386,35 @@ SPVノードが新たにパターンを増やす場合は ((("filteradd message"
 
 [[transaction_pools]]
 === Transaction Pools
+=== トランザクションプール
 
 ((("bitcoin network","transaction pools")))((("transaction pools")))((("transactions","unconfirmed, pools of")))((("unconfirmed transactions")))Almost every node on the bitcoin network maintains a temporary list of unconfirmed transactions called the _memory pool_, or _transaction pool_. Nodes use this pool to keep track of transactions that are known to the network but are not yet included in the blockchain. For example, a node that holds a user's wallet will use the transaction pool to track incoming payments to the user's wallet that have been received on the network but are not yet confirmed. 
 
+((("bitcoin network","transaction pools")))((("transaction pools")))((("transactions","unconfirmed, pools of")))((("unconfirmed transactions")))Bitcoinネットワーク上のほとんどのノードは _メモリプール_ または _トランザクションプール_ と呼ばれる未検証トランザクションの一時リストを持っています。ノードはこのプールを使ってBitcoinネットワークに伝わっていてもまだブロックチェーンに含まれていないトランザクションをトラッキングしています。例えば、ウォレットを持っているノードは、Bitcoinネットワークに伝わっていてもまだ検証されていないウォレットへの入金トランザクションを一時的にこのトランザクションプールに保持しています。
+
 As transactions are received and verified, they are added to the transaction pool and relayed to the neighboring nodes to propagate on the network.
+
+トランザクションが到着したり検証されたりすると、これらはトランザクションプールに追加されたり隣接ノードに中継されBitcoinネットワーク上を伝搬していったりします。
 
 ((("orphan transaction pool")))Some node implementations also maintain a separate pool of orphaned transactions. If a transaction's inputs refer to a transaction that is not yet known, such as a missing parent, the orphan transaction will be stored temporarily in the orphan pool until the parent transaction arrives. 
 
+((("orphan transaction pool")))いくつかのノードはまた孤児になっているトランザクションを入れておく別のプールも持っています。もしトランザクションインプットがまだノードが知らないトランザクションを参照していた場合、親トランザクション(トランザクションインプットにあるトランザクション)が到着するまでorphanトランザクションは一時的にorphanプールに保存されます。
+
 When a transaction is added to the transaction pool, the orphan pool is checked for any orphans that reference this transaction's outputs (its children). Any matching orphans are then validated. If valid, they are removed from the orphan pool and added to the transaction pool, completing the chain that started with the parent transaction. In light of the newly added transaction, which is no longer an orphan, the process is repeated recursively looking for any further descendants, until no more descendants are found. Through this process, the arrival of a parent transaction triggers a cascade reconstruction of an entire chain of interdependent transactions by re-uniting the orphans with their parents all the way down the chain. 
+
+トランザクションがトランザクションプールに追加されるとき、ノードはorphanプールにあるトランザクションが、トランザクションプールに追加されるトランザクションアウトプットを参照していないかチェックします。もし参照していれば、orphanプールから削除してトランザクションプールに追加されます。このプロセスはorphanプールにあるトランザクション全てに対して行われ、トランザクションが到着することを起点にして全トランザクションのチェーンが再構築されていきます。
 
 ((("orphan transaction pool","storage")))((("transaction pools","storage")))Both the transaction pool and orphan pool (where implemented) are stored in local memory and are not saved on persistent storage; rather, they are dynamically populated from incoming network messages. When a node starts, both pools are empty and are gradually populated with new transactions received on the network.
 
+((("orphan transaction pool","storage")))((("transaction pools","storage")))トランザクションプールもorphanプール(もし実装されていれば)もローカルメモリに保持され、永続的なストレージには保存されません。むしろこれらは常にBitcoinネットワークからmessageが届くごとに書き変わっていくためローカルメモリのほうがよいのです。ノードが起動するときどちらのプールも空になっていて、Bitcoinネットワークからトランザクションが届くと次第に混み合ってきます。
+
 Some implementations of the bitcoin client also maintain a UTXO database or UTXO pool, which is the set of all unspent outputs on the blockchain. Although the name "UTXO pool" sounds similar to the transaction pool, it represents a different set of data. Unlike the transaction and orphan pools, the UTXO pool is not initialized empty but instead contains millions of entries of unspent transaction outputs, including some dating back to 2009. The UTXO pool may be housed in local memory or as an indexed database table on persistent storage. 
 
+いくつかのbitcoinクライアントの実装ではUTXOデータベースまたはUTXOプールも管理されています。このプールはブロックチェーン上の全ての未使用アウトプットを集めたものです。"UTXOプール"という名前の響きがトランザクションプールと似ていますが、別のデータの集まりです。トランザクションプールやorphanプールと違って、UTXOプールの初期状態は空ではなく最初から数百万個の未使用トランザクションアウトプット(2009年からのトランザクションアウトプット)を持っています。UTXOプールはローカルメモリまたは永続ストレージのデータベースに保持されています。
+
 Whereas the transaction and orphan pools represent a single node's local perspective and might vary significantly from node to node depending upon when the node was started or restarted, the UTXO pool represents the emergent consensus of the network and therefore will vary little between nodes. Furthermore, the transaction and orphan pools only contain unconfirmed transactions, while the UTXO pool only contains confirmed outputs.
+
+トランザクションプールとorphanプールはそれぞれのノードでの状態が異なりノードがいつ起動したか再起動したかによって変わってきますが、UTXOプールはBitcoinネットワーク内で合意されたものであり、ノードごとの違いはわずかです。さらに、トランザクションプールとorphanプールは未検証トランザクションのみを含み、UTXOプールは検証済アウトプットのみを含みます。
 
 === Alert Messages
 
