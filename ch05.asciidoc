@@ -29,12 +29,19 @@ Once recorded on the blockchain and confirmed by sufficient subsequent blocks (c
 
 [[tx_origination]]
 ==== Creating Transactions
+==== トランザクションの生成
 
 ((("transactions","creating")))In some ways it helps to think of a transaction in the same way as a paper check. Like a check, a transaction is an instrument that expresses the intent to transfer money and is not visible to the financial system until it is submitted for execution. Like a check, the originator of the transaction does not have to be the one signing the transaction. 
 
+((("transactions","creating")))小切手と同じやり方を使ってトランザクションを考えてみると考えやすいです。小切手と同じように、トランザクションはお金を転送するという意思を表す道具で、実際に使われるまで目に見える形にはなりません。また小切手と同じように、トランザクションの発行人はトランザクションに署名している人である必要はありません。
+
 Transactions can be created online or offline by anyone, even if the person creating the transaction is not an authorized signer on the account. For example, an accounts payable clerk might process payable checks for signature by the CEO. Similarly, an accounts payable clerk can create bitcoin transactions and then have the CEO apply digital signatures to make them valid. Whereas a check references a specific account as the source of the funds, a bitcoin transaction references a specific previous transaction as its source, rather than an account. 
 
+仮にトランザクションを作った人が口座の正規署名者でなかったとしてもトランザクションは誰かによってオンラインまたはオフラインで作ることができます。例えば、口座へのアクセス権を持った事務員はCEOによる署名が入った小切手を作ることができ、同様に口座へのアクセス権を持った事務員はBitcoinトランザクションを作ることができ、トランザクションを有効にするデジタル署名をトランザクションに適用することができます。小切手は資金がある特定の口座を参照している一方、Bitcoinトランザクションは口座ではなく１つ前のトランザクションを参照することになります。
+
 Once a transaction has been created, it is signed by the owner (or owners) of the source funds. If it is properly formed and signed, the signed transaction is now valid and contains all the information needed to execute the transfer of funds. Finally, the valid transaction has to reach the bitcoin network so that it can be propagated until it reaches a miner for inclusion in the pubic ledger (the blockchain).
+
+トランザクションが一度作られると、資金の所有者(または所有者たち)によって署名されます。もし正規の形式を保持しつつ署名されていれば、署名されたトランザクションは有効になり資金の転送を実行するために必要な全ての情報を含んでいることになります。最終的に、有効なトランザクションはBitcoinネットワークを伝搬していき、マイナーによって公的な元帳(ブロックチェーン)に格納されます。
 
 [[tx_bcast]]
 ==== Broadcasting Transactions to the Bitcoin Network
