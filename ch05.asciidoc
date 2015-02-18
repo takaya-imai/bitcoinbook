@@ -9,11 +9,7 @@
 
 ((("transactions", id="ix_ch05-asciidoc0", range="startofrange")))Transactions are the most important part of the bitcoin system. Everything else in bitcoin is designed to ensure that transactions can be created, propagated on the network, validated, and finally added to the global ledger of transactions (the blockchain). Transactions are data structures that encode the transfer of value between participants in the bitcoin system. Each transaction is a public entry in bitcoin's blockchain, the global double-entry bookkeeping ledger. 
 
-((("transactions", id="ix_ch05-asciidoc0", range="startofrange")))
-トランザクションはBitcoinシステムの中で最も重要な部分です。
-Bitcoinのそれ以外のものは、トランザクションが作成され、Bitcoinネットワークを伝搬し、検証そして最後にグローバルなトランザクション元帳(ブロックチェーン)に追加されるという流れを支えるように作られています。
-トランザクションはBitcoinシステム参加者間での価値の転送をデジタル化したデータの集合体です。
-それぞれのトランザクションはBitcoinのブロックチェーン(グローバルな複式簿記元帳)の中にある誰でも見ることができる取引です。
+((("transactions", id="ix_ch05-asciidoc0", range="startofrange")))トランザクションはBitcoinシステムの中で最も重要な部分です。Bitcoinのそれ以外のものは、トランザクションが作成され、Bitcoinネットワークを伝搬し、検証そして最後にグローバルなトランザクション元帳(ブロックチェーン)に追加されるという流れを支えるように作られています。トランザクションはBitcoinシステム参加者間での価値の転送をデジタル化したデータの集合体です。それぞれのトランザクションはBitcoinのブロックチェーン(グローバルな複式簿記元帳)の中にある誰でも見ることができる取引です。
 
 In this chapter we will examine all the various forms of transactions, what they contain, how to create them, how they are verified, and how they become part of the permanent record of all transactions. 
 
@@ -21,10 +17,15 @@ In this chapter we will examine all the various forms of transactions, what they
 
 [[tx_lifecycle]]
 === Transaction Lifecycle
+=== トランザクションのライフサイクル
 
 ((("transactions","lifecycle of", id="ix_ch05-asciidoc1", range="startofrange")))A transaction's lifecycle starts with the transaction's creation, also known as((("origination of transactions"))) _origination_. The transaction is then signed with one or more signatures indicating the authorization to spend the funds referenced by the transaction. The transaction is then broadcast on the bitcoin network, where each network node (participant) validates and propagates the transaction until it reaches (almost) every node in the network. Finally, the transaction is verified by a mining node and included in a block of transactions that is recorded on the blockchain. 
 
+((("transactions","lifecycle of", id="ix_ch05-asciidoc1", range="startofrange")))トランザクションのライフサイクルはまず s((("origination of transactions"))) _origination_ と呼ばれるトランザクションの生成から始まります。このときトランザクションは１つまたは複数の署名で署名されます。これら署名はトランザクションによって参照されている資金を使う許可を意味します。署名後にトランザクションはBitcoinネットワークにブロードキャストされます。それぞれのネットワークノード(Bitcoinネットワークへの参加者)はトランザクションを確認し、(ほぼ)全てのノードに行き渡るまでトランザクションがどんどんBitcoinネットワーク内を伝搬していきます。最後に、トランザクションはマイニングノードによって検証され、ブロックチェーンの中のブロックに記録されます。
+
 Once recorded on the blockchain and confirmed by sufficient subsequent blocks (confirmations), the transaction is a permanent part of the bitcoin ledger and is accepted as valid by all participants. The funds allocated to a new owner by the transaction can then be spent in a new transaction, extending the chain of ownership and beginning the lifecycle of a transaction again. 
+
+一度ブロックチェーンに記録され十分なブロックによって確認される(confirmation)と、トランザクションはBitcoin元帳の永続的な一部となり、全ての参加者によって有効なものとして受け入れられます。
 
 [[tx_origination]]
 ==== Creating Transactions
