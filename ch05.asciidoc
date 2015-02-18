@@ -1,13 +1,23 @@
 [[ch5]]
 [[transactions]]
 == Transactions
+== トランザクション
 
 [[ch5_intro]]
 === Introduction
+=== イントロダクション
 
 ((("transactions", id="ix_ch05-asciidoc0", range="startofrange")))Transactions are the most important part of the bitcoin system. Everything else in bitcoin is designed to ensure that transactions can be created, propagated on the network, validated, and finally added to the global ledger of transactions (the blockchain). Transactions are data structures that encode the transfer of value between participants in the bitcoin system. Each transaction is a public entry in bitcoin's blockchain, the global double-entry bookkeeping ledger. 
 
+((("transactions", id="ix_ch05-asciidoc0", range="startofrange")))
+トランザクションはBitcoinシステムの中で最も重要な部分です。
+Bitcoinのそれ以外のものは、トランザクションが作成され、Bitcoinネットワークを伝搬し、検証そして最後にグローバルなトランザクション元帳(ブロックチェーン)に追加されるという流れを支えるように作られています。
+トランザクションはBitcoinシステム参加者間での価値の転送をデジタル化したデータの集合体です。
+それぞれのトランザクションはBitcoinのブロックチェーン(グローバルな複式簿記元帳)の中にある誰でも見ることができる取引です。
+
 In this chapter we will examine all the various forms of transactions, what they contain, how to create them, how they are verified, and how they become part of the permanent record of all transactions. 
+
+この章では、いろいろな形式のトランザクションや、トランザクションは何を含んでいるのか、トランザクションはどのように作られるのか、またどのように検証されるのか、どのように永続的な記録の一部になるのか、ということを説明していきます。
 
 [[tx_lifecycle]]
 === Transaction Lifecycle
