@@ -45,19 +45,31 @@ Once a transaction has been created, it is signed by the owner (or owners) of th
 
 [[tx_bcast]]
 ==== Broadcasting Transactions to the Bitcoin Network
+==== Bitcoinネットワークへのトランザクションのブロードキャスト
 
 ((("bitcoin network","broadcasting transactions to")))((("transactions","broadcasting to network")))First, a transaction needs to be delivered to the bitcoin network so that it can be propagated and included in the blockchain. In essence, a bitcoin transaction is just 300 to 400 bytes of data and has to reach any one of tens of thousands of bitcoin nodes. The senders do not need to trust the nodes they use to broadcast the transaction, as long as they use more than one to ensure that it propagates. The nodes don't need to trust the sender or establish the sender's "identity." Because the transaction is signed and contains no confidential information, private keys, or credentials, it can be publicly broadcast using any underlying network transport that is convenient. Unlike credit card transactions, for example, which contain sensitive information and can only be transmitted on encrypted networks, a bitcoin transaction can be sent over any network. As long as the transaction can reach a bitcoin node that will propagate it into the bitcoin network, it doesn't matter how it is transported to the first node. 
 
+((("bitcoin network","broadcasting transactions to")))((("transactions","broadcasting to network")))最初に、トランザクションはブロックチェーンに記録されるためにBitcoinネットワークに放出される必要があります。Bitcoinトランザクションは300から400バイトのデータを持ち、数万ものBitcoinノードのいずれか１つに辿り着かなければいけません。伝搬させるために１つより多くのノードを使っている限り、送信者はトランザクションをブロードキャストするために使うノードを信用する必要はありません。ノードは送信者を信用する必要はなく、また送信者が誰なのかを特定する必要もありません。トランザクションは署名されており、また一切の機密情報(秘密鍵や証明書)も含まれていないため、公にブロードキャストするためにいかなる転送手段を使っても構いません。例えば、センシティブな情報が含まれているため暗号化されたネットワークでしかデータの転送ができないクレジットカードのトランザクションと違って、Bitcoinのトランザクションはいかなるネットワークを通してでも送ることができます。トランザクションがBitcoinノードにたどり着くことができるのであれば、最初の転送方法はどうでもよいのです。
+
 ((("insecure networks, transmitting bitcoin over")))Bitcoin transactions can therefore be transmitted to the bitcoin network over insecure networks such as WiFi, Bluetooth, NFC, Chirp, barcodes, or by copying and pasting into a web form. In extreme cases, a bitcoin transaction could be transmitted over packet radio, satellite relay, or shortwave using burst transmission, spread spectrum, or frequency hopping to evade detection and jamming. A bitcoin transaction could even be encoded as smileys (emoticons) and posted in a public forum or sent as a text message or Skype chat message. Bitcoin has turned money into a data structure, making it virtually impossible to stop anyone from creating and executing a bitcoin transaction. 
+
+((("insecure networks, transmitting bitcoin over")))このため、BitcoinトランザクションはWiFiやBlutooth、NFC、Chirp、バーコード(またBitcoinアドレスのウェブのフォームへのコピペ)のような安全でないネットワークを通してでも転送することができます。安全でない極端な場合として、パケット通信や衛星中継、バースト転送を用いた短波通信、周波数ホッピングなどのスペクトラム拡散などがあります。Bitcoinトランザクションは、絵文字としてでさえ表現でき、公的なフォーラムへの投稿、またテキストメッセージ、Skypeチャットメッセージとして送ることもできます。Bitcoinはお金をデータの形に変え、これにより誰もトランザクションを作成や実行を阻止できないようにしたのです。
 
 [[tx_propagation]]
 ==== Propagating Transactions on the Bitcoin Network
+==== Bitcoinネットワーク上でのトランザクションの伝搬
 
 ((("bitcoin network","propagating transactions on")))((("transactions","propagating")))Once a bitcoin transaction is sent to any node connected to the bitcoin network, the transaction will be validated by that node. If valid, that node will propagate it to the other nodes to which it is connected, and a success message will be returned synchronously to the originator. If the transaction is invalid, the node will reject it and synchronously return a rejection message to the originator. 
 
+((("bitcoin network","propagating transactions on")))((("transactions","propagating")))一度BitcoinトランザクションがBitcoinネットワークに接続されたノードに送られると、このトランザクションは送られたノードで有効なものか確認されます。有効なものだと確認されると、そのノードは接続している他のノードにこのトランザクションを伝搬します。同時に、成功メッセージが発行ノードに返却されます。もしこのトランザクションが無効なものであればノードはこのトランザクションを棄却し、同時に棄却メッセージを発行ノードに返却します。
+
 The bitcoin network is a peer-to-peer network, meaning that each bitcoin node is connected to a few other bitcoin nodes that it discovers during startup through the peer-to-peer protocol. The entire network forms a loosely connected mesh without a fixed topology or any structure, making all nodes equal peers. Messages, including transactions and blocks, are propagated from each node to the peers to which it is connected. A new validated transaction injected into any node on the network will be sent to three  to four of the neighboring nodes, each of which will send it to three to four more nodes, and so on. In this way, within a few seconds a valid transaction will propagate in an exponentially expanding ripple across the network until all connected nodes have received it. 
 
+Bitcoinネットワークはpeer-to-peerネットワークであり、それぞれのBitcoinノードは数個のノードに接続されています。この数個のノードはpeer-to-peerプロトコルに従ってノードを起動したときに発見したノードです。全Bitcoinネットワークは緩やかに接続されたメッシュであり、固定されたトポロジーや構造を持つことなく全てのノードは平等に扱われます。トランザクションやブロックを含んだメッセージはそれぞれのノードから接続されている他のピアに伝搬します。有効だと確認された新しいトランザクションは３つか４つの隣接ノードに送られ、それぞれの隣接ノードはまた３つか４つの隣接ノードにこのトランザクションを送ります。このような方法で、全ての接続されたノードがこのトランザクションを受け取るまで波紋のようにBitcoinネットワーク内を伝わっていき数秒以内に全体に広がっていきます。
+
 The bitcoin network is designed to propagate transactions and blocks to all nodes in an efficient and resilient manner that is resistant to attacks. To prevent spamming, denial-of-service attacks, or other nuisance attacks against the bitcoin system, every node independently validates every transaction before propagating it further. A malformed transaction will not get beyond one node. The rules by which transactions are validated are explained in more detail in <<tx_verification>>.(((range="endofrange", startref="ix_ch05-asciidoc1"))) 
+
+Bitcoinネットワークは、攻撃に強く、また効率的なルールに従って全てのノードにトランザクションとブロックを伝搬できるように設計されています。Bitcoinシステムにとって厄介なDOS攻撃のような強制的なデータの送りつけを防ぐために、全てのノードはトランザクションを次のノードに送る前に全てのトランザクションが有効なものか確認しています。おかしなトランザクションが次のノードに送られることはありません。この方法について<<tx_verification>>で詳細に説明します。(((range="endofrange", startref="ix_ch05-asciidoc1")))
 
 [[tx_structure]]
 === Transaction Structure
