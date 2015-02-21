@@ -143,17 +143,29 @@ What comes first? Inputs or outputs, the chicken or the egg? Strictly speaking, 
 
 [[tx_outs]]
 ==== Transaction Outputs
+==== トランザクションアウトプット
 
 ((("bitcoin ledger, outputs in", id="ix_ch05-asciidoc2", range="startofrange")))((("transactions","outputs", id="ix_ch05-asciidoc3", range="startofrange")))((("unspent transaction output (UTXO)", id="ix_ch05-asciidoc4", range="startofrange")))Every bitcoin transaction creates outputs, which are recorded on the bitcoin ledger. Almost all of these outputs, with one exception (see <<op_return>>) create spendable chunks of bitcoin called _unspent transaction outputs_ or UTXO, which are then recognized by the whole network and available for the owner to spend in a future transaction. Sending someone bitcoin is creating an unspent transaction output (UTXO) registered to their address and available for them to spend.
 
+((("bitcoin ledger, outputs in", id="ix_ch05-asciidoc2", range="startofrange")))((("transactions","outputs", id="ix_ch05-asciidoc3", range="startofrange")))((("unspent transaction output (UTXO)", id="ix_ch05-asciidoc4", range="startofrange")))全てのbitcoinトランザクションはアウトプットと作ります。このアウトプットはbitcoin元帳上に記録されます。ほとんど全てのアウトプット(１つの例外を除いて。<<op_return>>参照)は、 _未使用トランザクションアウトプット_ またはUTXOと呼ばれる使用可能なbitcoinの固まりを作ります。UTXOはBitcoinネットワーク全体によって認識されており、所有者が将来の取引でこれを使うことができます。誰かにbitcoinを送ることは、送り先のbitcoinアドレスと紐づけられた未使用トランザクションアウトプット(UTXO)を作り出すことです。このUTXOは受信者が使うことが可能なトランザクションアウトプットです。
+
 UTXO are tracked by every full-node bitcoin client in a database held in memory, called the((("UTXO pool")))((("UTXO set"))) _UTXO set_ or _UTXO pool_. New transactions consume (spend) one or more of these outputs from the UTXO set. 
 
+UTXOは全てのfull-node bitcoinクライアントによって追跡され、((("UTXO pool")))((("UTXO set"))) _UTXOセット_ または _UTXOプール_ と呼ばれるメモリに持っているデータベースで管理されています。そして、新しいトランザクションはUTXOセットにある１つまたは複数のアウトプットを消費(使用)することになります。
+
 Transaction outputs consist of two parts: 
+
+トランザクションアウトプットは以下２つの部分で成り立っています。
 
 * An amount of bitcoin, denominated in _satoshis_, the smallest bitcoin unit
 * A((("encumbrance")))((("locking scripts"))) _locking script_, also known as an "encumbrance" that "locks" this amount by specifying the conditions that must be met to spend the output
 
+* bitcoinの最小単位である _satoshi_ 単位で表されたbitcoin金額
+* アウトプットと使用するにあたって満たさなければいけない条件である"解除条件"として知られている ((("encumbrance")))((("locking scripts"))) _locking script_
+
 The transaction scripting language, used in the locking script mentioned previously, is discussed in detail in <<tx_script>>. <<tx_out_structure>> shows the structure of a transaction output.
+
+locing scriptの中で使われているトランザクションスクリプト言語の詳細については<<tx_script>>で説明します。<<tx_out_structure>>はトランザクションアウトプットの構造を示しています。
 
 [[tx_out_structure]]
 .The structure of a transaction output
@@ -167,6 +179,8 @@ The transaction scripting language, used in the locking script mentioned previou
 
 In <<get_utxo>>, we use the blockchain.info API to find the unspent outputs (UTXO) of a specific address.
 
+<<get_utxo>>でblockchain.info APIを使って特定のbitcoinアドレスの未使用アウトプット(UTXO)を調べています。
+
 [[get_utxo]]
 .A script that calls the blockchain.info API to find the UTXO related to an address
 ====
@@ -177,6 +191,8 @@ include::code/get-utxo.py[]
 ====
 
 Running the script, we see a list of transaction IDs, a colon, the index number of the specific unspent transaction output (UTXO), and the value of that UTXO in satoshis. The locking script is not shown in the output in <<get_utxo_run>>.
+
+このスクリプトを実行すると、"トランザクションID":"特定の未使用トランザクションアウトプット(UTXO)のインデックス" - "UTXOの satoshi 単位での金額" という形のリストが表示されます。<<get_utxo_run>>のアウトプットにlocking scriptは表示されていません。
 
 [[get_utxo_run]]
 .Running the get-utxo.py script
@@ -193,8 +209,11 @@ b2affea89ff82557c60d635a2a3137b8f88f12ecec85082f7d0a1f82ee203ac4:0 - 10000000 Sa
 ====
 
 ===== Spending conditions (encumbrances)
+===== 使用条件(解除条件)
 
 ((("encumbrance")))((("locking scripts")))Transaction outputs associate a specific amount (in satoshis) to a specific _encumbrance_ or locking script that defines the condition that must be met to spend that amount. In most cases, the locking script will lock the output to a specific bitcoin address, thereby transferring ownership of that amount to the new owner. When Alice paid Bob's Cafe for a cup of coffee, her transaction created a 0.015 bitcoin output _encumbered_ or locked to the cafe's bitcoin address. That 0.015 bitcoin output was recorded on the blockchain and became part of the Unspent Transaction Output set, meaning it showed in Bob's wallet as part of the available balance. When Bob chooses to spend that amount, his transaction will release the encumbrance, unlocking the output by providing an unlocking script containing a signature from Bob's private key.(((range="endofrange", startref="ix_ch05-asciidoc4")))(((range="endofrange", startref="ix_ch05-asciidoc3")))(((range="endofrange", startref="ix_ch05-asciidoc2"))) 
+
+((("encumbrance")))((("locking scripts")))トランザクションアウトプットはbitcoin(satoshi単位で表された)を、特定の _解除条件_ またはbitcoinを使うにあたって満たさなければいけない条件を定義したlocking scriptと関連づけています。多くの場合、locking scriptは特定のbitcoinアドレスにアウトプットをロックし、???? アリスがボブのカフェにコーヒー代を支払ったとき、彼女のトランザクションにはカフェのbitcoinアドレスにロックされた0.015bitcoinアウトプットが含まれていました。この0.015bitcoinアウトプットはブロックチェーンに記録され、カフェのbitcoinアドレスに紐づいた未使用トランザクションアウトプットセットの一部になったのです。ボブがこの0.015bitcoinアウトプットを支払いに使うことにしたときに、彼のトランザクションはボブの秘密鍵による署名を含むunlocking scriptを提示することでこの0.015bitcoinアウトプットのロックを外すのです。(((range="endofrange", startref="ix_ch05-asciidoc4")))(((range="endofrange", startref="ix_ch05-asciidoc3")))(((range="endofrange", startref="ix_ch05-asciidoc2")))
 
 [[tx_inputs]]
 ==== Transaction Inputs
