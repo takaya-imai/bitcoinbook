@@ -73,8 +73,11 @@ Bitcoinネットワークは、攻撃に強く、また効率的なルールに�
 
 [[tx_structure]]
 === Transaction Structure
+=== トランザクションの構造
 
 ((("transactions","structure of")))A transaction is a((("data structure"))) _data structure_ that encodes a transfer of value from a source of funds, called an((("inputs, defined"))) _input_, to a destination, called an((("outputs, defined"))) _output_. Transaction inputs and outputs are not related to accounts or identities. Instead, you should think of them as bitcoin amounts—chunks of bitcoin—being locked with a specific secret that only the owner, or person who knows the secret, can unlock. A transaction contains a number of fields, as shown in <<tx_data_structure>>.
+
+((("transactions","structure of")))トランザクションは、資金源( _インプット_ と呼ばれる)から送り先( _アウトプット_ と呼ばれる)への価値の転送を符号化した ((("data structure"))) _構造化データ_ です。トランザクションインプットとアウトプットは銀行口座または識別子と関連付いているわけではありません。???? 代わりに、これらをbitcoinの固まりとして考えるべきです。トランザクションは<<tx_data_structure>>に示すようないくつかのフィールドを含んでいます。
 
 [[tx_data_structure]]
 .The structure of a transaction
@@ -92,6 +95,8 @@ Bitcoinネットワークは、攻撃に強く、また効率的なルールに�
 .Transaction Locktime
 ****
 ((("locktime")))((("transactions","locktime")))Locktime defines the earliest time that a transaction can be added to the blockchain. It is set to zero in most transactions to indicate immediate execution. If locktime is nonzero and below 500 million, it is interpreted as a block height, meaning the transaction is not included in the blockchain prior to the specified block height. If it is above 500 million, it is interpreted as a Unix Epoch timestamp (seconds since Jan-1-1970) and the transaction is not included in the blockchain prior to the specified time. The use of locktime is equivalent to postdating a paper check.
+
+((("locktime")))((("transactions","locktime")))locktimeはトランザクションがブロックチェーンに追加された最も早い時刻です。ほとんどのトランザクションではすぐに実行されたことを表すためにlocktimeが０に設定されます。もしlocktimeが０でないかまたは５億より下になっているときはlocktimeをブロック高として解釈し、このブロック高より前のブロックではこのトランザクションがブロックチェーンに取り込まれていないということを意味します。もし５億よりも大きいときはlocktimeをUNIX時間(1970/1/1からの秒数)として解釈し、この時刻よりも前にこのトランザクションがブロックチェーンに取り込まれていないということを意味します。locktimeは先日付小切手の日付のようなものです。
 ****
 
 [[tx_inputs_outputs]]
