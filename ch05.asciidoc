@@ -301,9 +301,11 @@ The current algorithm used by miners to prioritize transactions for inclusion in
 (((range="endofrange", startref="ix_ch05-asciidoc6")))
     
 ==== Adding Fees to Transactions
+==== 手数料のトランザクションへの追加
 
 ((("fees, transaction","adding", id="ix_ch05-asciidoc7", range="startofrange")))((("transactions","fees", id="ix_ch05-asciidoc8", range="startofrange")))The data structure of transactions does not have a field for fees. Instead, fees are implied as the difference between the sum of inputs and the sum of outputs. Any excess amount that remains after all outputs have been deducted from all inputs is the fee that is collected by the miners. 
 
+((("fees, transaction","adding", id="ix_ch05-asciidoc7", range="startofrange")))((("transactions","fees", id="ix_ch05-asciidoc8", range="startofrange")))トランザクションのデータ構造には手数料に対するフィールドはありません。代わりに、手数料はインプットの総和とアウトプットの総和との差として暗に含められる形になっています。全てのインプットの総和から全てのアウトプットの総和を引いて残った余分な額がマイナーによって集められる手数料です。
 
 [[tx_fee_equation]]
 .Transaction fees are implied, as the excess of inputs minus outputs:
@@ -313,7 +315,11 @@ Fees = Sum(Inputs) – Sum(Outputs)
 
 This is a somewhat confusing element of transactions and an important point to understand, because if you are constructing your own transactions you must ensure you do not inadvertently include a very large fee by underspending the inputs. That means that you must account for all inputs, if necessary by creating change, or you will end up giving the miners a very big tip!
 
+これは、幾分トランザクションを理解する上で混乱してしまうところですが重要なポイントです。というのは、もし自身でトランザクションを構築するとしたときに、うっかり大きな額の手数料を含めないようにしないといけないためです。もし必要ならおつりを作成することによって全てのインプットを把握しておかなければいけません。さもなければ、マイナーにとても大きなチップをあげることになってしまうのです！
+
 For example, if you consume a 20-bitcoin UTXO to make a 1-bitcoin payment, you must include a 19-bitcoin change output back to your wallet. Otherwise, the 19-bitcoin "leftover" will be counted as a transaction fee and will be collected by the miner who mines your transaction in a block. Although you will receive priority processing and make a miner very happy, this is probably not what you intended. 
+
+例えば、20bitcoinのUTXOを消費して1bitcoinの支払いをしようとするなら、19bitcoinのおつりがアウトプットに含まれていなければいけません。そうしないと、19bitcoinの"残り物"はトランザクション手数料としてカウントされてしまい、あなたのトランザクションを含むブロックを採掘したマイナーによって19bitcoinが集められてしまうのです。
 
 [WARNING]
 ====
@@ -322,11 +328,19 @@ If you forget to add a change output in a manually constructed transaction, you 
 
 Let's see how this works in practice, by looking at Alice's coffee purchase again. Alice wants to spend 0.015 bitcoin to pay for coffee. To ensure this transaction is processed promptly, she will want to include a transaction fee, say 0.001. That will mean that the total cost of the transaction will be 0.016. Her wallet must therefore source a set of UTXO that adds up to 0.016 bitcoin or more and, if necessary, create change. Let's say her wallet has a 0.2-bitcoin UTXO available. It will therefore need to consume this UTXO, create one output to Bob's Cafe for 0.015, and a second output with 0.184 bitcoin in change back to her own wallet, leaving 0.001 bitcoin unallocated, as an implicit fee for the transaction. 
 
+またアリスのコーヒー代支払いの例を使って実用上どのように動作するかを見ていきましょう。アリスは0.015bitcoinをコーヒー代として支払おうとしています。分かりやすくするために彼女は0.001bitcoinをトランザクション手数料として含めようとしているとしてみましょう。これはトランザクションの総コストが0.016bitcoinになることを意味しています。よって、彼女のウォレットは0.016bitcoinかまたはそれより多い額になるようにUTXOを集め、必要ならおつりを作らなければいけません彼女のウォレットが0.2bitcoinのUTXOが使用可能だとしてみると、このUTXOを消費することになります。アウトプットとしては、ボブのカフェ店への支払いとして0.015bitcoinのアウトプットを作り、そして２つ目のアウトプットとして自分自身のウォレットに返ってくる0.184bitcoinのおつりのアウトプットを作ります。0.001bitcoinが残っていますが、これが暗にトランザクションに含められている手数料になります。
+
 Now let's look at a different scenario. Eugenia, our children's charity director in the Philippines, has completed a fundraiser to purchase school books for the children. She received several thousand small donations from people all around the world, totaling 50 bitcoin, so her wallet is full of very small payments (UTXO). Now she wants to purchase hundreds of school books from a local publisher, paying in bitcoin. 
+
+違ったシナリオを考えてみましょう。フィリピンの子供チャリティーディレクターのEugeniaは子供のために学校の教科書を購入するための支援金集めが完了し、全世界の人々からいただいた数千個の小さな寄付を受け取りました。総額にして50bitcoinです。このため、彼女のウォレットは小さな支払い(UTXO)でいっぱいになってしまいました。彼女は数百冊の学校の教科書を地元の出版社から購入したいと考えていて、支払いをbitcoinでするつもりでいます。
 
 As Eugenia's wallet application tries to construct a single larger payment transaction, it must source from the available UTXO set, which is composed of many smaller amounts. That means that the resulting transaction will source from more than a hundred small-value UTXO as inputs and only one output, paying the book publisher. A transaction with that many inputs will be larger than one kilobyte, perhaps 2 to 3 kilobytes in size. As a result, it will require a higher fee than the minimal network fee of 0.0001 bitcoin. 
 
+Eugeniaのウォレットは１個の大きなトランザクションを作ろうとしたため、多くの小さな額のUTXOで占められている使用可能なUTXOセットからUTXOを集めてこなければいけません。結果として作られるトランザクションはインプットとして数百個の小さな額のUTXOと出版社に支払われるたった１個のアウトプットで構成されることになります。多くのインプットを伴ったトランザクションのデータサイズは1KBよりも大きく、おそらく2、3KBです。結果的に、最小手数料0.0001bitcoinよりも高い手数料が必要になります。
+
 Eugenia's wallet application will calculate the appropriate fee by measuring the size of the transaction and multiplying that by the per-kilobyte fee. Many wallets will overpay fees for larger transactions to ensure the transaction is processed promptly. The higher fee is not because Eugenia is spending more money, but because her transaction is more complex and larger in size—the fee is independent of the transaction's bitcoin value.(((range="endofrange", startref="ix_ch05-asciidoc8")))(((range="endofrange", startref="ix_ch05-asciidoc7"))) 
+
+Eugeniaのウォレットはトランザクションのデータサイズと1KBあたりの手数料を掛け合わせて適切な手数料を計算することになります。多くのウォレットは大きなトランザクションに対して手数料を多めに払っています。これは、トランザクションを迅速に処理してもらうためです。より高い手数料は????
 
 [[tx_chains]]
 === Transaction Chaining and Orphan Transactions
