@@ -416,44 +416,69 @@ image::images/msbt_0501.png["scriptSig_and_scriptPubKey"]
 
 [[tx_script_language]]
 ==== Scripting Language
+==== スクリプト言語
 
 ((("Script language", id="ix_ch05-asciidoc13", range="startofrange")))((("scripts","language for", id="ix_ch05-asciidoc14", range="startofrange")))The bitcoin transaction script language, called _Script_, is a Forth-like reverse-polish notation stack-based execution language. If that sounds like gibberish, you probably haven't studied 1960's programming languages. Script is a very simple language that was designed to be limited in scope and executable on a range of hardware, perhaps as simple as an embedded device, such as a handheld calculator. It requires minimal processing and cannot do many of the fancy things modern programming languages can do. In the case of programmable money, that is a deliberate security feature. 
 
+((("Script language", id="ix_ch05-asciidoc13", range="startofrange")))((("scripts","language for", id="ix_ch05-asciidoc14", range="startofrange"))) _Script_ と呼ばれているBitcoinトランザクションスクリプト言語は、Forth言語のような逆ポーランド記法の言語です。もしちんぷんかんぷんに聞こえるとしたら、あなたはおそらく1960年代のプログラミング言語を勉強したことがないのでしょう。スクリプトはとてもシンプルな言語で、限られたハードウェアで動くように設計された言語です。おそらく電卓のような組み込みデバイスくらい簡単なハードウェアです。これは最小の処理のみを必要とし、最近のプログラミング言語でできるようなことの多くはできません。
+
 Bitcoin's scripting language is called a stack-based language because it uses a data structure called a((("stack, defined"))) _stack_. A stack is a very simple data structure, which can be visualized as a stack of cards. A stack allows two operations: push and pop. Push adds an item on top of the stack. Pop removes the top item from the stack. 
+
+Bitcoinのスクリプト言語はスタックベース言語と呼ばれています。というのは、 _スタック_ と呼ばれるデータ構造を使っているからです。スタックとはとても簡単なデータ構造で、イメージ的にはカードを重ねたもののようなものです。スタックは２つの操作を許しています。pushとpopです。pushはアイテムをスタックの一番上に加えます。popは一番上にあるアイテムをスタックから除きます。
 
 The scripting language executes the script by processing each item from left to right. Numbers (data constants) are pushed onto the stack. Operators push or pop one or more parameters from the stack, act on them, and might push a result onto the stack. For example, +OP_ADD+ will pop two items from the stack, add them, and push the resulting sum onto the stack. 
 
+スクリプト言語はそれぞれのアイテムを左から右に処理することでスクリプトを実行していきます。数値(定数)がスタックにpushされます。オペレーターは１つまたは複数の値をスタックに対してpush、popし、またはそれらに対して何らかの操作をします。場合によっては操作した結果をスタックにpushするかもしれません。例えば、 +OP_ADD+ はスタックから２つのアイテムをpopして、２つのアイテムを加え合わせ結果をスタックにpushします。
+
 Conditional operators evaluate a condition, producing a boolean result of TRUE or FALSE. For example, +OP_EQUAL+ pops two items from the stack and pushes TRUE (TRUE is represented by the number 1) if they are equal or FALSE (represented by zero) if they are not equal. Bitcoin transaction scripts usually contain a conditional operator, so that they can produce the TRUE result that signifies a valid transaction. 
+
+条件オペレーターは条件を評価して、TRUEかFALSEというブール型の結果を作り出します。例えば、 +OP_EQUAL+ はスタックから２つのアイテムをpopして、もしそれらが等しいならTRUE(TRUEは数値の1によって表現されます)をpushし、等しくなければFALSE(数値の0で表します)をpushします。Bitcoinトランザクションスクリプトは通常有効なトランザクションを示すTRUEの結果を生成するために条件オペレーターを含んでいます。
 
 In <<simplemath_script>>, the script +2 3 OP_ADD 5 OP_EQUAL+ demonstrates the arithmetic addition operator +OP_ADD+, adding two numbers and putting the result on the stack, followed by the conditional operator +OP_EQUAL+, which checks that the resulting sum is equal to +5+. For brevity, the +OP_+ prefix is omitted in the step-by-step example. 
 
+<<simplemath_script>>図では +2 3 OP_ADD 5 OP_EQUAL+ というスクリプトで、加法オペレーター +OP_ADD+ を実行し２つの数値を加え結果をスタックに置き、次に +OP_ADD+ の結果と +5+ が等しいかをチェックする条件オペレーター +OP_EQUAL+ を実行しています。簡潔に言えば、 +OP_+ という接頭詞は <<simplemath_script>> で省略されています。
+
 
 The following is a slightly more complex script, which calculates ++2 + 7 – 3 + 1++. Notice that when the script contains several operators in a row, the stack allows the results of one operator to be acted upon by the next operator:
+
+以下はちょっとだけ複雑なスクリプトで、 ++2 + 7 – 3 + 1++ を計算しています。スクリプトがいくつかのオペレーターを含んでいるとき、スタックの性質上１つのオペレーターの結果を次のオペレーターだけが使うことができます。
 
 ----
 2 7 OP_ADD 3 OP_SUB 1 OP_ADD 7 OP_EQUAL
 ----
 Try validating the preceding script yourself using pencil and paper. When the script execution ends, you should be left with the value TRUE on the stack.
 
+鉛筆と紙を使ってこのスクリプトが有効かあなた自身でやってみましょう。スクリプトの実行が終わった段階で、スタックにTRUEが残っているはずです。
+
 Although most locking scripts refer to a bitcoin address or public key, thereby requiring proof of ownership to spend the funds, the script does not have to be that complex. Any combination of locking and unlocking scripts that results in a TRUE value is valid. The simple arithmetic we used as an example of the scripting language is also a valid locking script that can be used to lock a transaction output.
 
+ほとんどのlocking scriptは資金の使用にあたっての所有権の証明のためBitcoinアドレスや公開鍵を参照していますが、locking scriptは複雑である必要はありません。結果としてTRUEが出力されるlocking scriptとunlocking scriptのどんな組み合わせも有効とみなされます。スクリプト言語の例として使った簡単な算数も、トランザクションアウトプットをロックするために使うことができるきちんとしたlocking scriptです。
+
 Use part of the arithmetic example script as the locking script:
+
+locking scriptとしてさきほどの算数のスクリプト例の一部を使ってみましょう。
 
 ----
 3 OP_ADD 5 OP_EQUAL
 ----
 
 which can be satisfied by a transaction containing an input with the unlocking script:
+
+これは以下のunlocking scriptを持つインプットがトランザクションにあれば満たすことができます。
 ----
 2
 ----
 
 The validation software combines the locking and unlocking scripts and the resulting script is:
+
+有効性を確認するソフトウェアはlocking scriptとunlocking scriptをくっつけて以下のスクリプトを作ります。
 ----
 2 3 OP_ADD 5 OP_EQUAL
 ----
 
 As we saw in the step-by-step example in <<simplemath_script>>, when this script is executed, the result is +OP_TRUE+, making the transaction valid. Not only is this a valid transaction output locking script, but the resulting UTXO could be spent by anyone with the arithmetic skills to know that the number 2 satisfies the script. (((range="endofrange", startref="ix_ch05-asciidoc14")))(((range="endofrange", startref="ix_ch05-asciidoc13")))
+
+<<simplemath_script>>図で見たように、このスクリプトが実行されるとこの結果は +OP_TRUE+ になりトランザクションは有効であると分かります。この場合、有効なトランザクションアウトプットのlocking scriptだけでなく、算数の計算ができる人であれば誰でも2がこのスクリプトを満たすことがわかるので誰でもUTXOを使うことができることになります。
 
 [[simplemath_script]]
 .Bitcoin's script validation doing simple math
