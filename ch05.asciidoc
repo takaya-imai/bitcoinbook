@@ -492,21 +492,34 @@ Transactions are valid if the top result on the stack is TRUE (noted as ++&#x7b;
 
 
 ==== Turing Incompleteness
+==== チューリング不完全
 
 ((("Script language","flow-control/loops in")))((("Script language","statelessness of")))((("Turing Complete")))The bitcoin transaction script language contains many operators, but is deliberately limited in one important way—there are no loops or complex flow control capabilities other than conditional flow control. This ensures that the language is not _Turing Complete_, meaning that scripts have limited complexity and predictable execution times. Script is not a general-purpose language. These limitations ensure that the language cannot be used to create an infinite loop or other form of "logic bomb" that could be embedded in a transaction in a way that causes a((("denial-of-service attack","Script language and"))) denial-of-service attack against the bitcoin network. Remember, every transaction is validated by every full node on the bitcoin network. A limited language prevents the transaction validation mechanism from being used as a vulnerability. 
 
+((("Script language","flow-control/loops in")))((("Script language","statelessness of")))((("Turing Complete")))Bitcoinトランザクションスクリプト言語は多くのオペレーターを持っています。しかし、意図的にループやif文などの分岐処理がないように制限されています。これは言語が _チューリング完全_ ではないということを言っており、このようになっているのはスクリプトの簡潔さや実行時間を予測できるようにすることがあります。スクリプト言語は汎用言語ではないのです。これらの制限によって、無限ループを作ることやBitcoinネットワークを使ったDOS攻撃を起こすようなトランザクションに内在する"論理爆弾"などを作ることができなくなっています。思い出してみてください、全てのトランザクションはBitcoinネットワーク上の全てのfull nodeによって有効性を確認されているので、トランザクションの有効性確認処理に問題があれば簡単に脆弱性が作れてしまいます。???? 言語が制限されているためにトランザクションの有効性確認メカニズムが脆弱性を生むことを防いでいるのです。
+
 ==== Stateless Verification
+==== ステートレスな検証
 
 ((("stateless verification of transactions")))((("transactions","statelessness of")))The bitcoin transaction script language is stateless, in that there is no state prior to execution of the script, or state saved after execution of the script. Therefore, all the information needed to execute a script is contained within the script. A script will predictably execute the same way on any system. If your system verifies a script, you can be sure that every other system in the bitcoin network will also verify the script, meaning that a valid transaction is valid for everyone and everyone knows this. This predictability of outcomes is an essential benefit of the bitcoin system.(((range="endofrange", startref="ix_ch05-asciidoc12")))(((range="endofrange", startref="ix_ch05-asciidoc11")))(((range="endofrange", startref="ix_ch05-asciidoc10")))(((range="endofrange", startref="ix_ch05-asciidoc9")))
 
+((("stateless verification of transactions")))((("transactions","statelessness of")))Bitcoinトランザクションスクリプト言語はステートレスです。これは、スクリプトの実行前の状態を何も保持しない、またはスクリプトの実行後の状態を一切保存しないということです。このため、スクリプトを実行するために必要な全ての情報はスクリプトの中に含まれていることになり、スクリプトはどんなシステム上でも同じプロセスで実行できることが予測できるということになります。もしあなたのシステムがスクリプトを検証できるなら、確実にBitcoinネットワーク内の他全てのシステムもまたスクリプトを検証でき、有効なトランザクションは全ての人に対して有効なのです。この結果の予測可能性はBitcoinシステムの本質的な利点です。(((range="endofrange", startref="ix_ch05-asciidoc12")))(((range="endofrange", startref="ix_ch05-asciidoc11")))(((range="endofrange", startref="ix_ch05-asciidoc10")))(((range="endofrange", startref="ix_ch05-asciidoc9")))
+
 [[std_tx]]
 === Standard Transactions
+=== 標準的なトランザクション
 
 In the first few years of bitcoin's development, the developers introduced some limitations in the types of scripts that could be processed by the reference client. These limitations are encoded in a function called +isStandard()+, which defines five types of "standard" transactions. These limitations are temporary and might be lifted by the time you read this. Until then, the five standard types of transaction scripts are the only ones that will be accepted by the reference client and most miners who run the reference client. Although it is possible to create a nonstandard transaction containing a script that is not one of the standard types, you must find a miner who does not follow these limitations to mine that transaction into a block. 
 
+Bitcoinの発展の最初の数年は、開発者たちがBitcoin Coreクライアントによって処理されるスクリプトの種類にいくつかの制限を加えていました。これらの制限は +isStandard()+ と呼ばれる関数の中にあり、５つの"標準的なトランザクション"の種類が定義されています。これらの制限は一時的なもので、あなたがこれを読むときまでに解除されているかもしれません。これらの制限が解除されるまでは、５つの標準的なトランザクションスクリプトだけがBitcoin Coreクライアントやこれを動作させている多くのマイナーに受け入れられています。非標準的なトランザクションを作ることは可能ですが、このトランザクションをブロックに入れてくれるマイナーを見つけなければいけません。
+
 Check the source code of the Bitcoin Core client (the reference implementation) to see what is currently allowed as a valid transaction script. 
 
+どんなスクリプトが有効なトランザクションスクリプトとして現在許可されているかを見るためにBitcoin Coreクライアントのソースコードをチェックしてみましょう。
+
 The five standard types of transaction scripts are pay-to-public-key-hash (P2PKH), public-key, multi-signature (limited to 15 keys), pay-to-script-hash (P2SH), and data output (OP_RETURN), which are described in more detail in the following sections.
+
+トランザクションスクリプトの５つの標準的な種類は、pay-to-public-key-hash (P2PKH), public-key, multi-signature (最大15個のキーまで), pay-to-script-hash (P2SH), data output (OP_RETURN) です。これらの詳細な説明は次の節で行います。
 
 [[p2pkh]]
 ==== Pay-to-Public-Key-Hash (P2PKH)
