@@ -712,12 +712,19 @@ A standard transaction (one that conforms to the +isStandard()+ checks) can have
 
 [[p2sh]]
 ==== Pay-to-Script-Hash (P2SH)
+==== Pay-to-Script-Hash (P2SH)
 
 ((("multi-signature scripts","P2SH and", id="ix_ch05-asciidoc17", range="startofrange")))((("Pay-to-script-hash (P2SH)", id="ix_ch05-asciidoc18", range="startofrange")))((("transactions","Pay-to-script-hash", id="ix_ch05-asciidoc19", range="startofrange")))Pay-to-script-hash (P2SH) was introduced in 2012 as a powerful new type of transaction that greatly simplifies the use of complex transaction scripts. To explain the need for P2SH, let's look at a practical example.
 
+((("multi-signature scripts","P2SH and", id="ix_ch05-asciidoc17", range="startofrange")))((("Pay-to-script-hash (P2SH)", id="ix_ch05-asciidoc18", range="startofrange")))((("transactions","Pay-to-script-hash", id="ix_ch05-asciidoc19", range="startofrange")))pay-to-script-hash (P2SH)は2012年に導入されたもので、複雑なトランザクションスクリプトをはるかに簡単化した新しい種類のトランザクションです。P2SHを説明するために、実用的な例を見てみましょう。
+
 In <<ch01_intro_what_is_bitcoin>> we introduced Mohammed, an electronics importer based in Dubai. Mohammed's company uses bitcoin's multi-signature feature extensively for its corporate accounts. Multi-signature scripts are one of the most common uses of bitcoin's advanced scripting capabilities and are a very powerful feature. Mohammed's company uses a multi-signature script for all customer payments, known in accounting terms as "accounts receivable," or AR. With the multi-signature scheme, any payments made by customers are locked in such a way that they require at least two signatures to release, from Mohammed and one of his partners or from his attorney who has a backup key. A multi-signature scheme like that offers corporate governance controls and protects against theft, embezzlement, or loss. 
 
+<<ch01_intro_what_is_bitcoin>>で、ドバイで電子機器の輸入業をやっているムハンマドを紹介しました。ムハンマドの会社は会社の口座のために広範囲にbitcoinのマルチシグネチャー機能を利用しています。マルチシグネチャースクリプトはbitcoinの先進的なスクリプト言語の主要な使い方の１つで、とても強力な機能です。ムハンマドの会社は全ての顧客からの支払い(会計用語で"売掛金")にマルチシグネチャーを使っています。マルチシグネチャースキームを使い、顧客による全ての支払いは次のような方法で安全性を担保しています。支払いを実行するには少なくとも２つの署名が必要であり、登録されている人はムハンマド、彼のパートナーのうちの１人、バックアップキーを持っている彼の代理人です。???? このようなマルチシグネチャースキームはコーポレートガバナンスを提供し、盗難、横領、または紛失を防ぐ役割があります。
+
 The resulting script is quite long and looks like this:
+
+このためのスクリプトはとても長く、以下のようなものです。
 
 ----
 2 <Mohammed's Public Key> <Partner1 Public Key> <Partner2 Public Key> <Partner3 Public Key> <Attorney Public Key> 5 OP_CHECKMULTISIG
@@ -726,9 +733,15 @@ The resulting script is quite long and looks like this:
     
 Although multi-signature scripts are a powerful feature, they are cumbersome to use. Given the preceding script, Mohammed would have to communicate this script to every customer prior to payment. Each customer would have to use special bitcoin wallet software with the ability to create custom transaction scripts, and each customer would have to understand how to create a transaction using custom scripts. Furthermore, the resulting transaction would be about five times larger than a simple payment transaction, because this script contains very long public keys. The burden of that extra-large transaction would be borne by the customer in the form of fees. Finally, a large transaction script like this would be carried in the UTXO set in RAM in every full node, until it was spent. All of these issues make using complex output scripts difficult in practice. 
 
+マルチシグネチャースクリプトはとても強力な機能ですが、これは扱いにくいものなのです。というのは、ハンマドは支払いをする前にこのスクリプトについて全ての顧客に説明する必要があるためです。それぞれの顧客は特別なトランザクションスクリプトを作ることができる特別なウォレットを使う必要があり、また特別なスクリプトを使ってどのようにトランザクションを作ればよいか理解する必要があります。さらに、このスクリプトがとても長い公開鍵を含んでいるため、作られたトランザクションは単純な支払いトランザクションと比べて約５倍も大きいのです。余分に大きいトランザクションの負担が顧客ごとの手数料として乗っかってきます。???? 最終的に、このような大きなトランザクションスクリプトは使用されるまで全てのfull nodeのRAM内のUTXOセットに保持されます。このような問題点によって実用上、複雑なアウトプットスクリプトの使用が難しくなってしまうのです。
+
 Pay-to-script-hash (P2SH) was developed to resolve these practical difficulties and to make the use of complex scripts as easy as a payment to a bitcoin address. With P2SH payments, the complex locking script is replaced with its digital fingerprint, a cryptographic hash. When a transaction attempting to spend the UTXO is presented later, it must contain the script that matches the hash, in addition to the unlocking script. In simple terms, P2SH means "pay to a script matching this hash, a script that will be presented later when this output is spent." 
 
+pay-to-script-hash (P2SH) はこれらの実用的な難点を解決するために開発され、Bitcoinアドレスでの支払いと同じくらい簡単に複雑なスクリプトが使えるようにしたのです。P2SHでの支払いで、複雑なlocking scriptは暗号学的なハッシュであるデジタルフィンガープリントに置き換えられます。UTXOを使おうとするトランザクションがのちに作られたとき、このトランザクションはunlocking scriptだけでなくこのハッシュとマッチするスクリプトを含んでいなければいけません。簡単に言って、P2SHは"このハッシュとマッチするスクリプトに対して支払い、スクリプトはこのアウトプットが使用されるときにのちに与えられます"という意味です。????
+
 In P2SH transactions, the locking script that is replaced by a hash is referred to as the((("redeem script"))) _redeem script_ because it is presented to the system at redemption time rather than as a locking script. <<without_p2sh>> shows the script without P2SH and <<with_p2sh>> shows the same script encoded with P2SH.
+
+P2SHトランザクションでは、ハッシュによって置き換えられたlocking scriptは((("redeem script"))) _redeem script_ と呼ばれます。なぜなら、これがlocking scriptとしてよりはむしろ回収時にシステムに提供されるからです。???? <<without_p2sh>>はP2SHではないスクリプトを示し、<<with_p2sh>>はP2SHでエンコードされた同じスクリプトを示しています。
 
 [[without_p2sh]]
 .Complex script without P2SH
@@ -747,15 +760,23 @@ In P2SH transactions, the locking script that is replaced by a hash is referred 
 
 As you can see from the tables, with P2SH the complex script that details the conditions for spending the output (redeem script) is not presented in the locking script. Instead, only a hash of it is in the locking script and the redeem script itself is presented later, as part of the unlocking script when the output is spent. This shifts the burden in fees and complexity from the sender to the recipient (spender) of the transaction. 
 
+テーブルにある通りP2SHのほうは、アウトプットを使用するための詳細条件が書かれた複雑なスクリプトがlocking scriptにはありません。その代わり、redeem scriptのハッシュだけがlocking scriptにはあり、redeem script自身はアウトプットが使用されるときのunlocking scriptの一部としてあとで提供されます。
+
 Let's look at Mohammed's company, the complex multi-signature script, and the resulting P2SH scripts. 
 
+ムハンマドの会社の場合の複雑なマルチシグネチャースクリプトとP2SHスクリプトを見てみましょう。
+
 First, the multi-signature script that Mohammed's company uses for all incoming payments from customers:
+
+まず、ムハンマドの会社が顧客からの支払いに使っているマルチシグネチャースクリプトは以下です。
 
 ----
 2 <Mohammed's Public Key> <Partner1 Public Key> <Partner2 Public Key> <Partner3 Public Key> <Attorney Public Key> 5 OP_CHECKMULTISIG
 ----
 
 If the placeholders are replaced by actual public keys (shown here as 520-bit numbers starting with 04) you can see that this script becomes very long:
+
+上記のplaceholderを実際の公開鍵(04から始まる520bitの数値)に置き換えてみると、以下のようにとても長くなってしまうことが分かるはずです。
 
 ----
 2 
@@ -764,16 +785,22 @@ If the placeholders are replaced by actual public keys (shown here as 520-bit nu
 
 This entire script can instead be represented by a 20-byte cryptographic hash, by first applying the SHA256 hashing algorithm and then applying the RIPEMD160 algorithm on the result. The 20-byte hash of the preceding script is:
 
+このスクリプト全体は20バイトの暗号学的ハッシュで表現でき、このハッシュは最初にSHA256ハッシュ化アルゴリズムを適用しその後この結果にRIPEMD160アルゴリズムを適用することで作成されます。前のスクリプトに対してのこのハッシュ化して得た20バイトのハッシュは以下になります。
+
 ----
 54c557e07dde5bb6cb791c7a540e0a4796f5e97e
 ----
 
 A P2SH transaction locks the output to this hash instead of the longer script, using the locking script:
 
+P2SHトランザクションは、以下のような長いスクリプトの代わりにこのハッシュを含めたlocking scriptでアウトプットをロックしています。????
+
 ----
 OP_HASH160 54c557e07dde5bb6cb791c7a540e0a4796f5e97e OP_EQUAL
 ----
 which, as you can see, is much shorter. Instead of "pay to this 5-key multi-signature script," the P2SH equivalent transaction is "pay to a script with this hash." A customer making a payment to Mohammed's company need only include this much shorter locking script in his payment. When Mohammed wants to spend this UTXO, they must present the original redeem script (the one whose hash locked the UTXO) and the signatures necessary to unlock it, like this:
+
+見て分かるように前のlocking scriptよりもずいぶん短いことが分かります。"5つのキーのマルチシグネチャースクリプトに対する支払い"ではなく、P2SHでは"このハッシュを持ったスクリプトへの支払い"(pay to a script with this hash)になります。ムハンマドの会社への支払いをする顧客は彼の支払いの中にあるもっと短いlocking scriptを含めるだけで支払いができるのです。ムハンマドがこのUTXOを使いたいときは、オリジナルのredeem scriptと解除するための署名を以下のように提供しなければいけません。????
 
 ----
 <Sig1> <Sig2> <2 PK1 PK2 PK3 PK4 PK5 5 OP_CHECKMULTISIG>
@@ -781,24 +808,36 @@ which, as you can see, is much shorter. Instead of "pay to this 5-key multi-sign
 
 The two scripts are combined in two stages. First, the redeem script is checked against the locking script to make sure the hash matches:
 
+２つのスクリプトは２つの段階で結合されます。???? まず、このハッシュが合っているかを確認するためにlocking scriptに対してredeem scriptがチェックされます。
+
 ----
 <2 PK1 PK2 PK3 PK4 PK5 5 OP_CHECKMULTISIG> OP_HASH160 <redeem scriptHash> OP_EQUAL
 ----
 If the redeem script hash matches, the unlocking script is executed on its own, to unlock the redeem script:
+
+もしredeem scriptハッシュが合っていれば、unlocking scriptはredeem scriptwp解除するために実行されます。
 
 ----
 <Sig1> <Sig2> 2 PK1 PK2 PK3 PK4 PK5 5 OP_CHECKMULTISIG
 ----
 
 ===== Pay-to-script-hash addresses
+===== Pay-to-script-hashアドレス
 
 ((("addresses, bitcoin","Pay-to-Script-Hash (P2SH)")))((("Pay-to-script-hash (P2SH)","addresses")))Another important part of the P2SH feature is the ability to encode a script hash as an address, as defined in BIP0013. P2SH addresses are Base58Check encodings of the 20-byte hash of a script, just like bitcoin addresses are Base58Check encodings of the 20-byte hash of a public key. P2SH addresses use the version prefix "5", which results in Base58Check-encoded addresses that start with a "3". For example, Mohammed's complex script, hashed and Base58Check-encoded as a P2SH address becomes +39RF6JqABiHdYHkfChV6USGMe6Nsr66Gzw+. Now, Mohammed can give this "address" to his customers and they can use almost any bitcoin wallet to make a simple payment, as if it were a bitcoin address. The 3 prefix gives them a hint that this is a special type of address, one corresponding to a script instead of a public key, but otherwise it works in exactly the same way as a payment to a bitcoin address. 
 
+((("addresses, bitcoin","Pay-to-Script-Hash (P2SH)")))((("Pay-to-script-hash (P2SH)","addresses")))P2SHに関してもう１つの重要な点は、BIP0013で定義されているようにスクリプトハッシュをエンコードしてアドレスとして使えるようにする点です。P2SHアドレスはスクリプトの20バイトハッシュをBase58Checkエンコードしたものです。これはちょうど公開鍵の20バイトハッシュのBase58CheckエンコードをしたBitcoinアドレスのようなものです。P2SHアドレスはversion prefixとして"5"が使われており、Base58Checkエンコードしたアドレスは"3"から始まるものになっています。例えば、ムハンマドの複雑なスクリプトでは、P2SHとして20バイトにハッシュ化されてBase58Checkエンコードを施されたP2SHアドレスは +39RF6JqABiHdYHkfChV6USGMe6Nsr66Gzw+ になります。ムハンマドはこの"アドレス"を彼の顧客に送ることで、彼の顧客はBitcoinアドレスに対する支払いとあたかも同じようにウォレットを使うことができます。3というprefixはこのアドレスが特別な種類のアドレスであることを示します。
+
 P2SH addresses hide all of the complexity, so that the person making a payment does not see the script. 
 
+P2SHアドレスは全ての複雑な点を隠蔽し、支払う人がスクリプトを見ることなく支払いができるようにしています。
+
 ===== Benefits of pay-to-script-hash 
+===== pay-to-script-hashの利点
 
 ((("Pay-to-script-hash (P2SH)","benefits of")))The pay-to-script-hash feature offers the following benefits compared to the direct use of complex scripts in locking outputs:
+
+((("Pay-to-script-hash (P2SH)","benefits of")))pay-to-script-hashはlocking scriptを複雑なまま直接扱うことに比べて以下の利点があります。 
 
 * Complex scripts are replaced by shorter fingerprints in the transaction output, making the transaction smaller.
 * Scripts can be coded as an address, so the sender and the sender's wallet don't need complex engineering to implement P2SH.
@@ -807,15 +846,31 @@ P2SH addresses hide all of the complexity, so that the person making a payment d
 * P2SH shifts the burden in data storage for the long script from the present time (payment) to a future time (when it is spent).
 * P2SH shifts the transaction fee cost of a long script from the sender to the recipient, who has to include the long redeem script to spend it.
 
+* より短いフィンガープリントで複雑なスクリプトを置き換えることで、トランザクションのデータサイズを小さくする
+* スクリプトがアドレスとして実装されることで、送り主と送り主のウォレットはP2SHに関する複雑なエンジニアリングをする必要がない????
+* P2SHは、スクリプトを構成する負担を送り手ではなく受け手側に移している
+* P2SHは、アウトプットが持つ長いスクリプト(これはUTXOセットに含まれるためメモリを圧迫する)をインプット側(ブロックチェーン上にのみ保存される)に移すことでデータストレージの負担をインプット側に移している
+* P2SHは、支払い時点に生じる長いスクリプトを資金が使われる時点で生じるようにすることで、データストレージの負担が生じる時刻を移している
+* P2SHは、送り手が長いスクリプトを伴って資金を送るときに負担するトランザクション手数料を、受け手がredeem scriptを使って資金を使うときに負担するように移している????
+
 ===== Redeem script and isStandard validation
+===== redeem scriptとisStandard検証
 
 ((("pay-to-script-hash (P2SH)","isStandard validation")))((("pay-to-script-hash (P2SH)","redeem script for")))Prior to version 0.9.2 of the Bitcoin Core client, pay-to-script-hash was limited to the standard types of bitcoin transaction scripts, by the +isStandard()+ function. That means that the redeem script presented in the spending transaction could only be one of the standard types: P2PK, P2PKH, or multi-sig nature, excluding +OP_RETURN+ and P2SH itself.
 
+((("pay-to-script-hash (P2SH)","isStandard validation")))((("pay-to-script-hash (P2SH)","redeem script for")))Bitcoin Coreクライアントのバージョン0.9.2より前では、pay-to-script-hashは +isStandard()+ 関数によって標準的なBitcoinトランザクションスクリプトに含められていませんでした。これは、トランザクションを使用するときに提供されるredeem scriptが、 +OP_RETURN+ とP2SH自身を除くP2PK、P2PKH、マルチシグネチャーのうちのどれか１つに統合されるしかないということを意味しています。????
+
 As of version 0.9.2 of the Bitcoin Core client, P2SH transactions can contain any valid script, making the P2SH standard much more flexible and allowing for experimentation with many novel and complex types of transactions.  
+
+現在のBitcoin Coreクライアントのバージョン0.9.2では、P2SHトランザクションはなんらかの有効なスクリプトを含むことができ、P2SH標準????はもっとフレキシブルになり多くの斬新なまたトランザクションの複合の実験が許可されています。
 
 Note that you are not able to put a P2SH inside a P2SH redeem script, because the P2SH specification is not recursive. You are also still not able to use +OP_RETURN+ in a redeem script because +OP_RETURN+ cannot be redeemed by definition.
 
+P2SH redeem scriptの中にP2SHを置くことはできません。というのは、P2SHの設計で再帰ができないようになっているためです。また、 +OP_RETURN+ は定義によって回収されることができないので、まだredeem scriptの中で +OP_RETURN+ を使用することはできません。
+
 Note that because the redeem script is not presented to the network until you attempt to spend a P2SH output, if you lock an output with the hash of an invalid transaction it will be processed regardless. However, you will not be able to spend it because the spending transaction, which includes the redeem script, will not be accepted because it is an invalid script. This creates a risk, because you can lock bitcoin in a P2SH that cannot be spent later. The network will accept the P2SH encumbrance even if it corresponds to an invalid redeem script, because the script hash gives no indication of the script it represents. 
+
+redeem scriptはP2SHアウトプットを使用しようとするまでBitcoinネットワークに提供されません。このため、もし無効なトランザクションのハッシュを伴ったアウトプットをロックする場合、お構いなしに処理されます。???? しかし、これは使うことができません。なぜなら、無効なスクリプトであるためredeem scriptを含むトランザクションの使用は受け入れられないためです。???? ????
 
 [WARNING]
 ====
