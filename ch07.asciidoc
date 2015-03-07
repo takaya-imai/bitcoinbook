@@ -11,7 +11,7 @@
 
 Each block within the blockchain is identified by a hash, generated using the SHA256 cryptographic hash algorithm on the header of the block. Each block also references a previous block, known as the((("parent blocks"))) _parent_ block, through the "previous block hash" field in the block header. In other words, each block contains the hash of its parent inside its own header. The sequence of hashes linking each block to its parent creates a chain going back all the way to the first block ever created, known as the((("genesis block"))) _genesis block_. 
 
-ブロックチェーンにあるそれぞれのブロックはハッシュによって一意に指定され、このハッシュはSHA256ハッシュアルゴリズムで生成されブロックのヘッダに置かれます。それぞれのブロックはブロックヘッダの"previous block hash"フィールドを通して ((("parent blocks"))) _親_ ブロックと呼ばれている１つ前のブロックを参照しています。別の言い方をすると、それぞれのブロックはそれ自身のヘッダに親のハッシュを持っているということになります。このハッシュの結びつきは、一番上のブロックから ((("genesis block"))) _起源ブロック_ と呼ばれる一番最初のブロックまでのチェーンを形成します。
+ブロックチェーンにあるそれぞれのブロックはハッシュによって一意に指定され、このハッシュはブロックのヘッダをSHA256ハッシュアルゴリズムに通して生成されたものです。それぞれのブロックはブロックヘッダの"previous block hash"フィールドを通して ((("parent blocks"))) _親_ ブロックと呼ばれている１つ前のブロックを参照しています。別の言い方をすると、それぞれのブロックはそれ自身のヘッダに親のハッシュを持っているということになります。このハッシュの結びつきは、一番上のブロックから ((("genesis block"))) _起源ブロック_ と呼ばれる一番最初のブロックまでのチェーンを形成します。
 
 Although a block has just one parent, it can temporarily have multiple children. Each of the children refers to the same block as its parent and contains the same (parent) hash in the "previous block hash" field. Multiple children arise during a blockchain "fork," a temporary situation that occurs when different blocks are discovered almost simultaneously by different miners (see <<forks>>). Eventually, only one child block becomes part of the blockchain and the "fork" is resolved. Even though a block may have more than one child, each block can have only one parent. This is because a block has one single "previous block hash" field referencing its single parent. 
 
@@ -49,7 +49,7 @@ One way to think about the blockchain is like layers in a geological formation, 
 
 ((("block headers")))((("blocks","headers")))The block header consists of three sets of block metadata. First, there is a reference to a previous block hash, which connects this block to the previous block in the blockchain. The second set of metadata, namely the((("difficulty target","in block header")))((("nonce,","in block header")))((("timestamping blocks","in block header"))) _difficulty_, _timestamp_, and _nonce_, relate to the mining competition, as detailed in <<ch8>>. The third piece of metadata is the merkle tree root, a data structure used to efficiently summarize all the transactions in the block. <<block_header_structure_ch07>> describes the structure of a block header.
 
-((("block headers")))((("blocks","headers")))ブロックヘッダは３つの部分によって構成されています。１つ目は、前のブロックハッシュへの参照でブロックチェーンの中でこのブロックと前のブロックを繋いでいます。２つ目は、((("difficulty target","in block header")))((("nonce,","in block header")))((("timestamping blocks","in block header"))) _difficulty_ 、 _timestamp_ 、 _nonce_ で、<<ch8>>で詳細に説明するマイニング競争に関係するところです。３つ目は、ブロック内の全てのトランザクションを効率よくまとめるために使われるデータ構造である merkle tree root です。
+((("block headers")))((("blocks","headers")))ブロックヘッダは３つの部分によって構成されています。１つ目は、前のブロックハッシュへの参照でブロックチェーンの中でこのブロックと前のブロックを繋いでいます。２つ目は、((("difficulty target","in block header")))((("nonce,","in block header")))((("timestamping blocks","in block header"))) _難易度_ 、 _timestamp_ 、 _nonce_ で、<<ch8>>で詳細に説明するマイニング競争に関係するところです。３つ目は、ブロック内の全てのトランザクションを効率よくまとめるために使われるデータ構造である merkle tree root です。
  
         
 [[block_header_structure_ch07]]
@@ -67,18 +67,27 @@ One way to think about the blockchain is like layers in a geological formation, 
 
 The nonce, difficulty target, and timestamp are used in the mining process and will be discussed in more detail in <<ch8>>.
 
-nonce、difficulty target、timestampはマイニングプロセスで使用され、<<ch8>>で詳細に説明します。
+nonce、難易度ターゲット、timestampはマイニングプロセスで使用され、<<ch8>>で詳細に説明します。
 
 [[block_hash]]
 === Block Identifiers: Block Header Hash and Block Height
+=== ブロック識別子: ブロックヘッダハッシュとブロック高
 
 ((("blocks","header hash")))((("blocks","height")))((("blocks","identifiers")))The primary identifier of a block is its cryptographic hash, a digital fingerprint, made by hashing the block header twice through the SHA256 algorithm. The resulting 32-byte hash is called the((("block hash")))((("block header hash"))) _block hash_ but is more accurately the _block header hash_, pass:[<phrase role="keep-together">because only the block header is used to compute it. For example,</phrase>] +000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f+ is the block hash of the first bitcoin block ever created. The block hash identifies a block uniquely and unambiguously and can be independently derived by any node by simply hashing the block header. 
 
+((("blocks","header hash")))((("blocks","height")))((("blocks","identifiers")))ブロックの主要な識別子はこのブロックの暗号学的なハッシュで、ブロックヘッダをSHA256アルゴリズムで２回ハッシュ化したデジタルフィンガープリントです。結果として出てくる32バイトハッシュは ((("block hash")))((("block header hash"))) _ブロックハッシュ_ と呼ばれています。もっと正確に言うと _ブロックヘッダハッシュ_ で pass:[<phrase role="keep-together">ブロックヘッダだけを使ってこのハッシュを計算しているためです。例えば、 </phrase>] +000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f+ は最初のBitcoinブロックのブロックハッシュです。このブロックハッシュはブロックを一意かつ曖昧さなく指定し、ブロックヘッダを単にハッシュ化するだけでどのノードでも独立に導出することができます。
+
 Note that the block hash is not actually included inside the block's data structure, neither when the block is transmitted on the network, nor when it is stored on a node's persistence storage as part of the blockchain. Instead, the block's hash is computed by each node as the block is received from the network. The block hash might be stored in a separate database table as part of the block's metadata, to facilitate indexing and faster retrieval of blocks from disk.
+
+ブロックハッシュは実際ブロックのデータの中には含まれていません。これは、ブロックがBitcoinネットワークに放出されるときもブロックチェーンの一部として永続的なストレージに保存されるときもです。代わりに、ブロックのハッシュはブロックがBitcoinネットワークからノードに着いたときに各ノードによって計算されます。ただブロックハッシュがブロックのメタデータの一部としてノード個別のデータベースの中に保存され、ディスクからブロックの情報を取り出す速度を速めたりインデクシングを容易にすることに使われている可能性はあります。
 
 A second way to identify a block is by its position in the blockchain, called the((("block height"))) pass:[<phrase role="keep-together"><emphasis>block height</emphasis>. The first block ever created is at block height 0 (zero) and is the</phrase>] pass:[<phrase role="keep-together">same block that was previously referenced by the following block hash</phrase>] +000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f+. A block can thus be identified two ways: by referencing the block hash or by referencing the block height. Each subsequent block added "on top" of that first block is one position "higher" in the blockchain, like boxes stacked one on top of the other. The block height on January 1, 2014, was approximately 278,000, meaning there were 278,000 blocks stacked on top of the first block created in January 2009. 
 
+ブロックを一意に指定する２つ目の方法は、ブロックチェーン内の場所によって特定することで、((("block height"))) pass:[<phrase role="keep-together"><emphasis>ブロック高</emphasis> と呼ばれています。一番最初に作られたブロックのブロック高は０で、</phrase>] pass:[<phrase role="keep-together">このブロックは以前次のブロックハッシュで参照されていたものです。</phrase>] +000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f+ 。このため、ブロックは２つの方法、ブロックハッシュによる参照、ブロック高による参照、で一意に指定されます。先ほどの一番最初のブロックの"一番上"に載せた次のブロックは１つだけ位置が"高く" 、これは箱を積み重ねたようなものです。2014年1月時点のブロック高は約278,000でした。これは、2009年1月に作られた一番最初のブロックの上に278,000個のブロックが積み重ねられていることを意味します。
+
 Unlike the block hash, the block height is not a unique identifier. Although a single block will always have a specific and invariant block height, the reverse is not true—the block height does not always identify a single block. Two or more blocks might have the same block height, competing for the same position in the blockchain. This scenario is discussed in detail in the section <<forks>>. The block height is also not a part of the block's data structure; it is not stored within the block. Each node dynamically identifies a block's position (height) in the blockchain when it is received from the bitcoin network. The block height might also be stored as metadata in an indexed database table for faster retrieval. 
+
+ブロックハッシュと違って、ブロック高はユニークな識別子ではありません。１つのブロックは特定のブロック高が割り当てられていますが、逆は真ではありません。２つまたはもっと多くのブロックが同じブロック高を持っているかもしれないからです。これは、ブロックチェーン内の同じ場所をマイナーが競争して取得使用としているためです。どのようにしてこれが起こるのかについては<<forks>>の節で詳細に説明します。ブロック高はまたブロックのデータの一部でもありません。それぞれのノードは、Bitcoinネットワークからブロックを受け取ったときにこのブロックがブロックチェーン内のどこの位置(ブロック高)にあるのかをブロック高を使うことなくブロックハッシュから動的に特定します。ただこのブロック高は、ブロックチェーンからすばやくブロック情報を取得する目的でデータベースにメタデータとして保存されている可能性はあります。
     
 [TIP]
 ====
@@ -86,14 +95,23 @@ A block's _block hash_ always identifies a single block uniquely. A block also a
 ====
 
 === The Genesis Block
+=== 起源ブロック
 
 ((("blockchains","genesis block")))((("genesis block")))The first block in the blockchain is called the genesis block and was created in 2009. It is the common ancestor of all the blocks in the blockchain, meaning that if you start at any block and follow the chain backward in time, you will eventually arrive at the genesis block. 
 
+((("blockchains","genesis block")))((("genesis block")))ブロックチェーンの一番最初のブロックは起源ブロックと呼ばれており、これは2009年に作られたものです。これはブロックチェーンにある全てのブロックの祖先であり、どんなブロックからスタートしてチェーンを過去にさかのぼっていっても結局起源ブロックにぶつかります。
+
 Every node always starts with a blockchain of at least one block because the genesis block is statically encoded within the bitcoin client software, such that it cannot be altered. Every node always "knows" the genesis block's hash and structure, the fixed time it was created, and even the single transaction within. Thus, every node has the starting point for the blockchain, a secure "root" from which to build a trusted blockchain. 
+
+全てのノードは１つのブロックのブロックチェーンからいつも始まります。というのは、起源ブロックは変更できないようにBitcoinクライアントにハードコーディングされているためです。全てのノードは起源ブロックのハッシュとデータ、作成された日時、１つのトランザクションが含まれていることを"知って"おり、これにより信頼されたブロックチェーンを構築するときの安全な"根幹"を持つことができるのです。????
 
 ((("Bitcoin Core client","genesis block in")))See the statically encoded genesis block inside the Bitcoin Core client, in http://bit.ly/1x6rcwP[chainparams.cpp].
 
+((("Bitcoin Core client","genesis block in")))Bitcoin Coreクライアントの内部にハードコーディングされた起源ブロックは、 http://bit.ly/1x6rcwP[chainparams.cpp] を参照してみてください。
+
 The following identifier hash belongs to the genesis block: 
+
+以下のハッシュが起源ブロックのハッシュです。
 
 ----
 000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f
@@ -101,12 +119,15 @@ The following identifier hash belongs to the genesis block:
 
 You can search for that block hash in any block explorer website, such as blockchain.info, and you will find a page describing the contents of this block, with a URL containing that hash:
 
+blockchain.infoのようなブロック探索サイトでブロックハッシュを検索することができ、以下のハッシュを含むURLを参照することで起源ブロックの内容が書かれたページを見ることができます。
+
 https://blockchain.info/block/000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f
 
 https://blockexplorer.com/block/000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f
 
 Using the Bitcoin Core reference client on the command line:
 
+Bitcoin Coreクライアントの以下のコマンドを実行することでも起源ブロックの内容を確認することができます。
 
 ----
 $ bitcoind getblock 000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f
@@ -132,6 +153,8 @@ $ bitcoind getblock 000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8c
 ----
 
 The genesis block contains a hidden message within it. The coinbase transaction input contains the text "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks." This message was intended to offer proof of the earliest date this block was created, by referencing the headline of the British newspaper _The Times_. It also serves as a tongue-in-cheek reminder of the importance of an independent monetary system, with bitcoin's launch occurring at the same time as an unprecedented worldwide monetary crisis. The message was embedded in the first block by Satoshi Nakamoto, bitcoin's creator. 
+
+起源ブロックには隠されたメッセージが含まれています。coinbase transactionインプットには"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks."(リーマンショックの影響を受けた銀行へのイギリス政府からの資金援助に関する記事????)という文章が記載されています。このメッセージはイギリスの新聞 _タイムズ紙_ のヘッドラインを参照することで起源ブロックが2009年1月3日以前になかったことの証明になっています。また、皮肉にも銀行と独立した重要な通貨システムであるBitcoinが稼働し始め、前例のない全世界共通通貨の稼働という決定的な出来事が起きたリマインダーにもなっているのです。????
 
 === Linking Blocks in the Blockchain
 
