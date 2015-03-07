@@ -1,21 +1,36 @@
 [[blockchain]]
 == The Blockchain
+== ブロックチェーン
 
 === Introduction
+=== イントロダクション
 
 ((("blockchains", id="ix_ch07-asciidoc0", range="startofrange")))The blockchain data structure is an ordered, back-linked list of blocks of transactions. The blockchain can be stored as a flat file, or in a simple database. The Bitcoin Core client stores the blockchain metadata using((("LevelDB database (Google)"))) Google's LevelDB database. Blocks are linked "back," each referring to the previous block in the chain. The blockchain is often visualized as a vertical stack, with blocks layered on top of each other and the first block serving as the foundation of the stack. The visualization of blocks stacked on top of each other results in the use of terms such as "height" to refer to the distance from the first block, and "top" or "tip" to refer to the most recently added block. 
 
+((("blockchains", id="ix_ch07-asciidoc0", range="startofrange")))ブロックチェーンのデータ構造は順序を持った後方連結リストで、未来から過去に向かっていくトランザクションブロックの連結リストです。ブロックチェーンはフラットファイルとして保存、または簡易データベースに保存することができ、Bitcoin Coreクライアントはブロックチェーンのメタデータを((("LevelDB database (Google)"))) GoogleのLevelDBに保存しています。ブロックチェーンは"後方"に連結されており、それぞれのブロックはブロックチェーンでの前のブロックを指しています。ブロックチェーンはよく垂直方向のスタックとして可視化され、新しいブロックは一番上に重ねられていき一番最初のブロックはスタックの一番底にあります。ブロックチェーンを垂直方向のスタックとしてイメージしているため、"height"という用語は最初のブロックからの距離を表し、"top"または"tip"は最も最近追加されたブロックを表します。
+
 Each block within the blockchain is identified by a hash, generated using the SHA256 cryptographic hash algorithm on the header of the block. Each block also references a previous block, known as the((("parent blocks"))) _parent_ block, through the "previous block hash" field in the block header. In other words, each block contains the hash of its parent inside its own header. The sequence of hashes linking each block to its parent creates a chain going back all the way to the first block ever created, known as the((("genesis block"))) _genesis block_. 
+
+ブロックチェーンにあるそれぞれのブロックはハッシュによって一意に指定され、このハッシュはSHA256ハッシュアルゴリズムで生成されブロックのヘッダに置かれます。それぞれのブロックはブロックヘッダの"previous block hash"フィールドを通して ((("parent blocks"))) _親_ ブロックと呼ばれている１つ前のブロックを参照しています。別の言い方をすると、それぞれのブロックはそれ自身のヘッダに親のハッシュを持っているということになります。このハッシュの結びつきは、一番上のブロックから ((("genesis block"))) _起源ブロック_ と呼ばれる一番最初のブロックまでのチェーンを形成します。
 
 Although a block has just one parent, it can temporarily have multiple children. Each of the children refers to the same block as its parent and contains the same (parent) hash in the "previous block hash" field. Multiple children arise during a blockchain "fork," a temporary situation that occurs when different blocks are discovered almost simultaneously by different miners (see <<forks>>). Eventually, only one child block becomes part of the blockchain and the "fork" is resolved. Even though a block may have more than one child, each block can have only one parent. This is because a block has one single "previous block hash" field referencing its single parent. 
 
+ブロックはたった１つの親を持ちますが、一時的に複数の子供を持ちえます。それぞれの子供は同じブロックを親として参照し、"previous block hash"フィールドに同じハッシュを含んでいます。複数の子供はブロックチェーンが"フォーク"しているときに起こり、異なるブロックがほぼ同時に異なるマイナーによって発見されるとこのような状況が起こりえます(<<forks>>参照)。どこかのタイミングで偶然１つの子ブロックがブロックチェーンの一部になるとこの"フォーク"は解決されます。たとえブロックが２つ以上の子供を持っていたとしても、それぞれのブロックは必ず１つの親を持ちます。これは"previous block hash"フィールドが１つしかなく必ず１つの親しか参照できないためです。
+
 The "previous block hash" field is inside the block header and thereby affects the _current_ block's hash. The child's own identity changes if the parent's identity changes. When the parent is modified in any way, the parent's hash changes. The parent's changed hash necessitates a change in the "previous block hash" pointer of the child. This in turn causes the child's hash to change, which requires a change in the pointer of the grandchild, which in turn changes the grandchild, and so on. ((("security","immutability of blockchain and")))This cascade effect ensures that once a block has many generations following it, it cannot be changed without forcing a recalculation of all subsequent blocks. Because such a recalculation would require enormous computation, the existence of a long chain of blocks makes the blockchain's deep history immutable, which is a key feature of bitcoin's security. 
+
+"previous block hash"フィールドはブロックヘッダにあるため、 _現在_ のブロックのハッシュはこの"previous block hash"によって変わることになります。なんらかの方法で親ブロックが修正されると親ブロックのハッシュが変わります。親ブロックのハッシュが変わると、子ブロックの"previous block hash"フィールドのハッシュを変える必要が出てきます。子ブロックの"previous block hash"フィールドのハッシュが変わると、子ブロックのハッシュが変わります。子供ブロックのハッシュを変えると孫ブロックの"previous block hash"フィールドのハッシュが変わり、孫ブロックのハッシュが変わります。これは順々に起こっていきます。((("security","immutability of blockchain and")))このような連なり効果があるため、一度ブロックが多くの世代を持つようになるとこのブロックの後に続く全てのブロックのハッシュの再計算をしなければブロックを変更できなくなるのです。このような再計算は巨大な計算量を必要とするため、ブロックの長いチェーンによってブロックチェーンは変更不可能なものになり、これがBitcoinのセキュリティの重要な要素となっています。
 
 One way to think about the blockchain is like layers in a geological formation, or glacier core sample. The surface layers might change with the seasons, or even be blown away before they have time to settle. But once you go a few inches deep, geological layers become more and more stable. By the time you look a few hundred feet down, you are looking at a snapshot of the past that has remained undisturbed for millions of years. In the blockchain, the most recent few blocks might be revised if there is a chain recalculation due to a fork. The top six blocks are like a few inches of topsoil. But once you go more deeply into the blockchain, beyond six blocks, blocks are less and less likely to change. After 100 blocks back there is so much stability that the coinbase transaction—the transaction containing newly mined bitcoins—can be spent. A few thousand blocks back (a month) and the blockchain is settled history. It will never change.  
 
+ブロックチェーンをイメージする１つの方法は地層や氷河のレイヤーのようなものです。表面のレイヤーは季節ごとに変わってしまう、または沈着する前であれば風でさえ飛ばされてしまうかもしれません。しかし、一度数インチの深さになると、どんどん安定していきます。数百フィートも下っていくと、数百万年間もの間そのままになっていた過去のスナップショットが見えてきます。ブロックチェーンでは、ほんの最近の２、３ブロックは再計算を行って書き換えられるかもしれません。先頭の６ブロックは表土の２、３インチのようなものです。しかし、一度６ブロックより深くのブロックチェーンの奥に入ってしまうと、ブロックは変更されないようになります。100ブロックも重なるととても安定になり、数千ブロックが重なる(一ヶ月分)とこのブロックチェーンは確固たるものになります。これはもう決して変更されません。
+
 === Structure of a Block
+=== ブロックの構造
 
 ((("blocks","structure of")))A block is a container data structure that aggregates transactions for inclusion in the public ledger, the blockchain. The block is made of a header, containing metadata, followed by a long list of transactions that make up the bulk of its size. The block header is 80 bytes, whereas the average transaction is at least 250 bytes and the average block contains more than 500 transactions. A complete block, with all transactions, is therefore 1,000 times larger than the block header. <<block_structure1>> describes the structure of a block.
+
+((("blocks","structure of")))ブロックは、ブロックチェーンに含めるために集められたトランザクションのデータコンテナです。ブロックはメタデータを含むヘッダ、トランザクションの長いリストによって構成されます。ブロックヘッダは80バイトあり、平均トランザクションデータサイズは少なくとも250バイト、ブロックに含まれる平均トランザクション数は500個以上です。よって、ブロックはブロックヘッダの1000倍以上のデータサイズを持つことになります。<<block_structure1>>はブロックの構造を示しています。
 
 [[block_structure1]]
 .The structure of a block
