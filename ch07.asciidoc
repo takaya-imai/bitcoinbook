@@ -45,8 +45,11 @@ One way to think about the blockchain is like layers in a geological formation, 
 
 [[block_header]]
 === Block Header
+=== ブロックヘッダ
 
 ((("block headers")))((("blocks","headers")))The block header consists of three sets of block metadata. First, there is a reference to a previous block hash, which connects this block to the previous block in the blockchain. The second set of metadata, namely the((("difficulty target","in block header")))((("nonce,","in block header")))((("timestamping blocks","in block header"))) _difficulty_, _timestamp_, and _nonce_, relate to the mining competition, as detailed in <<ch8>>. The third piece of metadata is the merkle tree root, a data structure used to efficiently summarize all the transactions in the block. <<block_header_structure_ch07>> describes the structure of a block header.
+
+((("block headers")))((("blocks","headers")))ブロックヘッダは３つの部分によって構成されています。１つ目は、前のブロックハッシュへの参照でブロックチェーンの中でこのブロックと前のブロックを繋いでいます。２つ目は、((("difficulty target","in block header")))((("nonce,","in block header")))((("timestamping blocks","in block header"))) _difficulty_ 、 _timestamp_ 、 _nonce_ で、<<ch8>>で詳細に説明するマイニング競争に関係するところです。３つ目は、ブロック内の全てのトランザクションを効率よくまとめるために使われるデータ構造である merkle tree root です。
  
         
 [[block_header_structure_ch07]]
@@ -63,6 +66,8 @@ One way to think about the blockchain is like layers in a geological formation, 
 |=======
 
 The nonce, difficulty target, and timestamp are used in the mining process and will be discussed in more detail in <<ch8>>.
+
+nonce、difficulty target、timestampはマイニングプロセスで使用され、<<ch8>>で詳細に説明します。
 
 [[block_hash]]
 === Block Identifiers: Block Header Hash and Block Height
