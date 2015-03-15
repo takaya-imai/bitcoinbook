@@ -12,6 +12,7 @@
 
 Miners validate new transactions and record them on the global ledger. A new block, containing transactions that occurred since the last block, is "mined" every 10 minutes, thereby adding those transactions to the blockchain. Transactions that become part of a block and added to the blockchain are considered "confirmed," which allows the new owners of bitcoin to spend the bitcoin they received in those transactions. 
 
+(CONFLICT)
 マイナーは新しいトランザクションを検証し、これらをグローバルな元帳に記録します。一番最後のブロック以降に生じたトランザクションを含む新しいブロックは10分ごとに"マイニング"され、ブロックチェーンにこれらのトランザクションが追加されます。ブロックチェーンに追加された、またはブロックの一部になったトランザクションは"検証済"となり、これらのトランザクションで送付されたbitcoinを使用することができるようになります。
 
 Miners receive two types of rewards for mining: new coins created with each new block, and transaction fees from all the transactions included in the block. To earn this reward, the miners compete to solve a difficult mathematical problem based on a cryptographic hash algorithm. The solution to the problem, called the proof of work, is included in the new block and acts as proof that the miner expended significant computing effort. The competition to solve the proof-of-work algorithm to earn reward and the right to record transactions on the blockchain is the basis for bitcoin's security model. 
