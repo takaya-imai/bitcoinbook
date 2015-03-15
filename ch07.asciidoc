@@ -21,8 +21,9 @@ The "previous block hash" field is inside the block header and thereby affects t
 
 "previous block hash"フィールドはブロックヘッダにあるため、 _現在_ のブロックのハッシュはこの"previous block hash"によって変わることになります。なんらかの方法で親ブロックが修正されると親ブロックのハッシュが変わります。親ブロックのハッシュが変わると、子ブロックの"previous block hash"フィールドのハッシュを変える必要が出てきます。子ブロックの"previous block hash"フィールドのハッシュが変わると、子ブロックのハッシュが変わります。子供ブロックのハッシュを変えると孫ブロックの"previous block hash"フィールドのハッシュが変わり、孫ブロックのハッシュが変わります。これは順々に起こっていきます。((("security","immutability of blockchain and")))このような連なり効果があるため、一度ブロックが多くの世代を持つようになるとこのブロックの後に続く全てのブロックのハッシュの再計算をしなければブロックを変更できなくなるのです。このような再計算は巨大な計算量を必要とするため、ブロックの長いチェーンによってブロックチェーンは変更不可能なものになり、これがBitcoinのセキュリティの重要な要素となっています。
 
-One way to think about the blockchain is like layers in a geological formation, or glacier core sample. The surface layers might change with the seasons, or even be blown away before they have time to settle. But once you go a few inches deep, geological layers become more and more stable. By the time you look a few hundred feet down, you are looking at a snapshot of the past that has remained undisturbed for millions of years. In the blockchain, the most recent few blocks might be revised if there is a chain recalculation due to a fork. The top six blocks are like a few inches of topsoil. But once you go more deeply into the blockchain, beyond six blocks, blocks are less and less likely to change. After 100 blocks back there is so much stability that the coinbase transaction—the transaction containing newly mined bitcoins—can be spent. A few thousand blocks back (a month) and the blockchain is settled history. It will never change.  
+One way to think about the blockchain is like layers in a geological formation, or glacier core sample. The surface layers might change with the seasons, or even be blown away before they have time to settle. But once you go a few inches deep, geological layers become more and more stable. By the time you look a few hundred feet down, you are looking at a snapshot of the past that has remained undisturbed for millions of years. In the blockchain, the most recent few blocks might be revised if there is a chain recalculation due to a fork. The top six blocks are like a few inches of topsoil. But once you go more deeply into the blockchain, beyond six blocks, blocks are less and less likely to change. After 100 blocks back there is so much stability that the coinbase transaction—the transaction containing newly mined bitcoins—can be spent. A few thousand blocks back (a month) and the blockchain is settled history, for all practical purposes. While the protocol always allows a chain to be undone by a longer chain and while the possibility of any block being reversed always exists, the probability of such an event decreases as time passes until it becomes infinitesimal.
 
+(CONFLICT)
 ブロックチェーンをイメージする１つの方法は地層や氷河のレイヤーのようなものです。表面のレイヤーは季節ごとに変わってしまう、または沈着する前であれば風でさえ飛ばされてしまうかもしれません。しかし、一度数インチの深さになると、どんどん安定していきます。数百フィートも下っていくと、数百万年間もの間そのままになっていた過去のスナップショットが見えてきます。ブロックチェーンでは、ほんの最近の２、３ブロックは再計算を行って書き換えられるかもしれません。先頭の６ブロックは表土の２、３インチのようなものです。しかし、一度６ブロックより深くのブロックチェーンの奥に入ってしまうと、ブロックは変更されないようになります。100ブロックも重なるととても安定になり、数千ブロックが重なる(一ヶ月分)とこのブロックチェーンは確固たるものになります。これはもう決して変更されません。
 
 === Structure of a Block
@@ -209,6 +210,10 @@ A _merkle tree_, also known as a((("binary hash tree"))) _binary hash tree_, is 
 
 _merkle tree_ は ((("binary hash tree")) _二分ハッシュ木_ と呼ばれるもので、効率的に大きなデータをまとめ、データ全体を検証できるようにしています。merkle treeは暗号学的なハッシュを含む二分木です。"tree"という言葉は、コンピュータサイエンスの分野で使われる枝葉を持つデータ構造を表す言葉として使われています。しかし、これらの木はあとで出てくる例で見るように通常上下が逆の状態で表され、上方向が"根っこ"で下方向が葉になっています。
 
+[[chain_of_blocks]]
+.Blocks linked in a chain, by reference to the previous block header hash
+image::images/msbt_0701.png[]
+
 Merkle trees are used in bitcoin to summarize all the transactions in a block, producing an overall digital fingerprint of the entire set of transactions, providing a very efficient process to verify whether a transaction is included in a block. A((("Merkle trees","constructing"))) Merkle tree is constructed by recursively hashing pairs of nodes until there is only one hash, called the _root_, or _merkle root_. The cryptographic hash algorithm used in bitcoin's merkle trees is SHA256 applied twice, also known as double-SHA256. 
 
 merkle treeはブロックに含まれている全てのトランザクションをまとめるために使われ、トランザクション全体のデジタルフィンガープリントを作り出し、あるトランザクションがブロックに含まれているかどうかを確認するとても効率的な方法を提供します。((("Merkle trees","constructing"))) merkle treeは再帰的に葉ノードのペアから１つのハッシュ値を計算し、ハッシュが１つだけ残るまで続けます。この残ったハッシュを _root_ または _merkle root_ と呼びます。Bitcoinのmerkle treeに使われている暗号学的なハッシュアルゴリズムはSHA256を２回適用したもので、double-SHA256とも呼ばれています。
@@ -216,11 +221,6 @@ merkle treeはブロックに含まれている全てのトランザクション
 When N data elements are hashed and summarized in a merkle tree, you can check to see if any one data element is included in the tree with at most +2*log~2~(N)+ calculations, making this a very efficient data structure.  
 
 N個のデータ要素がハッシュ化されmerkle treeの中にまとめられているとき、多くても +2*log~2~(N)+ 回の計算をすることであるデータ要素がmerkle treeに含まれているかどうかを知ることができます。(線形探索だと多くてN回)
-
-
-[[chain_of_blocks]]
-.Blocks linked in a chain, by reference to the previous block header hash
-image::images/msbt_0701.png[]
 
 The merkle tree is constructed bottom-up. In the following example, we start with four transactions, A, B, C and D, which form the _leaves_ of the Merkle tree, as shown in <<simple_merkle>>. The transactions are not stored in the merkle tree; rather, their data is hashed and the resulting hash is stored in each leaf node as H~A~, H~B~, H~C~, and H~D~:
 
@@ -278,6 +278,10 @@ image::images/msbt_0705.png["merkle_tree_path"]
 The code in <<merkle_example>> demonstrates the process of creating a merkle tree from the leaf-node hashes up to the root, using the libbitcoin library for some helper functions.
 
 <<merkle_example>>にあるコードは、葉ノードからmerkle rootまでのmerkle treeを作り出すプロセスをデモンストレーションであり、いくつかの補助関数でlibbitcoinライブラリを使っています。
+
+++++
+<?hard-pagebreak?>
+++++
 
 [[merkle_example]]
 .Building a merkle tree
