@@ -204,22 +204,38 @@ By independently verifying each transaction as it is received and before propaga
 トランザクションを受け取ったときや他のノードに伝搬させたりする前に独立にそれぞれのトランザクションを検証することによって、全てのノードが _トランザクションプール_ 、 _メモリプール_ または _mempool_ と呼ばれるプールを構築します。
 
 === Mining Nodes
+=== マイニングノード
 
 ((("mining","nodes")))((("nodes","mining")))Some of the nodes on the bitcoin network are specialized nodes called _miners_. In <<ch01_intro_what_is_bitcoin>> we introduced Jing, a computer engineering student in Shanghai, China, who is a bitcoin miner. Jing earns bitcoin by running a((("mining rigs"))) "mining rig," which is a specialized computer-hardware system designed to mine bitcoins. Jing's specialized mining hardware is connected to a server running a full bitcoin node. Unlike Jing, some miners mine without a full node, as we will see in <<mining_pools>>. Like every other full node, Jing's node receives and propagates unconfirmed transactions on the bitcoin network. Jing's node, however, also aggregates these transactions into new blocks.
-    
+
+((("mining","nodes")))((("nodes","mining")))いくつかのBitcoinノードは _マイナー_ よ呼ばれる特別なBitcoinノードです。<<ch01_intro_what_is_bitcoin>>で、上海にいるコンピュータエンジニアの学生でBitcoinマイナーであるジンを紹介しました。ジンは、bitcoinをマイニングするために作られた特別なコンピュータ ((("mining rigs"))) "mining rig" を走らせてbitcoinを稼いでいます。ジンの特別なマイニングハードウェアはfull Bitcoin nodeが走っているサーバに接続されています。ジンと違い、いくつかのマイナーは<<mining_pools>>で見るようにfull nodeを使うことなくマイニングをしています。
+
 Jing's node is listening for new blocks, propagated on the bitcoin network, as do all nodes. However, the arrival of a new block has special significance for a mining node. The competition among miners effectively ends with the propagation of a new block that acts as an announcement of a winner. To miners, receiving a new block means someone else won the competition and they lost. However, the end of one round of a competition is also the beginning of the next round. The new block is not just a checkered flag, marking the end of the race; it is also the starting pistol in the race for the next block.
 
-=== Aggregating Transactions into Blocks
+ジンのBitcoinノードは、全てのBitcoinノードがするように、Bitcoinネットワーク上を伝搬している新しいブロックを待っています。しかし、新しいブロックが来ることはマイニングノードにとって特別な意味を持ちます。新しいブロックが伝搬してくるということは事実上マイナー同士の競争が終わったということです。この伝搬は競争の勝者を伝えることになるからです。マイナーに新しいブロックが届くということは他の誰かが競争に勝ちそれ以外の人は負けたということを意味します。しかし、このラウンドの終わりは次のラウンドの始まりです。新しいブロックはレースの終わりを示す単なるチェッカーフラッグではなく、次のブロックに対するスターティングピストルでもあります。
 
-((("blockchains","assembling blocks into")))((("blocks","assembling")))((("blocks","candidate, aggregating")))((("candidate blocks","aggregating")))((("mining","aggregating transactions and")))((("transaction pools","adding blocks to")))((("transactions","aggregating into blocks")))After validating transactions, a bitcoin node will add them to the((("memory pool"))) _memory pool_, or _transaction pool_, where transactions await until they can be included (mined) into a block. Jing's node collects, validates, and relays new transactions just like any other node. Unlike other nodes, however, Jing's node will then aggregate these transactions into a _candidate block_.
+=== Aggregating Transactions into Blocks
+=== ブロックへのトランザクション集約
+
+((("blockchains","assembling blocks into")))((("blocks","assembling")))((("blocks","candidate, aggregating")))((("candidate blocks","aggregating")))((("mining","aggregating transactions and")))((("transaction pools","adding blocks to")))((("transactions","aggregating into blocks")))After validating transactions, a bitcoin node will add them to the((("memory pool"))) _memory pool_, or _transaction pool_, where transactions await until they can be included (mined) into a block. Jing's node collects, validates, and relays new transactions just like any other node. Unliky other nodes, however, Jing's node will then aggregate these transactions into a _candidate block_.
+
+((("blockchains","assembling blocks into")))((("blocks","assembling")))((("blocks","candidate, aggregating")))((("candidate blocks","aggregating")))((("mining","aggregating transactions and")))((("transaction pools","adding blocks to")))((("transactions","aggregating into blocks")))トランザクションを検証した後、Bitcoinノードは ((("memory pool"))) _メモリプール_ または _トランザクションプール_ にそれらのトランザクションを追加します。このプールにあるトランザクションはブロックに含められる(マイニングされる)までこのプールで待機しています。ジンのBitcoinノードは他のBitcoinノードと同じようにトランザクションを集め検証し新しいトランザクションをリレーします。しかし、他のBitcoinノードと違うのは、ジンのBitcoinノードはこれらのトランザクションを _候補ブロック_ に集めておくことです。
 
 Let's follow the blocks that were created during the time Alice bought a cup of coffee from Bob's Cafe (see <<cup_of_coffee>>). Alice's transaction was included in block 277,316. For the purpose of demonstrating the concepts in this chapter, let's assume that block was mined by Jing's mining system and follow Alice's transaction as it becomes part of this new block.
 
+アリスがボブのコーヒーショップでコーヒー代を払ったときに作られたブロックを追ってみましょう(<<cup_of_coffee>>参照)。アリスのトランザクションはブロック277,316に含まれていました。この章でやりたいことを説明しやすくするために、このブロックがジンのマイニングシステムによって採掘され、アリスのトランザクションがこの新しいブロックの一部になっているとしましょう。
+
 Jing's mining node maintains a local copy of the blockchain, the list of all blocks created since the beginning of the bitcoin system in 2009. By the time Alice buys the cup of coffee, Jing's node has assembled a chain up to block 277,314. Jing's node is listening for transactions, trying to mine a new block and also listening for blocks discovered by other nodes. As Jing's node is mining, it receives block 277,315 through the bitcoin network. The arrival of this block signifies the end of the competition for block 277,315 and the beginning of the competition to create block 277,316.  
+
+ジンのマイニングBitcoinノードはブロックチェーンのローカルコピーを保持しており、このブロックチェーンには2009年にBitcoinシステムが稼働を始めてから作られた全てのブロックが含まれています。アリスがコーヒー代を支払った頃にジンのBitcoinノードはブロック277,314までブロックチェーンを組み立てました。ジンのBitcoinノードはトランザクションを待っていたり、新しいブロックをマイニングしたり、または他のBitcoinノードが発見したブロックを待っていたりしています。ジンのBitcoinノードがマイニングしているときにBitcoinネットワークからブロック277,315を受け取りました。このブロックの到着したということは、ブロック277,315の競争が終わり、ブロック277,316を作る競争が始まったということを意味します。
 
 During the previous 10 minutes, while Jing's node was searching for a solution to block 277,315, it was also collecting transactions in preparation for the next block. By now it has collected a few hundred transactions in the memory pool. Upon receiving block 277,315 and validating it, Jing's node will also check all the transactions in the memory pool and remove any that were included in block 277,315. Whatever transactions remain in the memory pool are unconfirmed and are waiting to be recorded in a new block. 
 
+ブロック277,315が到着する前の10分間、ジンのBitcoinノードはブロック277,315に対する解を探しながら、同時に次のブロックの準備のためトランザクションを集めていました。現在まで数百個のトランザクションをメモリプールに集めました。ブロック277,315を受け取り検証するとすぐに、ジンのBitcoinノードはメモリプールにある全てのトランザクションをチェックしブロック277,315に含まれていたトランザクションをメモリプールから削除していきます。
+
 Jing's node immediately constructs a new empty block, a candidate for block 277,316. This block is called a candidate block because it is not yet a valid block, as it does not contain a valid proof of work. The block becomes valid only if the miner succeeds in finding a solution to the proof-of-work algorithm.
+
+ジンのBitcoinノードはすぐにブロック277,316の候補となる新しい空ブロックの構築を始めました。このブロックはまだ有効なブロックになっていないので候補ブロックと呼ばれています。このブロックは候補ブロックと呼ばれており、有効なproof of workが含まれていないまだ有効になっていないブロックです。このブロックは、マイナーがproof-of-workアルゴリズムへの解を見つけるときにのみ有効になるのです。
 
 ==== Transaction Age, Fees, and Priority
 
