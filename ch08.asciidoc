@@ -238,10 +238,15 @@ Jing's node immediately constructs a new empty block, a candidate for block 277,
 ジンのBitcoinノードはすぐにブロック277,316の候補となる新しい空ブロックの構築を始めました。このブロックはまだ有効なブロックになっていないので候補ブロックと呼ばれています。このブロックは候補ブロックと呼ばれており、有効なproof of workが含まれていないまだ有効になっていないブロックです。このブロックは、マイナーがproof-of-workアルゴリズムへの解を見つけるときにのみ有効になるのです。
 
 ==== Transaction Age, Fees, and Priority
+==== トランザクション年齢、トランザクション手数料、トランザクション優先度
 
 ((("candidate blocks","age of transactions", id="ix_ch08-asciidoc4", range="startofrange")))((("candidate blocks","priority of transactions", id="ix_ch08-asciidoc5", range="startofrange")))((("candidate blocks","transaction fees", id="ix_ch08-asciidoc6", range="startofrange")))((("fees, transaction", id="ix_ch08-asciidoc7", range="startofrange")))((("transactions","age of", id="ix_ch08-asciidoc8", range="startofrange")))((("transactions","priority of", id="ix_ch08-asciidoc9", range="startofrange")))To construct the candidate block, Jing's bitcoin node selects transactions from the memory pool by applying a priority metric to each transaction and adding the highest priority transactions first. Transactions are prioritized based on the "age" of the UTXO that is being spent in their inputs, allowing for old and high-value inputs to be prioritized over newer and smaller inputs. Prioritized transactions can be sent without any fees, if there is enough space in the block. 
 
+((("candidate blocks","age of transactions", id="ix_ch08-asciidoc4", range="startofrange")))((("candidate blocks","priority of transactions", id="ix_ch08-asciidoc5", range="startofrange")))((("candidate blocks","transaction fees", id="ix_ch08-asciidoc6", range="startofrange")))((("fees, transaction", id="ix_ch08-asciidoc7", range="startofrange")))((("transactions","age of", id="ix_ch08-asciidoc8", range="startofrange")))((("transactions","priority of", id="ix_ch08-asciidoc9", range="startofrange")))候補ブロックを構築するために、ジンのBitcoinノードはメモリプールからトランザクションを選びます。この選び方はそれぞれのトランザクションごとに優先度を計算し、最も優先度が高いものから先に選びます。トランザクション優先度は未使用トランザクションであるUTXOの"年齢"に基づき計算され、新しくより小さいvalueインプットを持つトランザクションよりも古く大きなvalueインプットを持つトランザクションが優先されます。優先されたトランザクションは、もしこのブロックに十分なスペースがあれば何の手数料もなく送られます。????
+
 The priority of a transaction is calculated as the sum of the value and age of the inputs divided by the total size of the transaction:
+
+トランザクションの優先度は、インプットのvalueと年齢の総和をトランザクションの総データサイズで割ったもので計算しています。????
 
 ----
 Priority = Sum (Value of input * Input Age) / Transaction Size
@@ -249,7 +254,11 @@ Priority = Sum (Value of input * Input Age) / Transaction Size
 
 In this equation, the value of an input is measured in the base unit, satoshis (1/100m of a bitcoin). The age of a UTXO is the number of blocks that have elapsed since the UTXO was recorded on the blockchain, measuring how many blocks "deep" into the blockchain it is. The size of the transaction is measured in bytes.
 
+この方程式にあるインプットのvalueはsatoshi単位(bitcoinの１億分の１)で計られます。UTXOの年齢はUTXOがブロックチェーンに記録されてから積み重ねられたブロック数で、このUTXOが含まれているブロックがブロックチェーンのトップから何ブロック"深いか"で計ります。トランザクションのデータサイズはバイト単位で計られます。
+
 For a transaction to be considered "high priority," its priority must be greater than 57,600,000, which corresponds to one bitcoin (100m satoshis), aged one day (144 blocks), in a transaction of 250 bytes total size:
+
+トランザクションが"優先度が高い"と判断されるようになるためには、優先度が57,600,000よりも大きくなければいけません。これは、インプットのvalueが1bitcoin(１億satoshi)、年齢が１日(144ブロック)、トランザクションのデータサイズが250バイトに相当します。
 
 ----
 High Priority > 100,000,000 satoshis * 144 blocks / 250 bytes = 57,600,000
@@ -257,15 +266,28 @@ High Priority > 100,000,000 satoshis * 144 blocks / 250 bytes = 57,600,000
 
 The first 50 kilobytes of transaction space in a block are set aside for high-priority transactions. Jing's node will fill the first 50 kilobytes, prioritizing the highest priority transactions first, regardless of fee. This allows high-priority transactions to be processed even if they carry zero fees.
 
+ブロック内のトランザクションスペースの最初の50KBは、優先度が高いトランザクションのために取ってあります。このため、ジンのBitcoinノードは、トランザクション手数料に関わらず、最初の50KBを最も優先度が高いトランザクションで埋めます。優先度が高いトランザクションはトランザクション手数料がゼロであっても処理されます。
+
 Jing's mining node then fills the rest of the block up to the maximum block size (+MAX_BLOCK_SIZE+ in the code), with transactions that carry at least the minimum fee, prioritizing those with the highest fee per kilobyte of transaction.
+
+その後、ジンのマイニングBitcoinノードはブロックの残りをブロックサイズの最大値(コード内の +MAX_BLOCK_SIZE+ )までトランザクションで埋めます。ここで埋められるトランザクションは、最低トランザクション手数料以上を持ち、かつ最も高いトランザクション手数料をトランザクションのデータサイズ(KB単位)で割った値による優先度が高いトランザクションです。
 
 If there is any space remaining in the block, Jing's mining node might choose to fill it with no-fee transactions. Some miners choose to mine transactions without fees on a best-effort basis. Other miners may choose to ignore transactions without fees. 
 
+もしブロックにまだスペースがあれば、ジンのマイニングBitcoinノードはトランザクション手数料がないトランザクションを残りブロックスペースに埋めることを選択するかもしれません。いくつかのマイナーは最善努力としてトランザクション手数料をマイニングすることを選びますが、他のマイナーはトランザクション手数料がないトランザクションは無視するかもしれません。
+
 Any transactions left in the memory pool, after the block is filled, will remain in the pool for inclusion in the next block. As transactions remain in the memory pool, their inputs "age," as the UTXO they spend get deeper into the blockchain with new blocks added on top. Because a transaction's priority depends on the age of its inputs, transactions remaining in the pool will age and therefore increase in priority. Eventually a transaction without fees might reach a high enough priority to be included in the block for free. 
+
+このブロックが埋められた後、メモリプールに残されたトランザクションは次のブロックに含めるためにメモリプールに残されます。トランザクションがメモリプールに残る時間が長くなるにつれて、新しいブロックがブロックチェーンの上に追加されるためこのトランザクションインプットの年齢は深くなっていきます。???? トランザクションの優先度はこのトランザクションのインプットの年齢に依るので、メモリプールに残ったままになっているトランザクションは古くなり優先度が上がっていきます。結局トランザクション手数料を持たないトランザクションは十分に高い優先度になり無料でブロックに取り込まれます。
 
 ((("transactions","expiration, lack of")))Bitcoin transactions do not have an expiration time-out. A transaction that is valid now will be valid in perpetuity. However, if a transaction is only propagated across the network once, it will persist only as long as it is held in a mining node memory pool. When a mining node is restarted, its memory pool is wiped clear, because it is a transient non-persistent form of storage. Although a valid transaction might have been propagated across the network, if it is not executed it may eventually not reside in the memory pool of any miner. Wallet software is expected to retransmit such transactions or reconstruct them with higher fees if they are not successfully executed within a reasonable amount of time.
 
+((("transactions","expiration, lack of")))Bitcoinトランザクションに期限はありません。今有効なトランザクションは永遠に有効です。しかし、もしトランザクションがBitcoinネットワーク内を一度しか伝搬しないと、マイニングBitcoinノードのメモリプールに入らない限り生き残ります。???? マイニングBitcoinノードが再起動されたとき、そのメモリプールは初期化されデータが削除されます。というのは、メモリプールが一時的なストレージであるためです。有効なトランザクションはBitcoinネットワークを通じて伝搬されるかもしれませんが、結局もし伝搬されなければ長期間メモリプールに居続けることはできないことになります。ウォレットには、そのようなトランザクションを再送信したり、また適度な時間以内でうまく処理されないようであればより高いトランザクション手数料を設定してトランザクションを再構築するようなことが期待されています。
+
 When Jing's node aggregates all the transactions from the memory pool, the new candidate block has 418 transactions with total transaction fees of 0.09094928 bitcoin. You can see this block in the blockchain using the Bitcoin Core client command-line interface, as shown in <<block277316>>.(((range="endofrange", startref="ix_ch08-asciidoc9")))(((range="endofrange", startref="ix_ch08-asciidoc8")))(((range="endofrange", startref="ix_ch08-asciidoc7")))(((range="endofrange", startref="ix_ch08-asciidoc6")))(((range="endofrange", startref="ix_ch08-asciidoc5")))(((range="endofrange", startref="ix_ch08-asciidoc4")))
+
+ジンのBitcoinノードはメモリプールから全てのトランザクションを集め、新しい候補ブロックは総トランザクション手数料が0.09094928bitcoinになる418個のトランザクションを持つようになりました。<<block277316>>に示しているように、Bitcoin Coreクライアントのコマンドラインインターフェイスを使うことで、ブロックチェーン内のこのブロックを確認することができます。
+
 ====
 [source,bash]
 ----
