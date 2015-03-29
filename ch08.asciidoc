@@ -167,7 +167,7 @@ However, before forwarding transactions to its neighbors, every bitcoin node tha
 * Each output value, as well as the total, must be within the allowed range of values (less than 21m coins, more than 0).
 * それぞれのアウトプットvalueおよびtotal valueは許されている値の範囲内(0より大きく、2100万bitcoinよりも小さい)にあるか
 * None of the inputs have hash=0, N=–1 (coinbase transactions should not be relayed).
-* インプットのいずれもhash=0, N=-1でないか(coinbase transactionはリレーされていくべきでない)
+* インプットのいずれもhash=0, N=-1でないか(coinbaseトランザクションはリレーされていくべきでない)
 * +nLockTime+ is less than or equal to +INT_MAX+.
 * +nLockTime+ は+INT_MAX+より小さいかまたは等しいか
 * The transaction size in bytes is greater than or equal to 100.
@@ -183,7 +183,7 @@ However, before forwarding transactions to its neighbors, every bitcoin node tha
 * For each input, look in the main branch and the transaction pool to find the referenced output transaction. If the output transaction is missing for any input, this will be an orphan transaction. Add to the orphan transactions pool, if a matching transaction is not already in the pool.
 * それぞれのインプットに対して、メインブランチブロックチェーンの中かトランザクションプールの中にインプットが参照しているトランザクションアウトプットが見つかるかを確認する。もし参照しているアウトプットが見つからなければ、これはorphanトランザクションです。orphanトランザクションプールにまだこのトランザクションがなければ、orphanトランザクションプールにこのトランザクションを追加する????
 * For each input, if the referenced output transaction is a coinbase output, it must have at least +COINBASE_MATURITY+ (100) confirmations. 
-* それぞれのインプットに対して、もしインプットが参照しているアウトプットがcoinbase ouputだった場合、+COINBASE_MATURITY+ (100) 検証数を少なくとも持っているか
+* それぞれのインプットに対して、もしインプットが参照しているアウトプットがcoinbaseアウトプットだった場合、+COINBASE_MATURITY+ (100) 検証数を少なくとも持っているか
 * For each input, the referenced output must exist and cannot already be spent.
 * それぞれのインプットに対して、参照しているアウトプットがすでに使用されて使用不可になっていないか
 * Using the referenced output transactions to get input values, check that each input value, as well as the sum, are in the allowed range of values (less than 21m coins, more than 0).
@@ -327,8 +327,11 @@ $ bitcoin-cli getblock 0000000000000001b6b9a13b095e96db41c4a928b97ef2d944a9b31b2
 ====
 
 ==== The Generation Transaction
+==== The Generation Transaction
 
 ((("coinbase transaction", id="ix_ch08-asciidoc10", range="startofrange")))The first transaction added to the block is a special transaction, called a _generation transaction_ or _coinbase transaction_. This transaction is constructed by Jing's node and is his reward for the mining effort. Jing's node creates the generation transaction as a payment to his own wallet: "Pay Jing's address 25.09094928 bitcoin." The total amount of reward that Jing collects for mining a block is the sum of the coinbase reward (25 new bitcoins) and the transaction fees (0.09094928) from all the transactions included in the block as shown in <<generation_tx_example>>: 
+
+((("coinbase transaction", id="ix_ch08-asciidoc10", range="startofrange")))ブロックに最初の追加されたトランザクションは特別なトランザクションで、 _generationトランザクション_ または _coinbaseトランザクション_ と呼ばれています。このトランザクションはジンのBitcoinノードによって構築され、マイニング労力に対する彼の報酬になります。ジンのBitcoinノードは彼自身のウォレットへの支払いとしてgenerationトランザクションを作ります。具体的には "ジンのBitcoinアドレスに25.09094928bitcoinを支払う" のようなものです。ジンがブロックをマイニングしたことに対する報酬総額は、coinbase報酬(新規の25bitcoin)と、ブロックに含まれている全てのトランザクションから得られたトランザクション手数料(0.09094928bitcoin)の和になります。これは、 <<generation_tx_example>> に示されています。
 
 
 ====
@@ -378,9 +381,14 @@ $ bitcoin-cli getrawtransaction d5ada064c6417ca25c4308bd158c34b77e1c0eca2a73cda1
 
 Unlike regular transactions, the generation transaction does not consume (spend) UTXO as inputs. Instead, it has only one input, called the _coinbase_, which creates bitcoin from nothing. The generation transaction has one output, payable to the miner's own bitcoin address. The output of the generation transaction sends the value of 25.09094928 bitcoins to the miner's bitcoin address, in this case +1MxTkeEP2PmHSMze5tUZ1hAV3YTKu2Gh1N+. 
 
+通常のトランザクションと違って、generationトランザクションはインプットとしてUTXOを持ちません。その代わり、 _coinbase_ と呼ばれるたった１つのインプットを持ち、これが何もないところからbitcoinを生み出すことになります。generationトランザクションは１つのアウトプットを持ち、これはマイナー自身のBitcoinアドレスへの支払いになっています。このため、上記のgenerationトランザクションのアウトプットは、マイナーのBitcoinアドレスである +1MxTkeEP2PmHSMze5tUZ1hAV3YTKu2Gh1N+ に25.09094928bitcoinを送ることになります。
+
 ==== Coinbase Reward and Fees
+==== coinbase報酬と手数料
 
 ((("coinbase data","fees and")))((("coinbase reward, calculating")))((("fees, transaction","calculating")))((("fees, transaction","generation transactions and")))((("generation transaction","coinbase rewards and")))((("generation transaction","fees and")))To construct the generation transaction, Jing's node first calculates the total amount of transaction fees by adding all the inputs and outputs of the 418 transactions that were added to the block. The fees are calculated as:
+
+((("coinbase data","fees and")))((("coinbase reward, calculating")))((("fees, transaction","calculating")))((("fees, transaction","generation transactions and")))((("generation transaction","coinbase rewards and")))((("generation transaction","fees and")))generationトランザクションを構築するために、ジンのBitcoinノードは最初にトランザクション手数料の総額を計算します。この総額は、ブロックに追加された418個のトランザクションのインプットとアウトプットから計算され、トランザクション手数料は以下のようになります。
 
 ----
 Total Fees = Sum(Inputs) - Sum(Outputs)
@@ -388,9 +396,15 @@ Total Fees = Sum(Inputs) - Sum(Outputs)
 
 In block 277,316, the total transaction fees are 0.09094928 bitcoins. 
 
+ブロック277,316にあるトランザクション手数料の総額は0.09094928bitcoinです。
+
 Next, Jing's node calculates the correct reward for the new block. The reward is calculated based on the block height, starting at 50 bitcoins per block and reduced by half every 210,000 blocks. Because this block is at height 277,316, the correct reward is 25 bitcoins. 
 
+次に、ジンのBitcoinノードは新しいブロックに対する正しい報酬を計算します。???? 正しい? この報酬はブロック高に基づいて計算され、最初は１ブロックあたり50bitcoinから始まり210,000ブロックごとに半分に減っていきます。このブロックのブロック高は277,316であるため、正しい報酬は25bitcoinです。
+
 The calculation can be seen in function +GetBlockValue+ in the Bitcoin Core client, as shown in <<getblockvalue_source>>.
+
+この計算は<<getblockvalue_source>>にあるようにBitcoin Coreクライアントにある +GetBlockValue+ 関数で確認できます。
 
 [[getblockvalue_source]]
 .Calculating the block reward—Function GetBlockValue, Bitcoin Core Client, main.cpp, line 1305
@@ -416,13 +430,23 @@ int64_t GetBlockValue(int nHeight, int64_t nFees)
 
 The initial subsidy is calculated in satoshis by multiplying 50 with the +COIN+ constant (100,000,000 satoshis). This sets the initial reward (+nSubsidy+) at 5 billion satoshis. 
 
+初期助成金は、 +COIN+ 定数(100,000,000satoshi)に50を掛けてsatoshi単位で表したものになっています。これによって初期報酬(+nSubsidy+)が50億satoshiになっています。
+
 ((("halvings, calculating")))Next, the function calculates the number of +halvings+ that have occurred by dividing the current block height by the halving interval (+SubsidyHalvingInterval+). In the case of block 277,316, with a halving interval every 210,000 blocks, the result is 1 halving. 
+
+((("halvings, calculating")))次に、この関数は半減ブロック数(+SubsidyHalvingInterval+)で現在のブロック高を割るごとに起こった半減数+halvings+を計算しています。ブロック277,316の場合、半減ブロック数が210,000ブロックごとであるため結果は1回の半減数となります。
 
 The maximum number of halvings allowed is 64, so the code imposes a zero reward (return only the fees) if the 64 halvings is exceeded.
 
+許されている半減数の最大値は64回で、もし64回の半減数を越えるとこのコードでは新しいブロックに対する報酬が0になります(単にトランザクション手数料のみが返る)。
+
 Next, the function uses the binary-right-shift operator to divide the reward (+nSubsidy+) by two for each round of halving. In the case of block 277,316, this would binary-right-shift the reward of 5 billion satoshis once (one halving) and result in 2.5 billion satoshis, or 25 bitcoins. The binary-right-shift operator is used because it is more efficient for division by two than integer or floating-point division. 
 
+次に、この関数は２進数右シフト演算子を使って報酬(+nSubsidy+)を半減ごとに２で割っています。ブロック277,316の場合、これは50億satoshiの報酬を１回だけ２進数右シフト演算(１回半減)を行い報酬は25億satoshiとなります。２進数右シフト演算子は、整数または浮動小数点での割り算よりもより効果的に２で割ることができるために使われています。
+
 Finally, the coinbase reward (+nSubsidy+) is added to the transaction fees (+nFees+), and the sum is returned. 
+
+最終的に、coinbase報酬(+nSubsidy+)にはトランザクション手数料(+nFees+)が加えられ、この和が返されます。
 
 ==== Structure of the Generation Transaction
 
