@@ -449,10 +449,15 @@ Finally, the coinbase reward (+nSubsidy+) is added to the transaction fees (+nFe
 最終的に、coinbase報酬(+nSubsidy+)にはトランザクション手数料(+nFees+)が加えられ、この和が返されます。
 
 ==== Structure of the Generation Transaction
+==== generationトランザクションの構造
 
 ((("generation transaction","structure of")))With these calculations, Jing's node then constructs the generation transaction to pay himself 25.09094928 bitcoin.
 
+((("generation transaction","structure of")))これらの計算を行うことで、ジンのBitcoinノードは彼自身に25.09094928bitcoinを支払うためにgenerationトランザクションを構築します。
+
 As you can see in <<generation_tx_example>>, the generation transaction has a special format. Instead of a transaction input specifying a previous UTXO to spend, it has a "coinbase" input. We examined transaction inputs in <<tx_in_structure>>. Let's compare a regular transaction input with a generation transaction input. <<table_8-1>> shows the structure of a regular transaction, while <<table_8-2>> shows the structure of the generation transaction's input.
+
+<<generation_tx_example>>を見ると分かるように、generationトランザクションは特別なフォーマットをしています。使用する前のUTXOを特定するトランザクションインプットと違って、これは"coinbase"インプットを持っています。<<tx_in_structure>>の中でトランザクションインプットを説明しました。ここでは、通常のトランザクションインプットとgenerationトランザクションインプットを比較してみましょう。<<table_8-1>>は通常のトランザクションの構造を示していて、<<table_8-2>>はgenerationトランザクションインプットの構造を示しています。
 
 [[table_8-1]]
 .The structure of a "normal" transaction input
@@ -480,6 +485,8 @@ in v2 blocks, must begin with block height
 |=======
 
 In a generation transaction, the first two fields are set to values that do not represent a UTXO reference. Instead of a "Transaction Hash," the first field is filled with 32 bytes all set to zero. The "Output Index" is filled with 4 bytes all set to 0xFF (255 decimal). The "Unlocking Script" is replaced by coinbase data, an arbitrary data field used by the miners. 
+
+gerationトランザクションでは、最初の２つのフィールドはUTXOへの参照を表現していない値が設定されています。通常のトランザクションの"Transaction Hash"の代わりに、最初のフィールドは全てが0の32バイトで埋められています。"Output Index"は全てが0xFF(１０進数で255)に設定された4バイトで埋められています。"Unlocking Script"はcoinbaseデータで置き換えられており、マイナーによって使われる任意のデータを入れられるフィールドになっています。
 
 ==== Coinbase Data
 
