@@ -128,7 +128,7 @@ https://blockexplorer.com/block/000000000019d6689c085ae165831e934ff763ae46a2a6c1
 
 Using the Bitcoin Core reference client on the command line:
 
-Bitcoin Coreクライアントの以下のコマンドを実行することでも起源ブロックの内容を確認することができます。
+Bitcoin Core参照クライアントの以下のコマンドを実行することでも起源ブロックの内容を確認することができます。
 
 ----
 $ bitcoind getblock 000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f

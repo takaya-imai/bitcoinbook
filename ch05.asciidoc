@@ -359,7 +359,7 @@ When a chain of transactions is transmitted across the network, they don't alway
 
 There is a limit to the number of orphan transactions stored in memory, to prevent a denial-of-service attack against bitcoin nodes. The limit is defined as((("MAX_ORPHAN_TRANSACTIONS constant"))) +MAX_ORPHAN_TRANSACTIONS+ in the source code of the bitcoin reference client. If the number of orphan transactions in the pool exceeds +MAX_ORPHAN_TRANSACTIONS+, one or more randomly selected orphan transactions are evicted from the pool, until the pool size is back within limits. 
 
-メモリに保持できるorphanトランザクションの数には制限があります。これは、BitcoinノードからのDOS攻撃を防ぐためです。制限数は、 ((("MAX_ORPHAN_TRANSACTIONS constant"))) +MAX_ORPHAN_TRANSACTIONS+ というBitcoin Coreのソースコード内にあるパラメータで定義されています。もしプールにあるorphanトランザクションの数が +MAX_ORPHAN_TRANSACTIONS+ を越えると、ランダムに選ばれたいくつかのorphanトランザクションがプールから追い出され、プールにあるorphanトランザクション数が制限以内になるように調整されます。
+メモリに保持できるorphanトランザクションの数には制限があります。これは、BitcoinノードからのDOS攻撃を防ぐためです。制限数は、 ((("MAX_ORPHAN_TRANSACTIONS constant"))) +MAX_ORPHAN_TRANSACTIONS+ というBitcoin参照クライアントのソースコード内にあるパラメータで定義されています。もしプールにあるorphanトランザクションの数が +MAX_ORPHAN_TRANSACTIONS+ を越えると、ランダムに選ばれたいくつかのorphanトランザクションがプールから追い出され、プールにあるorphanトランザクション数が制限以内になるように調整されます。
 
 [[tx_script]]
 === Transaction Scripts and Script Language
@@ -515,11 +515,11 @@ Transactions are valid if the top result on the stack is TRUE (noted as ++&#x7b;
 
 In the first few years of bitcoin's development, the developers introduced some limitations in the types of scripts that could be processed by the reference client. These limitations are encoded in a function called +isStandard()+, which defines five types of "standard" transactions. These limitations are temporary and might be lifted by the time you read this. Until then, the five standard types of transaction scripts are the only ones that will be accepted by the reference client and most miners who run the reference client. Although it is possible to create a nonstandard transaction containing a script that is not one of the standard types, you must find a miner who does not follow these limitations to mine that transaction into a block. 
 
-Bitcoinの発展の最初の数年は、開発者たちがBitcoin Coreクライアントによって処理されるスクリプトの種類にいくつかの制限を加えていました。これらの制限は +isStandard()+ と呼ばれる関数の中にあり、５つの"標準的なトランザクション"の種類が定義されています。これらの制限は一時的なもので、あなたがこれを読むときまでに解除されているかもしれません。これらの制限が解除されるまでは、５つの標準的なトランザクションスクリプトだけがBitcoin Coreクライアントやこれを動作させている多くのマイナーに受け入れられています。非標準的なトランザクションを作ることは可能ですが、このトランザクションをブロックに入れてくれるマイナーを見つけなければいけません。
+Bitcoinの発展の最初の数年は、開発者たちがBitcoin参照クライアントによって処理されるスクリプトの種類にいくつかの制限を加えていました。これらの制限は +isStandard()+ と呼ばれる関数の中にあり、５つの"標準的なトランザクション"の種類が定義されています。これらの制限は一時的なもので、あなたがこれを読むときまでに解除されているかもしれません。これらの制限が解除されるまでは、５つの標準的なトランザクションスクリプトだけがBitcoin Coreクライアントやこれを動作させている多くのマイナーに受け入れられています。非標準的なトランザクションを作ることは可能ですが、このトランザクションをブロックに入れてくれるマイナーを見つけなければいけません。
 
 Check the source code of the Bitcoin Core client (the reference implementation) to see what is currently allowed as a valid transaction script. 
 
-どんなスクリプトが有効なトランザクションスクリプトとして現在許可されているかを見るためにBitcoin Coreクライアントのソースコードをチェックしてみましょう。
+どんなスクリプトが有効なトランザクションスクリプトとして現在許可されているかを見るためにBitcoin Coreクライアント(参照実装)のソースコードをチェックしてみましょう。
 
 The five standard types of transaction scripts are pay-to-public-key-hash (P2PKH), public-key, multi-signature (limited to 15 keys), pay-to-script-hash (P2SH), and data output (OP_RETURN), which are described in more detail in the following sections.
 
