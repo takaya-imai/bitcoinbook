@@ -173,7 +173,7 @@ However, before forwarding transactions to its neighbors, every bitcoin node tha
 * The transaction size in bytes is greater than or equal to 100.
 * バイト単位でのトランザクションデータサイズは100より大きいかまたは等しいか
 * The number of signature operations contained in the transaction is less than the signature operation limit.
-* トランザクションに含まれている署名操作数は、署名操作回数上限よりも小さいか
+* トランザクションに含まれている署名オペレーション数は、署名オペレーション回数上限よりも小さいか
 * The unlocking script (+scriptSig+) can only push numbers on the stack, and the locking script (+scriptPubkey+) must match +isStandard+ forms (this rejects "nonstandard" transactions).
 * unlocking script(+scriptSig+)はスタックに数字をpushすることだけでき、locking script(+scriptPubkey+)は+isStandard+形式に合っているか(これにより"非標準"トランザクションとして拒否されます)
 * A matching transaction in the pool, or in a block in the main branch, must exist.
@@ -550,8 +550,11 @@ $ ./satoshi-words
 ====
 
 === Constructing the Block Header
+=== ブロックヘッダの構築
 
 ((("block headers","constructing")))To construct the block header, the mining node needs to fill in six fields, as listed in <<block_header_structure_ch08>>.
+
+((("block headers","constructing")))ブロックヘッダを構築するために、このマイニングBitcoinノードは<<block_header_structure_ch08>>にリストアップしてある６つのフィールドを埋める必要があります。
 
 [[block_header_structure_ch08]]
 .The structure of the block header
@@ -568,7 +571,11 @@ $ ./satoshi-words
 
 At the time that block 277,316 was mined, the version number describing the block structure is version 2, which is encoded in little-endian format in 4 bytes as +0x02000000+. 
 
+ブロック277,316が採掘された時点でこのブロック構造を記述しているversionは2で、このブロックにはリトルエンディアンでエンコードされた +0x02000000+ が入っています。
+
 Next, the mining node needs to add the((("Previous Block Hash"))) "Previous Block Hash." That is the hash of the block header of block 277,315, the previous block received from the network, which Jing's node has accepted and selected as the parent of the candidate block 277,316. The block header hash for block 277,315 is:
+
+次に、このマイニングBitcoinノードは((("Previous Block Hash"))) "１つ前のブロックハッシュ"を追加する必要があります。これはブロック277,315のブロックヘッダのハッシュです。このBitcoinネットワークから受け取った１つ前のハッシュは、ジンのBitcoinノードが受理し、候補ブロック277,316の親として選んだブロックです。ブロック277,315のブロックヘッダハッシュは以下です。
 
 ----
 0000000000000002a7bbd25a417c0374cc55261021e8a9ca74442b01284f0569
@@ -576,17 +583,27 @@ Next, the mining node needs to add the((("Previous Block Hash"))) "Previous Bloc
 
 ((("merkle trees","constructing block headers with")))The next step is to summarize all the transactions with a merkle tree, in order to add the merkle root to the block header. The generation transaction is listed as the first transaction in the block. Then, 418 more transactions are added after it, for a total of 419 transactions in the block. As we saw in the <<merkle_trees>>, there must be an even number of "leaf" nodes in the tree, so the last transaction is duplicated, creating 420 nodes, each containing the hash of one transaction. The transaction hashes are then combined, in pairs, creating each level of the tree, until all the transactions are summarized into one node at the "root" of the tree. The root of the merkle tree summarizes all the transactions into a single 32-byte value, which you can see listed as "merkle root" in <<block277316>>, and here: 
 
+((("merkle trees","constructing block headers with")))次のステップは、merkle rootをブロックヘッダに加えるために、全てのトランザクションをmerkle treeにまとめることです。generationトランザクションはブロックの最初のトランザクションになっています。418個のトランザクションはこのgenerationトランザクションのあとに追加され、全部で419個のトランザクションがブロックの中にあることになります。<<merkle_trees>>で見たように、merkle treeは偶数個の"葉"ノードを持たなければいけません。このため、最後のトランザクションは重複することになり、420個の葉ノードが作られます。それぞれ葉ノードはトランザクションのハッシュを保持しています。トランザクションハッシュはペアを組んで結びつけられ、merkle treeの階層を作っていき、全てのトランザクションがmerkle treeの"root"に１つの葉ノードが作られるまで続きます。merkle treeのrootは全てのトランザクションを１つの32バイトの値にまとめ、この値は<<block277316>>にある"merkle root"を見ることで確認でき、その値は以下になっています。
+
 ----
 c91c008c26e50763e9f548bb8b2fc323735f73577effbc55502c51eb4cc7cf2e
 ----
     
 ((("timestamping blocks")))The mining node will then add a 4-byte timestamp, encoded as a Unix "Epoch" timestamp, which is based on the number of seconds elapsed from January 1, 1970, midnight UTC/GMT. The time +1388185914+ is equal to Friday, 27 Dec 2013, 23:11:54 UTC/GMT.
 
+((("timestamping blocks")))マイニングBitcoinノードはこのときUnixの"Epoch"タイムスタンプのようにエンコードされた4バイトのタイムスタンプを追加します。Unixの"Epoch"タイムスタンプは、1970年1月1日 深夜0:00 UTC/GMTから経過した秒数に基づいています。時刻 +1388185914+ は2013年12月27日金曜日 23:11:54 UTC/GMTと同じです。
+
 ((("difficulty target","constructing block headers and")))The node then fills in the difficulty target, which defines the required proof-of-work difficulty to make this a valid block. The difficulty is stored in the block as a "difficulty bits" metric, which is a mantissa-exponent encoding of the target. The encoding has a 1-byte exponent, followed by a 3-byte mantissa (coefficient). In block 277,316, for example, the difficulty bits value is +0x1903a30c+. The first part +0x19+ is a hexadecimal exponent, while the next part, +0x03a30c+, is the coefficient. The concept of a difficulty target is explained in <<difficulty_target>> and the "difficulty bits" representation is explained in <<difficulty_bits>>.
+
+((("difficulty target","constructing block headers and")))この後このBitcoinノードはdiffifulty targetを埋めます。これはこのブロックを有効なブロックにするために必要とされるproof-of-work difficultyを定義しています。このdifficultyはブロック内に"difficulty bits"として保存されていて、指数表記の形でエンコードされています。このエンコーディングは1バイトの指数部、3バイトの仮数部(係数)を持っています。例えばブロック277,316の場合、difficulty bitsの値は +0x1903a30c+ です。最初の部分 +0x19+ は１６進数指数部で、次の部分 +0x03a30c+ は係数です。difficulty targetのコンセプトについては <<difficulty_target>> で説明し、"difficulty bits"表現については <<difficulty_bits>> で説明します。
 
 ((("nonce,","initializing in block header")))The final field is the nonce, which is initialized to zero. 
 
+((("nonce,","initializing in block header")))最後のフィールドはnonceで、初期値は0です。
+
 With all the other fields filled, the block header is now complete and the process of mining can begin. The goal is now to find a value for the nonce that results in a block header hash that is less than the difficulty target. The mining node will need to test billions or trillions of nonce values before a nonce is found that satisfies the requirement.
+
+全ての他のフィールドを埋めると、ブロックヘッダは完全なものとなりマイニングプロセスを始めることができます。このゴールはdifficulty targetよりも小さいnonceに対する値を見つけることです。????
 
 === Mining the Block
 
