@@ -489,22 +489,39 @@ In a generation transaction, the first two fields are set to values that do not 
 gerationトランザクションでは、最初の２つのフィールドはUTXOへの参照を表現していない値が設定されています。通常のトランザクションの"Transaction Hash"の代わりに、最初のフィールドは全てが0の32バイトで埋められています。"Output Index"は全てが0xFF(１０進数で255)に設定された4バイトで埋められています。"Unlocking Script"はcoinbaseデータで置き換えられており、マイナーによって使われる任意のデータを入れられるフィールドになっています。
 
 ==== Coinbase Data
+==== Coinbaseデータ
 
 ((("coinbase data", id="ix_ch08-asciidoc11", range="startofrange")))((("generation transaction","coinbase data", id="ix_ch08-asciidoc12", range="startofrange")))((("unlocking scripts","generation transactions and")))Generation transactions do not have an unlocking script (a.k.a., +scriptSig+) field. Instead, this field is replaced by coinbase data, which must be between 2 and 100 bytes. Except for the first few bytes, the rest of the coinbase data can be used by miners in any way they want; it is arbitrary data. 
 
+((("coinbase data", id="ix_ch08-asciidoc11", range="startofrange")))((("generation transaction","coinbase data", id="ix_ch08-asciidoc12", range="startofrange")))((("unlocking scripts","generation transactions and")))generationトランザクションはunlocking scriptフィールド(a.k.a, +scriptSig+)を持っていません。その代わりに、このフィールドはcoinbaseデータで置き換えられています。このフィールドに入るデータは2バイトから100バイトの間のデータになっていなければいけません。
+
 In the genesis block, for example, Satoshi Nakamoto added the text "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks" in the coinbase data, using it as a proof of the date and to convey a message. Currently, miners use the coinbase data to include extra nonce values and strings identifying the mining pool, as we will see in the following sections. 
+
+例えば起源ブロックのcoinbaseデータに、Satoshi Nakamotoは日付と"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks"というテキストを加えました。???? 以下の節で見るように、現在マイナーはcoinbaseデータを余分なnonce valueやマイニングプールを特定する文字列を含めることに使っています。
 
 The first few bytes of the coinbase used to be arbitrary, but that is no longer the case. As per Bitcoin Improvement Proposal 34 (BIP0034), version-2 blocks (blocks with the version field set to 2) must contain the block height index as a script "push" operation in the beginning of the coinbase field. 
 
+coinbaseデータの最初の数バイトは任意に使われていましたが、現在はもはやこのようにはなっていません。Bitcoin Improvement Proposal 34 (BIP0034)により、version-2 ブロック(ブロックのversionフィールドが2)は、scriptの"push"オペレーションとしてブロック高をcoinbaseフィールドの最初に含めなければいけません。
+
 In block 277,316 we see that the coinbase (see <<generation_tx_example>>), which is in the "Unlocking Script" or +scriptSig+ field of the transaction input, contains the hexadecimal value +03443b0403858402062f503253482f+. Let's decode this value. 
+
+ブロック277,316では、このcoinbase(<<generation_tx_example>>参照)のトランザクションインプットにある"Unlocking script"または +scriptSig+ に +03443b0403858402062f503253482f+ という１６進数が含まれています。これをデコードしてみましょう。
 
 The first byte, +03+, instructs the script execution engine to push the next three bytes onto the script stack (see <<tx_script_ops_table_pushdata>>). The next three bytes, +0x443b04+, are the block height encoded in little-endian format (backward, least significant byte first). Reverse the order of the bytes and the result is +0x043b44+, which is 277,316 in decimal. 
 
+最初の１バイト +03+ はscript実行エンジンに次の３バイトをscriptスタックにpushするということを教えています(<<tx_script_ops_table_pushdata>>参照)。次の３バイト +0x443b04+ は、リトルエンディアン(逆読み、最下位バイトが最初に来る)でエンコードされたブロック高です。バイトの順番を逆にして +0x043b44+ にし、これを１０進数で読むと277,316になります。
+
 The next few hexadecimal digits (+03858402062+) are used to encode an extra _nonce_ (see <<extra_nonce>>), or random value, used to find a suitable proof of work solution.
+
+次の数個の１６進数(+03858402062+)は、proof of work適切解を探すための余分な _nonce_ (<<extra_nonce>>参照)、またはランダムな値をエンコードするために使われます。
 
 The final part of the coinbase data (+2f503253482f+) is the ASCII-encoded string +/P2SH/+, which indicates that the mining node that mined this block supports the((("pay-to-script-hash (P2SH)","coinbase data and"))) pay-to-script-hash (P2SH) improvement defined in BIP0016. The introduction of the P2SH capability required a "vote" by miners to endorse either BIP0016 or BIP0017. Those endorsing the BIP0016 implementation were to include +/P2SH/+ in their coinbase data. Those endorsing the BIP0017 implementation of P2SH were to include the string +p2sh/CHV+ in their coinbase data. The BIP0016 was elected as the winner, and many miners continued including the string +/P2SH/+ in their coinbase to indicate support for this feature.
 
+coinbaseデータの最後の部分(+2f503253482f+)は +/P2SH/+ のASCIIコードで、このブロックを採掘したマイニングBitcoinノードがBIP0016で定義されている((("pay-to-script-hash (P2SH)","coinbase data and"))) pay-to-script-hash (P2SH)をサポートしているということを示しています。
+
 <<satoshi_words>> uses the libbitcoin library introduced in <<alt_libraries>> to extract the coinbase data from the genesis block, displaying Satoshi's message. Note that the libbitcoin library contains a static copy of the genesis block, so the example code can retrieve the genesis block directly from the library. 
+
+<<satoshi_words>>は<<alt_libraries>>で紹介したlibbitcoinライブラリを使っており、起源ブロックからcoinbaseデータを抽出してSatoshiのメッセージを表示するものです。libbitcoinライブラリは起源ブロックの静的なコピーを持っており、この例コードではこのライブラリから直接起源ブロックを取得することができます。
 
 [[satoshi_words]]
 .Extract the coinbase data from the genesis block
@@ -516,6 +533,8 @@ include::code/satoshi-words.cpp[]
 ====
 
 We compile the code with the GNU C++ compiler and run the resulting executable, as shown in <<satoshi_words_run>>.(((range="endofrange", startref="ix_ch08-asciidoc12")))(((range="endofrange", startref="ix_ch08-asciidoc11")))(((range="endofrange", startref="ix_ch08-asciidoc10")))
+
+<<satoshi_words_run>>では、このコードをGNU C++ コンパイラでコンパイルし、出力される実行ファイルを実行しています。(((range="endofrange", startref="ix_ch08-asciidoc12")))(((range="endofrange", startref="ix_ch08-asciidoc11")))(((range="endofrange", startref="ix_ch08-asciidoc10")))
 
 [[satoshi_words_run]]
 .Compiling and running the satoshi-words example code
