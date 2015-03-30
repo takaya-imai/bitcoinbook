@@ -603,19 +603,34 @@ c91c008c26e50763e9f548bb8b2fc323735f73577effbc55502c51eb4cc7cf2e
 
 With all the other fields filled, the block header is now complete and the process of mining can begin. The goal is now to find a value for the nonce that results in a block header hash that is less than the difficulty target. The mining node will need to test billions or trillions of nonce values before a nonce is found that satisfies the requirement.
 
-全ての他のフィールドを埋めると、ブロックヘッダは完全なものとなりマイニングプロセスを始めることができます。このゴールはdifficulty targetよりも小さいnonceに対する値を見つけることです。????
+全ての他のフィールドを埋めると、ブロックヘッダは完全なものとなりマイニングプロセスを始めることができます。このゴールはdifficulty targetよりも小さいブロックヘッダハッシュになるnonceに対する値を見つけることです。このマイニングBitcoinノードは必要条件を満たすようなnonceを見つける前に１０億個または１兆個のnonceの値を調べてみる必要があるのです。
 
 === Mining the Block
+=== ブロックのマイニング
 
 ((("blocks","mining", id="ix_ch08-asciidoc13", range="startofrange")))((("mining","blocks", id="ix_ch08-asciidoc14", range="startofrange")))Now that a candidate block has been constructed by Jing's node, it is time for Jing's hardware mining rig to "mine" the block, to find a solution to the proof-of-work algorithm that makes the block valid. Throughout this book we have studied cryptographic hash functions as used in various aspects of the bitcoin system. The hash function SHA256 is the function used in bitcoin's mining process. 
 
+((("blocks","mining", id="ix_ch08-asciidoc13", range="startofrange")))((("mining","blocks", id="ix_ch08-asciidoc14", range="startofrange")))
+今や候補ブロックはジンのBitcoinノードによって構築され、ジンのハードウェアmining rigがブロックを"採掘"し、ブロックを有効にするprro-of-workアルゴリズムに対する解を見つけるときです。
+この本を通して、Bitcoinシステムのいろいろな面で暗号学的ハッシュ関数を使い学んできました。
+ハッシュ関数SHA256はBitcoinのマイニングプロセスの中で使われる暗号学的ハッシュ関数です。
+
 In the simplest terms, mining is the process of hashing the block header repeatedly, changing one parameter, until the resulting hash matches a specific target. The hash function's result cannot be determined in advance, nor can a pattern be created that will produce a specific hash value. This feature of hash functions means that the only way to produce a hash result matching a specific target is to try again and again, randomly modifying the input until the desired hash result appears by chance. 
 
+最もシンプルに言うと、マイニングとは１つのパラメータを変えながらブロックヘッダを繰り返しハッシュ化するプロセスで、出力されるハッシュが特別なターゲットに一致するまで行われます。
+ハッシュ関数の結果は、先に立って決めることはできず、また特別なハッシュ値を作り出すためのパターンを作り出すこともできません。
+このハッシュ関数の特徴は次のことを意味しています。特別な条件に合うハッシュを作り出すただ１つの方法は、入力をランダムに修正しながら偶然に欲しいハッシュが現れるまで試行を繰り返し繰り返し行うことである。
+
 ==== Proof-Of-Work Algorithm
+==== Proof-Of-Workアルゴリズム
 
 ((("mining","proof-of-work algorithm and", id="ix_ch08-asciidoc15", range="startofrange")))((("Proof-Of-Work algorithm", id="ix_ch08-asciidoc16", range="startofrange")))A hash algorithm takes an arbitrary-length data input and produces a fixed-length deterministic result, a digital fingerprint of the input. For any specific input, the resulting hash will always be the same and can be easily calculated and verified by anyone implementing the same hash algorithm. The key characteristic of a cryptographic hash algorithm is that it is virtually impossible to find two different inputs that produce the same fingerprint. As a corollary, it is also virtually impossible to select an input in such a way as to produce a desired fingerprint, other than trying random inputs.
 
+((("mining","proof-of-work algorithm and", id="ix_ch08-asciidoc15", range="startofrange")))((("Proof-Of-Work algorithm", id="ix_ch08-asciidoc16", range="startofrange")))ハッシュアルゴリズムは任意の長さのデータ入力を取り、このデータ入力のデジタルフィンガープリントとして固定長の決定性を持った結果を作り出します。どんな特別な入力に対しても、出力されるハッシュは常に同じで、たやすく計算でき、同じハッシュアルゴリズムを実装している人は誰でも検証できます。暗号学的ハッシュアルゴリズムのキーとなる特徴は、同じフィンガープリントを作り出す２つの違った入力を探すことは至難の業であることです。これからの自然の帰結として、ランダムな入力を試すよりも簡単に欲しいフィンガープリントを作り出すような入力を選ぶこともまた至難の技なのです。
+
 With SHA256, the output is always 256 bits long, regardless of the size of the input. In <<sha256_example1>>, we will use the Python interpreter to calculate the SHA256 hash of the phrase, "I am Satoshi Nakamoto." 
+
+SHA256だと出力結果は常に256bitの長さになり、これは入力のデータサイズに関わらず決まります。<<sha256_example1>>では、Pythonインタプリタを使ってフレーズ "I am Satoshi Nakamoto." のSHA256ハッシュを計算しています。
 
 [[sha256_example1]]
 .SHA256 example
@@ -635,7 +650,11 @@ Python 2.7.1
 
 <<sha256_example1>> shows the result of calculating the hash of +"I am Satoshi Nakamoto"+: +5d7c7ba21cbbcd75d14800b100252d5b428e5b1213d27c385bc141ca6b47989e+. This 256-bit number is the _hash_ or _digest_ of the phrase and depends on every part of the phrase. Adding a single letter, punctuation mark, or any other character will produce a different hash.
 
+<<sha256_example1>>は +"I am Satoshi Nakamoto"+ のハッシュ +5d7c7ba21cbbcd75d14800b100252d5b428e5b1213d27c385bc141ca6b47989e+ を計算した結果を示しています。この256bitの数字はこのフレーズの _ハッシュ_ または _ダイジェスト_ であり、このフレーズの全ての部分に依っています。１個の文字、句読点、または他のいかなる文字でも追加すると異なるハッシュが生成されます。
+
 Now, if we change the phrase, we should expect to see completely different hashes. Let's try that by adding a number to the end of our phrase, using the simple Python scripting in <<sha256_example_generator>>.
+
+今、もしこのフレーズを変えると完全に違ったハッシュが生成されるはずです。フレーズの最後に数字を追加して作った新しいフレーズのハッシュが全く違うハッシュになることを試してみましょう。ハッシュ生成には <<sha256_example_generator>> にあるシンプルなPythonスクリプトを使います。
 
 [[sha256_example_generator]]
 .SHA256 A script for generating many hashes by iterating on a nonce
@@ -647,6 +666,8 @@ include::code/hash_example.py[]
 ====
 
 Running this will produce the hashes of several phrases, made different by adding a number at the end of the text. By incrementing the number, we can get different hashes, as shown in <<sha256_example_generator_output>>.
+
+これを実行すると、テキストの最後に数字を追加して違った形に作られたいくつかのフレーズのハッシュが生成されます。<<sha256_example_generator_output>>に示している通り、数字を１つずつ増やしていくと違ったハッシュを得ることができます。
 
 ((("nonce")))
 [[sha256_example_generator_output]]
@@ -683,17 +704,31 @@ I am Satoshi Nakamoto19 => cda56022ecb5b67b2bc93a2d764e75f...
 
 Each phrase produces a completely different hash result. They seem completely random, but you can reproduce the exact results in this example on any computer with Python and see the same exact hashes. 
 
+それぞれのフレーズは完全に違ったハッシュを生成します。これらは完全にランダムであるように見えますが、Pythonがインストールされているどんなコンピュータでもこの例にある結果を厳密に再生成でき、全く同じハッシュを見ることができます。
+
 The number used as a variable in such a scenario is called a _nonce_. The nonce is used to vary the output of a cryptographic function, in this case to vary the SHA256 fingerprint of the phrase. 
 
+このシナリオの中で変数として使われている数字は _nonce_ と呼ばれています。このnonceは暗号学的関数の出力を変えるために使われ、この例の場合フレーズのSHA256フィンガープリントを変えるために使われています。
+
 ((("difficulty target","defined")))To make a challenge out of this algorithm, let's set an arbitrary target: find a phrase that produces a hexadecimal hash that starts with a zero. Fortunately, this isn't difficult! <<sha256_example_generator_output>> shows that the phrase "I am Satoshi Nakamoto13" produces the hash +0ebc56d59a34f5082aaef3d66b37a661696c2b618e62432727216ba9531041a5+, which fits our criteria. It took 13 attempts to find it. In terms of probabilities, if the output of the hash function is evenly distributed we would expect to find a result with a 0 as the hexadecimal prefix once every 16 hashes (one out of 16 hexadecimal digits 0 through F). In numerical terms, that means finding a hash value that is less than +0x1000000000000000000000000000000000000000000000000000000000000000+. We call this threshold the _target_ and the goal is to find a hash that is numerically _less than the target_. If we decrease the target, the task of finding a hash that is less than the target becomes more and more difficult. 
+
+((("difficulty target","defined")))このアルゴリズムで課題を作るために任意のターゲットを設定しましょう。"0から始まる１６進数ハッシュを生成するフレーズを探しなさい"。幸運なことに、これは難しくありません！ <<sha256_example_generator_output>>が示すように、フレーズ "I am Satoshi Nakamoto13" はハッシュ +0ebc56d59a34f5082aaef3d66b37a661696c2b618e62432727216ba9531041a5+ を生成しており、これはさきほどのターゲットに合っているものです。これを見つけるために１３回の試行を行いました。確率論的に言うと、もしハッシュ関数の出力が均等に分布しているのだとすると、16ハッシュごとに１回１６進数のハッシュの最初が0になる結果が見つかるでしょう(0からFまでの１６個の１６進数のうちの１つ)。数値的に言うと、これは +0x1000000000000000000000000000000000000000000000000000000000000000+ よりも小さいハッシュ値を探すということを意味します。我々はこの閾値を _ターゲット_ と呼ぶことにし、これを使ってゴールは数値的に _targetよりも小さい_ ハッシュを見つけることになります。もしターゲットを小さくすれば、ターゲットより小さいハッシュを見つけることはさらに難しくなります。
  
 To give a simple analogy, imagine a game where players throw a pair of dice repeatedly, trying to throw less than a specified target. In the first round, the target is 12. Unless you throw double-six, you win. In the next round the target is 11. Players must throw 10 or less to win, again an easy task. Let's say a few rounds later the target is down to 5. Now, more than half the dice throws will add up to more than 5 and therefore be invalid. It takes exponentially more dice throws to win, the lower the target gets. Eventually, when the target is 2 (the minimum possible), only one throw out of every 36, or 2% of them, will produce a winning result. 
 
+簡単な類推をするためにプレイヤーが２つのサイコロを繰り返し投げ、特定のターゲットよりも和が小さくなるようにするゲームを想像してみましょう。最初のラウンドでは、ターゲットは12です。２つの６を出さなければ、あなたの勝ちです。次のラウンドではターゲットを11にしましょう。プレイヤーは10かそれより小さくしなければいけませんが、これも簡単です。数回のラウンドの後ターゲットを5に下げてみましょう。今、サイコロを投げたうち半分以上が5よりも大きくなってしまいました。ターゲットがより低くなればなるほど、勝つために投げるサイコロの回数は指数関数的に大きくなっていきます。結局、ターゲットが2(可能な限り小さい)では、36回サイコロを投げるうちたった１回、つまり全体の2%だけがゲームに勝つ結果を生成することになります。
+
 In <<sha256_example_generator_output>>, the winning "nonce" is 13 and this result can be confirmed by anyone independently. Anyone can add the number 13 as a suffix to the phrase "I am Satoshi Nakamoto" and compute the hash, verifying that it is less than the target. The successful result is also proof of work, because it proves we did the work to find that nonce. While it only takes one hash computation to verify, it took us 13 hash computations to find a nonce that worked. If we had a lower target (higher difficulty) it would take many more hash computations to find a suitable nonce, but only one hash computation for anyone to verify. Furthermore, by knowing the target, anyone can estimate the difficulty using statistics and therefore know how much work was needed to find such a nonce.
+
+<<sha256_example_generator_output>>では、勝利 "nonce" は13で、この結果は誰でも独立に確認することができます。誰でも数値13をさきほどのフレーズ "I am Satoshi Nakamoto" の最後に追加し、ハッシュを計算し、ターゲットより小さいことを検証することができます。この上出来な結果はproof of workでもあります。というのは、これがあのnonceを見つける仕事をしたことの証明だからです。検証するためにはたった１回のハッシュ計算でよい一方、うまくいくnonceを見つけるためには13回のハッシュ計算が必要になります。もしより低いターゲット(より高いdifficulty)を使ったとすると、適したnonceを探すためにさらにたくさんのハッシュ計算が必要になるのですが、検証をするには誰でも１回のハッシュ計算で済みます。さらに、ターゲットを知ることによって、統計を使って誰でもdifficultyの見積もりをすることができ、よってどれだけの仕事がそのようなnonceを見つけるために必要だったかを知ることができるのです。
 
 Bitcoin's proof of work is very similar to the challenge shown in <<sha256_example_generator_output>>. The miner constructs a candidate block filled with transactions. Next, the miner calculates the hash of this block's header and sees if it is smaller than the current _target_. If the hash is not less than the target, the miner will modify the nonce (usually just incrementing it by one) and try again. At the current difficulty in the bitcoin network, miners have to try quadrillions of times before finding a nonce that results in a low enough block header hash.
 
+Bitcoinのproof of workは<<sha256_example_generator_output>>に示した課題ととても似ています。まずマイナーはトランザクションで埋められた候補ブロックを構築します。次に、ブロックのヘッダのハッシュを計算し、現在の _ターゲット_ より小さいかどうかを確認します。もしそのハッシュがターゲットよりも小さくなければ、マイナーはnonceを修正し(通常は１つ増加させるだけです)、再びハッシュを計算します。現在のBitcoinネットワークでのdifficultyは、ブロックヘッダハッシュが十分小さくなるnonceを見つける前にマイナーは1000兆回ハッシュを計算する必要があります。
+
 A very simplified proof-of-work algorithm is implemented in Python in <<pow_example1>>.((("proof of work")))
+
+とても簡単化されたproof-of-workアルゴリズムは<<pow_example1>>にPythonで実装されています。((("proof of work")))
 
 [[pow_example1]]
 .Simplified proof-of-work implementation
@@ -705,6 +740,8 @@ include::code/proof-of-work-example.py[]
 ====
 
 Running this code, you can set the desired difficulty (in bits, how many of the leading bits must be zero) and see how long it takes for your computer to find a solution. In <<pow_example_outputs>>, you can see how it works on an average laptop.
+
+このコードを実行すると、欲しいdifficultyを設定でき(difficultyはbit単位。左から数えた桁が何桁0でなければいけないか。)、あなたのコンピュータが解を探すためにどれくらい時間がかかるかを見ることができます。<<pow_example_outputs>>では、平均的なノートパソコンでどのように動作するかを見ることができます。
 
 [[pow_example_outputs]]
 .Running the proof of work example for various difficulties
@@ -772,7 +809,11 @@ Hashing Power: 127141 hashes per second
 
 As you can see, increasing the difficulty by 1 bit causes an exponential increase in the time it takes to find a solution. If you think of the entire 256-bit number space, each time you constrain one more bit to zero, you decrease the search space by half. In <<pow_example_outputs>>, it takes 84 million hash attempts to find a nonce that produces a hash with 26 leading bits as zero. Even at a speed of more than 120,000 hashes per second, it still requires 10 minutes on a consumer laptop to find this solution. 
 
+見て分かるように、difficultyが1bit増えると解を見つけるためにかかる時間が指数関数的に大きくなります。もし256bitの数値空間全体を考えてみると、さらに1bitだけ0にしなければいけない制約が増えるとたびに解となる空間が半分になってしまうのです。<<pow_example_outputs>>では、左から26bitまでが0になっているようなハッシュを作り出すnonceを見つけるために、8400万回の試行が必要になります。仮に１秒間に12万回以上ハッシュ計算ができたとしても、この解を見つけるために普通のノートパソコンでは10分間もかかってしまいます。
+
 At the time of writing, the network is attempting to find a block whose header hash is less than +000000000000004c296e6376db3a241271f43fd3f5de7ba18986e517a243baa7+. As you can see, there are a lot of zeros at the beginning of that hash, meaning that the acceptable range of hashes is much smaller, hence it's more difficult to find a valid hash. It will take on average more than 150 quadrillion hash calculations per second for the network to discover the next block. That seems like an impossible task, but fortunately the network is bringing 100 petahashes per second (PH/sec) of processing power to bear, which will be able to find a block in about 10 minutes on average.(((range="endofrange", startref="ix_ch08-asciidoc16")))(((range="endofrange", startref="ix_ch08-asciidoc15"))) 
+
+執筆している時点で、Bitcoinネットワークは +000000000000004c296e6376db3a241271f43fd3f5de7ba18986e517a243baa7+ より小さいヘッダハッシュを持つブロックが試行されています。見て分かるように、ハッシュの最初に多くの0があります。これは、許容されるハッシュ範囲がとても小さくなっているということを意味し、よって有効なハッシュを見つけることがより難しくなっているということになります。次のブロックをBitcoinネットワークが発見するために平均的に秒間15京回以上のハッシュ計算が必要になっています。これは不可能なことに見えますが、幸運なことにBitcoinネットワークは秒間100ペタハッシュ(PH/sec、1ペタは1000兆)の演算処理能力を提供しており、これにより平均的に約10分間ごとにブロックを見つけることができます。
 
 [[difficulty_bits]]
 ==== Difficulty Representation
