@@ -11,7 +11,7 @@
 
 On((("bitcoin.org","Bitcoin Core, downloading"))) http://bitcoin.org/en/choose-your-wallet[Bitcoin's Choose Your Wallet page], select Bitcoin Core to download the reference client. Depending on your operating system, you will download an executable installer. For Windows, this is either a ZIP archive or an .exe executable. For Mac OS it is a .dmg disk image. Linux versions include a PPA package for Ubuntu or a tar.gz archive. The bitcoin.org page that lists recommended bitcoin clients is shown in <<bitcoin-choose-client>>.
 
-((("bitcoin.org","Bitcoin Core, downloading"))) Bitcoin参照クライアントをダウンロードするために http://bitcoin.org/en/choose-your-wallet[Bitcoin's Choose Your Wallet page] でBitcoin Coreを選びましょう。あなたが使っているOSによっては、実行可能なインストーラーがダウンロードできるでしょう。もしWindowsなら、ZIPアーカイブか.exe実行ファイルです。もしMac OSなら、.dmgディスクイメージ。Linuxなら、UbuntuのPPAパッケージかtar.gzアーカイブです。<<bitcoin-choose-client>>図にあるように、bitcin.orgには推薦されるBitcoinクライアントがリストアップされています。
+((("bitcoin.org","Bitcoin Core, downloading"))) Bitcoin参照クライアントをダウンロードするために http://bitcoin.org/en/choose-your-wallet[Bitcoin's Choose Your Wallet page] でBitcoin Coreを選びます。使っているOSによっては、実行可能なインストーラーがダウンロードできます。もしWindowsなら、ZIPアーカイブか.exe実行ファイルです。もしMac OSなら、.dmgディスクイメージ。Linuxなら、UbuntuのPPAパッケージかtar.gzアーカイブです。<<bitcoin-choose-client>>図にあるように、bitcin.orgには推薦されるBitcoinクライアントがリストアップされています。
 
 [[bitcoin-choose-client]]
 .Choosing a bitcoin client at bitcoin.org
@@ -45,7 +45,7 @@ image::images/msbt_0302.png["bitcoin-qt first run"]
 
 ((("Bitcoin Core client","compiling from source code", id="ix_ch03-asciidoc3", range="startofrange")))((("bitcoind client", see="Bitcoin Core client")))For developers, there is also the option to download the full source code as a ZIP archive or by cloning the authoritative source repository from GitHub. ((("Bitcoin Core client","source code, downloading")))((("GitHub, downloading Bitcoin Core from"))) On the https://github.com/bitcoin/bitcoin[GitHub bitcoin page], select Download ZIP from the sidebar. Alternatively, use the git command line to create a local copy of the source code on your system. In the following example, we are cloning the source code from a Unix-like command line, in Linux or Mac OS:
 
-((("Bitcoin Core client","compiling from source code", id="ix_ch03-asciidoc3", range="startofrange")))((("bitcoind client", see="Bitcoin Core client")))開発者向けに、ZIPアーカイブとしてソースコードをダウンロードする、またはGitHubからソースコードをcloneしてくることもできます。((("Bitcoin Core client","source code, downloading")))((("GitHub, downloading Bitcoin Core from"))) https://github.com/bitcoin/bitcoin[GitHub bitcoin page]に、サイドバーにZIPアーカイブのダウンロードを選べます。また、gitのコマンドを使うことでlocal copyを作ることもできます。次の例は、ソースコードをLinuxやMac OSなどUnixのようなOS上でコマンドを実行してcloneしています。
+((("Bitcoin Core client","compiling from source code", id="ix_ch03-asciidoc3", range="startofrange")))((("bitcoind client", see="Bitcoin Core client")))開発者向けに、ZIPアーカイブとしてソースコードをダウンロードする、またはGitHubからソースコードをcloneしてくることもできます。((("Bitcoin Core client","source code, downloading")))((("GitHub, downloading Bitcoin Core from"))) https://github.com/bitcoin/bitcoin[GitHub bitcoin page]のサイドバーからZIPアーカイブのダウンロードが選べます。また、gitのコマンドを使うことでローカルコピーを作ることもできます。次の例は、ソースコードをLinuxやMac OSなどUnixのようなOS上でコマンドを実行してcloneしています。
 
 ----
 $ git clone https://github.com/bitcoin/bitcoin.git
@@ -65,8 +65,7 @@ The instructions and resulting output might vary from version to version. Follow
 
 When the git cloning operation has completed, you will have a complete local copy of the source code repository in the directory _bitcoin_. Change to this directory by typing +cd bitcoin+ at the prompt:
 
-git cloneが終わると、bitcoinというディレクトリの中に完全なソースコードがダウンロードされます。
-プロンプトの次に +cd bitcoin+ と打ち込んでディレクトリを移ります。
+git cloneが終わると、bitcoinというディレクトリの中に完全なソースコードがダウンロードされています。プロンプトの次に +cd bitcoin+ と打ち込んでディレクトリを移ります。
 
 ----
 $ cd bitcoin
@@ -74,7 +73,7 @@ $ cd bitcoin
  
 By default, the local copy will be synchronized with the most recent code, which might be an unstable or beta version of bitcoin. Before compiling the code, select a specific version by checking out a((("release tags"))) release _tag_. This will synchronize the local copy with a specific snapshot of the code repository identified by a keyword tag. Tags are used by the developers to mark specific releases of the code by version number. First, to find the available tags, we use the +git tag+ command:
 
-デフォルトでlocal copyは最新のソースコードと同期されているので、そのソースコードは不安定であったり、またベータ版であったりするかもしれません。ソースコードをコンパイルする前に、((("release tags")) _リリースタグ_を確認して特定のバージョンを選択します。これは、タグが付けられたソースコードのスナップショットとlocal copyを同期することです。タグとは、開発者がバージョン管理のためバージョン番号をソースコードに付与することです。まず、 +git tag+ コマンドを実行して同期できるタグを確認してみましょう。
+デフォルトでローカルコピーは最新のソースコードと同期されているので、そのソースコードは不安定であったり、またベータ版であったりするかもしれません。ソースコードをコンパイルする前に、((("release tags")) _リリースタグ_ を確認して特定のバージョンを選択します。これは、タグが付けられたソースコードのスナップショットとローカルコピーを同期するということです。タグは、開発者がバージョン管理のためバージョン番号をソースコードに付与するために使われます。まず、 +git tag+ コマンドを実行して同期できるタグを確認してみましょう。
 
 ----
 $ git tag
@@ -96,7 +95,7 @@ v0.9.0rc1
 
 The list of tags shows all the released versions of bitcoin. By convention,((("release candidates"))) _release candidates_, which are intended for testing, have the suffix "rc". Stable releases that can be run on production systems have no suffix. From the preceding list, select the highest version release, which at this writing was v0.9.0rc1. To synchronize the local code with this version, use the +git checkout+ command:
 
-このタグリストはBitcoinの全てのリリースタグを示しています。慣習に沿って、テストが必要な((("release candidates"))) _リリース候補_ には"rc"という接尾子がつきます。商用環境で使用できる安定なソースコードには接尾子はつきません。前のリストから最も大きいバージョンのタグ v0.0.0rc1 (執筆時点)を選択しましょう。local copyとこのバージョンのソースコードを同期するために、git checkoutコマンドを実行します。
+このタグリストはBitcoinの全てのリリースタグを示しています。慣習に沿って、テストが必要な((("release candidates"))) _リリース候補_ には"rc"という接尾詞がつきます。商用環境で使用できる安定なソースコードには接尾詞はつきません。前のリストから最も大きいバージョンのタグ v0.9.0rc1 (執筆時点)を選択しましょう。ローカルコピーとこのバージョンのソースコードを同期するために、git checkoutコマンドを実行します。
 
 ----
 $ git checkout v0.9.0rc1
@@ -109,7 +108,7 @@ $
 
 ((("Bitcoin Core client","documentation")))The source code includes documentation, which can be found in a number of files. Review the main documentation located in _README.md_ in the bitcoin directory by typing +more README.md+ at the prompt and using the space bar to progress to the next page. In this chapter, we will build the command-line bitcoin client, also known as +bitcoind+ on Linux. Review the instructions for compiling the bitcoind command-line client on your platform by typing +more doc/build-unix.md+. Alternative instructions for Mac OS X and Windows can be found in the _doc_ directory, as _build-osx.md_ or _build-msw.md_, respectively. 
 
-((("Bitcoin Core client","documentation")))ソースコードにはドキュメントファイルも入っています。 +more README.md+ とプロンプトのところで入力して _README.md_ というドキュメントファイルを読んでみましょう。スペースキーを押すことで次のページに移ることができます。この章では、コマンドラインから操作できるLinux上で動作するBitcoinクライアント、 +bitcoind+ を構築します。+more doc/build-unix.md+ を入力してbitcoindのコンパイル説明書を読んでみましょう。またMac OS XやWindowsに対しても同様の _doc_ ディレクトリがあり、それぞれ _build-osx.md_ 、 _build-msw.md_ というコンパイル説明書があります。
+((("Bitcoin Core client","documentation")))ソースコードにはドキュメントファイルも入っています。 +more README.md+ とプロンプトのところで入力して _README.md_ というドキュメントファイルを読んでみましょう。スペースキーを押すことで次のページに移ることができます。この章では、コマンドラインから操作できるLinux上で動作するBitcoinクライアント +bitcoind+ を構築します。+more doc/build-unix.md+ を入力してbitcoindのコンパイル説明書を読んでみましょう。またMac OS XやWindowsに対しても同様の _doc_ ディレクトリがあり、それぞれ _build-osx.md_ 、 _build-msw.md_ というコンパイル説明書があります。
 
 Carefully review the build prerequisites, which are in the first part of the build documentation. These are libraries that must be present on your system before you can begin to compile bitcoin. If these prerequisites are missing, the build process will fail with an error. If this happens because you missed a prerequisite, you can install it and then resume the build process from where you left off. Assuming the prerequisites are installed, you start the build process by generating a set of build scripts using the _autogen.sh_ script.
 
@@ -132,8 +131,7 @@ $
 
 ((("autogen.sh script")))The _autogen.sh_ script creates a set of automatic configuration scripts that will interrogate your system to discover the correct settings and ensure you have all the necessary libraries to compile the code. The most important of these is the((("configure script"))) +configure+ script that offers a number of different options to customize the build process. Type +./configure --help+ to see the various options:
 
-((("autogen.sh script"))) _autogen.sh_ というスクリプトは自動的に設定スクリプトを生成するスクリプトです。あなたのシステムの設定やコンパイルに必要なライブラリがあるかをチェックしてくれます。
-最も重要なスクリプトは、bitcoindを構築する上での数多くのカスタマイズ方法を設定できる((("configure script"))) +configure+ スクリプトです。 +./configure --help+ と入力していろいろなオプションを見てみましょう。
+((("autogen.sh script"))) _autogen.sh_ というスクリプトは自動的に設定スクリプトを生成するスクリプトです。あなたのシステムの設定やコンパイルに必要なライブラリがあるかをチェックしてくれます。最も重要なスクリプトは、bitcoindを構築する上での数多くのカスタマイズ方法を設定できる((("configure script"))) +configure+ スクリプトです。 +./configure --help+ と入力していろいろなオプションを見てみてください。
 
 ----
 $ ./configure --help
@@ -172,7 +170,7 @@ $
 
 The +configure+ script allows you to enable or disable certain features of bitcoind through the use of the +--enable-FEATURE+ and +--disable-FEATURE+ flags, where +FEATURE+ is replaced by the feature name, as listed in the help output. In this chapter, we will build the bitcoind client with all the default features. We won't be using the configuration flags, but you should review them to understand what optional features are part of the client. Next, run the +configure+ script to automatically discover all the necessary libraries and create a customized build script for your system:
 
-+configure+ スクリプトによってbitcoindのある機能を有効化したり無効化したりできます。これを行うには、configureスクリプトの後ろに +--enable-FEATURE+ や +--disable-FEATURE+ といった形でフラグを設定して実行します。この +FEATURE+ のところにはhelpを実行したときに出ていた各機能の名前が入ります。この章では、全てのデフォルト機能を入れたbitcoindクライアントを構築することにします。我々は設定フラグを使いませんが、どんな機能を付けられるのか確認してみた方がよいです。次にconfigureスクリプトを実行して、必要なライブラリを自動的にチェックしカスタマイズされた構築スクリプトを生成してみましょう。
++configure+ スクリプトによってbitcoindのある機能を有効化したり無効化したりできます。これを行うには、configureスクリプトの後ろに +--enable-FEATURE+ や +--disable-FEATURE+ といった形でフラグを設定して実行します。この +FEATURE+ のところにはhelpを実行したときに出ていた各機能の名前が入ります。この章では、全てのデフォルト機能を入れたbitcoindクライアントを構築することにします。我々は設定フラグを使いませんが、どんな機能を付けられるのか確認してみた方がよいです。次にconfigureスクリプトを実行して、必要なライブラリを自動的にチェックしカスタマイズされた構築スクリプトを生成してみます。
 
 ----
 $ ./configure 
@@ -204,7 +202,7 @@ $
 
 If all goes well, the +configure+ command will end by creating the customized build scripts that will allow us to compile bitcoind. If there are any missing libraries or errors, the +configure+ command will terminate with an error instead of creating the build scripts. If an error occurs, it is most likely because of a missing or incompatible library. Review the build documentation again and make sure you install the missing prerequisites. Then run +configure+ again and see if that fixes the error. Next, you will compile the source code, a process that can take up to an hour to complete. During the compilation process you should see output every few seconds or every few minutes, or an error if something goes wrong. The compilation process can be resumed at any time if interrupted. Type +make+ to start compiling:
 
-全てがうまくいったら、 +configure+ コマンドはカスタマイズされた構築スクリプトを生成して終了します。何か足りないライブラリがあったりエラーがあったりすると、 +configure+ コマンドは構築スクリプトを生成することなくエラーを出して終了してしまいます。もしエラーが出たら、おそらくライブラリ自体がないか、またはライブラリがあってもそのバージョンのライブラリとbitcoindが相性が悪いかでしょう。構築ドキュメントをもう一度確認後足りないものをインストールし +configure+ コマンドを実行すると、エラーが解消されます。次にソースコードをコンパイルします。これには1時間ほどかかります。コンパイルが実行されている間、数秒に一回、数分に一回は表示されるメッセージを確認した方がよいです。というのは何かエラーが起きて止まってしまうことがあるからです。コンパイルはいつでも止まってしまったところから再開できます。makeと入力してコンパイルを始めましょう。
+全てがうまくいったら、 +configure+ コマンドはカスタマイズされた構築スクリプトを生成して終了します。何か足りないライブラリがあったりエラーがあったりすると、 +configure+ コマンドは構築スクリプトを生成することなくエラーを出して終了してしまいます。もしエラーが出たら、おそらくライブラリ自体がないか、またはライブラリがあってもそのバージョンのライブラリとbitcoindの相性が悪いかでしょう。構築ドキュメントをもう一度確認後足りないものをインストールし +configure+ コマンドを実行するとエラーが解消されます。次にソースコードをコンパイルします。これには1時間ほどかかります。コンパイルが実行されている間、数秒に１回、数分に１回は表示されるメッセージを確認した方がよいです。というのは何かエラーが起きて止まってしまうことがあるからです。コンパイルはいつでも止まってしまったところから再開できます。makeと入力してコンパイルを始めてください。
 
 ----
 $ make
@@ -267,7 +265,7 @@ $ which bitcoin-cli
 
 The default installation of bitcoind puts it in _/usr/local/bin_. When you first run bitcoind, it will remind you to create a configuration file with a strong password for the JSON-RPC interface. Run bitcoind by typing +bitcoind+ into the terminal:
 
-デフォルトでbitcoindは _/usr/local/bin_ に配置されます。最初にbitcoindを実行したときに、JSON-RPCを使うための強力なパスワードの設定を含む設定ファイルを作るようにbitcoindから言われます。 +bitcoind+ とプロンプトのところに入力してbitcoindをスタートさせましょう。
+デフォルトでbitcoindは _/usr/local/bin_ に配置されます。最初にbitcoindを実行したときに、JSON-RPCを使うための強力なパスワードの設定を含む設定ファイルを作るようにbitcoindから言われます。 +bitcoind+ とプロンプトのところに入力してbitcoindをスタートさせてください。
 
 ----
 $ bitcoind
@@ -295,7 +293,7 @@ rpcpassword=2XA4DuKNCbtZXsBQRRNDEwEY2nM6M4H9Tx5dFjoAVVbK
 
 While you're editing this configuration file, you might want to set a few other options, such as +txindex+ (see <<txindex>>). For a full listing of the available options, type +bitcoind --help+.
 
-設定ファイルを編集しているときに、いくつか別のオプションを設定したいかもしれません。例えば、 +txindex+ とかです(<<txindex>>を参照してください)。他の設定可能なオプションについては、 +bitcoind --help+ と入力して実行することで表示されます。
+設定ファイルを編集しているときに、いくつか別のオプションを設定したいかもしれません。例えば、 +txindex+ とかです(<<txindex>>参照)。他の設定可能なオプションについては、 +bitcoind --help+ と入力して実行することで表示されます。
 
 Now, run the Bitcoin Core client. The first time you run it, it will rebuild the bitcoin blockchain by downloading all the blocks. This is a multigigabyte file and will take an average of two days to download in full. You can shorten the((("blockchains","downloading with bittorrent clients"))) blockchain initialization time by downloading a partial copy of the blockchain using a BitTorrent client from http://bit.ly/1qkLNyh[SourceForge]. 
 
@@ -328,7 +326,7 @@ Opened LevelDB successfully
 ----
 
 === Using Bitcoin Core's JSON-RPC API from the Command Line
-=== コマンドラインからBitcoin Core JSON-RPC APIを使ってみよう
+=== コマンドラインからのBitcoin Core JSON-RPC APIの使用
 
 ((("Bitcoin Core client","JSON-RPC API for", id="ix_ch03-asciidoc5", range="startofrange")))((("Bitcoin Core client","using from command line", id="ix_ch03-asciidoc6", range="startofrange")))((("bitcoin-cli command line helper", id="ix_ch03-asciidoc7", range="startofrange")))The Bitcoin Core client implements a JSON-RPC interface that can also be accessed using the command-line helper +bitcoin-cli+. The command line allows us to experiment interactively with the capabilities that are also available programmatically via the API. To start, invoke the +help+ command to see a list of the available bitcoin RPC commands:
 
