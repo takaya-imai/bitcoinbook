@@ -7,21 +7,21 @@
 
 ((("bitcoin","establishing ownership of")))Ownership of bitcoin is established through _digital keys_, _bitcoin addresses_, and _digital signatures_. The digital keys are not actually stored in the network, but are instead created and stored by users in a file, or simple database, called a _wallet_. The digital keys in a user's wallet are completely independent of the bitcoin protocol and can be generated and managed by the user's wallet software without reference to the blockchain or access to the Internet. Keys enable many of the interesting properties of bitcoin, including de-centralized trust and control, ownership attestation, and the cryptographic-proof security model. 
 
-((("bitcoin","establishing ownership of")))bitcoinの所有権は、 _デジタルキー_ 、 _bitcoinアドレス_ 、 _デジタル署名_ で規定されます。デジタルキーはBitcoinネットワークの中では保持されておらず、デジタルキーはユーザによって作成され個々のユーザのファイルの中、または _ウォレット_ という簡単なデータベースの中に保持されます。ユーザのウォレットの中にあるデジタルキーは完全にbitcoinプロトコルとは独立しており、ブロックチェーンへの参照またはインターネットへのアクセスを必要とすることなくユーザのウォレットで生成および管理できるようになっています。このキーによってbitcoinの多くの興味深い性質を可能にしており、この性質には分散型信頼やコントロール、所有権の証明、暗号学的証明によるセキュリティモデルが含まれます。
+((("bitcoin","establishing ownership of")))bitcoinの所有権は、 _デジタルキー_ 、 _Bitcoinアドレス_ 、 _デジタル署名_ で規定されます。デジタルキーはBitcoinネットワークの中では保持されておらず、デジタルキーはユーザによって作成され個々のユーザのファイルの中、または _ウォレット_ という簡単なデータベースの中に保持されます。ユーザのウォレットの中にあるデジタルキーは完全にBitcoinプロトコルとは独立しており、ブロックチェーンへの参照またはインターネットへのアクセスを必要とすることなくユーザのウォレットで生成および管理できるようになっています。このキーによってBitcoinの多くの興味深い性質を可能にしており、この性質には分散型信頼やコントロール、所有権の証明、暗号学的証明によるセキュリティモデルが含まれます。
 
 
 Every bitcoin transaction requires a valid signature to be included in the blockchain, which can only be generated with valid digital keys; therefore, anyone with a copy of those keys has control of the bitcoin in that account. Keys come in pairs consisting of a private (secret) key and a public key. Think of the public key as similar to a bank account number and the private key as similar to the secret PIN, or signature on a check that provides control over the account. These digital keys are very rarely seen by the users of bitcoin. For the most part, they are stored inside the wallet file and managed by the bitcoin wallet software. 
 
-全てのbitcoinトランザクションには、トランザクションをブロックチェーンに含めるための有効な署名が必須であり、有効な署名は有効なデジタルキーのみによって生成できます。よって、このデジタルキーのコピーを持つ人であればどんな人でも、このデジタルキーに紐づく口座にあるbitcoinをコントロールできます。銀行の口座番号と似た公開鍵と、銀行のPINコードに似た秘密鍵、また小切手への署名について考えてみましょう。これらのデジタルキーをごく稀にユーザが確認することがありますが、ほとんどの場合ウォレットのファイルの内部に格納されウォレットによって管理されるため見ることはありません。
+全てのBitcoinトランザクションには、トランザクションをブロックチェーンに含めるための有効な署名が必須であり、有効な署名は有効なデジタルキーのみによって生成できます。よって、このデジタルキーのコピーを持つ人であればどんな人でも、このデジタルキーに紐づく口座にあるbitcoinをコントロールできます。銀行の口座番号と似た公開鍵と、銀行のPINコードに似た秘密鍵、また小切手への署名について考えてみましょう。これらのデジタルキーをごく稀にユーザが確認することがありますが、ほとんどの場合ウォレットのファイルの内部に格納されウォレットによって管理されるため見ることはありません。
 
 In the payment portion of a bitcoin transaction, the recipient's public key is represented by its digital fingerprint, called a((("addresses, bitcoin","defined"))) _bitcoin address_, which is used in the same way as the beneficiary name on a check (i.e., "Pay to the order of"). In most cases, a bitcoin address is generated from and corresponds to a public key. However, not all bitcoin addresses represent public keys; they can also represent other beneficiaries such as scripts, as we will see later in this chapter. This way, bitcoin addresses abstract the recipient of funds, making transaction destinations flexible, similar to paper checks: a single payment instrument that can be used to pay into people's accounts, pay into company accounts, pay for bills, or pay to cash. The bitcoin address is the only representation of the keys that users will routinely see, because this is the part they need to share with the world.
 
-bitcoinトランザクションの支払いには受取人の公開鍵が表示されており、この公開鍵は _bitcoinアドレス_ と呼ばれるデジタル指紋の形で表示されます。このbitcoinアドレスは小切手にある受取人名と同じようにも使われます。ほとんどの場合、bitcoinアドレスは公開鍵から生成され公開鍵に紐づいています。しかし、bitcoinアドレスだけが公開鍵ではありません。この後の章でも見る通り、scriptのような形でも受取人を表現できます。この方法では、bitcinアドレスは資金の受取人を ????
+Bitcoinトランザクションの支払いには受取人の公開鍵が表示されており、この公開鍵は _Bitcoinアドレス_ と呼ばれるデジタル指紋の形で表示されます。このBitcoinアドレスは小切手にある受取人名と同じようにも使われます。ほとんどの場合、Bitcoinアドレスは公開鍵から生成され公開鍵に紐づいています。しかし、Bitcoinアドレスだけが公開鍵ではありません。この後の章でも見る通り、scriptのような形でも受取人を表現できます。この方法では、Bitcoinアドレスは資金の受取人を ????
 
 
 In this chapter we will introduce wallets, which contain cryptographic keys. We will look at how keys are generated, stored, and managed. We will review the various encoding formats used to represent private and public keys, addresses, and script addresses. Finally, we will look at special uses of keys: to sign messages, to prove ownership, and to create vanity addresses and paper wallets. 
 
-この章では、暗号学的キーを含むウォレットを紹介します。どのように鍵が生成され、格納され、管理されているのかを見ていき、秘密鍵や公開鍵、bitcoinアドレス、scriptアドレスを表すいろいろなエンコード形式をレビューします。最後に、メッセージに署名したり所有権を証明したり文字列指定のあるbitcoinアドレスやペーパーウォレットを作成したりするためのキーの特別なユーザを見ていきます。 ????
+この章では、暗号学的キーを含むウォレットを紹介します。どのように鍵が生成され、格納され、管理されているのかを見ていき、秘密鍵や公開鍵、Bitcoinアドレス、scriptアドレスを表すいろいろなエンコード形式をレビューします。最後に、メッセージに署名したり所有権を証明したり文字列指定のあるBitcoinアドレスやペーパーウォレットを作成したりするためのキーの特別なユーザを見ていきます。 ????
 
 ==== Public Key Cryptography and Cryptocurrency
 ==== 公開鍵暗号と暗号通貨
@@ -37,7 +37,7 @@ Since the invention of public key cryptography, several suitable mathematical fu
  
 In bitcoin, we use public key cryptography to create a key pair that controls access to bitcoins. The key pair consists of a private key and--derived from it--a unique public key. The public key is used to receive bitcoins, and the private key is used to sign transactions to spend those bitcoins.
 
-bitcoinでは、bitcoinへのアクセスコントロールをするキーペアを生成するために公開鍵暗号を使っています。このキーペアは秘密鍵とこの秘密鍵から一意に生成される公開鍵で構成されています。この公開鍵はbitcoinを受け取るために使われ、秘密鍵はbitcoinを使用するトランザクションに署名するのに使われます。
+Bitcoinでは、bitcoinへのアクセスコントロールをするキーペアを生成するために公開鍵暗号を使っています。このキーペアは秘密鍵とこの秘密鍵から一意に生成される公開鍵で構成されています。この公開鍵はbitcoinを受け取るために使われ、秘密鍵はbitcoinを使用するトランザクションに署名するのに使われます。
 
 There is a mathematical relationship between the public and the private key that allows the private key to be used to generate signatures on messages. This signature can be validated against the public key without revealing the private key.
 
@@ -58,7 +58,7 @@ bitcoinを使うとき、現在のbitcoin所有者は彼女の公開鍵と署名
 
 ((("keys","public/private")))((("keys","in wallets")))((("public keys")))((("wallets","public/private keys in")))A bitcoin wallet contains a collection of key pairs, each consisting of a private key and a public key. The private key (k) is a number, usually picked at random. From the private key, we use elliptic curve multiplication, a one-way cryptographic function, to generate a public key (K). From the public key (K), we use a one-way cryptographic hash function to generate a bitcoin address (A). In this section, we will start with generating the private key, look at the elliptic curve math that is used to turn that into a public key, and finally, generate a bitcoin address from the public key. The relationship between private key, public key, and bitcoin address is shown in <<k_to_K_to_A>>.
 
-((("keys","public/private")))((("keys","in wallets")))((("public keys")))((("wallets","public/private keys in")))bitcoinウォレットにはキーペアのコレクションを持っており、それぞれのキーペアは秘密鍵と公開鍵で構成されています。秘密鍵(k)は数値で、通常ランダムに選ばれます。秘密鍵から不可逆関数である楕円曲線乗算を用いて公開鍵(K)を生成します。公開鍵(K)から不可逆ハッシュ関数を用いてbitcoinアドレス(A)を生成します。この節では、秘密鍵の生成から始めて、公開鍵の生成に使われる楕円曲線の数学を見ていき、最後にbitcoinアドレスを公開鍵から生成します。秘密鍵と公開鍵、bitcoinアドレスの関係は<<k_to_K_to_A>>図に書かれています。
+((("keys","public/private")))((("keys","in wallets")))((("public keys")))((("wallets","public/private keys in")))Bitcoinウォレットにはキーペアのコレクションを持っており、それぞれのキーペアは秘密鍵と公開鍵で構成されています。秘密鍵(k)は数値で、通常ランダムに選ばれます。秘密鍵から不可逆関数である楕円曲線乗算を用いて公開鍵(K)を生成します。公開鍵(K)から不可逆ハッシュ関数を用いてBitcoinアドレス(A)を生成します。この節では、秘密鍵の生成から始めて、公開鍵の生成に使われる楕円曲線の数学を見ていき、最後にBitcoinアドレスを公開鍵から生成します。秘密鍵と公開鍵、Bitcoinアドレスの関係は<<k_to_K_to_A>>図に書かれています。
 
 [[k_to_K_to_A]]
 .Private key, public key, and bitcoin address
@@ -70,7 +70,7 @@ image::images/msbt_0401.png["privk_to_pubK_to_addressA"]
 
 ((("keys","private", id="ix_ch04-asciidoc1", range="startofrange")))((("private keys", id="ix_ch04-asciidoc2", range="startofrange")))A private key is simply a number, picked at random. Ownership and control over the private key is the root of user control over all funds associated with the corresponding bitcoin address. The private key is used to create signatures that are required to spend bitcoins by proving ownership of funds used in a transaction. The private key must remain secret at all times, because revealing it to third parties is equivalent to giving them control over the bitcoins secured by that key. The private key must also be backed up and protected from accidental loss, because if it's lost it cannot be recovered and the funds secured by it are forever lost, too. 
 
-((("keys","private", id="ix_ch04-asciidoc1", range="startofrange")))((("private keys", id="ix_ch04-asciidoc2", range="startofrange")))秘密鍵は単に数値で、ランダムに選ばれます。所有権と秘密鍵管理は秘密鍵と対応したbitcoinアドレスに結びついた全ての資金の根幹をなします。????秘密鍵は署名を生成するときに使われ、この署名は資金の使うときに所有権の主張のため必要となります。秘密鍵は何時でも極秘に保っておかなければいけません。これは、もし他者に秘密鍵が漏れると、秘密鍵に対応したbitcoinアドレスの資金のコントロールを他者に与えることになってしまうためです。秘密鍵はバックアップや偶発的な紛失からの保護もしておかなければいけません。というのは、もし秘密鍵をなくしてしまうと、秘密鍵を復元することはできず、秘密鍵によってセキュリティを担保していた資金も永遠に失ってしまいます。
+((("keys","private", id="ix_ch04-asciidoc1", range="startofrange")))((("private keys", id="ix_ch04-asciidoc2", range="startofrange")))秘密鍵は単に数値で、ランダムに選ばれます。所有権と秘密鍵管理は秘密鍵と対応したBitcoinアドレスに結びついた全ての資金の根幹をなします。????秘密鍵は署名を生成するときに使われ、この署名は資金の使うときに所有権の主張のため必要となります。秘密鍵は何時でも極秘に保っておかなければいけません。これは、もし他者に秘密鍵が漏れると、秘密鍵に対応したBitcoinアドレスの資金のコントロールを他者に与えることになってしまうためです。秘密鍵はバックアップや偶発的な紛失からの保護もしておかなければいけません。というのは、もし秘密鍵をなくしてしまうと、秘密鍵を復元することはできず、秘密鍵によってセキュリティを担保していた資金も永遠に失ってしまいます。
 
 [TIP]
 ====
@@ -82,11 +82,11 @@ image::images/msbt_0401.png["privk_to_pubK_to_addressA"]
 
 ((("private keys","generating from random numbers", id="ix_ch04-asciidoc3", range="startofrange")))The first and most important step in generating keys is to find a secure source of entropy, or randomness. Creating a bitcoin key is essentially the same as "Pick a number between 1 and 2^256^." The exact method you use to pick that number does not matter as long as it is not predictable or repeatable. Bitcoin software uses the underlying operating system's random number generators to produce 256 bits of entropy (randomness). Usually, the OS random number generator is initialized by a human source of randomness, which is why you may be asked to wiggle your mouse around for a few seconds. For the truly paranoid, nothing beats dice, pencil, and paper.
 
-((("private keys","generating from random numbers", id="ix_ch04-asciidoc3", range="startofrange")))キーを生成する上で重要かつ一番最初にしなればいけないことは、キー生成の安定的なエントロピー源、または十分なランダムさを確保することです。bitcoinキーを作ることは、"1から2^256^までの間の数字を選ぶ"ということと本質的に同じです。数字を選ぶ厳格な方法は、予測可能であったり再現可能性があったりしない方法です。bitcoinソフトウェアは、256bitのエントロピー(ランダムさ)を作り出すOSのランダム値生成器を使っています。通常OSのランダム値生成器は最初人間を元にしたランダムさをベースにしています。数秒間だけマウスを小刻みに動かしてくださいとOSからお願いされたことがある方もいるかもしれないですが、このランダム値生成が理由です。????
+((("private keys","generating from random numbers", id="ix_ch04-asciidoc3", range="startofrange")))キーを生成する上で重要かつ一番最初にしなればいけないことは、キー生成の安定的なエントロピー源、または十分なランダムさを確保することです。Bitcoinキーを作ることは、"1から2^256^までの間の数字を選ぶ"ということと本質的に同じです。数字を選ぶ厳格な方法は、予測可能であったり再現可能性があったりしない方法です。Bitcoinソフトウェアは、256bitのエントロピー(ランダムさ)を作り出すOSのランダム値生成器を使っています。通常OSのランダム値生成器は最初人間を元にしたランダムさをベースにしています。数秒間だけマウスを小刻みに動かしてくださいとOSからお願いされたことがある方もいるかもしれないですが、このランダム値生成が理由です。????
 
 More accurately, the private key can be any number between +1+ and +n - 1+, where n is a constant (n = 1.158 * 10^77^, slightly less than 2^256^) defined as the order of the elliptic curve used in bitcoin (see <<elliptic_curve>>). To create such a key, we randomly pick a 256-bit number and check that it is less than +n - 1+. In programming terms, this is usually achieved by feeding a larger string of random bits, collected from a cryptographically secure source of randomness, into the SHA256 hash algorithm that will conveniently produce a 256-bit number. If the result is less than +n - 1+, we have a suitable private key. Otherwise, we simply try again with another random number. 
 
-さらに正確に言うと、秘密鍵は+1+と+n - 1+の間の任意の整数で、nはbitcoinで使われている楕円曲線の位数として定義されている定数(n = 1.158 * 10^77^で2^256^よりわずかに小さい)です(<<elliptic_curve>>図参照)。このようなキーを作るために、256bitの数値からランダムに数値を選び、選んだ数値が+n - 1+であるかをチェックしています。プログラミング用語で言うとこれは通常、暗号学的に安定なランダムさ源から集められた任意の長さを持ったより大きい文字列を取得し、256bitの数値を作る便利なSHA256ハッシュアルゴリズムに放り込むことで達成できます。???? もし結果が+n - 1+よりも小さかった場合、それが適切な秘密鍵です。もしそうでなければ、単にもう一度別のランダムな数値を取得してうまくいくまで同じことを繰り返します。
+さらに正確に言うと、秘密鍵は+1+と+n - 1+の間の任意の整数で、nはBitcoinで使われている楕円曲線の位数として定義されている定数(n = 1.158 * 10^77^で2^256^よりわずかに小さい)です(<<elliptic_curve>>図参照)。このようなキーを作るために、256bitの数値からランダムに数値を選び、選んだ数値が+n - 1+であるかをチェックしています。プログラミング用語で言うとこれは通常、暗号学的に安定なランダムさ源から集められた任意の長さを持ったより大きい文字列を取得し、256bitの数値を作る便利なSHA256ハッシュアルゴリズムに放り込むことで達成できます。???? もし結果が+n - 1+よりも小さかった場合、それが適切な秘密鍵です。もしそうでなければ、単にもう一度別のランダムな数値を取得してうまくいくまで同じことを繰り返します。
 
 [TIP]
 ====
@@ -156,7 +156,7 @@ $ bx seed | bx ec-new | bx ec-to-wif
 
 <<ecc-curve>> is an example of an elliptic curve, similar to that used by bitcoin.
 
-<<ecc-curve>>図はbitcoinで使われているものと似ている楕円曲線の例です。
+<<ecc-curve>>図はBitcoinで使われているものと似ている楕円曲線の例です。
 
 [[ecc-curve]]
 .An elliptic curve
@@ -188,7 +188,7 @@ _mod p_ (素数pを法とした剰余)とは、この曲線が位数が素数_p_
 
 Because this curve is defined over a finite field of prime order instead of over the real numbers, it looks like a pattern of dots scattered in two dimensions, which makes it difficult to visualize. However, the math is identical as that of an elliptic curve over the real numbers. As an example, <<ecc-over-F17-math>> shows the same elliptic curve over a much smaller finite field of prime order 17, showing a pattern of dots on a grid. The +secp256k1+ bitcoin elliptic curve can be thought of as a much more complex pattern of dots on a unfathomably large grid. 
 
-この曲線は実数ではなく素数位数の有限体をなしているため、二次元に散りばめられたドットパターンのように見えます。しかし、この数学は実数上に定義された楕円曲線の数学と同等です。例として、<<ecc-over-F17-math>>図はより小さい位数17の有限体をなす楕円曲線を示していて、グリッド上のドットパターンになっています。 +secp256k1+ bitcoin楕円曲線は、底が知れないほど大きなグリッド上にもっと複雑に描かれたドットパターンと考えることができます。
+この曲線は実数ではなく素数位数の有限体をなしているため、二次元に散りばめられたドットパターンのように見えます。しかし、この数学は実数上に定義された楕円曲線の数学と同等です。例として、<<ecc-over-F17-math>>図はより小さい位数17の有限体をなす楕円曲線を示していて、グリッド上のドットパターンになっています。 +secp256k1+ Bitcoin楕円曲線は、底が知れないほど大きなグリッド上にもっと複雑に描かれたドットパターンと考えることができます。
 
 [[ecc-over-F17-math]]
 .Elliptic curve cryptography: visualizing an elliptic curve over F(p), with p=17
@@ -257,7 +257,7 @@ Now that we have defined addition, we can define multiplication in the standard 
 
 ((("keys","public, generating", id="ix_ch04-asciidoc6", range="startofrange")))((("public keys","generating", id="ix_ch04-asciidoc7", range="startofrange")))Starting with a private key in the form of a randomly generated number _k_, we multiply it by a predetermined point on the curve called the((("generator point")))((("secp256k1 curve standard","generator point definition in"))) _generator point_ _G_ to produce another point somewhere else on the curve, which is the corresponding public key _K_. The generator point is specified as part of the +secp256k1+ standard and is always the same for all keys in bitcoin: 
 
-((("keys","public, generating", id="ix_ch04-asciidoc6", range="startofrange")))((("public keys","generating", id="ix_ch04-asciidoc7", range="startofrange")))秘密鍵をランダムに生成された数値 _k_ とすると、あらかじめ決められた ((("generator point")))((("secp256k1 curve standard","generator point definition in"))) _ベースポイント_ _G_ を _k_ に掛けることで楕円曲線上のもう１つの点を得ます。このもう１つの点は公開鍵 _K_ に対応するものです。ベースポイントは +secp256k1+ 標準で決められており、bitcoinでの全ての公開鍵に対して常に同じです。
+((("keys","public, generating", id="ix_ch04-asciidoc6", range="startofrange")))((("public keys","generating", id="ix_ch04-asciidoc7", range="startofrange")))秘密鍵をランダムに生成された数値 _k_ とすると、あらかじめ決められた ((("generator point")))((("secp256k1 curve standard","generator point definition in"))) _ベースポイント_ _G_ を _k_ に掛けることで楕円曲線上のもう１つの点を得ます。このもう１つの点は公開鍵 _K_ に対応するものです。ベースポイントは +secp256k1+ 標準で決められており、Bitcoinでの全ての公開鍵に対して常に同じです。
 
 [latexmath]
 ++++
@@ -268,7 +268,7 @@ Now that we have defined addition, we can define multiplication in the standard 
 
 where k is the private key, G is the generator point, and K is the resulting public key, a point on the curve. Because the generator point is always the same for all bitcoin users, a private key k multiplied with G will always result in the same public key K. The relationship between k and K is fixed, but can only be calculated in one direction, from k to K. That's why a bitcoin address (derived from K) can be shared with anyone and does not reveal the user's private key (k). 
 
-但し、kは秘密鍵、Gはベースポイント、Kは結果として出てくる公開鍵で楕円曲線上にある点です。ベースポイントはどのbitcoinユーザでの同じであるため、秘密鍵kが同じであれば公開鍵は同じになります。kとKの関係は固定されていますが、kからKという一方向でのみ計算できます。これは、(Kから得られる)bitcoinアドレスがどの人にも共有され得るからで、bitcoinアドレスから秘密鍵kを知ることはできません。
+但し、kは秘密鍵、Gはベースポイント、Kは結果として出てくる公開鍵で楕円曲線上にある点です。ベースポイントはどのBitcoinユーザでの同じであるため、秘密鍵kが同じであれば公開鍵は同じになります。kとKの関係は固定されていますが、kからKという一方向でのみ計算できます。これは、(Kから得られる)Bitcoinアドレスがどの人にも共有され得るからで、Bitcoinアドレスから秘密鍵kを知ることはできません。
 
 [TIP]
 ====
@@ -315,11 +315,11 @@ Most bitcoin implementations use the((("OpenSSL cryptographic library"))) http:/
 image::images/msbt_0404.png["ecc_illustrated"]
 
 === Bitcoin Addresses
-=== bitcoinアドレス
+=== Bitcoinアドレス
 
 ((("addresses, bitcoin", id="ix_ch04-asciidoc8", range="startofrange")))((("addresses, bitcoin","generally", id="ix_ch04-asciidoc9", range="startofrange")))A bitcoin address is a string of digits and characters that can be shared with anyone who wants to send you money. Addresses produced from public keys consist of a string of numbers and letters, beginning with the digit "1". Here's an example of a bitcoin address:
 
-((("addresses, bitcoin", id="ix_ch04-asciidoc8", range="startofrange")))((("addresses, bitcoin","generally", id="ix_ch04-asciidoc9", range="startofrange")))bitcoinアドレスは、あなたにお金を送りたい人誰にでも共有されえる、数値と文字で構成された文字列です。公開鍵から作られるbitcoinアドレスは数値と文字による文字列でなっており、1からはじまるものです。以下はbitcoinアドレスの例です。
+((("addresses, bitcoin", id="ix_ch04-asciidoc8", range="startofrange")))((("addresses, bitcoin","generally", id="ix_ch04-asciidoc9", range="startofrange")))Bitcoinアドレスは、あなたにお金を送りたい人誰にでも共有されえる、数値と文字で構成された文字列です。公開鍵から作られるBitcoinアドレスは数値と文字による文字列でなっており、1からはじまるものです。以下はBitcoinアドレスの例です。
 
 ----
 1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy
@@ -328,12 +328,12 @@ image::images/msbt_0404.png["ecc_illustrated"]
 
 The bitcoin address is what appears most commonly in a transaction as the "recipient" of the funds. If we were to compare a bitcoin transaction to a paper check, the bitcoin address is the beneficiary, which is what we write on the line after "Pay to the order of." On a paper check, that beneficiary can sometimes be the name of a bank account holder, but can also include corporations, institutions, or even cash. Because paper checks do not need to specify an account, but rather use an abstract name as the recipient of funds, that makes paper checks very flexible as payment instruments. Bitcoin transactions use a similar abstraction, the bitcoin address, to make them very flexible. A bitcoin address can represent the owner of a private/public key pair, or it can represent something else, such as a payment script, as we will see in <<p2sh>>. For now, let's examine the simple case, a bitcoin address that represents, and is derived from, a public key.
 
-bitcoinアドレスは、資金の受取人としてトランザクションに共通に現れるものです。もし小切手とbitcoinトランザクションを比べたとすると、bitcoinアドレスは"Pay to the order of"のあとに書かれる受益者名です。小切手上では、この受益者は時々銀行口座を持っている人の名前になりますが、または企業名や機関名、現金????にさえなります。小切手では口座を特定する必要はないので、むしろ資金の受取人として口座を指す抽象名を使います。この抽象名は小切手での支払いを使いやすくしています。bitcoinトランザクションではbitcoinアドレスという似た抽象名を使い、bitcoinトランザクションを使いやすいものにしています。bitcoinアドレスは秘密鍵/公開鍵の所有者を表し、または<<p2sh>>にある支払いscriptのような他の何かを表すものです。とりあえずbitcoinアドレスが公開鍵を表し、またbitcoinアドレスが公開鍵から生成される簡単な場合から説明していきましょう。
+Bitcoinアドレスは、資金の受取人としてトランザクションに共通に現れるものです。もし小切手とBitcoinトランザクションを比べたとすると、Bitcoinアドレスは"Pay to the order of"のあとに書かれる受益者名です。小切手上では、この受益者は時々銀行口座を持っている人の名前になりますが、または企業名や機関名、現金????にさえなります。小切手では口座を特定する必要はないので、むしろ資金の受取人として口座を指す抽象名を使います。この抽象名は小切手での支払いを使いやすくしています。BitcoinトランザクションではBitcoinアドレスという似た抽象名を使い、Bitcoinトランザクションを使いやすいものにしています。Bitcoinアドレスは秘密鍵/公開鍵の所有者を表し、または<<p2sh>>にある支払いscriptのような他の何かを表すものです。とりあえずBitcoinアドレスが公開鍵を表し、またBitcoinアドレスが公開鍵から生成される簡単な場合から説明していきましょう。
 
 
 The bitcoin address is derived from the public key through the use of one-way cryptographic hashing. A "hashing algorithm" or simply "hash algorithm" is a one-way function that produces a fingerprint or "hash" of an arbitrary-sized input. Cryptographic hash functions are used extensively in bitcoin: in bitcoin addresses, in script addresses, and in the mining proof-of-work algorithm. The algorithms used to make a bitcoin address from a public key are the((("Secure Hash Algorithm (SHA)"))) Secure Hash Algorithm (SHA) and the((("RACE Integrity Primitives Evaluation Message Digest (RIPEMD)"))) RACE Integrity Primitives Evaluation Message Digest (RIPEMD), specifically((("RIPEMD160")))((("SHA256"))) SHA256 and RIPEMD160. 
 
-bitcoinアドレスは一方向暗号学的ハッシュ化を使うことで公開鍵から生成されます。"ハッシュ化アルゴリズム"または簡単に"ハッシュアルゴリズム"は、指紋または任意のサイズの"ハッシュ"を作り出す一方向関数です。暗号学的ハッシュ関数は、bitcoin、bitcoinアドレス、scriptアドレス、proof-of-workマイニングアルゴリズムの中で使われます。公開鍵からbitcoinアドレスを作るときに使うアルゴリズムは、 ((("Secure Hash Algorithm (SHA)"))) Secure Hash Algorithm (SHA) と ((("RACE Integrity Primitives Evaluation Message Digest (RIPEMD)"))) RACE Integrity Primitives Evaluation Message Digest (RIPEMD) で、中でも ((("RIPEMD160")))((("SHA256"))) SHA256 と RIPEMD160 が使われます。
+Bitcoinアドレスは一方向暗号学的ハッシュ化を使うことで公開鍵から生成されます。"ハッシュ化アルゴリズム"または簡単に"ハッシュアルゴリズム"は、指紋または任意のサイズの"ハッシュ"を作り出す一方向関数です。暗号学的ハッシュ関数は、bitcoin、Bitcoinアドレス、scriptアドレス、proof-of-workマイニングアルゴリズムの中で使われます。公開鍵からBitcoinアドレスを作るときに使うアルゴリズムは、 ((("Secure Hash Algorithm (SHA)"))) Secure Hash Algorithm (SHA) と ((("RACE Integrity Primitives Evaluation Message Digest (RIPEMD)"))) RACE Integrity Primitives Evaluation Message Digest (RIPEMD) で、中でも ((("RIPEMD160")))((("SHA256"))) SHA256 と RIPEMD160 が使われます。
 
 Starting with the public key K, we compute the SHA256 hash and then compute the RIPEMD160 hash of the result, producing a 160-bit (20-byte) number:
 
@@ -347,7 +347,7 @@ Starting with the public key K, we compute the SHA256 hash and then compute the 
 ++++
 where K is the public key and A is the resulting bitcoin address. 
 
-但し、Kは公開鍵、Aは結果として出てきたbitcoinアドレスです。
+但し、Kは公開鍵、Aは結果として出てきたBitcoinアドレスです。
 
 
 [TIP]
@@ -357,7 +357,7 @@ where K is the public key and A is the resulting bitcoin address.
 
 Bitcoin addresses are almost always presented to users in an encoding called((("addresses, bitcoin","Base58 encoding", id="ix_ch04-asciidoc10", range="startofrange")))((("addresses, bitcoin","Base58Check encoding", id="ix_ch04-asciidoc11", range="startofrange")))((("Base58 encoding", id="ix_ch04-asciidoc12", range="startofrange")))((("Base58Check encoding", id="ix_ch04-asciidoc13", range="startofrange"))) "Base58Check" (see <<base58>>), which uses 58 characters (a Base58 number system) and a checksum to help human readability, avoid ambiguity, and protect against errors in address transcription and entry. Base58Check is also used in many other ways in bitcoin, whenever there is a need for a user to read and correctly transcribe a number, such as a bitcoin address, a private key, an encrypted key, or a script hash. In the next section we will examine the mechanics of Base58Check encoding and decoding, and the resulting representations. <<pubkey_to_address>> illustrates the conversion of a public key into a bitcoin address.(((range="endofrange", startref="ix_ch04-asciidoc13")))
 
-bitcoinアドレスは、((("addresses, bitcoin","Base58 encoding", id="ix_ch04-asciidoc10", range="startofrange")))((("addresses, bitcoin","Base58Check encoding", id="ix_ch04-asciidoc11", range="startofrange")))((("Base58 encoding", id="ix_ch04-asciidoc12", range="startofrange")))((("Base58Check encoding", id="ix_ch04-asciidoc13", range="startofrange"))) "Base58Check" と呼ばれる形にエンコードされた状態でほぼ常に使われます(<<base58>>参照)。"Base58Check"では、58個の文字(Base58)とチェックサムを使いますが、これは人間にとって読みやすくしたり、曖昧さを避けたり、転写時のエラーを防いだりするためです。Base58Checkはまた、bitcoinで他の用途でも使われます。bitcoinアドレス、秘密鍵、暗号化されたキー、scriptハッシュなど、ユーザが読む必要があったり、数字を正しく転写しなければいけなかったりするときはいつでもです。次の節では、Base58Checkのエンコード、デコードの仕組みと結果として出てくる表現を説明します。<<pubkey_to_address>>図は公開鍵からbitcoinアドレスへの変換を説明しています。(((range="endofrange", startref="ix_ch04-asciidoc13")))
+Bitcoinアドレスは、((("addresses, bitcoin","Base58 encoding", id="ix_ch04-asciidoc10", range="startofrange")))((("addresses, bitcoin","Base58Check encoding", id="ix_ch04-asciidoc11", range="startofrange")))((("Base58 encoding", id="ix_ch04-asciidoc12", range="startofrange")))((("Base58Check encoding", id="ix_ch04-asciidoc13", range="startofrange"))) "Base58Check" と呼ばれる形にエンコードされた状態でほぼ常に使われます(<<base58>>参照)。"Base58Check"では、58個の文字(Base58)とチェックサムを使いますが、これは人間にとって読みやすくしたり、曖昧さを避けたり、転写時のエラーを防いだりするためです。Base58Checkはまた、Bitcoinで他の用途でも使われます。Bitcoinアドレス、秘密鍵、暗号化されたキー、scriptハッシュなど、ユーザが読む必要があったり、数字を正しく転写しなければいけなかったりするときはいつでもです。次の節では、Base58Checkのエンコード、デコードの仕組みと結果として出てくる表現を説明します。<<pubkey_to_address>>図は公開鍵からBitcoinアドレスへの変換を説明しています。(((range="endofrange", startref="ix_ch04-asciidoc13")))
 
 [[pubkey_to_address]]
 .Public key to bitcoin address: conversion of a public key into a bitcoin address 
@@ -370,7 +370,7 @@ image::images/msbt_0405.png["pubkey_to_address"]
 
 In order to represent long numbers in a compact way, using fewer symbols, many computer systems use mixed-alphanumeric representations with a base (or radix) higher than 10. For example, whereas the traditional decimal system uses the 10 numerals 0 through 9, the hexadecimal system uses 16, with the letters A through F as the six additional symbols. A number represented in hexadecimal format is shorter than the equivalent decimal representation. Even more compact,((("Base-64 representation"))) Base-64 representation uses 26 lower-case letters, 26 capital letters, 10 numerals, and two more characters such as "\+" and "/" to transmit binary data over text-based media such as email. Base-64 is most commonly used to add binary attachments to email. Base58 is a text-based binary-encoding format developed for use in bitcoin and used in many other cryptocurrencies. It offers a balance between compact representation, readability, and error detection and prevention. Base58 is a subset of Base64, using the upper- and lowercase letters and numbers, but omitting some characters that are frequently mistaken for one another and can appear identical when displayed in certain fonts. Specifically, Base58 is Base64 without the 0 (number zero), O (capital o), l (lower L), I (capital i), and the symbols "\+" and "/". Or, more simply, it is a set of lower and capital letters and numbers without the four (0, O, l, I) just mentioned.
 
-大きな数字をコンパクトに表すために、いくつかの記号を使うことで、多くのコンピュータでは10以上を基数とするアルファベットと数字を混ぜた表現を使っています。例えば、伝統的な十進数では0から9までの10個の数字を使う一方、１６進数ではAからFの文字を使うことで16個の数字を使います。１６進数で表される数字は十進数で表すよりも短くなります。((("Base-64 representation"))) Base-64 では、26個の小文字、26個の大文字、10個の数字、バイナリデータをemailのようなテキストベースの通信で送るための"\+" や "/" のような２種類の文字を使います。Base-64 はemailにバイナリデータを添付するのによく使われます。Base58 はbitcoinで使うために開発されたテキストベースのエンコード形式で、他の暗号通貨でも使われています。これはコンパクトな表現、可読性、エラー発見および防止のためです。Base58はBase64の部分集合でアルファベットの大文字小文字、数字が使われます。しかし、あるフォントで表示したときに同じように見えて、よく間違えてしまういくつかの文字は省かれています。Base58はBase64から0(数字の0)、O(大文字o)、l(小文字L)、I(大文字i)、記号"\+"や"/"を除いたもの、つまり、(0, O, l, I)を除いたアルファベットの大文字小文字、数字の集合になっています。
+大きな数字をコンパクトに表すために、いくつかの記号を使うことで、多くのコンピュータでは10以上を基数とするアルファベットと数字を混ぜた表現を使っています。例えば、伝統的な十進数では0から9までの10個の数字を使う一方、１６進数ではAからFの文字を使うことで16個の数字を使います。１６進数で表される数字は十進数で表すよりも短くなります。((("Base-64 representation"))) Base-64 では、26個の小文字、26個の大文字、10個の数字、バイナリデータをemailのようなテキストベースの通信で送るための"\+" や "/" のような２種類の文字を使います。Base-64 はemailにバイナリデータを添付するのによく使われます。Base58 はBitcoinで使うために開発されたテキストベースのエンコード形式で、他の暗号通貨でも使われています。これはコンパクトな表現、可読性、エラー発見および防止のためです。Base58はBase64の部分集合でアルファベットの大文字小文字、数字が使われます。しかし、あるフォントで表示したときに同じように見えて、よく間違えてしまういくつかの文字は省かれています。Base58はBase64から0(数字の0)、O(大文字o)、l(小文字L)、I(大文字i)、記号"\+"や"/"を除いたもの、つまり、(0, O, l, I)を除いたアルファベットの大文字小文字、数字の集合になっています。
 
 [[base58alphabet]]
 .bitcoin's Base58 alphabet
@@ -383,11 +383,11 @@ In order to represent long numbers in a compact way, using fewer symbols, many c
 
 To add extra security against typos or transcription errors, Base58Check is a Base58 encoding format, frequently used in bitcoin, which has a built-in error-checking code. The checksum is an additional four bytes added to the end of the data that is being encoded. The checksum is derived from the hash of the encoded data and can therefore be used to detect and prevent transcription and typing errors. When presented with a Base58Check code, the decoding software will calculate the checksum of the data and compare it to the checksum included in the code. If the two do not match, that indicates that an error has been introduced and the Base58Check data is invalid. For example, this prevents a mistyped bitcoin address from being accepted by the wallet software as a valid destination, an error that would otherwise result in loss of funds.
 
-書き間違いや転写エラーをさらに防ぐため、Base58CheckはBase58エンコード形式になっていて、エラーチェックコードが組み込まれたbitcoinでよく使われています。チェックサムは、エンコードされようとしているデータの最後に追加される4byteです。このチェックサムはエンコードされたデータのハッシュから作られ、転写エラーやタイピングエラーを検出したり防いだりするのに使われます。Base58Checkでエンコードされたデータが与えられた場合、デコードソフトウェアはエンコードされようとしているデータのチェックサムを計算し、含まれているチェックサムと比較します。もし２つが一致しなかった場合、これはエラーが混入してしまったかBase58Checkデータが無効だということを示しています。例えば、これはウォレットが有効な記述だと判断して受け付けてしまったミスタイプしたbitcoinアドレスを無効と判断できるようにします。
+書き間違いや転写エラーをさらに防ぐため、Base58CheckはBase58エンコード形式になっていて、エラーチェックコードが組み込まれたBitcoinでよく使われています。チェックサムは、エンコードされようとしているデータの最後に追加される4byteです。このチェックサムはエンコードされたデータのハッシュから作られ、転写エラーやタイピングエラーを検出したり防いだりするのに使われます。Base58Checkでエンコードされたデータが与えられた場合、デコードソフトウェアはエンコードされようとしているデータのチェックサムを計算し、含まれているチェックサムと比較します。もし２つが一致しなかった場合、これはエラーが混入してしまったかBase58Checkデータが無効だということを示しています。例えば、これはウォレットが有効な記述だと判断して受け付けてしまったミスタイプしたBitcoinアドレスを無効と判断できるようにします。
 
 ((("data, converting to Base58Check")))To convert data (a number) into a Base58Check format, we first add a prefix to the data, called the "version byte," which serves to easily identify the type of data that is encoded. For example, in the case of a bitcoin address the prefix is zero (0x00 in hex), whereas the prefix used when encoding a private key is 128 (0x80 in hex). A list of common version prefixes is shown in <<base58check_versions>>.
 
-((("data, converting to Base58Check")))数値データをBase58Check形式に変換するために、まずデータの先頭に"version byte"と呼ばれている文字を追加します。このversion byteは、簡単にエンコードされたデータの種類を特定できるように付加されています。例えば、bitcoinアドレスの場合先頭はゼロ(１６進数で0x00)で、一方秘密鍵をエンコードするときは先頭は128(１６進数で0x80)です。共通に使われているversion byteのリストは<<base58check_versions>>を参照してください。
+((("data, converting to Base58Check")))数値データをBase58Check形式に変換するために、まずデータの先頭に"version byte"と呼ばれている文字を追加します。このversion byteは、簡単にエンコードされたデータの種類を特定できるように付加されています。例えば、Bitcoinアドレスの場合先頭はゼロ(１６進数で0x00)で、一方秘密鍵をエンコードするときは先頭は128(１６進数で0x80)です。共通に使われているversion byteのリストは<<base58check_versions>>を参照してください。
 
 Next, we compute the "double-SHA" checksum, meaning we apply the SHA256 hash-algorithm twice on the previous result (prefix and data):
 
@@ -412,7 +412,7 @@ image::images/msbt_0406.png["Base58CheckEncoding"]
 
 In bitcoin, most of the data presented to the user is Base58Check-encoded to make it compact, easy to read, and easy to detect errors. The version prefix in Base58Check encoding is used to create easily distinguishable formats, which when encoded in Base58 contain specific characters at the beginning of the Base58Check-encoded payload. These characters make it easy for humans to identify the type of data that is encoded and how to use it. This is what differentiates, for example, a Base58Check-encoded bitcoin address that starts with a 1 from a Base58Check-encoded private key WIF format that starts with a 5. Some example version prefixes and the resulting Base58 characters are shown in <<base58check_versions>>.((("Base58Check encoding","prefixes, listed")))
 
-bitcoinでは、ユーザから渡されるほとんどのデータは、コンパクトにするためや読みやすくするため、エラーを検知しやすくするためにBase58Checkエンコードされています。Base58Checkでのversion prefixは、簡単に形式を区別するために使われており、Base58でエンコードされるときにBase58Checkエンコードpayloadの最初に特定の文字を付けられています。これらの文字は、どんな種類のデータをエンコードしたのかデータをどう使うのかを人間が分かるようにしています。1から始まるものはBase58Checkエンコードされたbitcoinアドレス、5から始まるものはBase58Checkエンコードされた秘密鍵WIF形式です。
+Bitcoinでは、ユーザから渡されるほとんどのデータは、コンパクトにするためや読みやすくするため、エラーを検知しやすくするためにBase58Checkエンコードされています。Base58Checkでのversion prefixは、簡単に形式を区別するために使われており、Base58でエンコードされるときにBase58Checkエンコードpayloadの最初に特定の文字を付けられています。これらの文字は、どんな種類のデータをエンコードしたのかデータをどう使うのかを人間が分かるようにしています。1から始まるものはBase58CheckエンコードされたBitcoinアドレス、5から始まるものはBase58Checkエンコードされた秘密鍵WIF形式です。
 
 ++++
 <?hard-pagebreak?>
@@ -434,7 +434,7 @@ bitcoinでは、ユーザから渡されるほとんどのデータは、コン�
 
 Let's look at the complete process of creating a bitcoin address, from a private key, to a public key (a point on the elliptic curve), to a double-hashed address and finally, the Base58Check encoding. The C++ code in <<addr_example>> shows the complete step-by-step process, from private key to Base58Check-encoded bitcoin address. The code example uses the libbitcoin library introduced in <<alt_libraries>> for some helper functions.((("Base58Check encoding","bitcoin address, complete code for")))
 
-bitcoinアドレスを生成する完全な手順を見てみましょう。秘密鍵から始まって、公開鍵(楕円曲線上の点)を作り、二重ハッシュ化アドレスを作り、最後にBase58Checkエンコードします。<<addr_example>>にあるC++コードは、秘密鍵からBase58Checkエンコードbitcoinアドレスまでの完全な逐一手順を示しています。このサンプルコードは、いくつかの補助関数のために<<alt_libraries>>で紹介したlibbitcoinライブラリを使っています。((("Base58Check encoding","bitcoin address, complete code for")))
+Bitcoinアドレスを生成する完全な手順を見てみましょう。秘密鍵から始まって、公開鍵(楕円曲線上の点)を作り、二重ハッシュ化アドレスを作り、最後にBase58Checkエンコードします。<<addr_example>>にあるC++コードは、秘密鍵からBase58CheckエンコードBitcoinアドレスまでの完全な逐一手順を示しています。このサンプルコードは、いくつかの補助関数のために<<alt_libraries>>で紹介したlibbitcoinライブラリを使っています。((("Base58Check encoding","bitcoin address, complete code for")))
 
 
 [[addr_example]]
@@ -448,7 +448,7 @@ include::code/addr.cpp[]
 
 The code uses a predefined private key so that it produces the same bitcoin address every time it is run, as shown in <<addr_example_run>>.(((range="endofrange", startref="ix_ch04-asciidoc12")))(((range="endofrange", startref="ix_ch04-asciidoc11")))(((range="endofrange", startref="ix_ch04-asciidoc10")))(((range="endofrange", startref="ix_ch04-asciidoc9")))
 
-このコードは事前に決められた秘密鍵を使って、動作させるたびに毎回同じbitcoinアドレスが生成されるようになっています。具体的な動かし方は<<addr_example_run>>に示されている通りです。
+このコードは事前に決められた秘密鍵を使って、動作させるたびに毎回同じBitcoinアドレスが生成されるようになっています。具体的な動かし方は<<addr_example_run>>に示されている通りです。
 
 [[addr_example_run]]
 .Compiling and running the addr code
@@ -523,7 +523,7 @@ $ bx wif-to-ec KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
 ===== Decode from Base58Check
 ===== Base58Checkからのデコード
 
-((("Base58Check encoding","decoding to hex")))((("sx tools","decoding Base58Check to/from hex")))sxツール(<<sx_tools>>参照)は、bitcoinキーやアドレス、トランザクションを操作するシェルスクリプトやコマンドラインのパイプラインを簡単に書けるようにするツールです。sxツールを使うとコマンドラインでBase58Checkをデコードできます。
+((("Base58Check encoding","decoding to hex")))((("sx tools","decoding Base58Check to/from hex")))sxツール(<<sx_tools>>参照)は、Bitcoinキーやアドレス、トランザクションを操作するシェルスクリプトやコマンドラインのパイプラインを簡単に書けるようにするツールです。sxツールを使うとコマンドラインでBase58Checkをデコードできます。
 
 ((("Base58Check encoding","decoding to hex")))The Bitcoin Explorer commands (see <<libbitcoin>>) make it easy to write shell scripts and command-line "pipes" that manipulate bitcoin keys, addresses, and transactions. You can use Bitcoin Explorer to decode the Base58Check format on the command line.
 
@@ -610,7 +610,7 @@ K = 04F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A<?pdf-cr?>
 
 pass:[<?dbhtml orphans="4"?>]Compressed public keys were introduced to bitcoin to reduce the size of transactions and conserve disk space on nodes that store the bitcoin blockchain database. Most transactions include the public key, required to validate the owner's credentials and spend the bitcoin. Each public key requires 520 bits (prefix \+ x \+ y), which when multiplied by several hundred transactions per block, or tens of thousands of transactions per day, adds a significant amount of data to the blockchain.((("compressed public keys", id="ix_ch04-asciidoc16", range="startofrange")))((("public keys","compressed", id="ix_ch04-asciidoc17", range="startofrange")))
 
-((("compressed public keys", id="ix_ch04-asciidoc16", range="startofrange")))((("public keys","compressed", id="ix_ch04-asciidoc17", range="startofrange")))圧縮された公開鍵は、トランザクションのサイズの削減やブロックチェーンを保持しているノード上のディスクスペースの保護のためにbitcoinに導入されました。ほとんどのトランザクションは、所有者の証明書を検証したりbitcoinを使うために公開鍵を含んでいます。それぞれの圧縮されていない公開鍵は520bit(prefix \+ x \+ y)を必要とするため、ブロックごとに数百トランザクション、１日に数万トランザクションというトランザクションを重ねると巨大なデータがブロックチェーンに追加されていくことになってしまいます。
+((("compressed public keys", id="ix_ch04-asciidoc16", range="startofrange")))((("public keys","compressed", id="ix_ch04-asciidoc17", range="startofrange")))圧縮された公開鍵は、トランザクションのサイズの削減やブロックチェーンを保持しているノード上のディスクスペースの保護のためにBitcoinに導入されました。ほとんどのトランザクションは、所有者の証明書を検証したりbitcoinを使うために公開鍵を含んでいます。それぞれの圧縮されていない公開鍵は520bit(prefix \+ x \+ y)を必要とするため、ブロックごとに数百トランザクション、１日に数万トランザクションというトランザクションを重ねると巨大なデータがブロックチェーンに追加されていくことになってしまいます。
 
 As we saw in the section <<pubkey>>, a public key is a point (x,y) on an elliptic curve. Because the curve expresses a mathematical function, a point on the curve represents a solution to the equation and, therefore, if we know the _x_ coordinate we can calculate the _y_ coordinate by solving the equation y^2^ mod p = (x^3^ + 7) mod p. That allows us to store only the _x_ coordinate of the public key point, omitting the _y_ coordinate and reducing the size of the key and the space required to store it by 256 bits. An almost 50% reduction in size in every transaction adds up to a lot of data saved over time!
 
@@ -634,15 +634,15 @@ K = 03F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A
 
 ((("addresses, bitcoin","converting compressed keys to")))((("compressed keys","converting to bitcoin addresses")))This compressed public key corresponds to the same private key, meaning that it is generated from the same private key. However, it looks different from the uncompressed public key. More importantly, if we convert this compressed public key to a bitcoin address using the double-hash function (+RIPEMD160(SHA256(K))+) it will produce a _different_ bitcoin address. This can be confusing, because it means that a single private key can produce a public key expressed in two different formats (compressed and uncompressed) that produce two different bitcoin addresses. However, the private key is identical for both bitcoin addresses.
 
-((("addresses, bitcoin","converting compressed keys to")))((("compressed keys","converting to bitcoin addresses")))圧縮されていない公開鍵と違うように見えますが、この圧縮された公開鍵は同じ秘密鍵から生成されたものです。重要なこととして、もし圧縮された公開鍵を二重ハッシュ化関数 (+RIPEMD160(SHA256(K))+) を使ってbitcoinアドレスに変換したとすると、_違った_bitcoinアドレスが生成されるでしょう。これは１つの秘密鍵が２つの形式(圧縮と非圧縮)の公開鍵を生成し、それぞれの公開鍵を用いて別々のbitcoinアドレスを生成してしまうためですが、これは混乱させる元になってしまいます。
+((("addresses, bitcoin","converting compressed keys to")))((("compressed keys","converting to bitcoin addresses")))圧縮されていない公開鍵と違うように見えますが、この圧縮された公開鍵は同じ秘密鍵から生成されたものです。重要なこととして、もし圧縮された公開鍵を二重ハッシュ化関数 (+RIPEMD160(SHA256(K))+) を使ってBitcoinアドレスに変換したとすると、_違った_ Bitcoinアドレスが生成されるでしょう。これは１つの秘密鍵が２つの形式(圧縮と非圧縮)の公開鍵を生成し、それぞれの公開鍵を用いて別々のBitcoinアドレスを生成してしまうためですが、これは混乱させる元になってしまいます。
 
 ((("blockchains","size of, and compressed public keys")))Compressed public keys are gradually becoming the default across bitcoin clients, which is having a significant impact on reducing the size of transactions and therefore the blockchain. However, not all clients support compressed public keys yet. Newer clients that support compressed public keys have to account for transactions from older clients that do not support compressed public keys. This is especially important when a wallet application is importing private keys from another bitcoin wallet application, because the new wallet needs to scan the blockchain to find transactions corresponding to these imported keys. Which bitcoin addresses should the bitcoin wallet scan for? The bitcoin addresses produced by uncompressed public keys, or the bitcoin addresses produced by compressed public keys? Both are valid bitcoin addresses, and can be signed for by the private key, but they are different addresses!
 
-((("blockchains","size of, and compressed public keys")))圧縮された公開鍵は次第にbitcoinクライアントでデフォルトになりつつあります。圧縮された公開鍵に対応することで、トランザクションのサイズおよびブロックチェーンのサイズを削減することに十分なインパクトがあるのです。しかし、全てのクライアントが圧縮された公開鍵に対応している訳ではありません。圧縮された公開鍵に対応している最近のクライアントは圧縮された公開鍵に対応していない古いクライアントから来たトランザクションを解釈しなければいけません。これはウォレットがもう１つのウォレットから秘密鍵をインポートするときに特に重要です。というのは、新しいウォレットがインポートされた秘密鍵に対応したトランザクションを見つけるためにブロックチェーンをスキャンしなければいけないためです。ウォレットはどのbitcoinアドレスをスキャンするべきでしょうか？圧縮されていない公開鍵から生成されたbitcoinアドレスでしょうか？それとも、圧縮された公開鍵から生成されたbitcoinアドレスでしょうか？両方とも有効なアドレスで、両方とも秘密鍵で署名されますが、これらは異なったbitcoinアドレスです！
+((("blockchains","size of, and compressed public keys")))圧縮された公開鍵は次第にBitcoinクライアントでデフォルトになりつつあります。圧縮された公開鍵に対応することで、トランザクションのサイズおよびブロックチェーンのサイズを削減することに十分なインパクトがあるのです。しかし、全てのクライアントが圧縮された公開鍵に対応している訳ではありません。圧縮された公開鍵に対応している最近のクライアントは圧縮された公開鍵に対応していない古いクライアントから来たトランザクションを解釈しなければいけません。これはウォレットがもう１つのウォレットから秘密鍵をインポートするときに特に重要です。というのは、新しいウォレットがインポートされた秘密鍵に対応したトランザクションを見つけるためにブロックチェーンをスキャンしなければいけないためです。ウォレットはどのBitcoinアドレスをスキャンするべきでしょうか？圧縮されていない公開鍵から生成されたBitcoinアドレスでしょうか？それとも、圧縮された公開鍵から生成されたBitcoinアドレスでしょうか？両方とも有効なアドレスで、両方とも秘密鍵で署名されますが、これらは異なったBitcoinアドレスです！
 
 ((("Wallet Import Format (WIF)","newer bitcoin wallets and")))To resolve this issue, when private keys are exported from a wallet, the Wallet Import Format that is used to represent them is implemented differently in newer bitcoin wallets, to indicate that these private keys have been used to produce _compressed_ public keys and therefore _compressed_ bitcoin addresses. This allows the importing wallet to distinguish between private keys originating from older or newer wallets and search the blockchain for transactions with bitcoin addresses corresponding to the uncompressed, or the compressed, public keys, respectively. Let's look at how this works in more detail, in the next section.(((range="endofrange", startref="ix_ch04-asciidoc17")))(((range="endofrange", startref="ix_ch04-asciidoc16"))) 
 
-((("Wallet Import Format (WIF)","newer bitcoin wallets and")))この問題を解決するために、秘密鍵をウォレットからエクスポートする場合、今までと異なり最近のウォレットではWallet Import Formatで出力されます。Wallet Import Formatは、_圧縮された_公開鍵が秘密鍵から作られたということを示しており、bitcoinアドレスは_圧縮された_ものということが分かるのです。これによって、インポートされる側のウォレットは古いウォレットから来た秘密鍵か新しいウォレットから来た秘密鍵かを区別でき、公開鍵が圧縮されていてもいなくても公開鍵に対応したbitcoinアドレスが含まれているトランザクションをブロックチェーンから探し出すことができます。次の節で、どのようにこれが動いているのか詳細を見てみましょう。(((range="endofrange", startref="ix_ch04-asciidoc17")))(((range="endofrange", startref="ix_ch04-asciidoc16")))
+((("Wallet Import Format (WIF)","newer bitcoin wallets and")))この問題を解決するために、秘密鍵をウォレットからエクスポートする場合、今までと異なり最近のウォレットではWallet Import Formatで出力されます。Wallet Import Formatは、_圧縮された_公開鍵が秘密鍵から作られたということを示しており、Bitcoinアドレスは_圧縮された_ものということが分かるのです。これによって、インポートされる側のウォレットは古いウォレットから来た秘密鍵か新しいウォレットから来た秘密鍵かを区別でき、公開鍵が圧縮されていてもいなくても公開鍵に対応したBitcoinアドレスが含まれているトランザクションをブロックチェーンから探し出すことができます。次の節で、どのようにこれが動いているのか詳細を見てみましょう。(((range="endofrange", startref="ix_ch04-asciidoc17")))(((range="endofrange", startref="ix_ch04-asciidoc16")))
 
 [[comp_priv]]
 ===== Compressed private keys
@@ -654,11 +654,11 @@ K = 03F028892BAD7ED57D2FB57BF33081D5CFCF6F9ED3D3D7F159C2E2FFF579DC341A
 
 Remember, these formats are _not_ used interchangeably. In a newer wallet that implements compressed public keys, the private keys will only ever be exported as WIF-compressed (with a K or L prefix). If the wallet is an older implementation and does not use compressed public keys, the private keys will only ever be exported as WIF (with a 5 prefix). The goal here is to signal to the wallet importing these private keys whether it must search the blockchain for compressed or uncompressed public keys and addresses.
 
-WIF圧縮形式とWIF形式は片方しか使えないということを覚えておいてください。圧縮された公開鍵を実装した新しいウォレットでは、秘密鍵はWIF圧縮形式(先頭がKまたはL)としてのみエクスポートされます。もしウォレットが古い実装のもので圧縮された公開鍵が使えないものであれば、秘密鍵はWIF形式(先頭が5)としてのみエクスポートされます。ここでのゴールは、圧縮された公開鍵またはbitcoinアドレスに対してブロックチェーンを探索しなければいけないか、圧縮されていないものに対して探索しなければいけないかをウォレットに教えることです。
+WIF圧縮形式とWIF形式は片方しか使えないということを覚えておいてください。圧縮された公開鍵を実装した新しいウォレットでは、秘密鍵はWIF圧縮形式(先頭がKまたはL)としてのみエクスポートされます。もしウォレットが古い実装のもので圧縮された公開鍵が使えないものであれば、秘密鍵はWIF形式(先頭が5)としてのみエクスポートされます。ここでのゴールは、圧縮された公開鍵またはBitcoinアドレスに対してブロックチェーンを探索しなければいけないか、圧縮されていないものに対して探索しなければいけないかをウォレットに教えることです。
 
 If a bitcoin wallet is able to implement compressed public keys, it will use those in all transactions. The private keys in the wallet will be used to derive the public key points on the curve, which will be compressed. The compressed public keys will be used to produce bitcoin addresses and those will be used in transactions. When exporting private keys from a new wallet that implements compressed public keys, the Wallet Import Format is modified, with the addition of a one-byte suffix +01+ to the private key. The resulting Base58Check-encoded private key is called a "Compressed WIF" and starts with the letter K or L, instead of starting with "5" as is the case with WIF-encoded (non-compressed) keys from older wallets. 
 
-もしウォレットが圧縮された公開鍵を実装していれば、全てのトランザクションで圧縮された方の方法を使うでしょう。秘密鍵は楕円曲線上の公開鍵点を導出し、この公開鍵は圧縮されます。圧縮された公開鍵はbitcoinアドレスを生成することに使われ、bitcoinアドレスはトランザクションの中で使われます。圧縮された公開鍵を実装した新しいウォレットから秘密鍵をエクスポートするとき、Wallet Import Formatは秘密鍵の最後に1byteの+01+が付加される形に修正されます。結果として出力されるBase58Checkエンコード秘密鍵は"圧縮されたWIF形式"と呼ばれ、古いウォレットでのWIF形式(非圧縮)の場合の"5"の代わりにKまたはLから始まります。
+もしウォレットが圧縮された公開鍵を実装していれば、全てのトランザクションで圧縮された方の方法を使うでしょう。秘密鍵は楕円曲線上の公開鍵点を導出し、この公開鍵は圧縮されます。圧縮された公開鍵はBitcoinアドレスを生成することに使われ、Bitcoinアドレスはトランザクションの中で使われます。圧縮された公開鍵を実装した新しいウォレットから秘密鍵をエクスポートするとき、Wallet Import Formatは秘密鍵の最後に1byteの+01+が付加される形に修正されます。結果として出力されるBase58Checkエンコード秘密鍵は"圧縮されたWIF形式"と呼ばれ、古いウォレットでのWIF形式(非圧縮)の場合の"5"の代わりにKまたはLから始まります。
 
 <<table_4-4>> shows the same key, encoded in WIF and WIF-compressed formats.
 
@@ -682,11 +682,11 @@ If a bitcoin wallet is able to implement compressed public keys, it will use tho
 ====
 
 === Implementing Keys and Addresses in Python  
-=== Pythonでのキーとbitcoinアドレスの実装
+=== PythonでのキーとBitcoinアドレスの実装
 
 ((("addresses, bitcoin","implementing in Python", id="ix_ch04-asciidoc18", range="startofrange")))((("keys","implementing in Python", id="ix_ch04-asciidoc19", range="startofrange")))((("pybitcointools", id="ix_ch04-asciidoc20", range="startofrange")))((("Python","implementing addresses in", id="ix_ch04-asciidoc21", range="startofrange")))((("Python","implementing keys in", id="ix_ch04-asciidoc22", range="startofrange")))The most comprehensive bitcoin library in Python is https://github.com/vbuterin/pybitcointools[pybitcointools] by((("Buterin, Vitalik"))) Vitalik Buterin. In <<key-to-address_script>>, we use the pybitcointools library (imported as "bitcoin") to generate and display keys and addresses in various formats.
 
-((("addresses, bitcoin","implementing in Python", id="ix_ch04-asciidoc18", range="startofrange")))((("keys","implementing in Python", id="ix_ch04-asciidoc19", range="startofrange")))((("pybitcointools", id="ix_ch04-asciidoc20", range="startofrange")))((("Python","implementing addresses in", id="ix_ch04-asciidoc21", range="startofrange")))((("Python","implementing keys in", id="ix_ch04-asciidoc22", range="startofrange")))Pythonで書かれた最も総合的なbitcoinライブラリは((("Buterin, Vitalik"))) Vitalik Buterin によって書かれた https://github.com/vbuterin/pybitcointools[pybitcointools] です。<<key-to-address_script>>の中で、pybitcointoolsライブラリ("bitcoin"としてimportされています)を使ってキーとbitcoinアドレスをいろいろな形式で生成しています。
+((("addresses, bitcoin","implementing in Python", id="ix_ch04-asciidoc18", range="startofrange")))((("keys","implementing in Python", id="ix_ch04-asciidoc19", range="startofrange")))((("pybitcointools", id="ix_ch04-asciidoc20", range="startofrange")))((("Python","implementing addresses in", id="ix_ch04-asciidoc21", range="startofrange")))((("Python","implementing keys in", id="ix_ch04-asciidoc22", range="startofrange")))Pythonで書かれた最も総合的なBitcoinライブラリは((("Buterin, Vitalik"))) Vitalik Buterin によって書かれた https://github.com/vbuterin/pybitcointools[pybitcointools] です。<<key-to-address_script>>の中で、pybitcointoolsライブラリ("bitcoin"としてimportされています)を使ってキーとBitcoinアドレスをいろいろな形式で生成しています。
 
 [[key-to-address_script]]
 .Key and address generation and formatting with the pybitcointools library
@@ -735,7 +735,7 @@ Compressed Bitcoin Address (b58check) is:
 
 <<ec_math>> ((("elliptic curve cryptography","in Python")))((("Python ECDSA library")))is another example, using the Python ECDSA library for the elliptic curve math and without using any specialized bitcoin libraries.
 
-<<ec_math>> ((("elliptic curve cryptography","in Python")))((("Python ECDSA library"))) はもう１つのコード例です。このコードでは、楕円曲線での計算にPython ECDSAライブラリを使い、いかなる特別なbitcoinライブラリも使っていません。
+<<ec_math>> ((("elliptic curve cryptography","in Python")))((("Python ECDSA library"))) はもう１つのコード例です。このコードでは、楕円曲線での計算にPython ECDSAライブラリを使い、いかなる特別なBitcoinライブラリも使っていません。
 
 [[ec_math]]
 .A script demonstrating elliptic curve math used for bitcoin keys
@@ -790,7 +790,7 @@ Bitcoin wallets contain keys, not coins. Each user has a wallet containing keys.
 
 ((("nondeterministic wallets")))((("random wallets")))((("Type-0 nondeterministic wallet")))((("wallets","nondeterministic")))((("wallets","random")))In the first bitcoin clients, wallets were simply collections of randomly generated private keys. This type of wallet is called a _Type-0 nondeterministic wallet_. For example, the((("Just a Bunch Of Keys (JBOK) wallets"))) Bitcoin Core client pregenerates 100 random private keys when first started and generates more keys as needed, using each key only once. This type of wallet is nicknamed "Just a Bunch Of Keys," or JBOK, and such wallets are being replaced with deterministic wallets because they are cumbersome to manage, back up, and import. ((("backups","of random wallets")))((("random wallets","backing up")))The disadvantage of random keys is that if you generate many of them you must keep copies of all of them, meaning that the wallet must be backed up frequently. Each key must be backed up, or the funds it controls are irrevocably lost if the wallet becomes inaccessible. This conflicts directly with the principle of avoiding address re-use, by using each bitcoin address for only one transaction. Address re-use reduces privacy by associating multiple transactions and addresses with each other. A Type-0 nondeterministic wallet is a poor choice of wallet, especially if you want to avoid address re-use because that means managing many keys, which creates the need for frequent backups. Although the Bitcoin Core client includes a Type-0 wallet, using this wallet is discouraged by developers of Bitcoin Core. <<Type0_wallet>> shows a nondeterministic wallet, containing a loose collection of random keys.
 
-((("nondeterministic wallets")))((("random wallets")))((("Type-0 nondeterministic wallet")))((("wallets","nondeterministic")))((("wallets","random")))最初のbitcoinクライアントでは、ウォレットは単にランダムに生成された秘密鍵の集まりでした。このタイプのウォレットを_Type-0 非決定性ウォレット_と呼びます。例えば、((("Just a Bunch Of Keys (JBOK) wallets")))Bitcoin Coreクライアントは、初回起動のときにあらかじめ１００個のランダムな秘密鍵を作成し、個々のキーは一度しか使われないためその後必要に応じてさらにキーを作ります。このタイプのウォレットは"Just a Bunch Of Keys"またはJBOKというニックネームがついています。ランダムなキーの不利な点は、もし多く生成したとするとそれら全てのコピーも保持しなければいけなくなる点です。つまり、ウォレットは頻繁にバックアップされなければならないということです。それぞれのキーはバックアップされなければならず、さもなければウォレットがアクセス不可能になって管理資金が永久に失われてしまうのです。トランザクションごとに１回だけbitcoinアドレスを使うことによるbitcoinアドレス再利用回避方法は直接問題にぶつかってしまいます。bitcoinアドレスの再利用は、bitcoinアドレスが多くのトランザクションに結びつくことでプライバシーの低下に繋がります。特にbitcoinアドレスの再利用を避けたいのであれば、Type-0 非決定性ウォレットを選ぶことはやめたほうがよいでしょう。多くのキーを管理することを意味し、頻繁にバックアップを作る必要が生じてしまうからです。Bitcoin CoreクライアントはType-0 ウォレットを含んでいますが、このウォレットの使用はBitcoin Coreの開発者たちから反対されています。<<Type0_wallet>>は非決定性ウォレットを示しており、ランダムなキーの緩い集まりを表現しています。
+((("nondeterministic wallets")))((("random wallets")))((("Type-0 nondeterministic wallet")))((("wallets","nondeterministic")))((("wallets","random")))最初のBitcoinクライアントでは、ウォレットは単にランダムに生成された秘密鍵の集まりでした。このタイプのウォレットを_Type-0 非決定性ウォレット_と呼びます。例えば、((("Just a Bunch Of Keys (JBOK) wallets")))Bitcoin Coreクライアントは、初回起動のときにあらかじめ１００個のランダムな秘密鍵を作成し、個々のキーは一度しか使われないためその後必要に応じてさらにキーを作ります。このタイプのウォレットは"Just a Bunch Of Keys"またはJBOKというニックネームがついています。ランダムなキーの不利な点は、もし多く生成したとするとそれら全てのコピーも保持しなければいけなくなる点です。つまり、ウォレットは頻繁にバックアップされなければならないということです。それぞれのキーはバックアップされなければならず、さもなければウォレットがアクセス不可能になって管理資金が永久に失われてしまうのです。トランザクションごとに１回だけBitcoinアドレスを使うことによるBitcoinアドレス再利用回避方法は直接問題にぶつかってしまいます。Bitcoinアドレスの再利用は、Bitcoinアドレスが多くのトランザクションに結びつくことでプライバシーの低下に繋がります。特にBitcoinアドレスの再利用を避けたいのであれば、Type-0 非決定性ウォレットを選ぶことはやめたほうがよいでしょう。多くのキーを管理することを意味し、頻繁にバックアップを作る必要が生じてしまうからです。Bitcoin CoreクライアントはType-0 ウォレットを含んでいますが、このウォレットの使用はBitcoin Coreの開発者たちから反対されています。<<Type0_wallet>>は非決定性ウォレットを示しており、ランダムなキーの緩い集まりを表現しています。
 
 ==== Deterministic (Seeded) Wallets
 ==== 決定性(Seeded)ウォレット
@@ -971,7 +971,7 @@ Repeating the process one level down the tree, each child can in turn become a p
 
 So what can the child private key be used for on its own? It can be used to make a public key and a bitcoin address. Then, it can be used to sign transactions to spend anything paid to that address.  
 
-子秘密鍵は何のために使われるのでしょうか？子秘密鍵は公開鍵とbitcoinアドレスを作ることに使われます。また、支払いに使われるトランザクションに署名をするときにも使われます。
+子秘密鍵は何のために使われるのでしょうか？子秘密鍵は公開鍵とBitcoinアドレスを作ることに使われます。また、支払いに使われるトランザクションに署名をするときにも使われます。
 
 [TIP]
 ====
@@ -1033,15 +1033,15 @@ An extended public key can be used, therefore, to derive all of the _public_ key
 
 ((("private keys","deployments without")))This shortcut can be used to create very secure public-key-only deployments where a server or application has a copy of an extended public key and no private keys whatsoever. That kind of deployment can produce an infinite number of public keys and bitcoin addresses, but cannot spend any of the money sent to those addresses. Meanwhile, on another, more secure server, the extended private key can derive all the corresponding private keys to sign transactions and spend the money. 
 
-((("private keys","deployments without")))これにより、拡張公開鍵のコピーだけを持ち全く秘密鍵を持たないサーバやアプリケーションで、とても安全な公開鍵のみの生成ができるようになります。この仕組みを使うと、制限なく公開鍵とbitcoinアドレスを作り出すことができますが、これらのbitcoinアドレスに送られるお金を使うことができません。一方、より安全なサーバでは拡張秘密鍵を使ってさきほどのbitcoinに対応した秘密鍵を生成でき、トランザクションに署名することでお金を使うことができます。
+((("private keys","deployments without")))これにより、拡張公開鍵のコピーだけを持ち全く秘密鍵を持たないサーバやアプリケーションで、とても安全な公開鍵のみの生成ができるようになります。この仕組みを使うと、制限なく公開鍵とBitcoinアドレスを作り出すことができますが、これらのBitcoinアドレスに送られるお金を使うことができません。一方、より安全なサーバでは拡張秘密鍵を使ってさきほどのBitcoinに対応した秘密鍵を生成でき、トランザクションに署名することでお金を使うことができます。
 
 ((("ecommerce servers, keys for")))((("shopping carts, public keys for")))One common application of this solution is to install an extended public key on a web server that serves an ecommerce application. The web server can use the public key derivation function to create a new bitcoin address for every transaction (e.g., for a customer shopping cart). The web server will not have any private keys that would be vulnerable to theft. Without HD wallets, the only way to do this is to generate thousands of bitcoin addresses on a separate secure server and then preload them on the ecommerce server. That approach is cumbersome and requires constant maintenance to ensure that the ecommerce server doesn't "run out" of keys.
 
-((("ecommerce servers, keys for")))((("shopping carts, public keys for")))この応用としては、Eコマースを提供するwebサーバに拡張公開鍵を置くことがあります。webサーバは公開鍵の生成関数を使ってbitcoinアドレスをトランザクションごと(例えば顧客のショッピングカートごと)に新しいbitcoinアドレスを作ることができます。しかし、このwebサーバは盗難の攻撃を受けやすい秘密鍵を持っていません。HDウォレットを使わない場合、これを実行する唯一の方法は、切り離された安全なサーバで数千のbitcoinアドレスを生成し、あらかじめEコマースサーバ上にbitcoinアドレスを読み込んでおく方法です。この方法は扱いにくく、bitcoinアドレスをあらかじめ読み込むために定期的なメンテナンスが必要となってしまいます。
+((("ecommerce servers, keys for")))((("shopping carts, public keys for")))この応用としては、Eコマースを提供するwebサーバに拡張公開鍵を置くことがあります。webサーバは公開鍵の生成関数を使ってBitcoinアドレスをトランザクションごと(例えば顧客のショッピングカートごと)に新しいBitcoinアドレスを作ることができます。しかし、このwebサーバは盗難の攻撃を受けやすい秘密鍵を持っていません。HDウォレットを使わない場合、これを実行する唯一の方法は、切り離された安全なサーバで数千のBitcoinアドレスを生成し、あらかじめEコマースサーバ上にBitcoinアドレスを読み込んでおく方法です。この方法は扱いにくく、Bitcoinアドレスをあらかじめ読み込むために定期的なメンテナンスが必要となってしまいます。
 
 ((("cold-storage wallets","public child key derivation and")))((("hardware wallets","public child key derivation and")))Another common application of this solution is for cold-storage or hardware wallets. In that scenario, the extended private key can be stored on a paper wallet or hardware device (such as a((("Trezor wallet","public key derivation and"))) Trezor hardware wallet), while the extended public key can be kept online. The user can create "receive" addresses at will, while the private keys are safely stored offline. To spend the funds, the user can use the extended private key on an offline signing bitcoin client or sign transactions on the hardware wallet device (e.g., Trezor). <<CKDpub>> illustrates the mechanism for extending a parent public key to derive child public keys. 
 
-((("cold-storage wallets","public child key derivation and")))((("hardware wallets","public child key derivation and")))別の応用としては、コールドストレージまたはハードウェアウォレットへの応用です。この応用では、拡張秘密鍵はペーパーウォレットまたはハードウェアデバイス(例えば、((("Trezor wallet","public key derivation and"))) Trezor hardware wallet)に保存されます。一方、拡張公開鍵はオンライン上に保持されます。ユーザは"受け取り用"のbitcoinアドレスを自由に作ることができますが、秘密鍵は安全にオフラインに保存されます。資金を使うには、ユーザはオフラインの署名用bitcoinクライアント上で秘密鍵を使って行うか、ハードウェアウォレットデバイス上でトランザクションに署名するかをしなければいけません。<<CKDpub>>図は親公開鍵から子公開鍵を生成するメカニズムを説明しています。
+((("cold-storage wallets","public child key derivation and")))((("hardware wallets","public child key derivation and")))別の応用としては、コールドストレージまたはハードウェアウォレットへの応用です。この応用では、拡張秘密鍵はペーパーウォレットまたはハードウェアデバイス(例えば、((("Trezor wallet","public key derivation and"))) Trezor hardware wallet)に保存されます。一方、拡張公開鍵はオンライン上に保持されます。ユーザは"受け取り用"のBitcoinアドレスを自由に作ることができますが、秘密鍵は安全にオフラインに保存されます。資金を使うには、ユーザはオフラインの署名用Bitcoinクライアント上で秘密鍵を使って行うか、ハードウェアウォレットデバイス上でトランザクションに署名するかをしなければいけません。<<CKDpub>>図は親公開鍵から子公開鍵を生成するメカニズムを説明しています。
 
 [[CKDpub]]
 .Extending a parent public key to create a child public key
@@ -1132,7 +1132,7 @@ BIP0044では、以下のように５つの事前に定義された階層構造�
 
 ((("account level (multiaccount structure)")))The third level of the tree is "account," which allows users to subdivide their wallets into separate logical subaccounts, for accounting or organizational purposes. For example, an HD wallet might contain two bitcoin "accounts": pass:[<markup>m/44'/0'/0'</markup>] and pass:[<markup>m/44'/0'/1'</markup>]. Each account is the root of its own subtree. 
 
-((("account level (multiaccount structure)")))第３階層"account"は、ユーザが複数の口座を使えるようにし、会計や組織的な目的で使えるようにしています。例えば、HDウォレットは２つのbitcoin "口座" pass:[<markup>m/44'/0'/0'</markup>]、pass:[<markup>m/44'/0'/1'</markup>] を持つかもしれません。それぞれの口座はそれぞれ自身のサブツリーのルートになっています。
+((("account level (multiaccount structure)")))第３階層"account"は、ユーザが複数の口座を使えるようにし、会計や組織的な目的で使えるようにしています。例えば、HDウォレットは２つのBitcoin "口座" pass:[<markup>m/44'/0'/0'</markup>]、pass:[<markup>m/44'/0'/1'</markup>] を持つかもしれません。それぞれの口座はそれぞれ自身のサブツリーのルートになっています。
 
 ((("change level (multiaccount structure)")))On the fourth level, "change," an HD wallet has two subtrees, one for creating receiving addresses and one for creating change addresses. Note that whereas the previous levels used hardened derivation, this level uses normal derivation. This is to allow this level of the tree to export extended public keys for use in a nonsecured environment. Usable addresses are derived by the HD wallet as children of the fourth level, making the fifth level of the tree the "address_index." For example, the third receiving address for bitcoin payments in the primary account would be M/44'/0'/0'/0/2. <<table_4-9>> shows a few more examples.
 
@@ -1179,14 +1179,14 @@ xprv9yL8ndfdPVeDWJenF18oiHguRUj8jHmVrqqD97YQHeTcR3LCeh53q5PXPkLsy2kRaqgwoS6YZBLa
 
 In the following sections we will look at advanced forms of keys and addresses, such as encrypted private keys, script and multisignature addresses, vanity addresses, and paper wallets.
 
-次の節では、暗号化秘密鍵、scriptとマルチシグネチャーアドレス、文字列指定のあるbitcoinアドレス(vanity address)、ペーパーウォレットなどキーとアドレスの最近の進展を見ていきます。
+次の節では、暗号化秘密鍵、scriptとマルチシグネチャーアドレス、文字列指定のあるBitcoinアドレス(vanity address)、ペーパーウォレットなどキーとアドレスの最近の進展を見ていきます。
 
 ==== Encrypted Private Keys (BIP0038)
 ==== 暗号化秘密鍵(BIP0038)
 
 ((("BIP0038")))((("encrypted private keys")))((("private keys","encrypted")))((("security","encrypted private keys")))((("security","of private keys")))Private keys must remain secret. The need for _confidentiality_ of the private keys is a truism that is quite difficult to achieve in practice, because it conflicts with the equally important security objective of _availability_. ((("security","of wallet backups")))Keeping the private key private is much harder when you need to store backups of the private key to avoid losing it. A private key stored in a wallet that is encrypted by a password might be secure, but that wallet needs to be backed up. At times, users need to move keys from one wallet to another—to upgrade or replace the wallet software, for example. Private key backups might also be stored on paper (see <<paper_wallets>>) or on external storage media, such as a USB flash drive. But what if the backup itself is stolen or lost? These conflicting security goals led to the introduction of a portable and convenient standard for encrypting private keys in a way that can be understood by many different wallets and bitcoin clients, standardized by Bitcoin Improvement Proposal 38  or BIP0038 (see <<bip0038>>). 
 
-((("BIP0038")))((("encrypted private keys")))((("private keys","encrypted")))((("security","encrypted private keys")))((("security","of private keys")))秘密鍵は極秘にしておかなければいけません。ただ秘密鍵の_機密性_は、実用上達成することが大変難しいことはよく知られていることです。というのは、機密性といつでも安全に使えることの両立が難しいためです。((("security","of wallet backups")))秘密鍵を秘密に保つことは、秘密鍵のバックアップを保持し紛失を避けるようにするとさらに難しくなります。ウォレットにあるパスワードで暗号化された秘密鍵は安全かもしれませんが、ウォレットはバックアップしておかなければいけないのです。ときどき、例えばウォレットをアップグレードする、または別のウォレットに変えるために、ユーザはキーを１つのウォレットから別のウォレットに移動する必要が出てきます。秘密鍵のバックアップもまた紙(<<paper_wallets>>参照)、またはUSBフラッシュメモリのような外部ストレージに保存されるかもしれません。しかし、バックアップそのもが盗まれたり紛失してしまったらどうなるでしょうか？これらの両立が難しいセキュリティ問題を解決するために、持ち出し可能で便利な暗号化秘密鍵が考案されました。この暗号化秘密鍵は、多くのウォレットやbitcoinクライアントに実装されており、Bitcoin Improvement Proposal 38またはBIP0038(<<bip0038>>参照)で標準化されています。
+((("BIP0038")))((("encrypted private keys")))((("private keys","encrypted")))((("security","encrypted private keys")))((("security","of private keys")))秘密鍵は極秘にしておかなければいけません。ただ秘密鍵の_機密性_は、実用上達成することが大変難しいことはよく知られていることです。というのは、機密性といつでも安全に使えることの両立が難しいためです。((("security","of wallet backups")))秘密鍵を秘密に保つことは、秘密鍵のバックアップを保持し紛失を避けるようにするとさらに難しくなります。ウォレットにあるパスワードで暗号化された秘密鍵は安全かもしれませんが、ウォレットはバックアップしておかなければいけないのです。ときどき、例えばウォレットをアップグレードする、または別のウォレットに変えるために、ユーザはキーを１つのウォレットから別のウォレットに移動する必要が出てきます。秘密鍵のバックアップもまた紙(<<paper_wallets>>参照)、またはUSBフラッシュメモリのような外部ストレージに保存されるかもしれません。しかし、バックアップそのもが盗まれたり紛失してしまったらどうなるでしょうか？これらの両立が難しいセキュリティ問題を解決するために、持ち出し可能で便利な暗号化秘密鍵が考案されました。この暗号化秘密鍵は、多くのウォレットやBitcoinクライアントに実装されており、Bitcoin Improvement Proposal 38またはBIP0038(<<bip0038>>参照)で標準化されています。
 
 BIP0038 proposes a common standard for encrypting private keys with a passphrase and encoding them with Base58Check so that they can be stored securely on backup media, transported securely between wallets, or kept in any other conditions where the key might be exposed. The standard for encryption uses the((("Advanced Encryption Standard (AES)"))) Advanced Encryption Standard (AES), a standard established by the National Institute of Standards and Technology (NIST) and used broadly in data encryption implementations for commercial and military applications. 
 
@@ -1194,11 +1194,11 @@ BIP0038は、安全なバックアップメディアへの保存およびウォ�
 
 ((("Wallet Import Format (WIF)","from BIP0038 encryption")))A BIP0038 encryption scheme takes as input a bitcoin private key, usually encoded in the Wallet Import Format (WIF), as a Base58Check string with a prefix of "5".  Additionally, the BIP0038 encryption scheme takes a passphrase—a long password—usually composed of several words or a complex string of alphanumeric characters. The result of the BIP0038 encryption scheme is a Base58Check-encoded encrypted private key that begins with the prefix +6P+. If you see a key that starts with +6P+, that means it is encrypted and requires a passphrase in order to convert (decrypt) it back into a WIF-formatted private key (prefix +5+) that can be used in any wallet. Many wallet applications now recognize BIP0038-encrypted private keys and will prompt the user for a passphrase to decrypt and import the key. Third-party applications, such as the incredibly useful browser-based http://bitaddress.org[Bit Address] (Wallet Details tab), can be used to decrypt BIP0038 keys. 
 
-((("Wallet Import Format (WIF)","from BIP0038 encryption")))BIP0038暗号化スキームでは、インプットとしてbitcoin秘密鍵を取り、通常prefix "5" を伴ったBase58Checkを使いWallet Import Format (WIF)にエンコードされます。さらにBIP0038暗号化スキームでは、アルファベットと数字が混ざった複雑な文字列で構成されるパスコードという長いパスワードを使います。BIP0038暗号化スキームの結果として、+6P+ から始まるBase58Checkでエンコードされた暗号化秘密鍵が得られます。もしキーが+6P+から始まっていれば、それは暗号化されており、どのウォレットでも使えるWIF形式秘密鍵(+5+から始まる)に戻すためにはパスフレーズが必要だということが分かります。現在多くのウォレットはBIP0038暗号化秘密鍵を実装しており、キーをインポートし復号化するときにパスフレーズを求められるでしょう。非常に使いやすいブラウザベースの http://bitaddress.org[Bit Address] (Wallet Details tab) などのサードパーティーのアプリケーションでもBIP0038キーを復号化することができます。
+((("Wallet Import Format (WIF)","from BIP0038 encryption")))BIP0038暗号化スキームでは、インプットとしてBitcoin秘密鍵を取り、通常prefix "5" を伴ったBase58Checkを使いWallet Import Format (WIF)にエンコードされます。さらにBIP0038暗号化スキームでは、アルファベットと数字が混ざった複雑な文字列で構成されるパスコードという長いパスワードを使います。BIP0038暗号化スキームの結果として、+6P+ から始まるBase58Checkでエンコードされた暗号化秘密鍵が得られます。もしキーが+6P+から始まっていれば、それは暗号化されており、どのウォレットでも使えるWIF形式秘密鍵(+5+から始まる)に戻すためにはパスフレーズが必要だということが分かります。現在多くのウォレットはBIP0038暗号化秘密鍵を実装しており、キーをインポートし復号化するときにパスフレーズを求められるでしょう。非常に使いやすいブラウザベースの http://bitaddress.org[Bit Address] (Wallet Details tab) などのサードパーティーのアプリケーションでもBIP0038キーを復号化することができます。
 
 ((("paper wallets","BIP0038 encryption and")))The most common use case for BIP0038 encrypted keys is for paper wallets that can be used to back up private keys on a piece of paper. As long as the user selects a strong passphrase, a paper wallet with BIP0038 encrypted private keys is incredibly secure and a great way to create offline bitcoin storage (also known as "cold storage").
 
-((("paper wallets","BIP0038 encryption and")))BIP0038暗号化キーの最も多くの利用用途は、秘密鍵を紙にバックアップするときです。ユーザが協力なパスフレーズを選んでいる限りBIP0038暗号化秘密鍵を伴ったペーパーウォレットは非常に安全で、オフラインbitcoinストレージ("コールドウォレット"と呼ばれてもいます)を作るための最高の方法です。
+((("paper wallets","BIP0038 encryption and")))BIP0038暗号化キーの最も多くの利用用途は、秘密鍵を紙にバックアップするときです。ユーザが協力なパスフレーズを選んでいる限りBIP0038暗号化秘密鍵を伴ったペーパーウォレットは非常に安全で、オフラインBitcoinストレージ("コールドウォレット"と呼ばれてもいます)を作るための最高の方法です。
 
 Test the encrypted keys in <<table_4-10>> using((("bitaddress.org"))) bitaddress.org to see how you can get the decrypted key by entering the passphrase.
 
@@ -1219,15 +1219,15 @@ Test the encrypted keys in <<table_4-10>> using((("bitaddress.org"))) bitaddress
 
 ((("addresses, bitcoin","multi-signature addresses")))((("addresses, bitcoin","Pay-to-Script Hash (P2SH)")))((("multi-signature addresses")))((("Pay-to-Script Hash (P2SH)")))As we know, traditional bitcoin addresses begin with the number “1” and are derived from the public key, which is derived from the private key.  Although anyone can send bitcoin to a “1” address, that bitcoin can only be spent by presenting the corresponding private key signature and public key hash. 
 
-((("addresses, bitcoin","multi-signature addresses")))((("addresses, bitcoin","Pay-to-Script Hash (P2SH)")))((("multi-signature addresses")))((("Pay-to-Script Hash (P2SH)")))知っての通り、初期から使われているbitcoinアドレスは“1”から始まり、秘密鍵から得られた公開鍵から得られます。誰もがbitcoinを“1”から始まるbitcoinアドレスに送れますが、このbitcoinは対応する秘密鍵署名と公開鍵ハッシュを使うことでのみ使用できます。
+((("addresses, bitcoin","multi-signature addresses")))((("addresses, bitcoin","Pay-to-Script Hash (P2SH)")))((("multi-signature addresses")))((("Pay-to-Script Hash (P2SH)")))知っての通り、初期から使われているBitcoinアドレスは“1”から始まり、秘密鍵から得られた公開鍵から得られます。誰もがbitcoinを“1”から始まるBitcoinアドレスに送れますが、このbitcoinは対応する秘密鍵署名と公開鍵ハッシュを使うことでのみ使用できます。
 
 Bitcoin addresses that begin with the number “3” are pay-to-script hash (P2SH) addresses, sometimes erroneously called multi-signature or multi-sig addresses. They designate the beneficiary of a bitcoin transaction as the hash of a script, instead of the owner of a public key. The feature was introduced in January 2012 with Bitcoin Improvement Proposal 16, or BIP0016 (see <<bip0016>>), and is being widely adopted because it provides the opportunity to add functionality to the address itself. Unlike transactions that "send" funds to traditional “1” bitcoin addresses, also known as((("BIP0016")))((("Pay-to-Public-Key-Hash (P2PKH)"))) pay-to-public-key-hash (P2PKH), funds sent to “3” addresses require something more than the presentation of one public key hash and one private key signature as proof of ownership. The requirements are designated at the time the address is created, within the script, and all inputs to this address will be encumbered with the same requirements.
 
-“3”から始まるbitcoinアドレスはpay-to-script hash (P2SH)アドレスであり、ときどき間違ってマルチシグネチャーアドレスまたはマルチシグアドレスと呼ばれます。これらではbitcoinトランザクションの受取人を、公開鍵の所有者の代わりにscriptのハッシュを使って指定します。この特徴は、2012年にBitcoin Improvement Proposal 16または BIP0016 (<<bip0016>>参照)で導入され、幅広く採用されています。というのは、この特徴により、アドレス自体に機能を追加することができるようになったためです。“1”から始まるbitcoinアドレスに資金を“送る”トランザクション(((("BIP0016")))((("Pay-to-Public-Key-Hash (P2PKH)"))) pay-to-public-key-hash (P2PKH)とも呼ばれる)と違って、“3”で始まるbitcoinアドレスに送った資金のトランザクションでは、公開鍵ハッシュと秘密鍵署名以外の別のものも要求されます。要求されるものはbitcoinアドレスを作ったときにscriptの中で指定され、このbitcoinアドレスへの全てのインプットでそれらが要求されます。
+“3”から始まるBitcoinアドレスはpay-to-script hash (P2SH)アドレスであり、ときどき間違ってマルチシグネチャーアドレスまたはマルチシグアドレスと呼ばれます。これらではBitcoinトランザクションの受取人を、公開鍵の所有者の代わりにscriptのハッシュを使って指定します。この特徴は、2012年にBitcoin Improvement Proposal 16または BIP0016 (<<bip0016>>参照)で導入され、幅広く採用されています。というのは、この特徴により、アドレス自体に機能を追加することができるようになったためです。“1”から始まるBitcoinアドレスに資金を“送る”トランザクション(((("BIP0016")))((("Pay-to-Public-Key-Hash (P2PKH)"))) pay-to-public-key-hash (P2PKH)とも呼ばれる)と違って、“3”で始まるBitcoinアドレスに送った資金のトランザクションでは、公開鍵ハッシュと秘密鍵署名以外の別のものも要求されます。要求されるものはBitcoinアドレスを作ったときにscriptの中で指定され、このBitcoinアドレスへの全てのインプットでそれらが要求されます。
     
 A pay-to-script hash address is created from a transaction script, which defines who can spend a transaction output (for more detail, see <<p2sh>>). Encoding a pay-to-script hash address involves using the same double-hash function as used during creation of a bitcoin address, only applied on the script instead of the public key:
 
-pay-to-scriptハッシュアドレスはトランザクションscriptから生成され、トランザクションアウトプットを誰が使えるかということを定義しています(詳細については<<p2sh>>参照)。pay-to-scriptハッシュアドレスのエンコードはbitcoinアドレスを生成するときに使われる二重ハッシュ関数と同じ関数を使って行われ、公開鍵の代わりにscriptにのみ適用されます。
+pay-to-scriptハッシュアドレスはトランザクションscriptから生成され、トランザクションアウトプットを誰が使えるかということを定義しています(詳細については<<p2sh>>参照)。pay-to-scriptハッシュアドレスのエンコードはBitcoinアドレスを生成するときに使われる二重ハッシュ関数と同じ関数を使って行われ、公開鍵の代わりにscriptにのみ適用されます。
  
 ----
 script hash = RIPEMD160(SHA256(script))
@@ -1252,18 +1252,18 @@ P2SH is not necessarily the same as a multi-signature standard transaction. A P2
 
 Currently, the most common implementation of the P2SH function is the multi-signature address script. As the name implies, the underlying script requires more than one signature to prove ownership and therefore spend funds. The bitcoin multi-signature feature is designed to require M signatures (also known as the “threshold”) from a total of N keys, known as an M-of-N multi-sig, where M is equal to or less than N. For example, Bob the coffee shop owner from <<ch01_intro_what_is_bitcoin>> could use a multi-signature address requiring 1-of-2 signatures from a key belonging to him and a key belonging to his spouse, ensuring either of them could sign to spend a transaction output locked to this address. This would be similar to a “joint account” as implemented in traditional banking where either spouse can spend with a single signature. Or Gopesh, the web designer paid by Bob to create a website, might have a 2-of-3 multi-signature address for his business that ensures that no funds can be spent unless at least two of the business partners sign a transaction. 
 
-現在、P2SHの最も一般的な実装は、マルチシグネチャーアドレスscriptです。この名前が示しているように、scriptは所有権を証明し資金を利用するための署名以外も要求します。bitcoinマルチシグネチャーは、N個のキーから作られるM個の署名(thresholdとも呼ばれます)を要求し、これはM-of-N multi-sigと呼ばれています。ここで、MはNと等しいか小さい数です。例えば、<<ch01_intro_what_is_bitcoin>>に出てきたコーヒーショップのオーナーのボブは、彼のキーと彼の奥さんのキーから作られる1-of-2 signatureを要求するマルチシグネチャーアドレスを使うことができ、このアドレスに紐づいたトランザクションアウトプットを使うには彼または奥さんのどちらか一方のキーで署名すればよいのです。Gopesh(ボブのウェブサイトを作ったウェブデザイナ)がビジネス用に2-of-3マルチシグネチャーアドレスを持っていたとすると、少なくともビジネスパートナーの２人がトランザクションに署名しなければこのアドレスに紐づく資金を使うことができません。
+現在、P2SHの最も一般的な実装は、マルチシグネチャーアドレスscriptです。この名前が示しているように、scriptは所有権を証明し資金を利用するための署名以外も要求します。Bitcoinマルチシグネチャーは、N個のキーから作られるM個の署名(thresholdとも呼ばれます)を要求し、これはM-of-N multi-sigと呼ばれています。ここで、MはNと等しいか小さい数です。例えば、<<ch01_intro_what_is_bitcoin>>に出てきたコーヒーショップのオーナーのボブは、彼のキーと彼の奥さんのキーから作られる1-of-2 signatureを要求するマルチシグネチャーアドレスを使うことができ、このアドレスに紐づいたトランザクションアウトプットを使うには彼または奥さんのどちらか一方のキーで署名すればよいのです。Gopesh(ボブのウェブサイトを作ったウェブデザイナ)がビジネス用に2-of-3マルチシグネチャーアドレスを持っていたとすると、少なくともビジネスパートナーの２人がトランザクションに署名しなければこのアドレスに紐づく資金を使うことができません。
 
 We will explore how to create transactions that spend funds from P2SH (and multi-signature) addresses in <<transactions>>.
 
 <<transactions>>で、P2SH(とマルチシグネチャー)でのトランザクションの作成方法について説明します。
 
 ==== Vanity Addresses
-==== 文字列指定のあるbitcoinアドレス(Vanity Address)
+==== 文字列指定のあるBitcoinアドレス(Vanity Address)
 
 ((("addresses, bitcoin","vanity", id="ix_ch04-asciidoc26", range="startofrange")))((("vanity addresses", id="ix_ch04-asciidoc27", range="startofrange")))Vanity addresses are valid bitcoin addresses that contain human-readable messages. For example, +1LoveBPzzD72PUXLzCkYAtGFYmK5vYNR33+ is a valid address that contains the letters forming the word "Love" as the first four Base-58 letters. Vanity addresses require generating and testing billions of candidate private keys, until one derives a bitcoin address with the desired pattern. Although there are some optimizations in the vanity generation algorithm, the process essentially involves picking a private key at random, deriving the public key, deriving the bitcoin address, and checking to see if it matches the desired vanity pattern, repeating billions of times until a match is found. 
 
-((("addresses, bitcoin","vanity", id="ix_ch04-asciidoc26", range="startofrange")))((("vanity addresses", id="ix_ch04-asciidoc27", range="startofrange")))文字列指定のあるbitcoinアドレス(Vanity Address)は人間が読むことができるメッセージを含んだbitcoinアドレスです。例えば、+1LoveBPzzD72PUXLzCkYAtGFYmK5vYNR33+ には、最初の四文字に"Love"という単語が含まれています。Vanity addressでは、bitcoinアドレスに望んだパターンが出るまで何回も秘密鍵を生成しチェックしなければいけません。vanity addressを生成するいくつかの効率的な方法があるものの、基本的に秘密鍵をランダムに生成して公開鍵、bitcoinアドレスを導出、vanityパターンに合っているかチェックするということを数十億回繰り返す必要があります。
+((("addresses, bitcoin","vanity", id="ix_ch04-asciidoc26", range="startofrange")))((("vanity addresses", id="ix_ch04-asciidoc27", range="startofrange")))文字列指定のあるBitcoinアドレス(Vanity Address)は人間が読むことができるメッセージを含んだBitcoinアドレスです。例えば、+1LoveBPzzD72PUXLzCkYAtGFYmK5vYNR33+ には、最初の四文字に"Love"という単語が含まれています。Vanity addressでは、Bitcoinアドレスに望んだパターンが出るまで何回も秘密鍵を生成しチェックしなければいけません。vanity addressを生成するいくつかの効率的な方法があるものの、基本的に秘密鍵をランダムに生成して公開鍵、Bitcoinアドレスを導出、vanityパターンに合っているかチェックするということを数十億回繰り返す必要があります。
 
 Once a vanity address matching the desired pattern is found, the private key from which it was derived can be used by the owner to spend bitcoins in exactly the same way as any other address. Vanity addresses are no less or more secure than any other address. They depend on the same Elliptic Curve Cryptography (ECC) and Secure Hash Algorithm (SHA) as any other address. You can no more easily find the private key of an address starting with a vanity pattern than you can any other address.
 
@@ -1278,7 +1278,7 @@ In <<ch01_intro_what_is_bitcoin>>, we introduced Eugenia, a children's charity d
 
 ((("vanity addresses","generating", id="ix_ch04-asciidoc28", range="startofrange")))It's important to realize that a bitcoin address is simply a number represented by symbols in the Base58 alphabet. The search for a pattern like "1Kids" can be seen as searching for an address in the range from +1Kids11111111111111111111111111111+ to +1Kidszzzzzzzzzzzzzzzzzzzzzzzzzzzzz+. There are approximately 58^29^ (approximately 1.4 * 10^51^) addresses in that range, all starting with "1Kids". <<table_4-11>> shows the range of addresses that have the prefix 1Kids.
 
-((("vanity addresses","generating", id="ix_ch04-asciidoc28", range="startofrange")))bitcoinアドレスはBase58文字で表されている数字であるため、"1Kids"のようなパターンの探索は、+1Kids11111111111111111111111111111+から+1Kidszzzzzzzzzzzzzzzzzzzzzzzzzzzzz+の範囲に入るアドレスを探すことになります。近似的に58^29^(約1.4 * 10^51^)個のアドレスがこの範囲にあり、全て"1Kids"から始まっています。<<table_4-11>>は1Kidsから始まるアドレスの範囲を示しています。
+((("vanity addresses","generating", id="ix_ch04-asciidoc28", range="startofrange")))BitcoinアドレスはBase58文字で表されている数字であるため、"1Kids"のようなパターンの探索は、+1Kids11111111111111111111111111111+から+1Kidszzzzzzzzzzzzzzzzzzzzzzzzzzzzz+の範囲に入るアドレスを探すことになります。近似的に58^29^(約1.4 * 10^51^)個のアドレスがこの範囲にあり、全て"1Kids"から始まっています。<<table_4-11>>は1Kidsから始まるアドレスの範囲を示しています。
 
 [[table_4-11]]
 .The range of vanity addresses starting with "1Kids"
@@ -1292,7 +1292,7 @@ In <<ch01_intro_what_is_bitcoin>>, we introduced Eugenia, a children's charity d
 
 Let's look at the pattern "1Kids" as a number and see how frequently we might find this pattern in a bitcoin address (see <<table_4-12>>). An average desktop computer PC, without any specialized hardware, can search approximately 100,000 keys per second.
 
-特別なハードウェアではなく一般的なデスクトップパソコンでだいたい秒間100000個のキーを探すことができると想定すると、どれくらいの時間で望んだパターンを含むbitcoinアドレスが現れるでしょうか(<<table_4-12>>参照)。
+特別なハードウェアではなく一般的なデスクトップパソコンでだいたい秒間100000個のキーを探すことができると想定すると、どれくらいの時間で望んだパターンを含むBitcoinアドレスが現れるでしょうか(<<table_4-12>>参照)。
 
 [[table_4-12]]
 .The frequency of a vanity pattern (1KidsCharity) and average time-to-find on a desktop PC
@@ -1315,7 +1315,7 @@ Let's look at the pattern "1Kids" as a number and see how frequently we might fi
 
 As you can see, Eugenia won't be creating the vanity address "1KidsCharity" any time soon, even if she had access to several thousand computers. Each additional character increases the difficulty by a factor of 58. Patterns with more than seven characters are usually found by specialized hardware, such as custom-built desktops with multiple((("graphical processing units (GPUs)"))) graphical processing units (GPUs). These are often repurposed bitcoin mining "rigs" that are no longer profitable for bitcoin mining but can be used to find vanity addresses. Vanity searches on GPU systems are many orders of magnitude faster than on a general-purpose CPU. 
 
-このように、たとえ数千台のコンピュータが使えたとしてもEugeniaは"1KidsCharity"を含むvanity addressをすぐに作ることはできないでしょう。望むパターンの文字数が１個増えると見つける難しさは58倍になります。７文字より多いパターンだと通常特別に設計されたハードウェアが必要になり、複数の((("graphical processing units (GPUs)"))) graphical processing units (GPUs)を積んだカスタムデスクトップが必要になります。特別に設計されたハードウェアとして、bitcoinマイニングではもう利益を生まなくなった"rigs"をvanity address生成に転用することがよくあります。GPUで組まれたものを使うと、汎用CPUに比べてはるかに速く計算できるのです。
+このように、たとえ数千台のコンピュータが使えたとしてもEugeniaは"1KidsCharity"を含むvanity addressをすぐに作ることはできないでしょう。望むパターンの文字数が１個増えると見つける難しさは58倍になります。７文字より多いパターンだと通常特別に設計されたハードウェアが必要になり、複数の((("graphical processing units (GPUs)"))) graphical processing units (GPUs)を積んだカスタムデスクトップが必要になります。特別に設計されたハードウェアとして、Bitcoinマイニングではもう利益を生まなくなった"rigs"をvanity address生成に転用することがよくあります。GPUで組まれたものを使うと、汎用CPUに比べてはるかに速く計算できるのです。
 
 ((("vanity-miners")))Another way to find a vanity address is to outsource the work to a pool of vanity miners, such as the pool at http://vanitypool.appspot.com[Vanity Pool]. A pool is a service that allows those with GPU hardware to earn bitcoin searching for vanity addresses for others. For a small payment (0.01 bitcoin or approximately $5 at the time of this writing), Eugenia can outsource the search for a seven-character pattern vanity address and get results in a few hours instead of having to run a CPU search for months. 
 
@@ -1349,8 +1349,7 @@ The example code must be compiled using a C++ compiler and linked against the li
 [source,bash]
 ----
 $ # Compile the code with g++
-$ g++ -o vanity-miner vanity-miner.cpp $(pkg-config --cflags --libs libbitcoin)
-$ # Run the example
+$ g++ -o vanity-miner vanity-miner.cpp $(pkg-config --cflags --libs libbitcoin) $ # Run the example
 $ ./vanity-miner
 Found vanity address! 1KiDzkG4MxmovZryZRj8tK81oQRhbZ46YT
 Secret: 57cc268a05f83a23ac9d930bc8565bac4e277055f4794cbd1a39e5e71c038f3f
@@ -1371,7 +1370,7 @@ sys	0m0.035s
 
 The example code will take a few seconds to find a match for the three-character pattern "kid", as we can see when we use the +time+ Unix command to measure the execution time. Change the +search+ pattern in the source code and see how much longer it takes for four- or five-character patterns!(((range="endofrange", startref="ix_ch04-asciidoc28")))
 
-例コードは３文字のパターン"kid"と合うbitcoinアドレスを探すのに数秒かかります。これはUnixコマンド +time+ で計測したものです。ソースコードの中にある+search+パターンを変えて、４文字または５文字パターンにするとどれくらい処理に時間がかかるようになるかやってみてください！(((range="endofrange", startref="ix_ch04-asciidoc28")))
+例コードは３文字のパターン"kid"と合うBitcoinアドレスを探すのに数秒かかります。これはUnixコマンド +time+ で計測したものです。ソースコードの中にある+search+パターンを変えて、４文字または５文字パターンにするとどれくらい処理に時間がかかるようになるかやってみてください！(((range="endofrange", startref="ix_ch04-asciidoc28")))
 
 ===== Vanity address security
 ===== Vanity addressの安全性
@@ -1382,11 +1381,11 @@ The example code will take a few seconds to find a match for the three-character
 
 Eugenia could advertise a randomly generated address (e.g., +1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy+) to which people can send their donations. Or, she could generate a vanity address that starts with 1Kids, to make it more distinctive. 
 
-Eugeniaは、ランダムに生成されたbitcoinアドレス(例えば、+1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy+)を使って寄付を募ることもできます。また、1Kidsから始まるvanity addressを作って、区別しやすいアドレスにすることもできます。
+Eugeniaは、ランダムに生成されたBitcoinアドレス(例えば、+1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy+)を使って寄付を募ることもできます。また、1Kidsから始まるvanity addressを作って、区別しやすいアドレスにすることもできます。
 
 In both cases, one of the risks of using a single fixed address (rather than a separate dynamic address per donor) is that a thief might be able to infiltrate your website and replace it with his own address, thereby diverting donations to himself. If you have advertised your donation address in a number of different places, your users may visually inspect the address before making a payment to ensure it is the same one they saw on your website, on your email, and on your flyer. In the case of a random address like +1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy+, the average user will perhaps inspect the first few characters "1J7mdg" and be satisfied that the address matches. Using a vanity address generator, someone with the intent to steal by substituting a similar-looking address can quickly generate addresses that match the first few characters, as shown in <<table_4-13>>.
 
-どちらの場合でも、１つだけのアドレス(寄付者ごとに区分けされたアドレスではなく)を使うことのリスクの１つは、侵入者があなたのウェブサイトに侵入しbitcoinアドレスを侵入者のbitcoinアドレスに置き換えてしまうことです。もし寄付用のbitcoinアドレスをすでに多くの場所に貼り出しているとしたら、寄付者は寄付をする前に、前にウェブサイトやメール、チラシで見たbitcoinアドレスと同じであるかを確認するかもしれません。+1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy+のようなランダムなbitcoinアドレスを使っている場合、大方の人はおそらく最初の数文字、"1J7mdg" だけを見てbitcoinアドレスが合っているか判断するでしょう。vanity addressを使っていると、見た目が似ているbitcoinアドレスですりかえようとしている誰かが、最初の数文字だけ合っているbitcoinアドレスをすばやく作ることができてしまいます。
+どちらの場合でも、１つだけのアドレス(寄付者ごとに区分けされたアドレスではなく)を使うことのリスクの１つは、侵入者があなたのウェブサイトに侵入しBitcoinアドレスを侵入者のBitcoinアドレスに置き換えてしまうことです。もし寄付用のBitcoinアドレスをすでに多くの場所に貼り出しているとしたら、寄付者は寄付をする前に、前にウェブサイトやメール、チラシで見たBitcoinアドレスと同じであるかを確認するかもしれません。+1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy+のようなランダムなBitcoinアドレスを使っている場合、大方の人はおそらく最初の数文字、"1J7mdg" だけを見てBitcoinアドレスが合っているか判断するでしょう。vanity addressを使っていると、見た目が似ているBitcoinアドレスですりかえようとしている誰かが、最初の数文字だけ合っているBitcoinアドレスをすばやく作ることができてしまいます。
 
 [[table_4-13]]
 .Generating vanity addresses to match a random address
@@ -1407,11 +1406,11 @@ vanity addressはセキュリティを向上させるのでしょうか？Eugeni
 
 ((("backups","paper wallets", id="ix_ch04-asciidoc29", range="startofrange")))((("cold-storage wallets","paper wallets as", id="ix_ch04-asciidoc30", range="startofrange")))((("paper wallets", id="ix_ch04-asciidoc31", range="startofrange")))((("wallets","paper", id="ix_ch04-asciidoc32", range="startofrange")))Paper wallets are bitcoin private keys printed on paper. Often the paper wallet also includes the corresponding bitcoin address for convenience, but this is not necessary because it can be derived from the private key. Paper wallets are a very effective way to create backups or offline bitcoin storage, also known as "cold storage." As a backup mechanism, a paper wallet can provide security against the loss of key due to a computer mishap such as a hard drive failure, theft, or accidental deletion. As a "cold storage" mechanism, if the paper wallet keys are generated offline and never stored on a computer system, they are much more secure against hackers, key-loggers, and other online computer threats. 
 
-((("backups","paper wallets", id="ix_ch04-asciidoc29", range="startofrange")))((("cold-storage wallets","paper wallets as", id="ix_ch04-asciidoc30", range="startofrange")))((("paper wallets", id="ix_ch04-asciidoc31", range="startofrange")))((("wallets","paper", id="ix_ch04-asciidoc32", range="startofrange")))ペーパーウォレットは秘密鍵を紙の上に印刷したものです。よくペーパーウォレットは利便性のため対応するbitcoinアドレスも含まれています。しかし、bitcoinアドレスは秘密鍵から導出できるためこれは必須ではありません。ペーパーウォレットはバックアップやオフラインbitcoinストレージを作るとても効率的な方法で、"コールドストレージ"とも呼ばれています。ペーパーウォレットはハードドライブの破損、盗難、また間違ってデータを削除してしまった場合などによるキーの紛失に対するバックアップとして機能します。もしペーパーウォレットのキーがオフラインで生成されてコンピュータ上に保存されていないとすると、ペーパーウォレットはハッカーやキーロガー、その他のオンライン上の脅威などに対する安全性が増す"コールドストレージ"として機能します。
+((("backups","paper wallets", id="ix_ch04-asciidoc29", range="startofrange")))((("cold-storage wallets","paper wallets as", id="ix_ch04-asciidoc30", range="startofrange")))((("paper wallets", id="ix_ch04-asciidoc31", range="startofrange")))((("wallets","paper", id="ix_ch04-asciidoc32", range="startofrange")))ペーパーウォレットは秘密鍵を紙の上に印刷したものです。よくペーパーウォレットは利便性のため対応するBitcoinアドレスも含まれています。しかし、Bitcoinアドレスは秘密鍵から導出できるためこれは必須ではありません。ペーパーウォレットはバックアップやオフラインBitcoinストレージを作るとても効率的な方法で、"コールドストレージ"とも呼ばれています。ペーパーウォレットはハードドライブの破損、盗難、また間違ってデータを削除してしまった場合などによるキーの紛失に対するバックアップとして機能します。もしペーパーウォレットのキーがオフラインで生成されてコンピュータ上に保存されていないとすると、ペーパーウォレットはハッカーやキーロガー、その他のオンライン上の脅威などに対する安全性が増す"コールドストレージ"として機能します。
 
 Paper wallets come in many shapes, sizes, and designs, but at a very basic level are just a key and an address printed on paper. <<table_4-14>> shows the simplest form of a paper wallet.
 
-ペーパーウォレットにはいろいろな形、大きさ、デザインがありますが、基本的に秘密鍵とbitcoinアドレスが紙に印刷されているだけのものです。<<table_4-14>>は最も簡単なペーパーウォレットを示しています。
+ペーパーウォレットにはいろいろな形、大きさ、デザインがありますが、基本的に秘密鍵とBitcoinアドレスが紙に印刷されているだけのものです。<<table_4-14>>は最も簡単なペーパーウォレットを示しています。
 
 [[table_4-14]]
 .Simplest form of a paper wallet—a printout of the bitcoin address and private key.
@@ -1424,7 +1423,7 @@ Paper wallets come in many shapes, sizes, and designs, but at a very basic level
 
 ((("bitaddress.org","paper wallets, generating")))Paper wallets can be generated easily using a tool such as the client-side JavaScript generator at _bitaddress.org_. This page contains all the code necessary to generate keys and paper wallets, even while completely disconnected from the Internet. To use it, save the HTML page on your local drive or on an external USB flash drive. Disconnect from the Internet and open the file in a browser. Even better, boot your computer using a pristine operating system, such as a CD-ROM bootable Linux OS. Any keys generated with this tool while offline can be printed on a local printer over a USB cable (not wirelessly), thereby creating paper wallets whose keys exist only on the paper and have never been stored on any online system. Put these paper wallets in a fireproof safe and "send" bitcoin to their bitcoin address, to implement a simple yet highly effective "cold storage" solution. <<paper_wallet_simple>> shows a paper wallet generated from the bitaddress.org site.
 
-((("bitaddress.org","paper wallets, generating")))ペーパーウォレットは_bitaddress.org_でのクライアント側JavaScriptツールなどを使って簡単に作ることができます。このページには、インターネットに接続していなくてもペーパーウォレットが作れるコードが含まれています。それを使うために、HTMLページをローカルドライブ、または外部USBフラッシュドライブに保存してください。インターネットから切り離された状態で、ブラウザで保存したHTMLページを開いてみてください。より最適な状況を作り出すためには、CD-ROMで起動できるLinux OSのようなもっと簡素なオペレーティングシステムを使って起動し直してください。ツールを使って生成したどんなキーでもUSBケーブル(無線ではなく)で繋がれたローカルプリンタで印刷することができます。これにより、オンラインから切り離されたペーパーウォレットを作ることができます。これらのペーパーウォレットを耐火金庫に入れ、bitcoinをペーパーウォレット上のbitcoinアドレスに"送り"ます。ペーパーウォレットはとてもシンプルですが、極めて効果的な"コールドストレージ"です。
+((("bitaddress.org","paper wallets, generating")))ペーパーウォレットは_bitaddress.org_でのクライアント側JavaScriptツールなどを使って簡単に作ることができます。このページには、インターネットに接続していなくてもペーパーウォレットが作れるコードが含まれています。それを使うために、HTMLページをローカルドライブ、または外部USBフラッシュドライブに保存してください。インターネットから切り離された状態で、ブラウザで保存したHTMLページを開いてみてください。より最適な状況を作り出すためには、CD-ROMで起動できるLinux OSのようなもっと簡素なオペレーティングシステムを使って起動し直してください。ツールを使って生成したどんなキーでもUSBケーブル(無線ではなく)で繋がれたローカルプリンタで印刷することができます。これにより、オンラインから切り離されたペーパーウォレットを作ることができます。これらのペーパーウォレットを耐火金庫に入れ、bitcoinをペーパーウォレット上のBitcoinアドレスに"送り"ます。ペーパーウォレットはとてもシンプルですが、極めて効果的な"コールドストレージ"です。
 
 [[paper_wallet_simple]]
 .An example of a simple paper wallet from bitaddress.org
@@ -1457,7 +1456,7 @@ image::images/msbt_0417.png[]
 
 Other designs feature additional copies of the key and address, in the form of detachable stubs similar to ticket stubs, allowing you to store multiple copies to protect against fire, flood, or other natural disasters.(((range="endofrange", startref="ix_ch04-asciidoc32")))(((range="endofrange", startref="ix_ch04-asciidoc31")))(((range="endofrange", startref="ix_ch04-asciidoc30")))(((range="endofrange", startref="ix_ch04-asciidoc29"))) 
 
-他のデザインでは、チケットのように切り離し可能になっていて、火事や洪水など自然災害があってもいいようにキーとbitcoinアドレスの複数のコピーが持てるようになっているものもあります。(((range="endofrange", startref="ix_ch04-asciidoc32")))(((range="endofrange", startref="ix_ch04-asciidoc31")))(((range="endofrange", startref="ix_ch04-asciidoc30")))(((range="endofrange", startref="ix_ch04-asciidoc29")))
+他のデザインでは、チケットのように切り離し可能になっていて、火事や洪水など自然災害があってもいいようにキーとBitcoinアドレスの複数のコピーが持てるようになっているものもあります。(((range="endofrange", startref="ix_ch04-asciidoc32")))(((range="endofrange", startref="ix_ch04-asciidoc31")))(((range="endofrange", startref="ix_ch04-asciidoc30")))(((range="endofrange", startref="ix_ch04-asciidoc29")))
 
 [[paper_wallet_spw]]
 .An example of a paper wallet with additional copies of the keys on a backup "stub."
