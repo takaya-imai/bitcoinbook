@@ -332,7 +332,7 @@ Opened LevelDB successfully
 
 ((("Bitcoin Core client","JSON-RPC API for", id="ix_ch03-asciidoc5", range="startofrange")))((("Bitcoin Core client","using from command line", id="ix_ch03-asciidoc6", range="startofrange")))((("bitcoin-cli command line helper", id="ix_ch03-asciidoc7", range="startofrange")))The Bitcoin Core client implements a JSON-RPC interface that can also be accessed using the command-line helper +bitcoin-cli+. The command line allows us to experiment interactively with the capabilities that are also available programmatically via the API. To start, invoke the +help+ command to see a list of the available bitcoin RPC commands:
 
-((("Bitcoin Core client","JSON-RPC API for", id="ix_ch03-asciidoc5", range="startofrange")))((("Bitcoin Core client","using from command line", id="ix_ch03-asciidoc6", range="startofrange")))((("bitcoin-cli command line helper", id="ix_ch03-asciidoc7", range="startofrange")))Bitcoin CoreクライアントにはJSON-RPC APIが実装されており、 +bitcoin-cli+ コマンドでJSON-RPC APIにアクセスすることもできます。 +bitcoin-cli+ コマンドを使うことでbitcoindと１つ１つコミュニケーションをとるようにJSON-RPC APIを使ってみることができます。また、プログラムからJSON-RPC APIを使うこともできます。始める前に、+help+ を使って利用できるRPCコマンドを確認してみましょう。
+((("Bitcoin Core client","JSON-RPC API for", id="ix_ch03-asciidoc5", range="startofrange")))((("Bitcoin Core client","using from command line", id="ix_ch03-asciidoc6", range="startofrange")))((("bitcoin-cli command line helper", id="ix_ch03-asciidoc7", range="startofrange")))Bitcoin CoreクライアントにはJSON-RPC APIが実装されており、 +bitcoin-cli+ コマンドでJSON-RPC APIにアクセスすることもできます。 +bitcoin-cli+ コマンドを使うことでbitcoindと１つ１つコミュニケーションをとるようにJSON-RPC APIを使ってみることができます。また、プログラムからJSON-RPC APIを使うこともできます。始めるために以下のように +help+ を使って利用できるRPCコマンドを確認してみてください。
 
 [[bitcoind_commands]]
 
@@ -424,7 +424,7 @@ Commands: +getinfo+
 
 ((("Bitcoin Core client","client status, getting")))((("bitcoin-cli command line helper","getinfo command")))((("client status, getting")))((("getinfo command (bitcoin-cli)")))Bitcoin's +getinfo+ RPC command displays basic information about the status of the bitcoin network node, the wallet, and the blockchain database. Use +bitcoin-cli+ to run it:
 
-((("Bitcoin Core client","client status, getting")))((("bitcoin-cli command line helper","getinfo command")))((("client status, getting")))((("getinfo command (bitcoin-cli)")))Bitcoinのgetinfo RPCコマンドは、Bitcoinネットワークノード、ウォレット、ブロックチェーンデータベースについての基本的な情報を表示してくれます。以下の +bitcoin-cli+ コマンドを実行してみましょう。
+((("Bitcoin Core client","client status, getting")))((("bitcoin-cli command line helper","getinfo command")))((("client status, getting")))((("getinfo command (bitcoin-cli)")))Bitcoinのgetinfo RPCコマンドは、Bitcoinネットワークノード、ウォレット、ブロックチェーンデータベースについての基本的な情報を表示します。以下の +bitcoin-cli+ コマンドを実行してみてください。
 
 [source,bash]
 ----
@@ -452,7 +452,7 @@ $ bitcoin-cli getinfo
 
 The data is returned in((("JavaScript Object Notation (JSON)"))) JavaScript Object Notation (JSON), a format that can easily be "consumed" by all programming languages but is also quite human-readable. Among this data we see the version numbers for the bitcoin software client (90000), protocol (70002), and wallet (60000). We see the current balance contained in the wallet, which is zero. We see the current block height, showing us how many blocks are known to this client (286216). We also see various statistics about the bitcoin network and the settings related to this client. We will explore these settings in more detail in the rest of this chapter. 
 
-このデータは((("JavaScript Object Notation (JSON)"))) Javascriptオブジェクト記法(JSON)で返されます。JSONは多くのプログラミング言語で簡単に利用できるとともに、人間にとっても読みやすいものです。このデータの中に、Bitcoinクライアントのバージョン情報(90000)やプロトコルバージョン情報(70002)、ウォレットバージョン情報(60000)があります。ウォレットにある現在の残高を見ると、0になっています。"blocks"とあるところには、現在の何ブロックをBitcoinクライアントが把握しているかというブロック高(286216)があります。また、Bitcoinネットワークに関するいろいろな統計情報も見ることができ、このクライアントの設定内容も見ることができます。この章の残りの部分で、これらの設定値についてもっと詳細に分け入ってみます。
+このデータは((("JavaScript Object Notation (JSON)"))) Javascriptオブジェクト記法(JSON)で返されます。JSONは多くのプログラミング言語で簡単に利用できるとともに、人間にとっても読みやすいものです。このデータの中に、Bitcoinクライアントのバージョン情報(90000)やプロトコルバージョン情報(70002)、ウォレットバージョン情報(60000)があります。ウォレットにある現在の残高を見ると0になっています。"blocks"とあるところには、現在何ブロックをBitcoinクライアントが把握しているかというブロック高(286216)があります。また、Bitcoinネットワークに関するいろいろな統計情報も見ることができ、このクライアントの設定内容も見ることができます。この章の残りの部分で、これらの設定値についてもっと詳細に分け入ってみます。
 
 [TIP]
 ====
@@ -508,7 +508,7 @@ $
 
 You can confirm the wallet is unlocked and see the timeout by running +getinfo+ again:
 
-getinfoコマンドを実行することでウォレットのロックが解除されていることが確認でき、????
+getinfoコマンドを再度実行することでウォレットのロックが解除されていること、および再びロックされる時刻が確認できます。
 
 [source,bash]
 ----
@@ -527,7 +527,7 @@ $ bitcoin-cli getinfo
 ----
 
 ==== Wallet Backup, Plain-text Dump, and Restore
-==== ウォレットバックアップ、プレインテキスト、リストア
+==== ウォレットバックアップ、プレインテキストダンプ、リストア
 
 Commands: +backupwallet+, +importwallet+, +dumpwallet+
 
@@ -535,7 +535,7 @@ Commands: +backupwallet+, +importwallet+, +dumpwallet+
 
 ((("backups","of wallets")))((("backupwallet command (bitcoin-cli)")))((("bitcoin-cli command line helper","backupwallet command")))((("bitcoin-cli command line helper","dumpwallet command")))((("bitcoin-cli command line helper","importwallet command")))((("dumpwallet command (bitcoin-cli)")))((("importwallet command (bitcoin-cli)")))((("wallets","backing up")))((("wallets","dumping into plain text")))((("wallets","restoring")))Next, we will practice creating a wallet backup file and then restoring the wallet from the backup file. Use the +backupwallet+ command to back up, providing the filename as the parameter. Here we back up the wallet to the file _wallet.backup_:
 
-((("backups","of wallets")))((("backupwallet command (bitcoin-cli)")))((("bitcoin-cli command line helper","backupwallet command")))((("bitcoin-cli command line helper","dumpwallet command")))((("bitcoin-cli command line helper","importwallet command")))((("dumpwallet command (bitcoin-cli)")))((("importwallet command (bitcoin-cli)")))((("wallets","backing up")))((("wallets","dumping into plain text")))((("wallets","restoring")))次にウォレットバックアップを作り、このバックアップからウォレットをリストアする練習をしてみましょう。 +backupwallet+ コマンドを使うことでバックアップをすることができます。パラメータとして、バックアップファイル名を指定しましょう。ここでは、バックアップファイルとして _wallet.backup_ というファイルを作成します。
+((("backups","of wallets")))((("backupwallet command (bitcoin-cli)")))((("bitcoin-cli command line helper","backupwallet command")))((("bitcoin-cli command line helper","dumpwallet command")))((("bitcoin-cli command line helper","importwallet command")))((("dumpwallet command (bitcoin-cli)")))((("importwallet command (bitcoin-cli)")))((("wallets","backing up")))((("wallets","dumping into plain text")))((("wallets","restoring")))次にウォレットバックアップを作り、このバックアップからウォレットをリストアする練習をしてみます。パラメータとしてバックアップファイル名を指定することで +backupwallet+ コマンドを使ってバックアップをすることができます。ここでは、バックアップファイルとして _wallet.backup_ というファイルを作成します。
 
 
 ----
@@ -545,7 +545,7 @@ $
 
 Now, to restore the backup file, use the +importwallet+ command. If your wallet is locked, you will need to unlock it first (see +walletpassphrase+ in the preceding section) in order to import the backup file:
 
-バックアップファイルを用いてリストアするには +importwallet+ コマンドを使います。ウォレットがロックされている場合には、バックアップファイルをインポートするために最初にロックを解除しなければいけません(１つ前の +walletpassphrase+ を参照)。
+バックアップファイルを用いてリストアするには +importwallet+ コマンドを使います。ウォレットがロックされている場合には、バックアップファイルをインポートするために最初にロックを解除しなければいけません(１つ前の +walletpassphrase+ 参照)。
 
 ----
 $ bitcoin-cli importwallet wallet.backup
@@ -602,7 +602,7 @@ $ bitcoin-cli getreceivedbyaddress 1hvzSofGwT8cjb8JU7nBsCSfEVQX5u9CL 0
 
 If we omit the zero from the end of this command, we will only see the amounts that have at least +minconf+ confirmations, where +minconf+ is the setting for the minimum number of confirmations before a transaction is listed in the balance. The +minconf+ setting is specified in the bitcoind configuration file. Because the transaction sending this bitcoin was only sent in the last few seconds, it has still not confirmed and therefore we will see it list a zero balance:
 
-もしコマンドの最後にある0を省略すると、最低でもminconfで設定されている回数検証されないと送られたbitcoinが残高に反映されないようになっています。minconfとは、残高にトランザクションを表示する前に行う検証の回数の設定値です。minconfはbitcoindの設定ファイルの中で設定できます。今回のbitcoin送付のトランザクションは送付から数秒経ってもまだ検証されておらず、よって残高が0と表示されているのです。
+もしコマンドの最後にある0を省略すると、最低でもminconfで設定されている回数だけ検証されないと送られたbitcoinが残高に反映されないようになっています。minconfとは、残高にトランザクションを表示する前に行う検証の回数の設定値です。minconfはbitcoindの設定ファイルの中で設定できます。今回のbitcoin送付のトランザクションは送付から数秒経ってもまだ検証されておらず、よって残高が0と表示されているのです。
 
 
 ----
@@ -678,7 +678,7 @@ $ bitcoin-cli getbalance
 
 
 ==== Exploring and Decoding Transactions
-==== トランザクションを解読していってみましょう
+==== トランザクションのデコード＆解読
 
 Commands: +gettransaction+, +getrawtransaction+, +decoderawtransaction+
 
@@ -721,7 +721,7 @@ Transaction IDs are not authoritative until a transaction has been confirmed. Ab
 
 The transaction form shown with the command +gettransaction+ is the simplified form. To retrieve the full transaction code and decode it, we will use two commands: +getrawtransaction+ and +decoderawtransaction+. First, +getrawtransaction+ takes the _transaction hash (txid)_ as a parameter and returns the full transaction as a "raw" hex string, exactly as it exists on the bitcoin network:
 
-+gettransaction+ コマンドで表示されるトランザクション形式はシンプルなものです。さらに細かいトランザクションの内容を見るためには、 +getrawtransaction+ コマンドと +decoderawtransaction+ コマンドを使います。最初に、 _トランザクションハッシュtxid_ を引数とする +getrawtransaction+ コマンドを実行すると、トランザクションが生の16進数テキストとして表示されます。
++gettransaction+ コマンドで表示されるトランザクション形式は簡略化されたものです。さらに細かいトランザクションの内容を見るためには、 +getrawtransaction+ コマンドと +decoderawtransaction+ コマンドを使います。最初に、 _トランザクションハッシュtxid_ を引数とする +getrawtransaction+ コマンドを実行すると、トランザクションが生の16進数テキストとして表示されます。
 
 ++++
 <programlisting>
@@ -733,7 +733,7 @@ $ bitcoin-cli getrawtransaction 9ca8f969bd3ef5ec2a8685660fdbf7a8bd365524c2e1f<?p
 
 To decode this hex string, use the +decoderawtransaction+ command. Copy and paste the hex as the first parameter of +decoderawtransaction+ to get the full contents interpreted as a JSON data structure (for formatting reasons the hex string is shortened in the following example):
 
-この16進数テキストを +decoderawtransaction+ コマンドを使って平文に直してみます。さきほどの16進数テキストをコピーして +decoderawtransaction+ コマンドの１つ目の引数として貼付けて実行するとJSON形式として解釈された文字列が出てきます。(16進数テキストになっているのは、以下の例にある長いJSONを短く格納しておくためです)
+この16進数テキストを +decoderawtransaction+ コマンドを使ってデコードしてみます。さきほどの16進数テキストをコピーして +decoderawtransaction+ コマンドの１つ目の引数として貼付けて実行するとJSON形式として解釈された文字列が出てきます。(16進数テキストになっているのは、以下の例にある長いJSONを短く格納しておくためです)
 
 ++++
 <programlisting>
@@ -792,7 +792,7 @@ $ bitcoin-cli decoderawtransaction 0100000001d717279515f88e2f56ce4e8a31e2ae3e<?p
 
 The transaction decode shows all the components of this transaction, including the transaction inputs and outputs. In this case we see that the transaction that credited our new address with 50 millibits used one input and generated two outputs. The input to this transaction was the output from a previously confirmed transaction (shown as the vin txid starting with +d3c7+). The two outputs correspond to the 50 millibit credit and an output with change back to the sender. 
 
-平文のトランザクションには、トランザクションインプット/アウトプットを含む全ての項目が表示されます。この場合トランザクションには、さきほど作った新しいBitcoinアドレスへの50mbitsの送付に対応した１つのインプットとそれに対して生成された２つのアウトプットが含まれます。インプットは前に検証されたトランザクションのアウトプットだったもので、 +d3c7+ で始まるvinのtxidのところに書かれています。２つのアウトプットは50mbits分の返金と送付元に送り返されるおつりを示します。
+デコードされたトランザクションには、トランザクションインプット/アウトプットを含む全ての項目が表示されます。この場合トランザクションには、さきほど作った新しいBitcoinアドレスへの50mbitsの送付に対応した１つのインプットとそれに対して生成された２つのアウトプットが含まれます。インプットは前に検証されたトランザクションのアウトプットだったもので、 +d3c7+ で始まるvinのtxidのところに書かれています。２つのアウトプットは50mbits分の返金と送付元に送り返されるおつりを示します。
 
 We can further explore the blockchain by examining the previous transaction referenced by its txid in this transaction using the same commands (e.g., +gettransaction+). Jumping from transaction to transaction we can follow a chain of transactions back as the coins are transmitted from owner address to owner address. 
 
@@ -800,7 +800,7 @@ We can further explore the blockchain by examining the previous transaction refe
 
 Once the transaction we received has been confirmed by inclusion in a block, the +gettransaction+ command will return additional information, showing the _block hash (identifier)_ in which the transaction was included:
 
-一度受け取ったトランザクションが検証されると、gettransactionコマンドはこのトランザクションが含まれることになった _ブロックハッシュとその識別子(ブロックインデックス)_ も返すようになります。
+一度受け取ったトランザクションが検証されると、gettransactionコマンドはこのトランザクションが含まれることになった _ブロックハッシュ(識別子)_ も返すようになります。
 
 ++++
 <screen>
@@ -834,7 +834,7 @@ $ bitcoin-cli gettransaction 9ca8f969bd3ef5ec2a8685660fdbf7a8bd365524c2e1fc66<?p
 
 Here, we see the new information in the entries +blockhash+ (the hash of the block in which the transaction was included), and +blockindex+ with value 18 (indicating that our transaction was the 18th transaction in that block). 
 
-ここで、 +ブロックハッシュ+ と +ブロックインデックス+ という新しい情報について見ていきます。 +ブロックハッシュ+ はトランザクションが含まれることになったブロックのハッシュ値で、 +ブロックインデックス+ は含まれることになったトランザクションがブロックの中の何番目のトランザクションとして入っているかを表し今の場合は18です。
+ここで、 +ブロックハッシュ+ と +ブロックインデックス+ という新しい情報について見ていきます。 +ブロックハッシュ+ はトランザクションが含まれることになったブロックのハッシュ値で、 +ブロックインデックス+ は含まれることになったトランザクションがブロックの中の何番目のトランザクションとして入っているかを表し今の場合は18です(このトランザクションがブロック内の18番目にあったということを表します)。
 
 [[txindex]]
 .Transaction Database Index and txindex Option
@@ -846,7 +846,7 @@ Here, we see the new information in the entries +blockhash+ (the hash of the blo
 ****
 
 ==== Exploring Blocks
-==== ブロックの探索
+==== ブロック探索
 
 Commands: +getblock+, +getblockhash+
 
@@ -854,7 +854,7 @@ Commands: +getblock+, +getblockhash+
 
 ((("bitcoin-cli command line helper","getblock command")))((("bitcoin-cli command line helper","getblockhash command")))((("blocks","exploring")))((("getblock command (bitcoin-cli)")))((("getblockhash command (bitcoin-cli)")))Now that we know which block our transaction was included in, we can query that block. We use the +getblock+ command with the block hash as the parameter:
 
-((("bitcoin-cli command line helper","getblock command")))((("bitcoin-cli command line helper","getblockhash command")))((("blocks","exploring")))((("getblock command (bitcoin-cli)")))((("getblockhash command (bitcoin-cli)")))今やどのブロックに我々が実行したトランザクションが含まれているか分かったので、そのブロックの中身を見てみよう。ブロックハッシュを指定して +getblock+ コマンドを実行してみてください。
+((("bitcoin-cli command line helper","getblock command")))((("bitcoin-cli command line helper","getblockhash command")))((("blocks","exploring")))((("getblock command (bitcoin-cli)")))((("getblockhash command (bitcoin-cli)")))今やどのブロックに我々が実行したトランザクションが含まれていたかが分かったので、そのブロックの中身を見てみましょう。ブロックハッシュを指定して +getblock+ コマンドを実行してみてください。
 
 
 ++++
@@ -910,7 +910,7 @@ $ bitcoin-cli getblock 000000000000000051d2e759c63a26e247f185ecb7926ed7a6624b<?p
 
 The block contains 367 transactions and as you can see, the 18th transaction listed (+9ca8f9...+) is the txid of the one crediting 50 millibits to our address. The +height+ entry tells us this is the 286384th block in the blockchain. 
 
-このブロックには367個のトランザクションが含まれていて、見て分かるように18番目の9ca8f9から始まるトランザクションが、我々のBitcoinアドレスに50mbitsを返金したトランザクションtxidです。 +height+ パラメータはこのブロックがブロックチェーンの286384番目のブロックであることを示しています。
+このブロックには367個のトランザクションが含まれていて、見て分かるように18番目(+9ca8f9...+)のトランザクションが、我々のBitcoinアドレスに50mbitsを送金したトランザクションのtxidです。 +height+ パラメータはこのブロックがブロックチェーンの286384番目のブロックであることを示しています。
 
 We can also retrieve a block by its block height using the +getblockhash+ command, which takes the block height as the parameter and returns the block hash for that block:
 
@@ -971,7 +971,7 @@ Commands: +listunspent+, +gettxout+, +createrawtransaction+, +decoderawtransacti
 
 ((("bitcoin-cli command line helper","createrawtransaction command", id="ix_ch03-asciidoc31", range="startofrange")))((("bitcoin-cli command line helper","decoderawtransaction command", id="ix_ch03-asciidoc32", range="startofrange")))((("bitcoin-cli command line helper","gettxout command", id="ix_ch03-asciidoc33", range="startofrange")))((("bitcoin-cli command line helper","listunspent command", id="ix_ch03-asciidoc34", range="startofrange")))((("bitcoin-cli command line helper","sendrawtransaction command", id="ix_ch03-asciidoc35", range="startofrange")))((("bitcoin-cli command line helper","signrawtransaction command", id="ix_ch03-asciidoc36", range="startofrange")))((("createrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc37", range="startofrange")))((("decoderawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc38", range="startofrange")))((("gettxout command (bitcoin-cli)", id="ix_ch03-asciidoc39", range="startofrange")))((("listunspent command (bitcoin-cli)", id="ix_ch03-asciidoc40", range="startofrange")))((("sendrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc41", range="startofrange")))((("signrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc42", range="startofrange")))((("transactions","creating from the command line", id="ix_ch03-asciidoc43", range="startofrange")))((("transactions","signing from the command line", id="ix_ch03-asciidoc44", range="startofrange")))((("transactions","submitting from the command line", id="ix_ch03-asciidoc45", range="startofrange")))((("unspent transaction output (UTXO)", id="ix_ch03-asciidoc46", range="startofrange")))Bitcoin's transactions are based on the concept of spending "outputs," which are the result of previous transactions, to create a transaction chain that transfers ownership from address to address. Our wallet has now received a transaction that assigned one such output to our address. Once this is confirmed, we can spend that output. 
 
-((("bitcoin-cli command line helper","createrawtransaction command", id="ix_ch03-asciidoc31", range="startofrange")))((("bitcoin-cli command line helper","decoderawtransaction command", id="ix_ch03-asciidoc32", range="startofrange")))((("bitcoin-cli command line helper","gettxout command", id="ix_ch03-asciidoc33", range="startofrange")))((("bitcoin-cli command line helper","listunspent command", id="ix_ch03-asciidoc34", range="startofrange")))((("bitcoin-cli command line helper","sendrawtransaction command", id="ix_ch03-asciidoc35", range="startofrange")))((("bitcoin-cli command line helper","signrawtransaction command", id="ix_ch03-asciidoc36", range="startofrange")))((("createrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc37", range="startofrange")))((("decoderawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc38", range="startofrange")))((("gettxout command (bitcoin-cli)", id="ix_ch03-asciidoc39", range="startofrange")))((("listunspent command (bitcoin-cli)", id="ix_ch03-asciidoc40", range="startofrange")))((("sendrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc41", range="startofrange")))((("signrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc42", range="startofrange")))((("transactions","creating from the command line", id="ix_ch03-asciidoc43", range="startofrange")))((("transactions","signing from the command line", id="ix_ch03-asciidoc44", range="startofrange")))((("transactions","submitting from the command line", id="ix_ch03-asciidoc45", range="startofrange")))((("unspent transaction output (UTXO)", id="ix_ch03-asciidoc46", range="startofrange")))Bitcoinのトランザクションは、所有権の転送というトランザクションチェインを作るために前のトランザクションの結果である"アウトプット"を利用する形になっています。我々のウォレットは我々のBitcoinアドレスにそのようなアウトプットに紐づけるトランザクションをちょうど受け取ったところです。一度これが検証されると我々はそのアウトプットを使うことができるようになります。
+((("bitcoin-cli command line helper","createrawtransaction command", id="ix_ch03-asciidoc31", range="startofrange")))((("bitcoin-cli command line helper","decoderawtransaction command", id="ix_ch03-asciidoc32", range="startofrange")))((("bitcoin-cli command line helper","gettxout command", id="ix_ch03-asciidoc33", range="startofrange")))((("bitcoin-cli command line helper","listunspent command", id="ix_ch03-asciidoc34", range="startofrange")))((("bitcoin-cli command line helper","sendrawtransaction command", id="ix_ch03-asciidoc35", range="startofrange")))((("bitcoin-cli command line helper","signrawtransaction command", id="ix_ch03-asciidoc36", range="startofrange")))((("createrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc37", range="startofrange")))((("decoderawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc38", range="startofrange")))((("gettxout command (bitcoin-cli)", id="ix_ch03-asciidoc39", range="startofrange")))((("listunspent command (bitcoin-cli)", id="ix_ch03-asciidoc40", range="startofrange")))((("sendrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc41", range="startofrange")))((("signrawtransaction command (bitcoin-cli)", id="ix_ch03-asciidoc42", range="startofrange")))((("transactions","creating from the command line", id="ix_ch03-asciidoc43", range="startofrange")))((("transactions","signing from the command line", id="ix_ch03-asciidoc44", range="startofrange")))((("transactions","submitting from the command line", id="ix_ch03-asciidoc45", range="startofrange")))((("unspent transaction output (UTXO)", id="ix_ch03-asciidoc46", range="startofrange")))Bitcoinのトランザクションは、所有権の転送というトランザクションチェーンを作るために前のトランザクションの結果である"アウトプット"を利用する形になっています。我々のウォレットは我々のBitcoinアドレスにそのようなアウトプットに紐づけるトランザクションをちょうど受け取ったところです。一度これが検証されると我々はそのアウトプットを使うことができるようになります。
 
 First, we use the +listunspent+ command to show all the unspent _confirmed_ outputs in our wallet:
 
@@ -1001,7 +1001,7 @@ $ bitcoin-cli listunspent
 
 We see that the transaction +9ca8f9...+ created an output (with vout index 0) assigned to the address +1hvzSo...+ for the amount of 50 millibits, which at this point has received seven confirmations. Transactions use previously created outputs as their inputs by referring to them by the previous txid and vout index. We will now create a transaction that will spend the 0th vout of the txid +9ca8f9...+ as its input and assign it to a new output that sends value to a new address. 
 
-トランザクション +9ca8f9...+ に、Bitcoinアドレス +1hvzSo...+ に紐づけられた50mbitのアウトプット(voutインデックスが0)が付加されていて、この時点でこのトランザクションは7回の検証を受けています。一般にトランザクションは前に作られたアウトプットを前のtxidとvoutインデックスを参照することで取得しインプットとして使います。次回このアウトプットを使うときには、txid "9ca8f9..." の0番目のvoutをインプットとして使い、新しい別のBitcoinアドレスにbitcoinを送る新しいアウトプットをこのインプットに紐づけて作ります。
+トランザクション +9ca8f9...+ には、Bitcoinアドレス +1hvzSo...+ に紐づけられた50mbitのアウトプット(voutインデックスが0)が付加されていて、この時点でこのトランザクションは7回の検証を受けています。一般にトランザクションは前に作られたアウトプットを前のtxidとvoutインデックスを参照することでアウトプットを取得しインプットとして使います。これから、txid "9ca8f9..." の0番目のvoutをインプットとして使うトランザクションを作成し、新しい別のBitcoinアドレスにbitcoinを送る新しいアウトプットをこのインプットに紐づけます。
 
 First, let's look at the specific output in more detail. We use +gettxout+ to get the details of this unspent output. Transaction outputs are always referenced by txid and vout, and these are the parameters we pass to +gettxout+:
 
@@ -1048,12 +1048,12 @@ $ bitcoin-cli getnewaddress
 
 We will send 25 millibits to the new address +1LnfTn...+ we just created in our wallet. In our new transaction, we will spend the 50 millibit output and send 25 millibits to this new address. Because we have to spend the _whole_ output from the previous transaction, we must also generate some change. We will generate change back to the +1hvz...+ address, sending the change back to the address from which the value originated. Finally, we will also have to pay a fee for this transaction. To pay the fee, we will reduce the change output by 0.5 millibits, and return 24.5 millibits in change. The difference between the sum of the new outputs (25 mBTC + 24.5 mBTC = 49.5 mBTC) and the input (50 mBTC) will be collected as a transaction fee by the miners. 
 
-我々のウォレットが今作った新しいBitcoinアドレス +1LnfTn...+ に25mbitを送ってみましょう。新しいトランザクションでは、前に出てきた50mbitのアウトプットを使い、この新しいBitcoinアドレスに25mbitを送ります。前のトランザクションから _全て_ のアウトプットを使う必要があるので、Bitcoinアドレス +1hvz...+ に返すおつり分も作らなければいけません。また、このトランザクションの取引手数料も払う必要があります。この手数料を支払うために、0.5mbitだけおつりから差し引き、24.5mbitをおつりとして返します。新しいアウトプットのbitcoinの総和(25 mBTC + 24.5 mBTC = 49.5 mBTC)とインプットのbitcoin(50 mBTC)の差は、マイナーによって取引手数料としてかき集められます。
+我々のウォレットが今作った新しいBitcoinアドレス +1LnfTn...+ に25mbitを送ってみましょう。新しいトランザクションでは、前に出てきた50mbitのアウトプットを使い、この新しいBitcoinアドレスに25mbitを送ります。前のトランザクションから _全て_ のアウトプットを使う必要があるので、Bitcoinアドレス +1hvz...+ に返すおつり分も作らなければいけません。また、このトランザクションのトランザクション手数料も払う必要があります。この手数料を支払うために、0.5mbitだけおつりから差し引き、24.5mbitをおつりとして返します。新しいアウトプットのbitcoinの総和(25 mBTC + 24.5 mBTC = 49.5 mBTC)とインプットのbitcoin(50 mBTC)の差は、マイナーによってトランザクション手数料としてかき集められます。
 
 
 We use +createrawtransaction+ to create this transaction. As parameters to +createrawtransaction+ we provide the transaction input (the 50 millibit unspent output from our confirmed transaction) and the two transaction outputs (money sent to the new address and change sent back to the previous address):
 
-+createrawtransaction+ コマンドを使ってこのトランザクションを作成します。+createrawtransaction+ コマンドの引数として、トランザクションのインプット(我々の検証済トランザクションから50mbitの未使用アウトプット)と、新しいアドレスに送るお金と元のBitcoinアドレスに戻ってくるおつりの2つのアウトプットを指定します。
++createrawtransaction+ コマンドを使ってこのトランザクションを作成します。+createrawtransaction+ コマンドの引数として、トランザクションのインプット(我々の検証済トランザクションから来た50mbitの未使用アウトプット)と、新しいアドレスに送るお金と元のBitcoinアドレスに戻ってくるおつりの2つのアウトプットを指定します。
 
 ++++
 <screen>
@@ -1065,7 +1065,7 @@ $ bitcoin-cli createrawtransaction '[{"txid" : "9ca8f969bd3ef5ec2a8685660fdbf<?p
 
 The +createrawtransaction+ command produces a raw hex string that encodes the transaction details we supplied. Let's confirm everything is correct by decoding this raw string using the +decoderawtransaction+ command:
 
-+createrawtransaction+ コマンドは生成されたトランザクションを暗号化した16進数テキストを作ります。 +decoderawtransaction+ コマンドを使って、このトランザクションが正しいのか、人間には読みにくいこ>の16進数テキストを平文化して確認してみましょう。
++createrawtransaction+ コマンドは生成されたトランザクションを暗号化した16進数テキストを作ります。 +decoderawtransaction+ コマンドを使って、このトランザクションが正しいのか、人間には読みにくいこの16進数テキストをデコードして確認してみましょう。
 
 ++++
 <screen>
@@ -1125,7 +1125,7 @@ $ bitcoin-cli decoderawtransaction 0100000001e34ac1e2baac09c366fce1c2245536bd<?p
 
 That looks correct! Our new transaction "consumes" the unspent output from our confirmed transaction and then spends it in two outputs, one for 25 millibits to our new address and one for 24.5 millibits as change back to the original address. The difference of 0.5 millibits represents the transaction fee and will be credited to the miner who finds the block that includes our transaction. 
 
-これは正しそうです！この新しいトランザクションは、検証された我々のトランザクションから未使用アウトプットを消費し、２つのアウトプットとして使用しました。１つは送付先の新しいBitcoinアドレスへの25mbit、もう１つは送付元のBitcoinアドレスに返ってくるおつりの24.5mbitです。差の0.5mbitは取引手数料であり、この新しいトランザクションが含まれたブロックを探したマイナーに充当されます。
+これは正しそうです！この新しいトランザクションは、検証された我々のトランザクションから未使用アウトプットを消費し、それを２つのアウトプットの中で使用しました。１つは送付先の新しいBitcoinアドレスへの25mbit、もう１つは送付元のBitcoinアドレスに返ってくるおつりの24.5mbitです。差の0.5mbitはトランザクション手数料であり、この新しいトランザクションが含まれたブロックを探したマイナーに充当されます。
 
 As you might notice, the transaction contains an empty +scriptSig+ because we haven't signed it yet. Without a signature, this transaction is meaningless; we haven't yet proven that we _own_ the address from which the unspent output is sourced. By signing, we remove the lock on the output and prove that we own this output and can spend it. We use the +signrawtransaction+ command to sign the transaction. It takes the raw transaction hex string as the parameter:
 
@@ -1155,7 +1155,7 @@ $ bitcoin-cli signrawtransaction 0100000001e34ac1e2baac09c366fce1c2245536bda8<?p
 
 The +signrawtransaction+ command returns another hex-encoded raw transaction. We decode it to see what changed, with +decoderawtransaction+:
 
-この +signrawtransaction+ コマンドはもう１つの16進数テキストを返します。 +decoderawtransaction+ コマンドでこの16進数テキストを平文化して何か変わったのかを見てみましょう。
+この +signrawtransaction+ コマンドはもう１つの16進数テキストを返します。 +decoderawtransaction+ コマンドでこの16進数テキストをデコードして何が変わったのかを見てみましょう。
 
 
 ++++
@@ -1220,7 +1220,7 @@ Now, the inputs used in the transaction contain a +scriptSig+, which is a digita
 
 Now it's time to submit the newly created transaction to the network. We do that with the command +sendrawtransaction+, which takes the raw hex string produced by +signrawtransaction+. This is the same string we just decoded:
 
-Bitcoinネットワークに新しく作ったトランザクションを送信する時が来ました。 +sendrawtransaction+ コマンドを使って送信しましょう。 +sendrawtransaction+ コマンドでは +signrawtransaction+ コマンドで返ってきた16進数テキストを引数として指定します。これはさきほど平文化した16進数テキストです。
+Bitcoinネットワークに新しく作ったトランザクションを送信する時が来ました。 +sendrawtransaction+ コマンドを使って送信してください。 +sendrawtransaction+ コマンドでは +signrawtransaction+ コマンドで返ってきた16進数テキストを引数として指定します。これはさきほどデコードした16進数テキストです。
 
 ++++
 <screen>
@@ -1280,7 +1280,7 @@ $ bitcoin-cli gettransaction ae74538baa914f3799081ba78429d5d84f36a0127438e9f7<?p
 
 As before, we can also examine this in more detail using the +getrawtransaction+ and +decodetransaction+ commands. These commands will return the exact same hex string that we produced and decoded previously just before we sent it on the network.(((range="endofrange", startref="ix_ch03-asciidoc46")))(((range="endofrange", startref="ix_ch03-asciidoc45")))(((range="endofrange", startref="ix_ch03-asciidoc44")))(((range="endofrange", startref="ix_ch03-asciidoc43")))(((range="endofrange", startref="ix_ch03-asciidoc42")))(((range="endofrange", startref="ix_ch03-asciidoc41")))(((range="endofrange", startref="ix_ch03-asciidoc40")))(((range="endofrange", startref="ix_ch03-asciidoc39")))(((range="endofrange", startref="ix_ch03-asciidoc38")))(((range="endofrange", startref="ix_ch03-asciidoc37")))(((range="endofrange", startref="ix_ch03-asciidoc36")))(((range="endofrange", startref="ix_ch03-asciidoc35")))(((range="endofrange", startref="ix_ch03-asciidoc34")))(((range="endofrange", startref="ix_ch03-asciidoc33")))(((range="endofrange", startref="ix_ch03-asciidoc32")))(((range="endofrange", startref="ix_ch03-asciidoc31")))(((range="endofrange", startref="ix_ch03-asciidoc7")))(((range="endofrange", startref="ix_ch03-asciidoc6")))(((range="endofrange", startref="ix_ch03-asciidoc5")))(((range="endofrange", startref="ix_ch03-asciidoc2")))(((range="endofrange", startref="ix_ch03-asciidoc1"))) 
 
-前にやったように、我々は +getrawtransaction+ コマンドと +decodetransaction+ コマンドを使ってこのトランザクションのもっと詳細も調べることができます。これらのコマンドは、トランザクションをBitcoinネットワークに送る前に生成し平文化した16進数テキストと全く同じテキストを返します。(((range="endofrange", startref="ix_ch03-asciidoc46")))(((range="endofrange", startref="ix_ch03-asciidoc45")))(((range="endofrange", startref="ix_ch03-asciidoc44")))(((range="endofrange", startref="ix_ch03-asciidoc43")))(((range="endofrange", startref="ix_ch03-asciidoc42")))(((range="endofrange", startref="ix_ch03-asciidoc41")))(((range="endofrange", startref="ix_ch03-asciidoc40")))(((range="endofrange", startref="ix_ch03-asciidoc39")))(((range="endofrange", startref="ix_ch03-asciidoc38")))(((range="endofrange", startref="ix_ch03-asciidoc37")))(((range="endofrange", startref="ix_ch03-asciidoc36")))(((range="endofrange", startref="ix_ch03-asciidoc35")))(((range="endofrange", startref="ix_ch03-asciidoc34")))(((range="endofrange", startref="ix_ch03-asciidoc33")))(((range="endofrange", startref="ix_ch03-asciidoc32")))(((range="endofrange", startref="ix_ch03-asciidoc31")))(((range="endofrange", startref="ix_ch03-asciidoc7")))(((range="endofrange", startref="ix_ch03-asciidoc6")))(((range="endofrange", startref="ix_ch03-asciidoc5")))(((range="endofrange", startref="ix_ch03-asciidoc2")))(((range="endofrange", startref="ix_ch03-asciidoc1"))) 
+前にやったように、我々は +getrawtransaction+ コマンドと +decodetransaction+ コマンドを使ってこのトランザクションのもっと詳細も調べることができます。これらのコマンドは、トランザクションをBitcoinネットワークに送る前に生成しデコードした16進数テキストと全く同じテキストを返します。(((range="endofrange", startref="ix_ch03-asciidoc46")))(((range="endofrange", startref="ix_ch03-asciidoc45")))(((range="endofrange", startref="ix_ch03-asciidoc44")))(((range="endofrange", startref="ix_ch03-asciidoc43")))(((range="endofrange", startref="ix_ch03-asciidoc42")))(((range="endofrange", startref="ix_ch03-asciidoc41")))(((range="endofrange", startref="ix_ch03-asciidoc40")))(((range="endofrange", startref="ix_ch03-asciidoc39")))(((range="endofrange", startref="ix_ch03-asciidoc38")))(((range="endofrange", startref="ix_ch03-asciidoc37")))(((range="endofrange", startref="ix_ch03-asciidoc36")))(((range="endofrange", startref="ix_ch03-asciidoc35")))(((range="endofrange", startref="ix_ch03-asciidoc34")))(((range="endofrange", startref="ix_ch03-asciidoc33")))(((range="endofrange", startref="ix_ch03-asciidoc32")))(((range="endofrange", startref="ix_ch03-asciidoc31")))(((range="endofrange", startref="ix_ch03-asciidoc7")))(((range="endofrange", startref="ix_ch03-asciidoc6")))(((range="endofrange", startref="ix_ch03-asciidoc5")))(((range="endofrange", startref="ix_ch03-asciidoc2")))(((range="endofrange", startref="ix_ch03-asciidoc1"))) 
 
 [[alt_libraries]]
 === Alternative Clients, Libraries, and Toolkits
@@ -1312,7 +1312,7 @@ Many more libraries exist in a variety of other programming languages and more a
 
 The ((("libbitcoin library")))((("libraries, alternative","libbitcoin library")))libbitcoin library is a cross-platform C++ development toolkit that supports the ((("Bitcoin Server")))((("libraries, alternative","Bitcoin Server")))libbitcoin-server full node and the ((("Bitcoin Explorer")))((("libraries, alternative","Bitcoin Explorer")))Bitcoin Explorer (bx) command line tool.
 
-((("libbitcoin library")))((("libraries, alternative","libbitcoin library")))((("sx tools")))libbitcoinライブラリはスケーラブルなマルチスレッド&モジュール型C++実装で、full-node(部分的ではなく全部のブロックチェーンを保持する)とsxと呼ばれるコマンドラインベースのツールセットをサポートしています。このツールセットは、この章で説明したbitcoindのコマンドと同じものを多くサポートしています。sxツールはbitcoindで提供されていない管理ツールや操作ツール、type-2 deterministic key、key mnemonicsも持っています。????
+((("libbitcoin library")))((("libraries, alternative","libbitcoin library")))((("sx tools")))libbitcoinライブラリはクロスプラットフォームなC++ツールキットで、((("Bitcoin Server")))((("libraries, alternative","Bitcoin Server")))libbitcoin-server full-nodeと((("Bitcoin Explorer")))((("libraries, alternative","Bitcoin Explorer")))Bitcoin Explorer (bx)コマンドラインツールをサポートしています。
 
 The bx commands offer many of the same capabilities as the bitcoind client commands we illustrated in this chapter. The bx commands also offer some key management and manipulation tools that are not offered by bitcoind, including type-2 deterministic keys and mnemonic key encoding, as well as stealth address, payment, and query support.
 
@@ -1333,8 +1333,6 @@ Bitcoin Explorer offers many useful commands for encoding and decoding addresses
 
 ((("libbitcoin library","installing")))The libbitcoin library provides an installer for https://github.com/libbitcoin/libbitcoin/wiki/Build[building from sources on Linux and OS X, as well as Visual Studio projects for Windows]. Sources can also be built manually using Autotools.
 
-これでsxツールがインストールされたはずです。ヘルプを表示するためには引数なしで +sx+ と入力して実行します。ヘルプには可能なコマンドが全て表示されます(<<appdx_sx>>参照)。
-
 [TIP]
 ====
 The Bitcoin Explorer installer installs both bx and the libbitcoin library, so if you have built bx from sources, you can skip this step.
@@ -1344,7 +1342,7 @@ The Bitcoin Explorer installer installs both bx and the libbitcoin library, so i
 
 ((("libraries, alternative","pycoin library")))((("pycoin library")))((("Python","pycoin library")))The Python library http://github.com/richardkiss/pycoin[_pycoin_], originally written and maintained by((("Kiss, Richard"))) Richard Kiss, is a Python-based library that supports manipulation of bitcoin keys and transactions, even supporting the scripting language enough to properly deal with nonstandard transactions. 
 
-((("libraries, alternative","pycoin library")))((("pycoin library")))((("Python","pycoin library")))((("Kiss, Richard"))) Richard Kiss によって元々作成され管理されているPythonライブラリ http://github.com/richardkiss/pycoin[_pycoin_] は、Bitcoinのキーやトランザクションを扱いをサポートしているだけでなく、規格外のトランザクションを適切に扱うスクリプト言語をもサポートしているPythonベースライブラリです。 ????
+((("libraries, alternative","pycoin library")))((("pycoin library")))((("Python","pycoin library"))) ((("Kiss, Richard"))) Richard Kiss によって元々作成され管理されているPythonライブラリ http://github.com/richardkiss/pycoin[_pycoin_] は、Bitcoinのキーやトランザクションの扱いをサポートしているPythonベースライブラリであるだけでなく、規格外のトランザクションを適切に扱うスクリプト言語をもサポートしているライブラリです。
 
 The pycoin library supports both Python 2 (2.7.x) and Python 3 (after 3.3), and comes with some handy command-line utilities, ku and tx. To install pycoin 0.42 under Python 3 in a virtual environment (venv), use the following:
 
