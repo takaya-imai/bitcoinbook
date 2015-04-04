@@ -817,16 +817,27 @@ At the time of writing, the network is attempting to find a block whose header h
 
 [[difficulty_bits]]
 ==== Difficulty Representation
+==== Difficulty表現
 
 ((("difficulty target")))((("mining","difficulty bits")))((("mining","difficulty targets")))In <<block277316>>, we saw that the block contains the difficulty target, in a notation called "difficulty bits" or just "bits," which in block 277,316 has the value of +0x1903a30c+. This notation expresses the difficulty target as a coefficient/exponent format, with the first two hexadecimal digits for the exponent and the next six hex digits as the coefficient. In this block, therefore, the exponent is +0x19+ and the coefficient is +0x03a30c+.
-    
+
+((("difficulty target")))((("mining","difficulty bits")))((("mining","difficulty targets")))
+<<block277316>>では、ブロックが"difficulty bits"または単に"bits"と呼ばれる記法で書かれたdifficulty targetを含んでいることを確認しました。
+ブロック277,316では+0x1903a30c+という値がdifficulty bitsに入っています。
+この記法はdifficulty targetを係数部/指数部形式で表すもので、最初の２桁の１６進数が指数部、次の６桁の１６進数が係数です。
+このブロックでは、指数部が +0x19+ 、係数が +0x03a30c+ となっています。
+
 The formula to calculate the difficulty target from this representation is:
+
+この記法からdifficulty targetを計算する数式は以下になります。
 
 ----
 target = coefficient * 2^(8 * (exponent – 3))
 ----
 
 Using that formula, and the difficulty bits value 0x1903a30c, we get:
+
+この数式を使うとdifficulty bits 0x1903a30cは、
 
 ----
 target = 0x03a30c * 2^(0x08 * (0x19 - 0x03))^ 
@@ -838,6 +849,8 @@ target = 0x03a30c * 2^(0x08 * (0x19 - 0x03))^
 
 which in decimal is:
 
+１０進数で表現すると、
+
 ----
 => target = 238,348 * 2^176^
 
@@ -846,28 +859,45 @@ which in decimal is:
 
 switching back to hexadecimal:
 
+これを１６進数で表すと以下になります。
+
 ----
 => target = 0x0000000000000003A30C00000000000000000000000000000000000000000000
 ----
 
 This means that a valid block for height 277,316 is one that has a block header hash that is less than the target. In binary that number would have more than the first 60 bits set to zero. With this level of difficulty, a single miner processing 1 trillion hashes per second (1 tera-hash per second or 1 TH/sec) would only find a solution once every 8,496 blocks or once every 59 days, on average. 
 
+これは、ブロック277,316を有効にするにはこのtargetよりも小さいブロックヘッダハッシュを持たなければならないということを意味します。
+２進数で言うと、この数字は最初の60bit以上が0になっています。
+このレベルのdifficultyは、秒間10億個のハッシュ(秒間1テラハッシュ、または1TH/sec)を生成できるマイナーだと平均的に8,496ブロックに１回解が見つかるだけ、または５９日に１回解が見つかるだけということになります。
+
 [[difficulty_target]]
 ==== Difficulty Target and Retargeting
+==== Difficulty TargetとRetargeting
 
 ((("difficulty target","retargeting", id="ix_ch08-asciidoc17", range="startofrange")))As we saw, the target determines the difficulty and therefore affects how long it takes to find a solution to the proof-of-work algorithm. This leads to the obvious questions: Why is the difficulty adjustable, who adjusts it, and how?
 
+((("difficulty target","retargeting", id="ix_ch08-asciidoc17", range="startofrange")))これまでに見てきたように、targetはdifficultyを決定し、よってproof-of-workアルゴリズムへの解を見つけることにかかる時間がどれくらい長くなるかに影響します。ここから自然な疑問点が出てきます。"なぜdifficultyは調整可能なのか、誰が調整しているのか、どのように調整しているのか"
+
 ((("difficulty retargeting")))((("difficulty target","block generation rate and")))Bitcoin's blocks are generated every 10 minutes, on average. This is bitcoin's heartbeat and underpins the frequency of currency issuance and the speed of transaction settlement. It has to remain constant not just over the short term, but over a period of many decades. Over this time, it is expected that computer power will continue to increase at a rapid pace. Furthermore, the number of participants in mining and the computers they use will also constantly change. To keep the block generation time at 10 minutes, the difficulty of mining must be adjusted to account for these changes. In fact, difficulty is a dynamic parameter that will be periodically adjusted to meet a 10-minute block target. In simple terms, the difficulty target is set to whatever mining power will result in a 10-minute block interval. 
+
+((("difficulty retargeting")))((("difficulty target","block generation rate and")))Bitcoinのブロックは平均的に10分毎に生成されています。これはBitcoinの鼓動であり、通貨発行頻度の土台であり、トランザクションが安定にいたる時間です。これは短すぎず、また数十年ほど長すぎず一定に保たれる必要があります。時間とともに、コンピュータの処理速度は急速に速くなっていくと予想され、またマイニングに参加する人とコンピュータの数も変わっていきます。ブロックの生成時間を10分に保つためには、difficultyはこれらの変化に合わせて調整されなければいけません。事実、difficultyは動的に変わるパラメータであり、10分毎のブロック生成を満たすためにたびたび調整されてきました。簡単に言うと、difficulty targetはどんなにマイニング速度が変わっても10分毎にブロック生成が起こるように設定されているのです。
 
 How, then, is such an adjustment made in a completely decentralized network? Difficulty retargeting occurs automatically and on every full node independently. Every 2,016 blocks, all nodes retarget the proof-of-work difficulty. The equation for retargeting difficulty measures the time it took to find the last 2,016 blocks and compares that to the expected time of 20,160 minutes (two weeks based upon a desired 10-minute block time). The ratio between the actual timespan and desired timespan is calculated and a corresponding adjustment (up or down) is made to the difficulty. In simple terms: If the network is finding blocks faster than every 10 minutes, the difficulty increases. If block discovery is slower than expected, the difficulty decreases. 
 
+完全な分散ネットワークでどのようにしてこの調整が行われているのでしょうか。difficultyのretargetingは自動的に全てのfull nodeで行われます。2,016ブロック毎に全てのBitcoinノードはproof-of-workのdifficultyをretargetします。retargetingを行う時は、最後の2,016ブロックが生成されたのにかかった時間を測定し、予想される時間20,160分(10分間でブロック生成が起きたとするとこれは約2週間に相当)と比較します。実際にかかった時間と求められる時間との比が計算され、適した調整(difficultyを上げるまたは下げる)が行われます。簡単に言って、もしBitcoinネットワークが10分毎よりも速くブロックを見つけていればdifficultyは上がります。もしブロックの発見が予想よりも遅ければ、difficultyは下がります。
+
 The equation can be summarized as:
+
+この関係式は以下のようにまとめられます。
 
 ----
 New Difficulty = Old Difficulty * (Actual Time of Last 2016 Blocks / 20160 minutes)
 ----
 
 <<retarget_difficulty_code>> shows the code used in the Bitcoin Core client.
+
+<<retarget_difficulty_code>>はBitcoin Coreクライアントのなかで使われているコードを示しています。
 
 [[retarget_difficulty_code]]
 .Retargeting the proof-of-work difficulty—GetNextWorkRequired() in pow.cpp, line 43
@@ -911,7 +941,11 @@ While the difficulty calibration happens every 2,016 blocks, because of an off-b
 
 The parameters Interval (2,016 blocks) and TargetTimespan (two weeks as 1,209,600 seconds) are defined in _chainparams.cpp_.
 
+Interval(2,016ブロック)とTargetTimespan(2週間、1,209,600秒)は _chainparams.cpp_ に定義されています。
+
 To avoid extreme volatility in the difficulty, the retargeting adjustment must be less than a factor of four (4) per cycle. If the required difficulty adjustment is greater than a factor of four, it will be adjusted by the maximum and not more. Any further adjustment will be accomplished in the next retargeting period because the imbalance will persist through the next 2,016 blocks. Therefore, large discrepancies between hashing power and difficulty might take several 2,016 block cycles to balance out. 
+
+difficultyが極端に動きすぎないように、retargetingは調整ごとに４倍または1/4以内になるようになっています。つまり、もし必要なdifficultyの調整が4倍よりも大きいまたは1/4よりも小さい場合は、最大でも4倍、最小でも1/4になりそれを超えたものにはなりません。不均衡が次の2,016ブロックの間続いてしまうため、さらなる調整は次のretargetingのときに行われます。このため、ハッシュ生成速度とdifficultyの大きな食い違いは数回のretargetingを経て均衡するようになると思われます。
 
 [TIP]
 ====
@@ -920,7 +954,11 @@ The difficulty of finding a bitcoin block is approximately '10 minutes of proces
 
 Note that the target difficulty is independent of the number of transactions or the value of transactions. This means that the amount of hashing power and therefore electricity expended to secure bitcoin is also entirely independent of the number of transactions. Bitcoin can scale up, achieve broader adoption, and remain secure without any increase in hashing power from today's level. The increase in hashing power represents market forces as new miners enter the market to compete for the reward. As long as enough hashing power is under the control of miners acting honestly in pursuit of the reward, it is enough to prevent "takeover" attacks and, therefore, it is enough to secure bitcoin. 
 
+difficulty targetはトランザクションの数やトランザクションに含まれる資金には依存しないことを注意しておきます。これは、ハッシュ生成速度、つまりはBitcoinをセキュアに保つために費やされる電気代もまたトランザクションの数に全く依存しないということです。これにより、今日のハッシュ生成速度が増加しなかったとしても、Bitcoinはより広く採用されスケールアップすることができ、セキュアに保たれるということです。ハッシュ生成速度が大きくなるということは、マーケットに参入した新しいマイナーに厳しい報酬競争を強いることになります。十分なハッシュ生成速度が率直に報酬を狙うマイナーによってコントロールされている限り、"買収"攻撃を防ぎBitcoinを安全に保つことができるのです。
+
 ((("difficulty target","electricity cost and")))((("electricity cost and target difficulty")))The target difficulty is closely related to the cost of electricity and the exchange rate of bitcoin vis-a-vis the currency used to pay for electricity. High-performance mining systems are about as efficient as possible with the current generation of silicon fabrication, converting electricity into hashing computation at the highest rate possible. The primary influence on the mining market is the price of one kilowatt-hour in bitcoin, because that determines the profitability of mining and therefore the incentives to enter or exit the mining market.(((range="endofrange", startref="ix_ch08-asciidoc17")))(((range="endofrange", startref="ix_ch08-asciidoc14")))(((range="endofrange", startref="ix_ch08-asciidoc13")))
+
+((("difficulty target","electricity cost and")))((("electricity cost and target difficulty")))difficulty targetは電気代およびbitcoinと電気代を払うための通貨の交換レートに密接に関係しています。ハイパフォーマンスなマイニングシステムは最近のシリコン製造技術を用いて可能な限り効率化されており、電気をできる限り最高のレートでハッシュ生成計算に転換しています。マイニングマーケット上の主要な影響は1KW/hあたり何bitcoinかかるかです。なぜなら、これがマイニングの収益を決定しマイニングマーケットに参入するか撤退するかを決めるからです。
 
 === Successfully Mining the Block
 
