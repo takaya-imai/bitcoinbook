@@ -992,10 +992,15 @@ In the next section, we'll look at the process each node uses to validate a bloc
 次の節では、ブロックを検証し最も長いブロックチェーンを選び分散されたブロックチェーンで形成される合意形成を作るプロセスを見ていきます。
 
 === Validating a New Block
+=== 新しいブロックの検証
 
 ((("blocks","validating new")))((("consensus","validating new blocks")))((("mining","validating new blocks")))The third step in bitcoin's consensus mechanism is independent validation of each new block by every node on the network. As the newly solved block moves across the network, each node performs a series of tests to validate it before propagating it to its peers. This ensures that only valid blocks are propagated on the network. The independent validation also ensures that miners who act honestly get their blocks incorporated in the blockchain, thus earning the reward. Those miners who act dishonestly have their blocks rejected and not only lose the reward, but also waste the effort expended to find a proof-of-work solution, thus incurring the cost of electricity without compensation. 
 
+((("blocks","validating new")))((("consensus","validating new blocks")))((("mining","validating new blocks")))Bitcoinの合意形成メカニズムの３つ目のステップは、独立した全てのBitcoinノードによる新しいブロック検証です。新しく解決されたブロックがBitcoinネットワークを移動する時、それぞれのBitcoinノードはブロックをピアに送信する前に有効なブロックかどうかを確認するテストを実行します。これは、有効なブロックだけがBitcoinネットワークを伝搬するようにするためです。また、独立した検証は、信頼できるマイナーがそれらのブロックをブロックチェーンに合体させ報酬を稼ぐことを保証しています。信頼できないマイナーが作ったブロックがあった場合他のBitcoinノードから拒否されてしまうため報酬が得られないだけでなくproof-of-workで費やした努力を無駄にし何の埋め合わせもなく電気代を負うことになります。
+
 When a node receives a new block, it will validate the block by checking it against a long list of criteria that must all be met; otherwise, the block is rejected. These criteria can be seen in the Bitcoin Core client in the functions((("CheckBlock function (Bitcoin Core client)")))((("CheckBlockHeader function (Bitcoin Core client)"))) +CheckBlock+ and +CheckBlockHeader+ and include:
+
+Bitcoinノードが新しいブロックを受け取った時、全てのブロックが満たすべき長い条件リストに照らし合わせてチェックされ検証されます。もし条件を満たさなければブロックは拒否されます。これらの条件はBitcoin Coreクライアントの中の +CheckBlock+ 関数や +CheckBlockHeader+ 関数で確認でき、以下の条件を含んでいます。
 
 * The block data structure is syntactically valid
 * The block header hash is less than the target difficulty (enforces the proof of work)
@@ -1004,7 +1009,16 @@ When a node receives a new block, it will validate the block by checking it agai
 * The first transaction (and only the first) is a coinbase generation transaction
 * All transactions within the block are valid using the transaction checklist discussed in <<tx_verification>>
 
+* ブロックのデータ構造が公文的に有効であること
+* ブロックヘッダハッシュがdifficulty targetよりも小さいこと(proof of workを強制する)
+* ブロックのタイムスタンプが２時間後よりも小さいこと(時刻エラーのある程度の許容)
+* ブロックサイズが受け入れられる制限内であること
+* 最初のトランザクション(そして、最初のトランザクションのみ)がcoinbase generationトランザクションであること
+* ブロックに含まれる全てのトランザクションが<<tx_verification>>で説明したチェックリストを満たすこと
+
 The independent validation of each new block by every node on the network ensures that the miners can't cheat. In previous sections we saw how the miners get to write a transaction that awards them the new bitcoins created within the block and claim the transaction fees. Why don't miners write themselves a transaction for a thousand bitcoin instead of the correct reward? Because every node validates blocks according to the same rules. An invalid coinbase transaction would make the entire block invalid, which would result in the block being rejected and, therefore, that transaction would never become part of the ledger. The miners have to construct a perfect block, based on the shared rules that all nodes follow, and mine it with a correct solution to the proof of work. To do so, they expend a lot of electricity in mining, and if they cheat, all the electricity and effort is wasted. This is why independent validation is a key component of decentralized consensus.
+
+全てのBitcoinノードによって独立に行われる検証によって、マイナーがごまかして不正をできないようになっています。前の節で、どのようにマイナーが新しいbitcoinをマイナーに与えるトランザクションをブロック内に書き、トランザクション手数料を要求するのかを確認しました。なぜマイナーは正しい報酬の代わりに彼ら自身で数千bitcoinを自身に与えるトランザクションを書かないのでしょうか。これは、全てのBitcoinノードが同じルールに従ってブロックを検証しているからです。不正なcoinbaseトランザクションがあった場合ブロック全体が無効になってしまい、結局このブロックは拒否されブロックチェーンの一部にはならないことになってしまいます。マイナーは全てのBitcoinノードが従っている共有ルールに基づく完全なブロックを構築する必要があり、しかもproof of workの正しい解を伴った形で採掘しなければいけません。これを行うために、マイニングに多大な電気を使います。もし彼らが不正を行えば、全ての電気と努力は無駄になってしまいます。これが独立した検証が分散された合意形成のキーポイントである理由なのです。
 
 === Assembling and Selecting Chains of Blocks
 
