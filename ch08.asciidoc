@@ -961,10 +961,15 @@ difficulty targetはトランザクションの数やトランザクションに
 ((("difficulty target","electricity cost and")))((("electricity cost and target difficulty")))difficulty targetは電気代およびbitcoinと電気代を払うための通貨の交換レートに密接に関係しています。ハイパフォーマンスなマイニングシステムは最近のシリコン製造技術を用いて可能な限り効率化されており、電気をできる限り最高のレートでハッシュ生成計算に転換しています。マイニングマーケット上の主要な影響は1KW/hあたり何bitcoinかかるかです。なぜなら、これがマイニングの収益を決定しマイニングマーケットに参入するか撤退するかを決めるからです。
 
 === Successfully Mining the Block
+=== うまくいったブロックの採掘
 
 ((("consensus","mining blocks successfully")))As we saw earlier, Jing's node has constructed a candidate block and prepared it for mining. Jing has several hardware mining rigs with((("Application Specific Integrated Circuit (ASIC)","mining with"))) application-specific integrated circuits, where hundreds of thousands of integrated circuits run the SHA256 algorithm in parallel at incredible speeds. These specialized machines are connected to his mining node over USB. Next, the mining node running on Jing's desktop transmits the block header to his mining hardware, which starts testing trillions of nonces per second. 
 
+((("consensus","mining blocks successfully")))前に見たように、ジンのBitcoinノードは候補ブロックを構築しマイニングの準備が整いました。ジンは((("Application Specific Integrated Circuit (ASIC)","mining with"))) ASIC(application-specific integrated circuits)で作られた幾つかのハードウェアのmining rigsを持っています。ASICは数十万個の集積回路で並行してSHA256アルゴリズムを計算するもので、信じられないほどのハッシュ生成速度を出します。これらの特別なマシンは彼のマイニングノードにUSBを通して接続されています。次に、ジンのデスクトップで動いているマイニングノードはブロックヘッダをマイニングハードウェアに送信し、ここから秒間10億回ものnonceの試行が始まります。
+
 Almost 11 minutes after starting to mine block 277,316, one of the hardware mining machines finds a solution and sends it back to the mining node. When inserted into the block header, the nonce 4,215,469,401 produces a block hash of:
+
+ブロック277,316の採掘を初めてから11分弱後に１つのハードウェアマイニングマシンが解を見つけ、マイニングノードにそれを送り返しました。ブロックヘッダにそれを入れてみると、nonce 4,215,469,401が以下のブロックハッシュを生成しました。
 
 ----
 0000000000000002a7bbd25a417c0374cc55261021e8a9ca74442b01284f0569
@@ -972,13 +977,19 @@ Almost 11 minutes after starting to mine block 277,316, one of the hardware mini
 
 which is less than the target:
 
+これは以下のtargetよりも小さいものです。
+
 ----
 0000000000000003A30C00000000000000000000000000000000000000000000
 ----
 
 Immediately, Jing's mining node transmits the block to all its peers. They receive, validate, and then propagate the new block. As the block ripples out across the network, each node adds it to its own copy of the blockchain, extending it to a new height of 277,316 blocks. As mining nodes receive and validate the block, they abandon their efforts to find a block at the same height and immediately start computing the next block in the chain. 
 
+すぐに、ジンのマイニングノードはブロックを全てのピアに送信しました。彼らはこのブロックを受け取り、検証し、この新しいブロックを次に伝搬します。このブロックがBitcoinネットワークを波紋のように伝搬していくときに、それぞれのBitcoinノードはこのブロックを自身のブロックチェーンのコピーに追加しブロック高を277,316に増やします。
+
 In the next section, we'll look at the process each node uses to validate a block and select the longest chain, creating the consensus that forms the decentralized blockchain.
+
+次の節では、ブロックを検証し最も長いブロックチェーンを選び分散されたブロックチェーンで形成される合意形成を作るプロセスを見ていきます。
 
 === Validating a New Block
 
