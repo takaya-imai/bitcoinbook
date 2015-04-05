@@ -817,16 +817,27 @@ At the time of writing, the network is attempting to find a block whose header h
 
 [[difficulty_bits]]
 ==== Difficulty Representation
+==== Difficulty表現
 
 ((("difficulty target")))((("mining","difficulty bits")))((("mining","difficulty targets")))In <<block277316>>, we saw that the block contains the difficulty target, in a notation called "difficulty bits" or just "bits," which in block 277,316 has the value of +0x1903a30c+. This notation expresses the difficulty target as a coefficient/exponent format, with the first two hexadecimal digits for the exponent and the next six hex digits as the coefficient. In this block, therefore, the exponent is +0x19+ and the coefficient is +0x03a30c+.
-    
+
+((("difficulty target")))((("mining","difficulty bits")))((("mining","difficulty targets")))
+<<block277316>>では、ブロックが"difficulty bits"または単に"bits"と呼ばれる記法で書かれたdifficulty targetを含んでいることを確認しました。
+ブロック277,316では+0x1903a30c+という値がdifficulty bitsに入っています。
+この記法はdifficulty targetを係数部/指数部形式で表すもので、最初の２桁の１６進数が指数部、次の６桁の１６進数が係数です。
+このブロックでは、指数部が +0x19+ 、係数が +0x03a30c+ となっています。
+
 The formula to calculate the difficulty target from this representation is:
+
+この記法からdifficulty targetを計算する数式は以下になります。
 
 ----
 target = coefficient * 2^(8 * (exponent – 3))
 ----
 
 Using that formula, and the difficulty bits value 0x1903a30c, we get:
+
+この数式を使うとdifficulty bits 0x1903a30cは、
 
 ----
 target = 0x03a30c * 2^(0x08 * (0x19 - 0x03))^ 
@@ -838,6 +849,8 @@ target = 0x03a30c * 2^(0x08 * (0x19 - 0x03))^
 
 which in decimal is:
 
+１０進数で表現すると、
+
 ----
 => target = 238,348 * 2^176^
 
@@ -846,28 +859,45 @@ which in decimal is:
 
 switching back to hexadecimal:
 
+これを１６進数で表すと以下になります。
+
 ----
 => target = 0x0000000000000003A30C00000000000000000000000000000000000000000000
 ----
 
 This means that a valid block for height 277,316 is one that has a block header hash that is less than the target. In binary that number would have more than the first 60 bits set to zero. With this level of difficulty, a single miner processing 1 trillion hashes per second (1 tera-hash per second or 1 TH/sec) would only find a solution once every 8,496 blocks or once every 59 days, on average. 
 
+これは、ブロック277,316を有効にするにはこのtargetよりも小さいブロックヘッダハッシュを持たなければならないということを意味します。
+２進数で言うと、この数字は最初の60bit以上が0になっています。
+このレベルのdifficultyは、秒間10億個のハッシュ(秒間1テラハッシュ、または1TH/sec)を生成できるマイナーだと平均的に8,496ブロックに１回解が見つかるだけ、または５９日に１回解が見つかるだけということになります。
+
 [[difficulty_target]]
 ==== Difficulty Target and Retargeting
+==== Difficulty TargetとRetargeting
 
 ((("difficulty target","retargeting", id="ix_ch08-asciidoc17", range="startofrange")))As we saw, the target determines the difficulty and therefore affects how long it takes to find a solution to the proof-of-work algorithm. This leads to the obvious questions: Why is the difficulty adjustable, who adjusts it, and how?
 
+((("difficulty target","retargeting", id="ix_ch08-asciidoc17", range="startofrange")))これまでに見てきたように、targetはdifficultyを決定し、よってproof-of-workアルゴリズムへの解を見つけることにかかる時間がどれくらい長くなるかに影響します。ここから自然な疑問点が出てきます。"なぜdifficultyは調整可能なのか、誰が調整しているのか、どのように調整しているのか"
+
 ((("difficulty retargeting")))((("difficulty target","block generation rate and")))Bitcoin's blocks are generated every 10 minutes, on average. This is bitcoin's heartbeat and underpins the frequency of currency issuance and the speed of transaction settlement. It has to remain constant not just over the short term, but over a period of many decades. Over this time, it is expected that computer power will continue to increase at a rapid pace. Furthermore, the number of participants in mining and the computers they use will also constantly change. To keep the block generation time at 10 minutes, the difficulty of mining must be adjusted to account for these changes. In fact, difficulty is a dynamic parameter that will be periodically adjusted to meet a 10-minute block target. In simple terms, the difficulty target is set to whatever mining power will result in a 10-minute block interval. 
+
+((("difficulty retargeting")))((("difficulty target","block generation rate and")))Bitcoinのブロックは平均的に10分毎に生成されています。これはBitcoinの鼓動であり、通貨発行頻度の土台であり、トランザクションが安定にいたる時間です。これは短すぎず、また数十年ほど長すぎず一定に保たれる必要があります。時間とともに、コンピュータの処理速度は急速に速くなっていくと予想され、またマイニングに参加する人とコンピュータの数も変わっていきます。ブロックの生成時間を10分に保つためには、difficultyはこれらの変化に合わせて調整されなければいけません。事実、difficultyは動的に変わるパラメータであり、10分毎のブロック生成を満たすためにたびたび調整されてきました。簡単に言うと、difficulty targetはどんなにマイニング速度が変わっても10分毎にブロック生成が起こるように設定されているのです。
 
 How, then, is such an adjustment made in a completely decentralized network? Difficulty retargeting occurs automatically and on every full node independently. Every 2,016 blocks, all nodes retarget the proof-of-work difficulty. The equation for retargeting difficulty measures the time it took to find the last 2,016 blocks and compares that to the expected time of 20,160 minutes (two weeks based upon a desired 10-minute block time). The ratio between the actual timespan and desired timespan is calculated and a corresponding adjustment (up or down) is made to the difficulty. In simple terms: If the network is finding blocks faster than every 10 minutes, the difficulty increases. If block discovery is slower than expected, the difficulty decreases. 
 
+完全な分散ネットワークでどのようにしてこの調整が行われているのでしょうか。difficultyのretargetingは自動的に全てのfull nodeで行われます。2,016ブロック毎に全てのBitcoinノードはproof-of-workのdifficultyをretargetします。retargetingを行う時は、最後の2,016ブロックが生成されたのにかかった時間を測定し、予想される時間20,160分(10分間でブロック生成が起きたとするとこれは約2週間に相当)と比較します。実際にかかった時間と求められる時間との比が計算され、適した調整(difficultyを上げるまたは下げる)が行われます。簡単に言って、もしBitcoinネットワークが10分毎よりも速くブロックを見つけていればdifficultyは上がります。もしブロックの発見が予想よりも遅ければ、difficultyは下がります。
+
 The equation can be summarized as:
+
+この関係式は以下のようにまとめられます。
 
 ----
 New Difficulty = Old Difficulty * (Actual Time of Last 2016 Blocks / 20160 minutes)
 ----
 
 <<retarget_difficulty_code>> shows the code used in the Bitcoin Core client.
+
+<<retarget_difficulty_code>>はBitcoin Coreクライアントのなかで使われているコードを示しています。
 
 [[retarget_difficulty_code]]
 .Retargeting the proof-of-work difficulty—GetNextWorkRequired() in pow.cpp, line 43
@@ -911,7 +941,11 @@ While the difficulty calibration happens every 2,016 blocks, because of an off-b
 
 The parameters Interval (2,016 blocks) and TargetTimespan (two weeks as 1,209,600 seconds) are defined in _chainparams.cpp_.
 
+Interval(2,016ブロック)とTargetTimespan(2週間、1,209,600秒)は _chainparams.cpp_ に定義されています。
+
 To avoid extreme volatility in the difficulty, the retargeting adjustment must be less than a factor of four (4) per cycle. If the required difficulty adjustment is greater than a factor of four, it will be adjusted by the maximum and not more. Any further adjustment will be accomplished in the next retargeting period because the imbalance will persist through the next 2,016 blocks. Therefore, large discrepancies between hashing power and difficulty might take several 2,016 block cycles to balance out. 
+
+difficultyが極端に動きすぎないように、retargetingは調整ごとに４倍または1/4以内になるようになっています。つまり、もし必要なdifficultyの調整が4倍よりも大きいまたは1/4よりも小さい場合は、最大でも4倍、最小でも1/4になりそれを超えたものにはなりません。不均衡が次の2,016ブロックの間続いてしまうため、さらなる調整は次のretargetingのときに行われます。このため、ハッシュ生成速度とdifficultyの大きな食い違いは数回のretargetingを経て均衡するようになると思われます。
 
 [TIP]
 ====
@@ -920,13 +954,22 @@ The difficulty of finding a bitcoin block is approximately '10 minutes of proces
 
 Note that the target difficulty is independent of the number of transactions or the value of transactions. This means that the amount of hashing power and therefore electricity expended to secure bitcoin is also entirely independent of the number of transactions. Bitcoin can scale up, achieve broader adoption, and remain secure without any increase in hashing power from today's level. The increase in hashing power represents market forces as new miners enter the market to compete for the reward. As long as enough hashing power is under the control of miners acting honestly in pursuit of the reward, it is enough to prevent "takeover" attacks and, therefore, it is enough to secure bitcoin. 
 
+difficulty targetはトランザクションの数やトランザクションに含まれる資金には依存しないことを注意しておきます。これは、ハッシュ生成速度、つまりはBitcoinをセキュアに保つために費やされる電気代もまたトランザクションの数に全く依存しないということです。これにより、今日のハッシュ生成速度が増加しなかったとしても、Bitcoinはより広く採用されスケールアップすることができ、セキュアに保たれるということです。ハッシュ生成速度が大きくなるということは、マーケットに参入した新しいマイナーに厳しい報酬競争を強いることになります。十分なハッシュ生成速度が率直に報酬を狙うマイナーによってコントロールされている限り、"買収"攻撃を防ぎBitcoinを安全に保つことができるのです。
+
 ((("difficulty target","electricity cost and")))((("electricity cost and target difficulty")))The target difficulty is closely related to the cost of electricity and the exchange rate of bitcoin vis-a-vis the currency used to pay for electricity. High-performance mining systems are about as efficient as possible with the current generation of silicon fabrication, converting electricity into hashing computation at the highest rate possible. The primary influence on the mining market is the price of one kilowatt-hour in bitcoin, because that determines the profitability of mining and therefore the incentives to enter or exit the mining market.(((range="endofrange", startref="ix_ch08-asciidoc17")))(((range="endofrange", startref="ix_ch08-asciidoc14")))(((range="endofrange", startref="ix_ch08-asciidoc13")))
 
+((("difficulty target","electricity cost and")))((("electricity cost and target difficulty")))difficulty targetは電気代およびbitcoinと電気代を払うための通貨の交換レートに密接に関係しています。ハイパフォーマンスなマイニングシステムは最近のシリコン製造技術を用いて可能な限り効率化されており、電気をできる限り最高のレートでハッシュ生成計算に転換しています。マイニングマーケット上の主要な影響は1KW/hあたり何bitcoinかかるかです。なぜなら、これがマイニングの収益を決定しマイニングマーケットに参入するか撤退するかを決めるからです。(((range="endofrange", startref="ix_ch08-asciidoc17")))(((range="endofrange", startref="ix_ch08-asciidoc14")))(((range="endofrange", startref="ix_ch08-asciidoc13")))
+
 === Successfully Mining the Block
+=== うまくいったブロックの採掘
 
 ((("consensus","mining blocks successfully")))As we saw earlier, Jing's node has constructed a candidate block and prepared it for mining. Jing has several hardware mining rigs with((("Application Specific Integrated Circuit (ASIC)","mining with"))) application-specific integrated circuits, where hundreds of thousands of integrated circuits run the SHA256 algorithm in parallel at incredible speeds. These specialized machines are connected to his mining node over USB. Next, the mining node running on Jing's desktop transmits the block header to his mining hardware, which starts testing trillions of nonces per second. 
 
+((("consensus","mining blocks successfully")))前に見たように、ジンのBitcoinノードは候補ブロックを構築しマイニングの準備が整いました。ジンは((("Application Specific Integrated Circuit (ASIC)","mining with"))) ASIC(application-specific integrated circuits)で作られた幾つかのハードウェアのmining rigsを持っています。ASICは数十万個の集積回路で並行してSHA256アルゴリズムを計算するもので、信じられないほどのハッシュ生成速度を出します。これらの特別なマシンは彼のマイニングノードにUSBを通して接続されています。次に、ジンのデスクトップで動いているマイニングノードはブロックヘッダをマイニングハードウェアに送信し、ここから秒間10億回ものnonceの試行が始まります。
+
 Almost 11 minutes after starting to mine block 277,316, one of the hardware mining machines finds a solution and sends it back to the mining node. When inserted into the block header, the nonce 4,215,469,401 produces a block hash of:
+
+ブロック277,316の採掘を初めてから11分弱後に１つのハードウェアマイニングマシンが解を見つけ、マイニングノードにそれを送り返しました。ブロックヘッダにそれを入れてみると、nonce 4,215,469,401が以下のブロックハッシュを生成しました。
 
 ----
 0000000000000002a7bbd25a417c0374cc55261021e8a9ca74442b01284f0569
@@ -934,19 +977,30 @@ Almost 11 minutes after starting to mine block 277,316, one of the hardware mini
 
 which is less than the target:
 
+これは以下のtargetよりも小さいものです。
+
 ----
 0000000000000003A30C00000000000000000000000000000000000000000000
 ----
 
 Immediately, Jing's mining node transmits the block to all its peers. They receive, validate, and then propagate the new block. As the block ripples out across the network, each node adds it to its own copy of the blockchain, extending it to a new height of 277,316 blocks. As mining nodes receive and validate the block, they abandon their efforts to find a block at the same height and immediately start computing the next block in the chain. 
 
+すぐに、ジンのマイニングノードはブロックを全てのピアに送信しました。彼らはこのブロックを受け取り、検証し、この新しいブロックを次に伝搬します。このブロックがBitcoinネットワークを波紋のように伝搬していくときに、それぞれのBitcoinノードはこのブロックを自身のブロックチェーンのコピーに追加しブロック高を277,316に増やします。
+
 In the next section, we'll look at the process each node uses to validate a block and select the longest chain, creating the consensus that forms the decentralized blockchain.
 
+次の節では、ブロックを検証し最も長いブロックチェーンを選び分散されたブロックチェーンで形成される合意形成を作るプロセスを見ていきます。
+
 === Validating a New Block
+=== 新しいブロックの検証
 
 ((("blocks","validating new")))((("consensus","validating new blocks")))((("mining","validating new blocks")))The third step in bitcoin's consensus mechanism is independent validation of each new block by every node on the network. As the newly solved block moves across the network, each node performs a series of tests to validate it before propagating it to its peers. This ensures that only valid blocks are propagated on the network. The independent validation also ensures that miners who act honestly get their blocks incorporated in the blockchain, thus earning the reward. Those miners who act dishonestly have their blocks rejected and not only lose the reward, but also waste the effort expended to find a proof-of-work solution, thus incurring the cost of electricity without compensation. 
 
+((("blocks","validating new")))((("consensus","validating new blocks")))((("mining","validating new blocks")))Bitcoinの合意形成メカニズムの３つ目のステップは、独立した全てのBitcoinノードによる新しいブロック検証です。新しく解決されたブロックがBitcoinネットワークを移動する時、それぞれのBitcoinノードはブロックをピアに送信する前に有効なブロックかどうかを確認するテストを実行します。これは、有効なブロックだけがBitcoinネットワークを伝搬するようにするためです。また、独立した検証は、信頼できるマイナーがそれらのブロックをブロックチェーンに合体させ報酬を稼ぐことを保証しています。信頼できないマイナーが作ったブロックがあった場合他のBitcoinノードから拒否されてしまうため報酬が得られないだけでなくproof-of-workで費やした努力を無駄にし何の埋め合わせもなく電気代を負うことになります。
+
 When a node receives a new block, it will validate the block by checking it against a long list of criteria that must all be met; otherwise, the block is rejected. These criteria can be seen in the Bitcoin Core client in the functions((("CheckBlock function (Bitcoin Core client)")))((("CheckBlockHeader function (Bitcoin Core client)"))) +CheckBlock+ and +CheckBlockHeader+ and include:
+
+Bitcoinノードが新しいブロックを受け取った時、全てのブロックが満たすべき長い条件リストに照らし合わせてチェックされ検証されます。もし条件を満たさなければブロックは拒否されます。これらの条件はBitcoin Coreクライアントの中の +CheckBlock+ 関数や +CheckBlockHeader+ 関数で確認でき、以下の条件を含んでいます。
 
 * The block data structure is syntactically valid
 * The block header hash is less than the target difficulty (enforces the proof of work)
@@ -955,25 +1009,51 @@ When a node receives a new block, it will validate the block by checking it agai
 * The first transaction (and only the first) is a coinbase generation transaction
 * All transactions within the block are valid using the transaction checklist discussed in <<tx_verification>>
 
+* ブロックのデータ構造が公文的に有効であること
+* ブロックヘッダハッシュがdifficulty targetよりも小さいこと(proof of workを強制する)
+* ブロックのタイムスタンプが２時間後よりも小さいこと(時刻エラーのある程度の許容)
+* ブロックサイズが受け入れられる制限内であること
+* 最初のトランザクション(そして、最初のトランザクションのみ)がcoinbase generationトランザクションであること
+* ブロックに含まれる全てのトランザクションが<<tx_verification>>で説明したチェックリストを満たすこと
+
 The independent validation of each new block by every node on the network ensures that the miners can't cheat. In previous sections we saw how the miners get to write a transaction that awards them the new bitcoins created within the block and claim the transaction fees. Why don't miners write themselves a transaction for a thousand bitcoin instead of the correct reward? Because every node validates blocks according to the same rules. An invalid coinbase transaction would make the entire block invalid, which would result in the block being rejected and, therefore, that transaction would never become part of the ledger. The miners have to construct a perfect block, based on the shared rules that all nodes follow, and mine it with a correct solution to the proof of work. To do so, they expend a lot of electricity in mining, and if they cheat, all the electricity and effort is wasted. This is why independent validation is a key component of decentralized consensus.
 
+全てのBitcoinノードによって独立に行われる検証によって、マイナーがごまかして不正をできないようになっています。前の節で、どのようにマイナーが新しいbitcoinをマイナーに与えるトランザクションをブロック内に書き、トランザクション手数料を要求するのかを確認しました。なぜマイナーは正しい報酬の代わりに彼ら自身で数千bitcoinを自身に与えるトランザクションを書かないのでしょうか。これは、全てのBitcoinノードが同じルールに従ってブロックを検証しているからです。不正なcoinbaseトランザクションがあった場合ブロック全体が無効になってしまい、結局このブロックは拒否されブロックチェーンの一部にはならないことになってしまいます。マイナーは全てのBitcoinノードが従っている共有ルールに基づく完全なブロックを構築する必要があり、しかもproof of workの正しい解を伴った形で採掘しなければいけません。これを行うために、マイニングに多大な電気を使います。もし彼らが不正を行えば、全ての電気と努力は無駄になってしまいます。これが独立した検証が分散された合意形成のキーポイントである理由なのです。
+
 === Assembling and Selecting Chains of Blocks
+=== ブロックのチェーン組み立てと選択
 
 ((("blockchains","assembling", id="ix_ch08-asciidoc18", range="startofrange")))((("blockchains","selecting", id="ix_ch08-asciidoc19", range="startofrange")))((("blocks","assembling chains of", id="ix_ch08-asciidoc20", range="startofrange")))((("blocks","selecting chains of", id="ix_ch08-asciidoc21", range="startofrange")))The final step in bitcoin's decentralized consensus mechanism is the assembly of blocks into chains and the selection of the chain with the most proof of work. Once a node has validated a new block, it will then attempt to assemble a chain by connecting the block to the existing blockchain. 
 
+((("blockchains","assembling", id="ix_ch08-asciidoc18", range="startofrange")))((("blockchains","selecting", id="ix_ch08-asciidoc19", range="startofrange")))((("blocks","assembling chains of", id="ix_ch08-asciidoc20", range="startofrange")))((("blocks","selecting chains of", id="ix_ch08-asciidoc21", range="startofrange")))Bitcoinの分散された合意形成メカニズムの最後のステップは、ブロックをチェーンに組み込むことと、最も多くのproof of workを含むチェーンの選択です。一度Bitcoinノードが新しいブロックが有効であると確認すると、このブロックを持っているブロックチェーンに結びつけチェーンを形成しようとします。
+
 ((("nodes","sets of blocks maintained by")))Nodes maintain three sets of blocks: those connected to the main blockchain, those that form branches off the main blockchain((("secondary chains"))) (secondary chains), and finally, blocks that do not have a known parent in the known chains((("orphan blocks"))) (orphans). Invalid blocks are rejected as soon as any one of the validation criteria fails and are therefore not included in any chain. 
 
+((("nodes","sets of blocks maintained by")))Bitcoinノードは３種類のブロックセットを持っています。１つはメインのブロックチェーンにひも付けられたブロック。１つはメインのブロックチェーンから枝分かれしたブロック((("secondary chains"))) (セカンダリーチェーン)。もう1つは知っているチェーンに親がないブロック((("orphan blocks"))) (orphans)です。無効なブロックは検証条件を満たさなかった時点ですぐに拒否されるためどのチェーンにも含まれません。
+
 ((("blockchains","main")))((("main blockchain")))The "main chain" at any time is whichever chain of blocks has the most cumulative difficulty associated with it. Under most circumstances this is also the chain with the most blocks in it, unless there are two equal-length chains and one has more proof of work. ((("sibling chains (to main chain)")))The main chain will also have branches with blocks that are "siblings" to the blocks on the main chain. These blocks are valid but not part of the main chain. They are kept for future reference, in case one of those chains is extended to exceed the main chain in difficulty. In the next section (<<forks>>), we will see how secondary chains occur as a result of an almost simultaneous mining of blocks at the same height. 
-    
+
+((("blockchains","main")))((("main blockchain")))"メインチェーン"はどんなときでも、チェーンにひもづいた累積difficultyを最も多く持っているチェーンになります。同じ長さのチェーンがあり片方の方がより多くのproof of workを持っている場合を除き、ほとんどの状況下でこれは最も多くのブロックを持っているチェーンでもあります。((("sibling chains (to main chain)")))メインチェーンは、メインチェーンのブロックに繋がった"sibling"ブロックのブランチを持つこともあります。これらのブロックは有効ですがメインチェーンの一部ではありません。これらがほじされているのは、将来これらのチェーンのうちの１つがメインチェーンをdifficultyで上回り拡張された場合に参照できるようにするためです。次の節(<<forks>>)では、ほとんど同時に同じブロック高を持つブロックが採掘された結果としてどのようにセカンダリーチェーンが生じるかを説明します。
+
 When a new block is received, a node will try to slot it into the existing blockchain. The node will look at the block's "previous block hash" field, which is the reference to the new block's parent. Then, the node will attempt to find that parent in the existing blockchain. Most of the time, the parent will be the "tip" of the main chain, meaning this new block extends the main chain. For example, the new block 277,316 has a reference to the hash of its parent block 277,315. Most nodes that receive 277,316 will already have block 277,315 as the tip of their main chain and will therefore link the new block and extend that chain. 
+
+新しいブロックを受け取った時、Bitcoinノードはすでにあるブロックチェーンにブロックを入れようとします。このBitcoinノードはブロックの"previous block hash"フィールドを確認します。previous block hashフィールドは新しいブロックの親を参照しています。このBitcoinノードは対応した親を探そうとします。ほとんどの場合、親はメインチェーンの"先頭"にあり、これが意味することはメインチェーンが新しいブロックで拡張されるということです。例えば、新しいブロック 277,316 が親ブロック 277,315 のブロックハッシュを参照しているような場合です。ブロック 277,316 を受け取ったほとんどのBitcoinノードはすでにメインチェーンの戦闘ブロックとしてブロック 277,315 を持っており、よって新しいブロックを連結しメインチェーンを拡張することになるのです。
 
 Sometimes, as we will see in <<forks>>, the new block extends a chain that is not the main chain. In that case, the node will attach the new block to the secondary chain it extends and then compare the difficulty of the secondary chain to the main chain. If the secondary chain has more cumulative difficulty than the main chain, the node will _reconverge_ on the secondary chain, meaning it will select the secondary chain as its new main chain, making the old main chain a secondary chain. If the node is a miner, it will now construct a block extending this new, longer, chain.
 
+<<forks>>で見るように、時々新しいブロックがメインチェーン以外のチェーンを拡張するときがあります。この場合、Bitcoinノードは新しいブロックをセカンダリーチェーンにくっつけ、セカンダリーチェーンとメインチェーンのdifficultyを比較します。もしセカンダリーチェーンの累積difficultyがメインチェーンの累積difficultyを上回っていれば、Bitcoinノードはセカンダリーチェーンに _中心を移し_ ます。このことは、セカンダリーチェーンを新しいメインチェーンとして選び、古いメインチェーンをセカンダリーチェーンにするということを意味しています。もしこのBitcoinノードがマイナーであれば、この新しくより長いチェーンを拡張していくブロックを構築することになります。
+
 If a valid block is received and no parent is found in the existing chains, that block is considered an "orphan." Orphan blocks are saved in the orphan block pool where they will stay until their parent is received. Once the parent is received and linked into the existing chains, the orphan can be pulled out of the orphan pool and linked to the parent, making it part of a chain. Orphan blocks usually occur when two blocks that were mined within a short time of each other are received in reverse order (child before parent). 
+
+もし有効なブロックを受け取っても存在するチェーンに親が見つからなかった場合、このブロックは"orphan"とみなされます。orphanブロックは、これらの親を受け取るまでorphanブロックプールに保持されます。この親を受け取り存在するチェーンに連結されると、orphanブロックはorphanプールからから取り出されてこの親に連結され、チェーンの一部となります。orphanブロックは、ほぼ同時に採掘された２つのブロックを逆順(親より前に子)で受け取ったときに通常生じるものです。
 
 By selecting the greatest-difficulty chain, all nodes eventually achieve network-wide consensus. Temporary discrepancies between chains are resolved eventually as more proof of work is added, extending one of the possible chains. Mining nodes "vote" with their mining power by choosing which chain to extend by mining the next block. When they mine a new block and extend the chain, the new block itself represents their vote. 
 
+最も大きいdifficultyを持つチェーンを選ぶことで、全てのBitcoinノードは結局ネットワーク全体の合意形成に到達し、一時的なチェーン同士の不一致はより多くのproof of workが追加されるにつれて結局は解決されます。マイニングノードはどのチェーンが拡張されていくかを選ぶことでマイニングパワーを(チェーンに)"投票"していることになります。このマイニングノードが新しいブロックを採掘しチェーンを拡張するとき、新しいブロックそのものがマイニングノードの投票を表すのです。
+
 In the next section we will look at how discrepancies between competing chains (forks) are resolved by the independent selection of the longest difficulty chain.
+
+次の節では、最も長いdifficultyチェーンを独立に選ぶことでどのようにしてチェーン同士(フォーク)の競争による不一致を解決しているかを見ていきます。
 
 [[forks]]
 ==== Blockchain Forks
