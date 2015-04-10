@@ -15,6 +15,7 @@ On((("bitcoin.org","Bitcoin Core, downloading"))) http://bitcoin.org/en/choose-y
 
 [[bitcoin-choose-client]]
 .Choosing a bitcoin client at bitcoin.org
+.bitcoin.org でのBitcoinクライアント選択
 image::images/msbt_0301.png["bitcoin choose client"]
 
 ==== Running Bitcoin Core for the First Time
@@ -30,11 +31,14 @@ Bitcoin Coreを最初に起動したとき、まずブロックチェーンを�
 
 [[bitcoin-qt-firstload]]
 .Bitcoin Core screen during the blockchain initialization
+.ブロックチェーン初期構築時のBitcoin Coreスクリーン
 image::images/msbt_0302.png["bitcoin-qt first run"]
 
 [TIP]
 ====
 ((("Bitcoin Core client","disk space requirement for")))((("blockchains","synchronizing for Bitcoin Core")))((("disk space requirement for Bitcoin Core")))Bitcoin Core keeps a full copy of the transaction ledger (blockchain), with every transaction that has ever occurred on the bitcoin network since its inception in 2009. This dataset is several gigabytes in size (approximately 16 GB in late 2013) and is downloaded incrementally over several days. The client will not be able to process transactions or update account balances until the full blockchain dataset is downloaded. During that time, the client will display "out of sync" next to the account balances and show "Synchronizing" in the footer. Make sure you have enough disk space, bandwidth, and time to complete the initial synchronization. 
+
+((("Bitcoin Core client","disk space requirement for")))((("blockchains","synchronizing for Bitcoin Core")))((("disk space requirement for Bitcoin Core")))Bitcoin Coreはトランザクション元帳(ブロックチェーン)の完全なコピーを保持しており、2009年の発端からBitcoinネットワークで起きた全てのトランザクションを含んでいます。このデータセットは数十GB(2013年後半の時点で約16GB)あり、数日かけてダウンロードされます。フルブロックチェーンデータセットをダウンロードまで、クライアントはトランザクションを処理することも口座残高を更新することもできません。クライアントの画面には、ダウンロードの間、口座残高の横に"同期されていません"と表示され、下部に"同期中"と表示されます。最初の同期を完了するために十分な空きディスク容量、帯域幅、時間があるかを確認してください。
 ====
  
 
@@ -61,12 +65,13 @@ $
 [TIP]
 ====
 The instructions and resulting output might vary from version to version. Follow the documentation that comes with the code even if it differs from the instructions you see here, and don't be surprised if the output displayed on your screen is slightly different from the examples here. 
+
+導入手順と表示される結果はバージョンごとに変わるかもしれません。もしあなたがここで見た導入手順と違うことがあれば、このコードに付いているドキュメントに従ってください。また、あなたのスクリーンに表示される結果がここにある例とわずかに違っても驚かないでください。
 ====
 
 When the git cloning operation has completed, you will have a complete local copy of the source code repository in the directory _bitcoin_. Change to this directory by typing +cd bitcoin+ at the prompt:
 
-git cloneが終わると、bitcoinというディレクトリの中に完全なソースコードがダウンロードされます。
-プロンプトの次に +cd bitcoin+ と打ち込んでディレクトリを移ります。
+git cloneが終わると、 _bitcoin_ というディレクトリの中に完全なソースコードがダウンロードされます。プロンプトの次に +cd bitcoin+ と打ち込んでディレクトリを移ります。
 
 ----
 $ cd bitcoin
