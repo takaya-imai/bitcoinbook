@@ -26,6 +26,7 @@ Bitcoinは計画的に構築されたpeer-to-peerのデジタルキャッシュ�
 
 [[full_node_reference]]
 .A bitcoin network node with all four functions: wallet, miner, full blockchain database, and network routing
+.４種類のBitcoinネットワークノード機能: ウォレット、マイナー、フルブロックチェーンデータベース、ネットワークルーティング
 image::images/msbt_0601.png["FullNodeReferenceClient_Small"]
 
 All nodes include the routing function to participate in the network and might include other functionality. All nodes validate and propagate transactions and blocks, and discover and maintain connections to peers. In the full-node example in <<full_node_reference>>, the routing function is indicated by an orange circle named "Network Routing Node." 
@@ -69,10 +70,12 @@ The extended bitcoin network includes the network running the bitcoin P2P protoc
 
 [[node_type_ledgend]]
 .Different types of nodes on the extended bitcoin network
+.拡張されたBitcoinネットワーク上の様々なノードタイプ
 image::images/msbt_0602.png["BitcoinNodeTypes"]
 
 [[bitcoin_network]]
 .The extended bitcoin network showing various node types, gateways, and protocols
+.いろいろなノードタイプやゲートウェイ、プロトコルを表した拡張されたBitcoinネットワーク全体図
 image::images/msbt_0603.png["BitcoinNetwork"]
 
 === Network Discovery
@@ -84,7 +87,7 @@ image::images/msbt_0603.png["BitcoinNetwork"]
 
 ((("peer-to-peer networks","connections")))To connect to a known peer, nodes establish a TCP connection, usually to port 8333 (the port generally known as the one used by bitcoin), or an alternative port if one is provided. Upon establishing a connection, the node will start a "handshake" (see <<network_handshake>>) by transmitting a((("version message")))  +version+ message, which contains basic identifying information, including:
 
-((("peer-to-peer networks","connections")))知られているピアに接続するために、ノードはTCPコネクションを確立し、通常8333番ポート(一般にBitcoinによって使われているポート)または提供されているなら代替のポートを使います。コネクションを確立すると、ノードは((("version message"))) +version+ messageを送信することで"handshake"を始めます(<<network_handshake>>参照)。version messageはと、以下のような基本的な識別情報を含んでいるものです。
+((("peer-to-peer networks","connections")))知られているピアに接続するために、ノードはTCPコネクションを確立し、通常8333番ポート(一般にBitcoinによって使われているポート)または提供されているなら代替のポートを使います。コネクションを確立すると、ノードは((("version message"))) +version+ messageを送信することで"ハンドシェイク"を始めます(<<network_handshake>>参照)。version messageはと、以下のような基本的な識別情報を含んでいるものです。
 
 +PROTOCOL_VERSION+:: A constant that defines the bitcoin P2P protocol version the client "speaks" (e.g., 70002)
 +nLocalServices+:: A list of local services supported by the node, currently just +NODE_NETWORK+
@@ -108,7 +111,7 @@ image::images/msbt_0603.png["BitcoinNetwork"]
 
 The peer node responds with +verack+ to acknowledge and establish a connection, and optionally sends its own +version+ message if it wishes to reciprocate the connection and connect back as a peer. 
 
-ピアノードはコネクションを承認し確立するために+verack+を返します。場合によっては、もしコネクションのお返しにピアとして接続し直す場合は自身の+version+ messageを送ります。????
+ピアノードはコネクションを承認し確立するために +verack+ を返します。場合によっては、もしコネクションのお返しにピアとして接続し直す場合は自身の +version+ messageを送ります。????
 
 How does a new node find peers? The first method is to query DNS using a number of ((("nodes","seed")))((("DNS seed")))"DNS seeds," which are DNS servers that provide a list of IP addresses of bitcoin nodes. Some of those DNS seeds provide a static list of IP addresses of stable bitcoin listening nodes. Some of the DNS seeds are custom implementations of BIND (Berkeley Internet Name Daemon) that return a random subset from a list of bitcoin node addresses collected by a crawler or a long-running bitcoin node.  The Bitcoin Core client contains the names of five different DNS seeds. The diversity of ownership and diversity of implementation of the different DNS seeds offers a high level or reliability for the initial bootstrapping process. In the Bitcoin Core client, the option to use the DNS seeds is controlled by the option switch +-dnsseed+ (set to 1 by default, to use the DNS seed).
 
@@ -116,8 +119,11 @@ How does a new node find peers? The first method is to query DNS using a number 
 
 Alternatively, a bootstrapping node that knows nothing of the network must be given the IP address of at least one bitcoin node, after which it can establish connections through further introductions. The command-line argument +-seednode+ can be used to connect to one node just for introductions, using it as a seed. After the initial seed node is used to form introductions, the client will disconnect from it and use the newly discovered peers. 
 
+DNSシードを使わない場合、Bitcoinネットワークについて何も知らないブートストラップをしているノードに少なくとも１つのBitcoinノードのIPアドレスが与えられなければいけません。その後、このノードはさらに導入手続きを進めて他のノードとのコネクションを確立します。コマンドラインオプション +-seednode+ は一番最初のシードBitcoinノードとコネクションを確立するために使われます。導入手続きで最初のシードノードが使われた後、Bitcoinクライアントはこのシードノードとのコネクションを切り、新たに発見したピアを使うようになります。
+
 [[network_handshake]]
 .The initial handshake between peers
+.ピア同士の最初のハンドシェイク
 image::images/msbt_0604.png["NetworkHandshake"]
 
 Once one or more connections are established, the new node will send an((("addr message"))) +addr+ message containing its own IP address to its neighbors. The neighbors will, in turn, forward the +addr+ message to their neighbors, ensuring that the newly connected node becomes well known and better connected. Additionally, the newly connected node can send +getaddr+ to the neighbors, asking them to return a list of IP addresses of other peers. That way, a node can find peers to connect to and advertise its existence on the network for other nodes to find it. <<address_propagation>> shows the address discovery protocol. 
@@ -126,6 +132,7 @@ Once one or more connections are established, the new node will send an((("addr 
 
 [[address_propagation]]
 .Address propagation and discovery
+.自身のIPアドレスの伝搬と他のIPアドレスの発見
 image::images/msbt_0605.png["AddressPropagation"]
 
 A node must connect to a few different peers in order to establish diverse paths into the bitcoin network. Paths are not reliable—nodes come and go—and so the node must continue to discover new nodes as it loses old connections as well as assist other nodes when they bootstrap. Only one connection is needed to bootstrap, because the first node can offer introductions to its peer nodes and those peers can offer further introductions. It's also unnecessary and wasteful of network resources to connect to more than a handful of nodes. After bootstrapping, a node will remember its most recent successful peer connections, so that if it is rebooted it can quickly reestablish connections with its former peer network. If none of the former peers respond to its connection request, the node can use the seed nodes to bootstrap again. 
@@ -243,6 +250,7 @@ This process of comparing the local blockchain with the peers and retrieving any
 
 [[inventory_synchronization]]
 .Node synchronizing the blockchain by retrieving blocks from a peer
+.ピアからブロックを取得することによってブロックチェーンと同期するノード
 image::images/msbt_0606.png["InventorySynchronization"]
 
 As an analogy, a full node is like a tourist in a strange city, equipped with a detailed map of every street and every address. By comparison, an SPV node is like a tourist in a strange city asking random strangers for turn-by-turn directions while knowing only one main avenue. Although both tourists can verify the existence of a street by visiting it, the tourist without a map doesn't know what lies down any of the side streets and doesn't know what other streets exist. Positioned in front of 23 Church Street, the tourist without a map cannot know if there are a dozen other "23 Church Street" addresses in the city and whether this is the right one. The mapless tourist's best chance is to ask enough people and hope some of them are not trying to mug him.
@@ -278,6 +286,7 @@ For most practical purposes, well-connected SPV nodes are secure enough, strikin
 
 [[spv_synchronization]]
 .SPV node synchronizing the block headers
+.SPVノードのブロックヘッダ同期
 image::images/msbt_0607.png["SPVSynchronization"]
 
 Because SPV nodes need to retrieve specific transactions in order to selectively verify them, they also create a privacy risk. Unlike full blockchain nodes, which collect all transactions within each block, the SPV node's requests for specific data can inadvertently reveal the addresses in their wallet. For example, a third party monitoring a network could keep track of all the transactions requested by a wallet on an SPV node and use those to associate bitcoin addresses with the user of that wallet, destroying the user's privacy. 
@@ -317,6 +326,7 @@ In <<bloom1>>, we use a very small array of 16 bits and a set of three hash func
 
 [[bloom1]]
 .An example of a simplistic bloom filter, with a 16-bit field and three hash functions
+.16bitのフィールドと３つのハッシュ関数を持った極端にシンプルにしたbloom filterの例
 image::images/msbt_0608.png["Bloom1"]
 
 The bloom filter is initialized so that the array of bits is all zeros. To add a pattern to the bloom filter, the pattern is hashed by each hash function in turn. Applying the first hash function to the input results in a number between 1 and N. The corresponding bit in the array (indexed from 1 to N) is found and set to +1+, thereby recording the output of the hash function. Then, the next hash function is used to set another bit and so on. Once all M hash functions have been applied, the search pattern will be "recorded" in the bloom filter as M bits that have been changed from +0+ to +1+. 
@@ -334,6 +344,7 @@ Adding a second pattern is as simple as repeating this process. The pattern is h
 
 [[bloom2]]
 .Adding a pattern "A" to our simple bloom filter
+.前に示したシンプルなbloom filterにパターン"A"を与えた場合
 image::images/msbt_0609.png["Bloom2"]
 
 <<bloom3>> is an example of adding a second pattern "B" to the simple bloom filter.
@@ -342,6 +353,7 @@ image::images/msbt_0609.png["Bloom2"]
 
 [[bloom3]]
 .Adding a second pattern "B" to our simple bloom filter
+.前に示したシンプルなbloom filterに２番目のパターン"B"を与えた場合
 image::images/msbt_0610.png["Bloom3"]
 
 To test if a pattern is part of a bloom filter, the pattern is hashed by each hash function and the resulting bit pattern is tested against the bit array. If all the bits indexed by the hash functions are set to +1+, then the pattern is _probably_ recorded in the bloom filter. Because the bits may be set because of overlap from multiple patterns, the answer is not certain, but is rather probabilistic. In simple terms, a bloom filter positive match is a "Maybe, Yes." 
@@ -354,6 +366,7 @@ To test if a pattern is part of a bloom filter, the pattern is hashed by each ha
 
 [[bloom4]]
 .Testing the existence of pattern "X" in the bloom filter. The result is probabilistic positive match, meaning "Maybe."
+.bloom filterを使ってパターン"X"が存在するかチェック。その結果は確率的な陽性、つまり"たぶんある"。
 image::images/msbt_0611.png["Bloom4"]
 
 On the contrary, if a pattern is tested against the bloom filter and any one of the bits is set to +0+, this proves that the pattern was not recorded in the bloom filter. A negative result is not a probability, it is a certainty. In simple terms, a negative match on a bloom filter is a "Definitely Not!" 
@@ -366,6 +379,7 @@ On the contrary, if a pattern is tested against the bloom filter and any one of 
 
 [[bloom5]]
 .Testing the existence of pattern "Y" in the bloom filter. The result is a definitive negative match, meaning "Definitely Not!"
+.bloom filterを使ってパターン"Y"が存在するか確認。その結果は正確な陰性、つまり"確実にない！"。
 image::images/msbt_0612.png[]
 
 Bitcoin's implementation of bloom filters is described in Bitcoin Improvement Proposal 37 (BIP0037). See <<appdxbitcoinimpproposals>> or visit http://bit.ly/1x6qCiO[GitHub].

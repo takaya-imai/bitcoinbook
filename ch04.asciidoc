@@ -16,7 +16,7 @@ Every bitcoin transaction requires a valid signature to be included in the block
 
 In the payment portion of a bitcoin transaction, the recipient's public key is represented by its digital fingerprint, called a((("addresses, bitcoin","defined"))) _bitcoin address_, which is used in the same way as the beneficiary name on a check (i.e., "Pay to the order of"). In most cases, a bitcoin address is generated from and corresponds to a public key. However, not all bitcoin addresses represent public keys; they can also represent other beneficiaries such as scripts, as we will see later in this chapter. This way, bitcoin addresses abstract the recipient of funds, making transaction destinations flexible, similar to paper checks: a single payment instrument that can be used to pay into people's accounts, pay into company accounts, pay for bills, or pay to cash. The bitcoin address is the only representation of the keys that users will routinely see, because this is the part they need to share with the world.
 
-Bitcoinトランザクションの支払いには受取人の公開鍵が表示されており、この公開鍵は _Bitcoinアドレス_ と呼ばれるデジタル指紋の形で表示されます。このBitcoinアドレスは小切手にある受取人名と同じようにも使われます。ほとんどの場合、Bitcoinアドレスは公開鍵から生成され公開鍵に紐づいています。しかし、Bitcoinアドレスだけが公開鍵ではありません。この後の章でも見る通り、scriptのような形でも受取人を表現できます。この方法では、Bitcoinアドレスは資金の受取人を ????
+Bitcoinトランザクションの支払いには受取人の公開鍵が表示されており、この公開鍵は _Bitcoinアドレス_ と呼ばれるデジタルフィンガープリントの形で表示されます。このBitcoinアドレスは小切手にある受取人名と同じようにも使われます。ほとんどの場合、Bitcoinアドレスは公開鍵から生成され、１つの公開鍵に対応しています。しかし、全てのBitcoinアドレスが公開鍵を表現しているわけではありません。この後の章でも見る通り、これらはscriptのような形で他の受取人も表現できます。この方法では、Bitcoinアドレスは資金の受取人を要約しており、誰と取引をするか ????
 
 
 In this chapter we will introduce wallets, which contain cryptographic keys. We will look at how keys are generated, stored, and managed. We will review the various encoding formats used to represent private and public keys, addresses, and script addresses. Finally, we will look at special uses of keys: to sign messages, to prove ownership, and to create vanity addresses and paper wallets. 
@@ -50,6 +50,8 @@ bitcoinを使うとき、現在のbitcoin所有者は彼女の公開鍵と署名
 [TIP]
 ====
 ((("wallets","key pairs in")))In most wallet implementations, the private and public keys are stored together as a _key pair_ for convenience. However, the public key can be calculated from the private key, so storing only the private key is also possible.
+
+((("wallets","key pairs in")))ほとんどのウォレット実装では、利便性のため秘密鍵と公開鍵が _キーペア_ として一緒に保存されています。しかし、この公開鍵は秘密鍵から計算できるため、秘密鍵だけを保存しておくことも可能です。
 ====
 
 [[private_public_keys]]
@@ -62,6 +64,7 @@ bitcoinを使うとき、現在のbitcoin所有者は彼女の公開鍵と署名
 
 [[k_to_K_to_A]]
 .Private key, public key, and bitcoin address
+.公開鍵、秘密鍵、Bitcoinアドレス
 image::images/msbt_0401.png["privk_to_pubK_to_addressA"]
 
 [[private_keys]]
@@ -75,6 +78,8 @@ image::images/msbt_0401.png["privk_to_pubK_to_addressA"]
 [TIP]
 ====
 ((("private keys","creating by hand")))The bitcoin private key is just a number. You can pick your private keys randomly using just a coin, pencil, and paper: toss a coin 256 times and you have the binary digits of a random private key you can use in a bitcoin wallet. The public key can then be generated from the private key.
+
+((("private keys","creating by hand")))Bitcoin秘密鍵は単なる数値です。あなたはコインや鉛筆、紙だけを使ってランダムに秘密鍵を選ぶことができます。例えば、コインを256回投げてBitcoinウォレットで使うランダムな秘密鍵の二進数を作り出すことができます。公開鍵はこの秘密鍵から生成することができます。
 ====
 
 ===== Generating a private key from a random number
@@ -82,15 +87,17 @@ image::images/msbt_0401.png["privk_to_pubK_to_addressA"]
 
 ((("private keys","generating from random numbers", id="ix_ch04-asciidoc3", range="startofrange")))The first and most important step in generating keys is to find a secure source of entropy, or randomness. Creating a bitcoin key is essentially the same as "Pick a number between 1 and 2^256^." The exact method you use to pick that number does not matter as long as it is not predictable or repeatable. Bitcoin software uses the underlying operating system's random number generators to produce 256 bits of entropy (randomness). Usually, the OS random number generator is initialized by a human source of randomness, which is why you may be asked to wiggle your mouse around for a few seconds. For the truly paranoid, nothing beats dice, pencil, and paper.
 
-((("private keys","generating from random numbers", id="ix_ch04-asciidoc3", range="startofrange")))キーを生成する上で重要かつ一番最初にしなればいけないことは、キー生成の安定的なエントロピー源、または十分なランダムさを確保することです。Bitcoinキーを作ることは、"1から2^256^までの間の数字を選ぶ"ということと本質的に同じです。数字を選ぶ厳格な方法は、予測可能であったり再現可能性があったりしない方法です。Bitcoinソフトウェアは、256bitのエントロピー(ランダムさ)を作り出すOSのランダム値生成器を使っています。通常OSのランダム値生成器は最初人間を元にしたランダムさをベースにしています。数秒間だけマウスを小刻みに動かしてくださいとOSからお願いされたことがある方もいるかもしれないですが、このランダム値生成が理由です。????
+((("private keys","generating from random numbers", id="ix_ch04-asciidoc3", range="startofrange")))キーを生成する上で重要かつ一番最初にしなればいけないことは、キー生成の安定的なエントロピー源、または十分なランダムさを確保することです。Bitcoinキーを作ることは、"1から 2^256^ までの間の数字を選ぶ"ということと本質的に同じです。数字を選ぶ厳格な方法は、予測可能であったり再現可能性があったりしない方法です。Bitcoinソフトウェアは、256bitのエントロピー(ランダムさ)を作り出すOSのランダム値生成器を使っています。通常OSのランダム値生成器は人間を元にしたランダムさを使って初期化されます。数秒間だけマウスを小刻みに動かしてくださいとOSからお願いされたことがある方もいるかもしれないですが、それはこのランダム値生成が理由です。
 
 More accurately, the private key can be any number between +1+ and +n - 1+, where n is a constant (n = 1.158 * 10^77^, slightly less than 2^256^) defined as the order of the elliptic curve used in bitcoin (see <<elliptic_curve>>). To create such a key, we randomly pick a 256-bit number and check that it is less than +n - 1+. In programming terms, this is usually achieved by feeding a larger string of random bits, collected from a cryptographically secure source of randomness, into the SHA256 hash algorithm that will conveniently produce a 256-bit number. If the result is less than +n - 1+, we have a suitable private key. Otherwise, we simply try again with another random number. 
 
-さらに正確に言うと、秘密鍵は +1+ と +n - 1+ の間の任意の整数で、nはBitcoinで使われている楕円曲線の位数として定義されている定数です(n = 1.158 * 10^77^で2^256^ よりわずかに小さい)(<<elliptic_curve>>図参照)。このようなキーを作るために、256bitの数値からランダムに数値を選び、選んだ数値が +n - 1+ であるかをチェックしています。プログラミング用語で言うとこれは通常、暗号学的に安定なランダムさ源から集められた任意の長さを持ったより大きい文字列を取得し、256bitの数値を作る便利なSHA256ハッシュアルゴリズムに放り込むことで達成できます。???? もし結果が+n - 1+よりも小さかった場合、それが適切な秘密鍵です。もしそうでなければ、単にもう一度別のランダムな数値を取得してうまくいくまで同じことを繰り返します。
+さらに正確に言うと、秘密鍵は +1+ と +n - 1+ の間の任意の整数で、nはBitcoinで使われている楕円曲線の位数として定義されている定数です(n = 1.158 * 10^77^で2^256^ よりわずかに小さい)(<<elliptic_curve>>図参照)。このようなキーを作るために、256bitの数値からランダムに数値を選び、選んだ数値が +n - 1+ より小さいかをチェックしています。プログラミング用語で言うとこれは通常、暗号学的に安定なランダムさ源から集められた任意の長さを持ったより大きい文字列を取得し、256bitの数値を作る便利なSHA256ハッシュアルゴリズムに放り込むことで達成できます。もし結果が +n - 1+ よりも小さかった場合、それが適切な秘密鍵です。もしそうでなければ、単にもう一度別のランダムな数値を取得してうまくいくまで同じことを繰り返します。
 
 [TIP]
 ====
 Do not write your own code to create a random number or use a "simple" random number generator offered by your programming language. Use a((("cryptographically secure pseudo-random number generator (CSPRNG)"))) cryptographically secure pseudo-random number generator (CSPRNG) with a seed from a source of sufficient entropy. Study the documentation of the random number generator library you choose to make sure it is cryptographically secure. Correct implementation of the CSPRNG is critical to the security of the keys.
+
+自身でランダムな数値を作り出すコードを書いたり、使っているプログラミング言語が提供している"簡単な"ランダム数値生成器を使ったりしないでください。十分なエントロピー源からのシードを伴った((("cryptographically secure pseudo-random number generator (CSPRNG)")))暗号学的に安全な擬似乱数生成器(CSPRNG)を使ってください。あなたが選んだ乱数生成器ライブラリのドキュメントを勉強して暗号学的に安全かどうかを確認してください。CSPRNGの正しい実装はキーのセキュリティにとって決定的な部分になります。
 ====
 
 The following is a randomly generated private key (k) shown in hexadecimal format (256 binary digits shown as 64 hexadecimal digits, each 4 bits):
@@ -105,6 +112,8 @@ The following is a randomly generated private key (k) shown in hexadecimal forma
 [TIP]
 ====
 The size of bitcoin's private key space, 2^256^ is an unfathomably large number. It is approximately 10^77^ in decimal. The visible universe is estimated to contain 10^80^ atoms.
+
+Bitcoinの秘密鍵スペースのサイズは 2^256^ であり、途方もなく大きな数字です。十進数で約 10^77^ になります。この数字の比較として、観測可能な宇宙には 10^80^ 個の原子があると見積もられています。
 ====
 
 To generate a new key with the Bitcoin Core client (see <<ch03_bitcoin_client>>), use the((("getnewaddress command (bitcoin-cli)"))) +getnewaddress+ command. For security reasons it displays the public key only, not the private key. ((("dumpprivkey command (bitcoin-cli)")))((("private keys","exposing with bitcoind")))To ask bitcoind to expose the private key, use the +dumpprivkey+ command. The +dumpprivkey+ command shows the private key in a Base58 checksum-encoded format called the _Wallet Import Format_ (WIF), which we will examine in more detail in <<priv_formats>>. Here's an example of generating and displaying a private key using these two commands:
@@ -125,12 +134,13 @@ The +dumpprivkey+ command opens the wallet and extracts the private key that was
 [TIP]
 =====================================================================
 The +dumpprivkey+ command is not generating a private key from a public key, as this is impossible. The command simply reveals the private key that is already known to the wallet and which was generated by the getnewaddress command. 
+
++dumpprivkey+コマンドは公開鍵から秘密鍵を生成しているわけではありません。これは不可能だからです。このコマンドは単にウォレットがすでに知っている秘密鍵を表示しているだけで、この秘密鍵はgetnewaddressコマンドで生成されたものです。
 =====================================================================
 
 You can also use the Bitcoin Explorer command-line tool (see <<libbitcoin>>) to generate and display private keys with the commands((("Bitcoin Explorer","seed command")))((("seed command (bx)"))) +seed+,((("Bitcoin Explorer","ec-new command")))((("ec-new command (bx)"))) +ec-new+ and((("Bitcoin Explorer","ec-to-wif command")))((("ec-to-wif command (bx)"))) +ec-to-wif+: (((range="endofrange", startref="ix_ch04-asciidoc3")))(((range="endofrange", startref="ix_ch04-asciidoc2")))(((range="endofrange", startref="ix_ch04-asciidoc1")))
 
-(CONFLICT)
-また、sxツール(<<sx_tools>>図参照)にある +newkey+ sxコマンドを使うことで秘密鍵を生成および表示することもできます。(((range="endofrange", startref="ix_ch04-asciidoc3")))(((range="endofrange", startref="ix_ch04-asciidoc2")))(((range="endofrange", startref="ix_ch04-asciidoc1")))
+また、秘密鍵を生成および表示するためにBitcoin Explorerコマンドラインツール(<<libbitcoin>>図参照)の((("Bitcoin Explorer","seed command")))((("seed command (bx)"))) +seed+ コマンド、((("Bitcoin Explorer","ec-new command")))((("ec-new command (bx)"))) +ec-new+ コマンド、((("Bitcoin Explorer","ec-to-wif command")))((("ec-to-wif command (bx)"))) +ec-to-wif+ コマンドを使うこともできます。(((range="endofrange", startref="ix_ch04-asciidoc3")))(((range="endofrange", startref="ix_ch04-asciidoc2")))(((range="endofrange", startref="ix_ch04-asciidoc1")))
 
 ----
 $ bx seed | bx ec-new | bx ec-to-wif
@@ -143,7 +153,7 @@ $ bx seed | bx ec-new | bx ec-to-wif
 
 ((("keys","public")))((("public keys","generating")))The public key is calculated from the private key using elliptic curve multiplication, which is irreversible: latexmath:[\(K = k * G\)] where _k_ is the private key, _G_ is a constant point called the _generator point_ and _K_ is the resulting public key. The reverse operation, known as "finding the discrete logarithm"—calculating _k_ if you know __K__—is as difficult as trying all possible values of +k+, i.e., a brute-force search. Before we demonstrate how to generate a public key from a private key, let's look at elliptic curve cryptography in a bit more detail. 
 
-((("keys","public")))((("public keys","generating")))公開鍵は楕円曲線乗法を使って秘密鍵から計算されるもので、この処理は不可逆な処理になっています。latexmath:[\(K = k * G\)] 但し _k_ は秘密鍵、 _G_　は _ベースポイント_ と呼ばれる定点、 _K_ は結果として出てくる公開鍵です。逆操作は、離散対数問題 - __K__ を知っていたときに _k_ を導出する問題 - として知られ、この難しさは +k+ の全ての可能な値を総当たりで調べるのと同じくらい時間がかかる問題です。秘密鍵から公開鍵を生成する方法を説明する前に、楕円曲線暗号をもうちょっと細かく見てみましょう。
+((("keys","public")))((("public keys","generating")))公開鍵は楕円曲線上のスカラー倍算を使って秘密鍵から計算されるもので、この処理は不可逆な処理になっています。latexmath:[\(K = k * G\)] 但し _k_ は秘密鍵、 _G_　は _ベースポイント_ と呼ばれる定点、 _K_ は結果として出てくる公開鍵です。逆操作は、離散対数問題 - __K__ を知っていたときに _k_ を導出する問題 - として知られ、この難しさは +k+ の全ての可能な値を総当たりで調べるのと同じくらい時間がかかる問題です。秘密鍵から公開鍵を生成する方法を説明する前に、楕円曲線暗号をもうちょっと細かく見てみましょう。
 
 
 [[elliptic_curve]]
@@ -152,7 +162,7 @@ $ bx seed | bx ec-new | bx ec-to-wif
 
 ((("elliptic curve cryptography", id="ix_ch04-asciidoc4", range="startofrange")))((("public key cryptography","elliptic curve cryptography", id="ix_ch04-asciidoc5", range="startofrange")))((("ECC", see="elliptic curve cryptography")))Elliptic curve cryptography is a type of asymmetric or public-key cryptography based on the discrete logarithm problem as expressed by addition and multiplication on the points of an elliptic curve. 
 
-((("elliptic curve cryptography", id="ix_ch04-asciidoc4", range="startofrange")))((("public key cryptography","elliptic curve cryptography", id="ix_ch04-asciidoc5", range="startofrange")))((("ECC", see="elliptic curve cryptography")))楕円曲線暗号は、楕円曲線上の点に対する加法と乗法で表現される離散対数問題をベースに作られた非対称型暗号方式または公開鍵暗号方式です。
+((("elliptic curve cryptography", id="ix_ch04-asciidoc4", range="startofrange")))((("public key cryptography","elliptic curve cryptography", id="ix_ch04-asciidoc5", range="startofrange")))((("ECC", see="elliptic curve cryptography")))楕円曲線暗号は、楕円曲線上の点に対する加法とスカラー倍算で表現される離散対数問題をベースに作られた非対称型暗号方式または公開鍵暗号方式です。
 
 <<ecc-curve>> is an example of an elliptic curve, similar to that used by bitcoin.
 
@@ -160,6 +170,7 @@ $ bx seed | bx ec-new | bx ec-to-wif
 
 [[ecc-curve]]
 .An elliptic curve
+.楕円曲線
 image::images/msbt_0402.png["ecc-curve"]
 
 Bitcoin uses a specific elliptic curve and set of mathematical constants, as defined in a standard called((("secp256k1 curve standard"))) +secp256k1+, established by the((("National Institute of Standards and Technology (NIST)"))) National Institute of Standards and Technology (NIST). The +secp256k1+ curve is defined by the following function, which produces an elliptic curve:
@@ -194,6 +205,7 @@ Because this curve is defined over a finite field of prime order instead of over
 
 [[ecc-over-F17-math]]
 .Elliptic curve cryptography: visualizing an elliptic curve over F(p), with p=17
+.楕円曲線暗号: p=17のときの楕円曲線F(p)を可視化したもの
 image::images/msbt_0403.png["ecc-over-F17-math"]
 
 So, for example, the following is a point P with coordinates (x,y) that is a point on the +secp256k1+ curve. You can check this yourself using Python:
@@ -219,7 +231,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 In elliptic curve math, there is a point called the((("point at infinity (ECC)"))) "point at infinity," which roughly corresponds to the role of 0 in addition. On computers, it's sometimes represented by x = y = 0 (which doesn't satisfy the elliptic curve equation, but it's an easy separate case that can be checked).
 
-楕円曲線では、((("point at infinity (ECC)"))) "無限遠点"と呼ばれる点があります。この点は簡単に言って足し算での0に対応しています。コンピュータ上では、ときどき x = y = 0 と表現されます(これは楕円曲線方程式を満たしていませんが、????)
+楕円曲線では、((("point at infinity (ECC)"))) "無限遠点"と呼ばれる点があります。この点は簡単に言って足し算での0に対応しています。コンピュータ上では、ときどき x = y = 0 と表現されます(これは楕円曲線方程式を満たしていませんが、簡単な特別な場合として確かめることができる解です)
 
 There is also((("+ operator")))((("elliptic curve cryptography","addition operator"))) a pass:[+] operator, called "addition," which has some properties similar to the traditional addition of real numbers that grade school children learn. Given two points P~1~ and P~2~ on the elliptic curve, there is a third point P~3~ = P~1~ + P~2~, also on the elliptic curve.
 
@@ -251,7 +263,7 @@ pass:[+] が (A pass:[+] B) pass:[+] C = A pass:[+] (B pass:[+] C) という結�
 
 Now that we have defined addition, we can define multiplication in the standard way that extends addition. For a point P on the elliptic curve, if k is a whole number, then kP = P + P + P + ... + P (k times). Note that k is sometimes confusingly called an "exponent" in this case.(((range="endofrange", startref="ix_ch04-asciidoc5")))(((range="endofrange", startref="ix_ch04-asciidoc4"))) 
 
-加法が定義されたので、加法を拡張する標準的な方法に沿って乗法を定義できます。楕円曲線上の点Pに対して、もしkが整数だとすると、kP = P + P + P + ... + P (k回)。この場合、紛らわしいことにkがときどきべき指数と呼ばれるのです。(((range="endofrange", startref="ix_ch04-asciidoc5")))(((range="endofrange", startref="ix_ch04-asciidoc4")))
+加法が定義されたので、加法を拡張する標準的な方法に沿ってスカラー倍算を定義できます。楕円曲線上の点Pに対して、もしkが整数だとすると、kP = P + P + P + ... + P (k回)。この場合、紛らわしいことにkがときどきべき指数と呼ばれるのです。(((range="endofrange", startref="ix_ch04-asciidoc5")))(((range="endofrange", startref="ix_ch04-asciidoc4")))
 
 [[public_key_derivation]]
 ==== Generating a Public Key 
@@ -275,11 +287,13 @@ where k is the private key, G is the generator point, and K is the resulting pub
 [TIP]
 ====
 A private key can be converted into a public key, but a public key cannot be converted back into a private key because the math only works one way. 
+
+秘密鍵は公開鍵に変換できますが、公開鍵は秘密鍵に戻すことはできません。これは秘密鍵から公開鍵への変換プロセスが一方向だけにしか使えないからです。
 ====
 
 Implementing the((("elliptic curve multiplication"))) elliptic curve multiplication, we take the private key k generated previously and multiply it with the generator point G to find the public key K:
 
-((("elliptic curve multiplication"))) 楕円曲線乗法を実装すると、前に生成した秘密鍵kをベースポイントGに掛けることで公開鍵Kが得られます。
+((("elliptic curve multiplication"))) 楕円曲線上のスカラー倍算を実装すると、前に生成した秘密鍵kをベースポイントGに掛けることで公開鍵Kが得られます。
 
 ----
 K = 1E99423A4ED27608A15A2616A2B0E9E52CED330AC530EDCC32C8FFC6A526AEDD * G
@@ -300,7 +314,7 @@ y = 07CF33DA18BD734C600B96A72BBC4749D5141C90EC8AC328AE52DDFE2E505BDB
 
 To visualize multiplication of a point with an integer, we will use the simpler elliptic curve over the real numbers—remember, the math is the same. Our goal is to find the multiple kG of the generator point G. That is the same as adding G to itself, k times in a row. In elliptic curves, adding a point to itself is the equivalent of drawing a tangent line on the point and finding where it intersects the curve again, then reflecting that point on the x-axis. 
 
-点への整数の乗法を可視化するために、数理的な構造が同じ実数に対する簡単な楕円曲線を使います。ゴールは、ベースポイントGで決められるkGを見つけることです。これは、GにG自身をk回足すことと同じです。楕円曲線で自分自身に足すとは、点に接する接線をを描きその接線がもう一度楕円曲線に交わる点、X軸に対して対称な点、を見つけることです。
+点への整数のスカラー倍算を可視化するために、数理的な構造が同じ実数に対する簡単な楕円曲線を使います。ゴールは、ベースポイントGで決められるkGを見つけることです。これは、GにG自身をk回足すことと同じです。楕円曲線で自分自身に足すとは、点に接する接線をを描きその接線がもう一度楕円曲線に交わる点、X軸に対して対称な点、を見つけることです。
 
 <<ecc_illustrated>> shows the process for deriving G, 2G, 4G, as a geometric operation on the curve.
 
@@ -309,10 +323,13 @@ To visualize multiplication of a point with an integer, we will use the simpler 
 [TIP]
 ====
 Most bitcoin implementations use the((("OpenSSL cryptographic library"))) http://bit.ly/1ql7bn8[OpenSSL cryptographic library] to do the elliptic curve math. For example, to derive the public key, the function +EC_POINT_mul()+ is used.(((range="endofrange", startref="ix_ch04-asciidoc7")))(((range="endofrange", startref="ix_ch04-asciidoc6")))(((range="endofrange", startref="ix_ch04-asciidoc0")))
+
+ほとんどのBitcoin実装では、((("OpenSSL cryptographic library"))) http://bit.ly/1ql7bn8[OpenSSL 暗号学的ライブラリ]を使って楕円曲線での数学の計算をしています。例えば、公開鍵を導出するために関数 +EC_POINT_mul()+ が使われています。(((range="endofrange", startref="ix_ch04-asciidoc7")))(((range="endofrange", startref="ix_ch04-asciidoc6")))(((range="endofrange", startref="ix_ch04-asciidoc0")))
 ====
 
 [[ecc_illustrated]]
 .Elliptic curve cryptography: Visualizing the multiplication of a point G by an integer k on an elliptic curve
+.楕円曲線暗号: 楕円曲線上での整数 k によるベースポイント G へのスカラー倍算を可視化したもの
 image::images/msbt_0404.png["ecc_illustrated"]
 
 === Bitcoin Addresses
@@ -329,7 +346,7 @@ image::images/msbt_0404.png["ecc_illustrated"]
 
 The bitcoin address is what appears most commonly in a transaction as the "recipient" of the funds. If we were to compare a bitcoin transaction to a paper check, the bitcoin address is the beneficiary, which is what we write on the line after "Pay to the order of." On a paper check, that beneficiary can sometimes be the name of a bank account holder, but can also include corporations, institutions, or even cash. Because paper checks do not need to specify an account, but rather use an abstract name as the recipient of funds, that makes paper checks very flexible as payment instruments. Bitcoin transactions use a similar abstraction, the bitcoin address, to make them very flexible. A bitcoin address can represent the owner of a private/public key pair, or it can represent something else, such as a payment script, as we will see in <<p2sh>>. For now, let's examine the simple case, a bitcoin address that represents, and is derived from, a public key.
 
-Bitcoinアドレスは、資金の受取人としてトランザクションに共通に現れるものです。もし小切手とBitcoinトランザクションを比べたとすると、Bitcoinアドレスは"Pay to the order of"のあとに書かれる受益者名です。小切手上では、この受益者は時々銀行口座を持っている人の名前になりますが、または企業名や機関名、現金????にさえなります。小切手では口座を特定する必要はないので、むしろ資金の受取人として口座を指す抽象名を使います。この抽象名は小切手での支払いを使いやすくしています。BitcoinトランザクションではBitcoinアドレスという似た抽象名を使い、Bitcoinトランザクションを使いやすいものにしています。Bitcoinアドレスは秘密鍵/公開鍵の所有者を表し、または<<p2sh>>にある支払いscriptのような他の何かを表すものです。とりあえずBitcoinアドレスが公開鍵を表し、またBitcoinアドレスが公開鍵から生成される簡単な場合から説明していきましょう。
+Bitcoinアドレスは、資金の受取人としてトランザクションに共通に現れるものです。もし小切手とBitcoinトランザクションを比べたとすると、Bitcoinアドレスは"Pay to the order of"のあとに書かれる受益者名です。小切手上では、この受益者は時々銀行口座を持っている人の名前になりますが、または企業名や機関名、現金にさえなります。小切手では口座を特定する必要はないので、むしろ資金の受取人として口座を指す抽象名を使います。この抽象名は小切手での支払いを使いやすくしています。BitcoinトランザクションではBitcoinアドレスという似た抽象名を使い、Bitcoinトランザクションを使いやすいものにしています。Bitcoinアドレスは秘密鍵/公開鍵の所有者を表し、または<<p2sh>>にある支払いscriptのような他の何かを表すものです。とりあえずBitcoinアドレスが公開鍵を表し、またBitcoinアドレスが公開鍵から生成される簡単な場合から説明していきましょう。
 
 
 The bitcoin address is derived from the public key through the use of one-way cryptographic hashing. A "hashing algorithm" or simply "hash algorithm" is a one-way function that produces a fingerprint or "hash" of an arbitrary-sized input. Cryptographic hash functions are used extensively in bitcoin: in bitcoin addresses, in script addresses, and in the mining proof-of-work algorithm. The algorithms used to make a bitcoin address from a public key are the((("Secure Hash Algorithm (SHA)"))) Secure Hash Algorithm (SHA) and the((("RACE Integrity Primitives Evaluation Message Digest (RIPEMD)"))) RACE Integrity Primitives Evaluation Message Digest (RIPEMD), specifically((("RIPEMD160")))((("SHA256"))) SHA256 and RIPEMD160. 
@@ -354,6 +371,8 @@ where K is the public key and A is the resulting bitcoin address.
 [TIP]
 ====
 ((("addresses, bitcoin","public keys vs.")))((("public keys","bitcoin addresses vs.")))A bitcoin address is _not_ the same as a public key. Bitcoin addresses are derived from a public key using a one-way function. 
+
+((("addresses, bitcoin","public keys vs.")))((("public keys","bitcoin addresses vs.")))Bitcoinアドレスは公開鍵と同じでは _ありません_ 。Bitcoinアドレスは公開鍵から一方向関数を使って導出されるものです。
 ====
 
 Bitcoin addresses are almost always presented to users in an encoding called((("addresses, bitcoin","Base58 encoding", id="ix_ch04-asciidoc10", range="startofrange")))((("addresses, bitcoin","Base58Check encoding", id="ix_ch04-asciidoc11", range="startofrange")))((("Base58 encoding", id="ix_ch04-asciidoc12", range="startofrange")))((("Base58Check encoding", id="ix_ch04-asciidoc13", range="startofrange"))) "Base58Check" (see <<base58>>), which uses 58 characters (a Base58 number system) and a checksum to help human readability, avoid ambiguity, and protect against errors in address transcription and entry. Base58Check is also used in many other ways in bitcoin, whenever there is a need for a user to read and correctly transcribe a number, such as a bitcoin address, a private key, an encrypted key, or a script hash. In the next section we will examine the mechanics of Base58Check encoding and decoding, and the resulting representations. <<pubkey_to_address>> illustrates the conversion of a public key into a bitcoin address.(((range="endofrange", startref="ix_ch04-asciidoc13")))
@@ -362,6 +381,7 @@ Bitcoinアドレスは、((("addresses, bitcoin","Base58 encoding", id="ix_ch04-
 
 [[pubkey_to_address]]
 .Public key to bitcoin address: conversion of a public key into a bitcoin address 
+.公開鍵からBitcoinアドレスへ: 公開鍵をBitcoinアドレスに変換するプロセス
 image::images/msbt_0405.png["pubkey_to_address"]
 
 [[base58]]
@@ -375,6 +395,7 @@ In order to represent long numbers in a compact way, using fewer symbols, many c
 
 [[base58alphabet]]
 .bitcoin's Base58 alphabet
+.BitcoinにおけるBase58のアルファベット
 ====
 ----
 123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz
@@ -409,6 +430,7 @@ The result is composed of three items: a prefix, the data, and a checksum. This 
 
 [[base58check_encoding]]
 .Base58Check encoding: a Base58, versioned, and checksummed format for unambiguously encoding bitcoin data
+.Base58Checkエンコーディング: 曖昧さなくBitcoinデータをエンコードするために、version byte、チェックサム付加しBase58変換をしたフォーマット
 image::images/msbt_0406.png["Base58CheckEncoding"]
 
 In bitcoin, most of the data presented to the user is Base58Check-encoded to make it compact, easy to read, and easy to detect errors. The version prefix in Base58Check encoding is used to create easily distinguishable formats, which when encoded in Base58 contain specific characters at the beginning of the Base58Check-encoded payload. These characters make it easy for humans to identify the type of data that is encoded and how to use it. This is what differentiates, for example, a Base58Check-encoded bitcoin address that starts with a 1 from a Base58Check-encoded private key WIF format that starts with a 5. Some example version prefixes and the resulting Base58 characters are shown in <<base58check_versions>>.((("Base58Check encoding","prefixes, listed")))
@@ -421,15 +443,23 @@ Bitcoinでは、データをコンパクトにするためや読みやすくす�
 
 [[base58check_versions]]
 .Base58Check version prefix and encoded result examples
+.Base58Checkのversion prefixとエンコードされた結果の例
 [options="header"]
 |=======
 |Type| Version prefix (hex)| Base58 result prefix
+|種類| Version prefix (１６進数)| Base58変換したものの接頭語
 | Bitcoin Address | 0x00 | 1 
 | Pay-to-Script-Hash Address | 0x05 | 3 
 | Bitcoin Testnet Address | 0x6F | m or n 
 | Private Key WIF |  0x80 | 5, K or L 
 | BIP38 Encrypted Private Key | 0x0142 | 6P 
 | BIP32 Extended Public Key | 0x0488B21E | xpub  
+| Bitcoinアドレス | 0x00 | 1 ^M
+| Pay-to-Script-Hashアドレス | 0x05 | 3 ^M
+| Bitcoin Testnetアドレス | 0x6F | m または n ^M
+| 秘密鍵 WIF |  0x80 | 5, K または L ^M
+| BIP38 暗号化秘密鍵 | 0x0142 | 6P ^M
+| BIP32 拡張公開鍵 | 0x0488B21E | xpub  ^M
 |=======
 
 
@@ -440,6 +470,7 @@ Bitcoinアドレスを生成する完全な手順を見てみましょう。秘�
 
 [[addr_example]]
 .Creating a Base58Check-encoded bitcoin address from a private key
+.秘密鍵からのBase58CheckエンコードされたBitcoinアドレスの作成
 ====
 [source, cpp]
 ----
@@ -453,6 +484,7 @@ The code uses a predefined private key so that it produces the same bitcoin addr
 
 [[addr_example_run]]
 .Compiling and running the addr code
+.このaddrコードのコンパイルと実行
 ====
 [source,bash]
 ----
@@ -482,12 +514,17 @@ Address: 1PRTTaJesdNovgne6Ehcdu1fpEdX7913CK
 
 [[table_4-2]]
 .Private key representations (encoding formats)
+.秘密鍵の表現一覧(エンコーディングフォーマット)
 [options="header"]
 |=======
 |Type|Prefix|Description
+|種類|接頭語|説明
 | Hex | None | 64 hexadecimal digits
+| １６進数 | None | 64個の１６進数
 | WIF |  5 | Base58Check encoding: Base58 with version prefix of 128 and 32-bit checksum
+| WIF |  5 | Base58Checkエンコーディング: 128のversion prefixと、32bitチェックサムを伴ったBase58
 | WIF-compressed | K or L | As above, with added suffix 0x01 before encoding
+| 圧縮WIF | K または L | 上にあるように、エンコード前にsuffix 0x01 が追加されています
 |=======
 
 <<table_4-3>> shows the private key generated in these three formats.
@@ -500,9 +537,11 @@ Address: 1PRTTaJesdNovgne6Ehcdu1fpEdX7913CK
 
 [[table_4-3]]
 .Example: Same key, different formats
+.例: 同じキーを違ったフォーマットで表現
 [options="header"]
 |=======
 |Format | Private Key
+|フォーマット | 秘密鍵
 | Hex | 1e99423a4ed27608a15a2616a2b0e9e52ced330ac530edcc32c8ffc6a526aedd 
 | WIF | 5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn
 | WIF-compressed | KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
@@ -513,6 +552,8 @@ All of these representations are different ways of showing the same number, the 
 これら全ての表現は、同じ数値、同じ秘密鍵を表す違った形式になっています。ぱっと見は違っていますが、どれも他の形式に簡単に変換できます。
 
 We use the((("Bitcoin Explorer","wif-to-ec command")))((("wif-to-ec command (bx)"))) +wif-to-ec+ command from Bitcoin Explorer (see <<libbitcoin>>) to show that both WIF keys represent the same private key:
+
+Bitcoin Explorer(<<libbitcoin>>参照)の ((("Bitcoin Explorer","wif-to-ec command")))((("wif-to-ec command (bx)"))) +wif-to-ec+ コマンドをを使うことでさきほどの両方のWIFキーが同じ秘密鍵を表すことを示すことができます。
 ----
 $ bx wif-to-ec 5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn
 1e99423a4ed27608a15a2616a2b0e9e52ced330ac530edcc32c8ffc6a526aedd
@@ -529,6 +570,8 @@ $ bx wif-to-ec KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
 ((("Base58Check encoding","decoding to hex")))Bitcoin Explorerコマンド(<<libbitcoin>>参照)は、Bitcoinキーやアドレス、トランザクションを操作するシェルスクリプトやコマンドラインの "パイプライン" を簡単に書けるようにするツールです。Bitcoin Explorerを使うとコマンドラインでBase58Checkをデコードできます。
 
 We use the((("Bitcoin Explorer","base58check-decode command")))((("base58check-decode command (bx)"))) +base58check-decode+ command to decode the uncompressed key:
+
+((("Bitcoin Explorer","base58check-decode command")))((("base58check-decode command (bx)"))) +base58check-decode+ コマンドを使うことで圧縮されていないキーをデコードできます。
 ----
 $ bx base58check-decode 5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn
 wrapper
@@ -541,7 +584,11 @@ wrapper
 
 The result contains the key as payload, the Wallet Import Format (WIF) version prefix 128, and a checksum.
 
+出力された結果には、payloadとしてのキーとWallet Import Format (WIF)のversion prefix 128、チェックサムが含まれています。
+
 Notice that the "payload" of the compressed key is appended with the suffix +01+, signalling that the derived public key is to be compressed.
+
+圧縮されたキーの"payload"にはsuffix +01+ が追加されており、出力された公開鍵が圧縮されたものであることを表しています。
 ----
 $ bx base58check-decode KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
 wrapper
@@ -558,6 +605,8 @@ wrapper
 ===== １６進数からBase58Checkエンコード
 
 ((("Base58Check encoding","from hex")))To encode into Base58Check (the opposite of the previous command), we use the((("Bitcoin Explorer","base58check-encode command")))((("base58check-encode command (bx)"))) +base58check-encode+ command from Bitcoin Explorer (see <<libbitcoin>>) and provide the hex private key, followed by the((("Base58Check encoding","WIF prefix for")))((("Wallet Import Format (WIF)"))) Wallet Import Format (WIF) version prefix 128:
+
+((("Base58Check encoding","from hex")))Base58Checkにエンコード(前のコマンドの逆)するために、Bitcoin Explorer の((("Bitcoin Explorer","base58check-encode command")))((("base58check-encode command (bx)"))) +base58check-encode+ コマンド(<<libbitcoin>>参照)に１６進数秘密鍵を与えると、((("Base58Check encoding","WIF prefix for")))((("Wallet Import Format (WIF)"))) Wallet Import Format (WIF)のversion prefix 128が返ってきます。
 ----
 bx base58check-encode 1e99423a4ed27608a15a2616a2b0e9e52ced330ac530edcc32c8ffc6a526aedd --version 128
 5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn
@@ -567,6 +616,8 @@ bx base58check-encode 1e99423a4ed27608a15a2616a2b0e9e52ced330ac530edcc32c8ffc6a5
 ===== １６進数(圧縮されたキー)からBase58Checkへのエンコード
 
 ((("compressed keys","encoding/decoding from Base58Check")))To encode into Base58Check as a "compressed" private key (see <<comp_priv>>), we append the suffix +01+ to the hex key and then encode as above:
+
+((("compressed keys","encoding/decoding from Base58Check")))"圧縮された"秘密鍵としてBase58Checkにエンコードする(<<comp_priv>>参照)ためには、１６進数キーの末尾に +01+ を追加し上記のようにエンコードします。
 ----
 $ bx base58check-encode 1e99423a4ed27608a15a2616a2b0e9e52ced330ac530edcc32c8ffc6a526aedd01 --version 128
 KxFC1jmwwCoACiCAWZ3eXa96mBM6tb3TYzGmf6YwgdGWZgawvrtJ
@@ -622,6 +673,7 @@ Whereas uncompressed public keys have a prefix of +04+, ((("Wallet Import Format
 
 [[pubkey_compression]]
 .Public key compression
+.公開鍵の圧縮
 image::images/msbt_0407.png["pubkey_compression"]
 
 ((("public keys","compression")))Here's the same public key generated previously, shown as a compressed public key stored in 264 bits (66 hex digits) with the prefix +03+ indicating the _y_ coordinate is odd:
@@ -679,6 +731,8 @@ If a bitcoin wallet is able to implement compressed public keys, it will use tho
 [TIP]
 ====
 "Compressed private keys" is a misnomer! They are not compressed; rather, the WIF-compressed format signifies that they should only be used to derive compressed public keys and their corresponding bitcoin addresses. Ironically, a "WIF-compressed" encoded private key is one byte longer because it has the added 01 suffix to distinguish it from an "uncompressed" one.(((range="endofrange", startref="ix_ch04-asciidoc15")))(((range="endofrange", startref="ix_ch04-asciidoc14")))(((range="endofrange", startref="ix_ch04-asciidoc8")))
+
+"圧縮された秘密鍵"は誤った名称です！これらは圧縮されていません。むしろ、WIF圧縮形式は圧縮された公開鍵やこれに対応したBitcoinアドレスを導出するためのみ使われるべきということを表しています。皮肉にも、"WIF圧縮形式"にエンコードされた秘密鍵は1byteだけ長いです。というのは、"圧縮されていない"秘密鍵と区別するために 01 接尾語が追加されているためです。(((range="endofrange", startref="ix_ch04-asciidoc15")))(((range="endofrange", startref="ix_ch04-asciidoc14")))(((range="endofrange", startref="ix_ch04-asciidoc8")))
 ====
 
 === Implementing Keys and Addresses in Python  
@@ -690,6 +744,7 @@ If a bitcoin wallet is able to implement compressed public keys, it will use tho
 
 [[key-to-address_script]]
 .Key and address generation and formatting with the pybitcointools library
+.pybitcointoolsライブラリを使った、キーとアドレスの生成と各フォーマット生成
 ====
 [source,python]
 ----
@@ -703,6 +758,7 @@ include::code/key-to-address-ecc-example.py[]
 
 [[key-to-address_script_run]]
 .Running key-to-address-ecc-example.py
+.key-to-address-ecc-example.pyの実行
 ====
 ++++
 <screen>
@@ -739,6 +795,7 @@ Compressed Bitcoin Address (b58check) is:
 
 [[ec_math]]
 .A script demonstrating elliptic curve math used for bitcoin keys
+.Bitcoinのキー生成に使われる楕円関数数学のデモスクリプト
 ====
 [source, python]
 ----
@@ -753,10 +810,13 @@ include::code/ec-math.py[]
 [NOTE]
 ====
 The example above uses +os.urandom+, which reflects a cryptographically secure random number generator (CSRNG) provided by the underlying operating system. In the case of an UNIX-like operating system such as Linux, it draws from +/dev/urandom+; and in the case of Windows, calls +CryptGenRandom()+. If a suitable randomness source is not found, +NotImplementedError+ will be raised. While the random number generator used here is for demonstration purposes, it is _not_ appropriate for generating production-quality bitcoin keys as it is not implemented with sufficient security.
+
+上記の例コードでは +os.urandom+ を使用しており、これは裏で動作しているオペレーティングシステムによって提供されている暗号学的に安全な乱数生成器(CSRNG)の値を反映しています。LinuxのようなUNIX-likeなオペレーティングシステムの場合これは +/dev/urandom+ から乱数を取得し、Windowsの場合 +CryptGenRandom()+ を呼び出すことで乱数を取得します。もし適した乱数発生源がない場合、+NotImplementedError+ が発生します。ここで使われている乱数生成器はデモ目的のものであり、十分なセキュリティを持ったように実装されていないので商用レベルのクオリティを持ったBitcoinキーを生成するには適切では _ありません_ 。
 ====
 
 [[ec_math_run]]
 .Installing the Python ECDSA library and running the ec_math.py script
+.Python ECDSAライブラリのインストールとec_math.pyスクリプトの実行
 ====
 ----
 $ # Install Python PIP package manager
@@ -777,11 +837,15 @@ BTC public key: 029ade3effb0a67d5c8609850d797366af428f4a0d5194cb221d807770a15228
 ((("wallets", id="ix_ch04-asciidoc23", range="startofrange")))Wallets are containers for private keys, usually implemented as structured files or simple databases. 
 Another method for making keys is((("deterministic key generation"))) _deterministic key generation_. Here you derive each new private key, using a one-way hash function from a previous private key, linking them in a sequence. As long as you can re-create that sequence, you only need the first key (known as a _seed_ or _master_ key) to generate them all. In this section we will examine the different methods of key generation and the wallet structures that are built around them. 
 
-((("wallets", id="ix_ch04-asciidoc23", range="startofrange")))ウォレットは秘密鍵のためのコンテナであり、通常構造化されたファイルまたは簡単なデータベースとして実装されています。キーを作るもう１つの方法は、((("deterministic key generation"))) _決定性キー生成_ です。ここで、それぞれの新しい秘密鍵を作ってみましょう。前に出てきた秘密鍵を一方向ハッシュ関数に使って、順序通りに???? 配列を再生成できる限り、必要なのは最初のキー(_seed_または_master_ keyとして知られている)だけです。この節では、キー生成の違った方法と決定性キーによって構築されたウォレットの構造を説明します。
+((("wallets", id="ix_ch04-asciidoc23", range="startofrange")))ウォレットは秘密鍵のためのコンテナであり、通常構造化されたファイルまたは簡単なデータベースとして実装されています。
+
+キーを作るもう１つの方法は、((("deterministic key generation"))) _決定性キー生成_ です。ここでは、一方向ハッシュ関数を使って前に出てきた秘密鍵から順々に新しい秘密鍵を作ってみます。秘密鍵を再生成するために必要なのは最初のキー( _seed_ または _master_ keyとして知られているもの)だけです。この節では、キー生成の方法と決定性キーによって構築されたウォレットの構造を説明します。
 
 [TIP]
 ====
 Bitcoin wallets contain keys, not coins. Each user has a wallet containing keys. Wallets are really keychains containing pairs of private/public keys (see <<private_public_keys>>). Users sign transactions with the keys, thereby proving they own the transaction outputs (their coins). The coins are stored on the blockchain in the form of transaction-ouputs (often noted as vout or txout).((("txout notation")))((("vout notation")))
+
+Bitcoinウォレットはキーを保持していますが、bitcoinは保持していません。それぞれのユーザはbitcoinではなくキーを含むウォレットを持つことになります。ウォレット自体は本当に秘密鍵/公開鍵のペアを含む単なるキーホルダーなのです(<<private_public_keys>>参照)。ユーザはトランザクションにキーを使って署名をし、トランザクションアウトプット(ユーザのbitcoin)を所有していることを証明します。このbitcoinはトランザクションアウトプット(よくvoutまたはtxoutと書かれます)の形でブロックチェーン上に保存されています。((("txout notation")))((("vout notation")))
 ====
 
 [[random_wallet]]
@@ -801,6 +865,7 @@ Bitcoin wallets contain keys, not coins. Each user has a wallet containing keys.
 
 [[Type0_wallet]]
 .Type-0 nondeterministic (random) wallet: a collection of randomly generated keys
+.Type-0非決定性(ランダム)ウォレット: ランダムに生成されたキーのコレクション
 image::images/msbt_0408.png["non-deterministic wallet"]
 
 [[mnemonic_code_words]]
@@ -817,7 +882,7 @@ mnemonic codeは((("BIP0039"))) Bitcoin Improvement Proposal 39 (<<bip0039>>参�
 
 BIP0039 defines the creation of a mnemonic code and seed as a follows:
 
-BIP0039は以下のようにmnemoni codeとシードの生成を定義しています。
+BIP0039は以下のようにmnemonic codeとシードの生成を定義しています。
 
 1. Create a random sequence (entropy) of 128 to 256 bits.
 2. Create a checksum of the random sequence by taking the first few bits of its SHA256 hash.
@@ -833,13 +898,15 @@ BIP0039は以下のようにmnemoni codeとシードの生成を定義してい�
 
 <<table_4-5>> shows the relationship between the size of entropy data and the length of mnemonic codes in words.
 
-<<table_4-5>>はentropyデータのサイズとmnemoni codeの単語数の関係を示しています。
+<<table_4-5>>はentropyデータのサイズとmnemonic codeの単語数の関係を示しています。
 
 [[table_4-5]]
 .Mnemonic codes: entropy and word length
+.Mnemonic codes: エントロピーと単語数
 [options="header"]
 |=======
 |Entropy (bits) | Checksum (bits) | Entropy+checksum | Word length
+|エントロピー (bits) | チェックサム (bits) | エントロピー+チェックサム | 単語数
 | 128 | 4 | 132 | 12
 | 160 | 5 | 165 | 15
 | 192 | 6 | 198 | 18
@@ -849,7 +916,7 @@ BIP0039は以下のようにmnemoni codeとシードの生成を定義してい�
 
 The mnemonic code represents 128 to 256 bits, which are used to derive a longer (512-bit) seed through the use of the key-stretching function PBKDF2. The resulting seed is used to create a deterministic wallet and all of its derived keys. 
 
-mnemonic codeは128から256bitを表しており、PBKDF2というキー拡張関数を使うことでより長いシード(512bit)を生成することに使われます。???? 結果としてでてくるシードは決定性ウォレットと全てのキーを生成することに使われます。
+mnemonic codeは128から256bitになっており、PBKDF2というキー拡張関数を使うことでmnemonic codeからより長いシード(512bit)が生成されます。結果として出てくるシードは決定性ウォレットと全てのキーを生成することに使われます。
 
 Tables pass:[<xref linkend="table_4-6" xrefstyle="select: labelnumber"/>] and pass:[<xref linkend="table_4-7" xrefstyle="select: labelnumber"/>] show some examples of mnemonic codes and the seeds they produce.
 
@@ -857,15 +924,21 @@ Tables pass:[<xref linkend="table_4-6" xrefstyle="select: labelnumber"/>] and pa
 
 [[table_4-6]]
 .128-bit entropy mnemonic code and resulting seed
+.128bitエントロピーから得たmnemonic codeと出力されたシード
 |=======
 | *Entropy input (128 bits)*| 0c1e24e5917779d297e14d45f14e1a1a
 | *Mnemonic (12 words)* | army van defense carry jealous true garbage claim echo media make crunch
 | *Seed  (512 bits)* | 3338a6d2ee71c7f28eb5b882159634cd46a898463e9d2d0980f8e80dfbba5b0fa0291e5fb88
 8a599b44b93187be6ee3ab5fd3ead7dd646341b2cdb8d08d13bf7
+| *エントロピー入力値 (128 bits)*| 0c1e24e5917779d297e14d45f14e1a1a^M
+| *Mnemonic (単語数12)* | army van defense carry jealous true garbage claim echo media make crunch^M
+| *シード  (512 bits)* | 3338a6d2ee71c7f28eb5b882159634cd46a898463e9d2d0980f8e80dfbba5b0fa0291e5fb88^M
+8a599b44b93187be6ee3ab5fd3ead7dd646341b2cdb8d08d13bf7^M
 |=======
 
 [[table_4-7]]
 .256-bit entropy mnemonic code and resulting seed
+.256bitエントロピーから得たmnemonic codeと出力されたシード
 |=======
 | *Entropy input (256 bits)* | 2041546864449caff939d32d574753fe684d3c947c3346713dd8423e74abcf8c
 | *Mnemonic (24 words)* | cake apple borrow silk endorse fitness top denial coil riot stay wolf 
@@ -885,11 +958,14 @@ fce540af281bf7cdeade0dd2c1c795bd02f1e4049e205a0158906c343
 
 [[Type2_wallet]]
 .Type-2 hierarchical deterministic wallet: a tree of keys generated from a single seed
+.Type-2階層的決定性ウォレット: １つのシードから生成されたキーツリー
 image::images/msbt_0409.png["HD wallet"]
 
 [TIP]
 ====
 If you are implementing a bitcoin wallet, it should be built as an HD wallet following the BIP0032 and BIP0044 standards. 
+
+もしBitcoinウォレットを実装するのであれば、BIP0032とBIP0044標準に従ったHDウォレットとして構築するべきです。
 ====
 
 HD wallets offer two major advantages over random (nondeterministic) keys. First, the tree structure can be used to express additional organizational meaning, such as when a specific branch of subkeys is used to receive incoming payments and a different branch is used to receive change from outgoing payments. Branches of keys can also be used in a corporate setting, allocating different branches to departments, subsidiaries, specific functions, or accounting categories. 
@@ -898,7 +974,7 @@ HDウォレットは、ランダムな(非決定性)キーに比べて２つの�
 
 The second advantage of HD wallets is that users can create a sequence of public keys without having access to the corresponding private keys. This allows HD wallets to be used on an insecure server or in a receive-only capacity, issuing a different public key for each transaction. The public keys do not need to be preloaded or derived in advance, yet the server doesn't have the private keys that can spend the funds. 
 
-２つ目の利点としては、ユーザが秘密鍵に触れることなく公開鍵が生成できる点です。それぞれのトランザクションごとに異なる公開鍵を発行することで、安全でないサーバや、受け取る許容量しか持っていないサーバでHDウォレットを使うことができます。公開鍵はあらかじめ必要ではなく、サーバは資金を使うときに使う秘密鍵をまだ持たないためです。????
+２つ目の利点としては、ユーザが秘密鍵に触れることなく公開鍵を生成できる点です。それぞれのトランザクションごとに異なる公開鍵を発行することで、安全でないサーバや受信用にしかしていないサーバも使うことができるのです。公開鍵をあらかじめこれらのサーバに置いておいたり先に生成しておいたりする必要はありませんが、これらのサーバは資金を使うときに必要な秘密鍵を持つことはできません。
 
 ===== HD wallet creation from a seed
 ===== シードからのHDウォレット作成
@@ -913,11 +989,12 @@ HDウォレットでマスターキーとマスターチェーンコードを生
 
 [[HDWalletFromSeed]]
 .Creating master keys and chain code from a root seed
+.ルートシードからのmaster keyとchain codeの生成
 image::images/msbt_0410.png["HDWalletFromRootSeed"]
 
 The root seed is input into the HMAC-SHA512 algorithm and the resulting hash is used to create a _master private key_ (m) and a _master chain code_. The master private key (m) then generates a corresponding master public key (M), using the normal elliptic curve multiplication process +m * G+ that we saw earlier in this chapter. The chain code is used to introduce entropy in the function that creates child keys from parent keys, as we will see in the next section.
 
-ルートシードはHMAC-SHA512アルゴリズムへのインプットであり、結果として出力されたハッシュは_マスター秘密鍵_ (m)と _マスターチェーンコード_ を生成することに使われます。マスター秘密鍵(m)は対応したマスター公開鍵(M)を生成し、このときこの章で最初で見た標準的な楕円曲線乗法プロセス +m * G+ が使われます。チェーンコードは親キーから子キーを生成するプロセスの中でエントロピーを導入するために使われます。????
+ルートシードはHMAC-SHA512アルゴリズムに対するインプットであり、結果として出力されたハッシュは _マスター秘密鍵_ (m)と _マスターチェーンコード_ を生成することに使われます。マスター秘密鍵(m)は対応したマスター公開鍵(M)を生成し、このときこの章の最初に見た標準的な楕円曲線上のスカラー倍算プロセス +m * G+ が使われています。このチェーンコードは親キーから子キーを生成するプロセスの中でエントロピーを導入するために使われます。????
 
 ===== Private child key derivation
 ===== プライベートchild key derivation
@@ -952,6 +1029,7 @@ The parent public key, chain code, and the index number are combined and hashed 
 
 [[CKDpriv]]
 .Extending a parent private key to create a child private key
+.子秘密鍵を生成するための親秘密鍵拡張
 image::images/msbt_0411.png["ChildPrivateDerivation"]
 
 Changing the index allows us to extend the parent and create the other children in the sequence, e.g., Child 0, Child 1, Child 2, etc. Each parent key can have 2 billion children keys. 
@@ -976,6 +1054,8 @@ So what can the child private key be used for on its own? It can be used to make
 [TIP]
 ====
 A child private key, the corresponding public key, and the bitcoin address are all indistinguishable from keys and addresses created randomly. The fact that they are part of a sequence is not visible, outside of the HD wallet function that created them. Once created, they operate exactly as "normal" keys. 
+
+子秘密鍵、これに対応した公開鍵およびBitcoinアドレスは、HDウォレットではない全てランダムに生成されたキーやアドレスと見分けがつきません。これらが生成列の一部であるということは自分自身からは分からず、これらを生成するHDウォレットの関数の外側から見なければいけません。これらが一度生成されると、"普通"のキーと全く同じように使えます。
 ====
 
 ===== Extended keys
@@ -991,11 +1071,13 @@ Extended keys are stored and represented simply as the concatenation of the 256-
 
 Think of an extended key as the root of a branch in the tree structure of the HD wallet. With the root of the branch, you can derive the rest of the branch. The extended private key can create a complete branch, whereas the extended public key can only create a branch of public keys.
 
-拡張キーをツリー構造のブランチのルートと考えてみましょう。ブランチのルートを使って、ブランチの残りを生成することができます。拡張秘密鍵は完全なブランチを作ることができますが、一方拡張公開鍵は公開鍵のブランチしか作ることができません。????
+拡張キーをツリー構造のブランチのルートと考えてみましょう。ブランチのルートを使って、ブランチの残りを生成することができます。拡張秘密鍵は完全なブランチを作ることができますが、一方拡張公開鍵は公開鍵のブランチしか作ることができません。
 
 [TIP]
 ====
 An extended key consists of a private or public key and chain code. An extended key can create children, generating its own branch in the tree structure. Sharing an extended key gives access to the entire branch. 
+
+拡張キーは秘密鍵または公開鍵、チェーンコードで構成されています。拡張キーは子供を生成し、ツリー構造の中に子供自身のブランチを作り出していくことができます。拡張キーを共有することで、ブランチ全体にアクセスすることができます。????
 ==== 
 
 ((("Base58Check encoding","extended keys and")))Extended keys are encoded using Base58Check, to easily export and import between different BIP0032-compatible wallets. The Base58Check coding for extended keys uses a special version number that results in the prefix "xprv" and "xpub" when encoded in Base58 characters, to make them easily recognizable. Because the extended key is 512 or 513 bits, it is also much longer than other Base58Check-encoded strings we have seen previously.
@@ -1045,6 +1127,7 @@ An extended public key can be used, therefore, to derive all of the _public_ key
 
 [[CKDpub]]
 .Extending a parent public key to create a child public key
+.子公開鍵を生成するための親公開鍵拡張
 image::images/msbt_0412.png["ChildPublicDerivation"]
 
 ===== Hardened child key derivation
@@ -1061,6 +1144,7 @@ To counter this risk, HD wallets use an alternative derivation function called _
 
 [[CKDprime]]
 .Hardened derivation of a child key; omits the parent public key
+.子キーの強化生成: 親公開鍵の省略
 image::images/msbt_0413.png["ChildHardPrivateDerivation"]
 
 When the hardened private derivation function is used, the resulting child private key and chain code are completely different from what would result from the normal derivation function. The resulting "branch" of keys can be used to produce extended public keys that are not vulnerable, because the chain code they contain cannot be exploited to reveal any private keys. Hardened derivation is therefore used to create a "gap" in the tree above the level where extended public keys are used. 
@@ -1095,6 +1179,7 @@ The "ancestry" of a key is read from right to left, until you reach the master k
 
 [[table_4-8]]
 .HD wallet path examples
+.HDウォレットのpath例
 [options="header"]
 |=======
 |HD path | Key described
@@ -1103,6 +1188,12 @@ The "ancestry" of a key is read from right to left, until you reach the master k
 | m/0'/0 | The first normal grandchild of the first _hardened_ child (m/0')
 | m/1/0 | The first grandchild private key of the second child (m/1)
 | M/23/17/0/0 | The first great-great-grandchild public key of the first great-grandchild of the 18th grandchild of the 24th child
+|HD path | 説明
+| m/0 | マスター秘密鍵(m)から生成された最初(0)の子秘密鍵
+| m/0/0 | 最初の子供(m/0)の最初の孫秘密鍵
+| m/0'/0 | 最初の _強化された_ 子供(m/0')の最初のノーマルな孫秘密鍵
+| m/1/0 | 二番目の子供(m/1)の最初の孫秘密鍵
+| M/23/17/0/0 | 24番目の子供の、18番目の孫の、最初の曽孫の、最初の玄孫公開鍵
 |=======
 
 ===== Navigating the HD wallet tree structure
@@ -1140,12 +1231,17 @@ BIP0044では、以下のように５つの事前に定義された階層構造�
 
 [[table_4-9]]
 .BIP0044 HD wallet structure examples
+.BIP0044のHDウォレット構造例
 [options="header"]
 |=======
 |HD path | Key described
 | M/44'/0'/0'/0/2 | The third receiving public key for the primary bitcoin account
 | M/44'/0'/3'/1/14 | The fifteenth change-address public key for the fourth bitcoin account
 | m/44'/2'/0'/0/1 | The second private key in the Litecoin main account, for signing transactions
+|HD path | 説明
+| M/44'/0'/0'/0/2 | 最初のBitcoin口座に対する三番目の受信公開鍵
+| M/44'/0'/3'/1/14 | ４番目のBitcoin口座に対する１５番目のおつり用公開鍵
+| m/44'/2'/0'/0/1 | トランザクションに署名するための、Litecoinメイン口座の二番目の秘密鍵
 |=======
 
 ===== Experimenting with HD wallets using Bitcoin Explorer
@@ -1206,6 +1302,7 @@ Test the encrypted keys in <<table_4-10>> using((("bitaddress.org"))) bitaddress
 
 [[table_4-10]]
 .Example of BIP0038 encrypted private key 
+.BIP0038暗号化秘密鍵の例
 |=======
 | *Private Key (WIF)* | 5J3mBbAH58CpQ3Y5RNJpUKPE62SQ5tfcvU2JpbnkeyhfsYB1Jcn
 | *Passphrase* | MyTestPassphrase
@@ -1245,6 +1342,9 @@ $ bx script-encode < script | bx sha256 | bx ripemd160 | bx base58check-encode -
 [TIP]
 ====
 P2SH is not necessarily the same as a multi-signature standard transaction. A P2SH address _most often_ represents a multi-signature script, but it might also represent a script encoding other types of transactions. 
+
+P2SHは必然的にマルチシグネチャ標準トランザクションとは違うものになります。
+P2SHアドレスは _ほぼ常に_ マルチシグネチャscriptを表しますが、
 ====
 
 ===== Multi-signature addresses and P2SH
@@ -1252,7 +1352,7 @@ P2SH is not necessarily the same as a multi-signature standard transaction. A P2
 
 Currently, the most common implementation of the P2SH function is the multi-signature address script. As the name implies, the underlying script requires more than one signature to prove ownership and therefore spend funds. The bitcoin multi-signature feature is designed to require M signatures (also known as the “threshold”) from a total of N keys, known as an M-of-N multi-sig, where M is equal to or less than N. For example, Bob the coffee shop owner from <<ch01_intro_what_is_bitcoin>> could use a multi-signature address requiring 1-of-2 signatures from a key belonging to him and a key belonging to his spouse, ensuring either of them could sign to spend a transaction output locked to this address. This would be similar to a “joint account” as implemented in traditional banking where either spouse can spend with a single signature. Or Gopesh, the web designer paid by Bob to create a website, might have a 2-of-3 multi-signature address for his business that ensures that no funds can be spent unless at least two of the business partners sign a transaction. 
 
-現在、P2SHの最も一般的な実装は、マルチシグネチャーアドレスscriptです。この名前が示しているように、scriptは所有権を証明し資金を利用するための署名以外も要求します。Bitcoinマルチシグネチャーは、N個のキーから作られるM個の署名(“threshold”とも呼ばれます)を要求し、これはM-of-N multi-sigと呼ばれています。ここで、MはNと等しいか小さい数です。例えば、<<ch01_intro_what_is_bitcoin>>に出てきたコーヒーショップのオーナーのボブは、彼のキーと彼の奥さんのキーから作られる1-of-2 signatureを要求するマルチシグネチャーアドレスを使うことができ、このアドレスに紐づいたトランザクションアウトプットを使うには彼または奥さんのどちらか一方のキーで署名すればよいのです。Gopesh(ボブのウェブサイトを作ったウェブデザイナ)がビジネス用に2-of-3マルチシグネチャーアドレスを持っていたとすると、少なくともビジネスパートナーの２人がトランザクションに署名しなければこのアドレスに紐づく資金を使うことができません。
+現在、P2SHの最も一般的な実装は、マルチシグネチャーアドレスscriptです。この名前が示しているように、scriptは所有権を証明し資金を利用するために１つ以上の署名を要求します。Bitcoinマルチシグネチャーは、N個のキーから作られるM個の署名(“threshold”とも呼ばれます)を要求し、これはM-of-N multi-sigと呼ばれています。ここで、MはNと等しいか小さい数です。例えば、<<ch01_intro_what_is_bitcoin>>に出てきたコーヒーショップのオーナーのボブは、彼のキーと彼の奥さんのキーから作られる1-of-2 signatureを要求するマルチシグネチャーアドレスを使うことができ、このアドレスに紐づいたトランザクションアウトプットを使うには彼または奥さんのどちらか一方のキーで署名すればよいのです。Gopesh(ボブのウェブサイトを作ったウェブデザイナ)がビジネス用に2-of-3マルチシグネチャーアドレスを持っていたとすると、少なくともビジネスパートナーの２人がトランザクションに署名しなければこのアドレスに紐づく資金を使うことができません。
 
 We will explore how to create transactions that spend funds from P2SH (and multi-signature) addresses in <<transactions>>.
 
@@ -1282,6 +1382,7 @@ In <<ch01_intro_what_is_bitcoin>>, we introduced Eugenia, a children's charity d
 
 [[table_4-11]]
 .The range of vanity addresses starting with "1Kids"
+."1Kids"から始まるvanityアドレスの範囲
 |=======
 | *From* | +1Kids11111111111111111111111111111+
 | | +1Kids11111111111111111111111111112+
@@ -1296,9 +1397,11 @@ Let's look at the pattern "1Kids" as a number and see how frequently we might fi
 
 [[table_4-12]]
 .The frequency of a vanity pattern (1KidsCharity) and average time-to-find on a desktop PC
+.vanityパターン(1KidsCharity)の出現頻度と、デスクトップPCでの平均探索時間
 [options="header"]
 |=======
 | Length | Pattern | Frequency | Average search time
+| 長さ | パターン | 出現頻度 | 平均探索時間
 | 1 | 1K | 1 in 58 keys | < 1 milliseconds
 | 2 | 1Ki| 1 in 3,364 | 50 milliseconds 
 | 3 | 1Kid | 1 in 195,000 | < 2 seconds
@@ -1327,6 +1430,7 @@ vanity addressの生成は、１つずつを確認していく総当たり方式
 
 [[vanity_miner_code]]
 .Vanity address miner
+.vanityアドレスマイナー
 ====
 [source,cpp]
 ----
@@ -1337,6 +1441,8 @@ include::code/vanity-miner.cpp[]
 [NOTE]
 ====
 The example above uses +std::random_device+. Depending on the implementation it may reflect a cryptographically secure random number generator (CSRNG) provided by the underlying operating system. In the case of UNIX-like operating system such as Linux, it draws from +/dev/urandom+. While the random number generator used here is for demonstration purposes, it is _not_ appropriate for generating production-quality bitcoin keys as it is not implemented with sufficient security.
+
+上記の例コードでは +std::random_device+ を使用しており、これは裏で動作しているオペレーティングシステムによって提供されている暗号学的に安全な乱数生成器(CSRNG)の値を反映しています。LinuxのようなUNIX-likeなオペレーティングシステムの場合だとこれは +/dev/urandom+ から乱数を取得しています。ここで使われている乱数生成器はデモ目的のものであり、十分なセキュリティを持ったように実装されていないので商用レベルのクオリティを持ったBitcoinキーを生成するには適切では _ありません_ 。
 ====
 
 The example code must be compiled using a C++ compiler and linked against the libbitcoin library (which must be first installed on that system). To run the example, run the ++vanity-miner++ executable with no parameters (see <<vanity_miner_run>>) and it will attempt to find a vanity address starting with "1kid".
@@ -1345,6 +1451,7 @@ The example code must be compiled using a C++ compiler and linked against the li
 
 [[vanity_miner_run]]
 .Compiling and running the vanity-miner example
+.vanity-minerコード例のコンパイルと実行
 ====
 [source,bash]
 ----
@@ -1389,6 +1496,7 @@ In both cases, one of the risks of using a single fixed address (rather than a s
 
 [[table_4-13]]
 .Generating vanity addresses to match a random address
+.ランダムなアドレスに先頭が一致するvanityアドレスの生成
 |=======
 | *Original Random Address* | 1J7mdg5rbQyUHENYdx39WVWK7fsLpEoXZy
 | *Vanity (4 character match)* | 1J7md1QqU4LpctBetHS2ZoyLV5d6dShhEy
@@ -1414,6 +1522,7 @@ Paper wallets come in many shapes, sizes, and designs, but at a very basic level
 
 [[table_4-14]]
 .Simplest form of a paper wallet—a printout of the bitcoin address and private key.
+.ペーパーウォレットの最もシンプルな形-Bitcoinアドレスと秘密鍵の印刷
 [options="header"]
 |=======================
 |Public Address|Private Key (WIF)
@@ -1427,6 +1536,7 @@ Paper wallets come in many shapes, sizes, and designs, but at a very basic level
 
 [[paper_wallet_simple]]
 .An example of a simple paper wallet from bitaddress.org
+.bitaddress.orgから持ってきたシンプルなペーパーウォレットの例
 image::images/msbt_0414.png[]
 
 The disadvantage of the simple paper wallet system is that the printed keys are vulnerable to theft. A thief who is able to gain access to the paper can either steal it or photograph the keys and take control of the bitcoins locked with those keys. A more sophisticated paper wallet storage system uses BIP0038 encrypted private keys. The keys printed on the paper wallet are protected by a passphrase that the owner has memorized. Without the passphrase, the encrypted keys are useless. Yet, they still are superior to a passphrase-protected wallet because the keys have never been online and must be physically retrieved from a safe or other physically secured storage. <<paper_wallet_encrypted>> shows a paper wallet with an encrypted private key (BIP0038) created on the bitaddress.org site. 
@@ -1435,11 +1545,15 @@ The disadvantage of the simple paper wallet system is that the printed keys are 
 
 [[paper_wallet_encrypted]]
 .An example of an encrypted paper wallet from bitaddress.org. The passphrase is "test."
+.bitaddress.org.から持ってきた暗号化されたペーパーウォレットの例。パスフレーズは"test"。
 image::images/msbt_0415.png[]
 
 [WARNING]
 ====
 ((("paper wallets","spending")))((("private keys","exposing with paper wallets")))Although you can deposit funds into a paper wallet several times, you should withdraw all funds only once, spending everything. This is because in the process of unlocking and spending funds some wallets might generate a change address if you spend less than the whole amount. Additionally, if the computer you use to sign the transaction is compromised, you risk exposing the private key. By spending the entire balance of a paper wallet only once, you reduce the risk of key compromise. If you need only a small amount, send any remaining funds to a new paper wallet in the same transaction.
+
+aaaaa
+((("paper wallets","spending")))((("private keys","exposing with paper wallets")))何回かペーパーウォレットに資金を預けることはできますが、ペーパーウォレットから引き出すときは全ての資金を一度に引き出すべきです。これは、資金のロックを解除して使用するプロセスでいくつかのウォレットはおつり用のアドレスを生成するかもしれないからです。さらに、もしトランザクションに署名するために使ったコンピュータに脆弱性があった場合、秘密鍵が漏洩してしまうかもしれません。ペーパーウォレットの残高全てを一度に使うことによってキーが漏洩してしまうリスクを減らすことになります。もし小さい額だけ必要なのであれば、同じトランザクション内で新しいペーパーウォレットに残りの資金を送ってください。
 ====
 
 Paper wallets come in many designs and sizes, with many different features. Some are intended to be given as gifts and have seasonal themes, such as Christmas and New Year's themes. Others are designed for storage in a bank vault or safe with the private key hidden in some way, either with opaque scratch-off stickers, or folded and sealed with tamper-proof adhesive foil. Figures pass:[<xref linkend="paper_wallet_bpw" xrefstyle="select: labelnumber"/>] through pass:[<xref linkend="paper_wallet_spw" xrefstyle="select: labelnumber"/>] show various examples of paper wallets with security and backup features.
@@ -1448,10 +1562,12 @@ Paper wallets come in many designs and sizes, with many different features. Some
 
 [[paper_wallet_bpw]]
 .An example of a paper wallet from bitcoinpaperwallet.com with the private key on a folding flap.
+.折りたたみ部分に秘密鍵が置かれた bitcoinpaperwallet.com ペーパーウォレット例
 image::images/msbt_0416.png[]
 
 [[paper_wallet_bpw_folded]]
 .The bitcoinpaperwallet.com paper wallet with the private key concealed.
+.秘密鍵部分が覆われて見えないようになっている bitcoinpaperwallet.com ペーパーウォレット
 image::images/msbt_0417.png[]
 
 Other designs feature additional copies of the key and address, in the form of detachable stubs similar to ticket stubs, allowing you to store multiple copies to protect against fire, flood, or other natural disasters.(((range="endofrange", startref="ix_ch04-asciidoc32")))(((range="endofrange", startref="ix_ch04-asciidoc31")))(((range="endofrange", startref="ix_ch04-asciidoc30")))(((range="endofrange", startref="ix_ch04-asciidoc29"))) 
@@ -1460,6 +1576,7 @@ Other designs feature additional copies of the key and address, in the form of d
 
 [[paper_wallet_spw]]
 .An example of a paper wallet with additional copies of the keys on a backup "stub."
+.バックアップ用の"切り離し部分"にキーのコピーがあるペーパーウォレットの例
 image::images/msbt_0418.png[]
 
 

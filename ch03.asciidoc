@@ -123,6 +123,8 @@ Carefully review the build prerequisites, which are in the first part of the bui
 [TIP]
 ====
 The Bitcoin Core build process was changed to use the autogen/configure/make system starting with version 0.9. Older versions use a simple Makefile and work slightly differently from the following example. Follow the instructions for the version you want to compile. The autogen/configure/make introduced in 0.9 is likely to be the build system used for all future versions of the code and is the system demonstrated in the following examples.
+
+Bitcoin Coreの構築手順は、version 0.9からautogen/configure/makeを使う形に変わりました。昔のバージョンだと簡単なMakefileを使い、例とわずかに違った形の手順になっています。あなたがコンパイルしたいバージョンの導入手順に従ってください。0.9に導入されたautogen/configure/makeは今後のバージョンで使われる構築方法だそうで、次の例で実行してる形になっています。
 ====
 
 ----
@@ -158,6 +160,7 @@ Configuration:
   -V, --version           display version information and exit
 
 [... many more options and variables are displayed below ...]
+[... さらに多くのオプション、変数が以下に表示されます ...]
 
 Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
@@ -165,6 +168,7 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
 
 [... more options ...]
+[... 多くのオプションが出てくるため省略 ...]
 
 Use these variables to override the choices made by `configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -190,6 +194,7 @@ checking for mawk... mawk
 checking whether make sets $(MAKE)... yes
 
 [... many more system features are tested ...]
+[... システムが持っている多くの機能がチェックされます ...]
 
 configure: creating ./config.status
 config.status: creating Makefile
@@ -225,6 +230,7 @@ make[3]: Entering directory `/home/ubuntu/bitcoin/src'
   CXX    chainparams.o
 
 [... many more compilation messages follow ...]
+[... 多くのコンパイルメッセージが続きますが省略 ...]
 
   CXX    test_bitcoin-wallet_tests.o
   CXX    test_bitcoin-rpc_wallet_tests.o
@@ -328,6 +334,7 @@ Opening LevelDB in /bitcoin/chainstate
 Opened LevelDB successfully
 
 [... more startup messages ...]
+[... 多くの起動メッセージがありますが省略 ...]
 
 ----
 
@@ -461,6 +468,8 @@ The data is returned in((("JavaScript Object Notation (JSON)"))) JavaScript Obje
 [TIP]
 ====
 It will take some time, perhaps more than a day, for the bitcoind client to "catch up" to the current blockchain height as it downloads blocks from other bitcoin clients. You can check its progress using +getinfo+ to see the number of known blocks.
+
+bitcoindクライアントが他のBitcoinクライアントからブロックをダウンロードしながら、現在のブロックチェーンの高さに"追いつく"ためにおそらく１日以上かかるでしょう。+getinfo+ コマンドを使うことで追い付いたブロック高を把握することができ、現在の進捗を知ることができます。
 ====
 
 ==== Wallet Setup and Encryption
@@ -494,6 +503,7 @@ $ bitcoin-cli getinfo
     "version" : 90000,
 
 #[... other information...]
+#[... その他の情報は省略 ...]
 
     "unlocked_until" : 0,
     "errors" : ""
@@ -524,6 +534,7 @@ $ bitcoin-cli getinfo
     "version" : 90000,
 
 #[... other information ...]
+#[... その他の情報を省略 ...]
 
     "unlocked_until" : 1392580909,
     "errors" : ""
@@ -571,6 +582,7 @@ $ more wallet.txt
 KzTg2wn6Z8s7ai5NA9MVX4vstHRsqP26QKJCzLg4JvFrp6mMaGB9 2013-07- 4dT04:30:27Z change=1 # addr=16pJ6XkwSQv5ma5FSXMRPaXEYrENCEg47F
 Kz3dVz7R6mUpXzdZy4gJEVZxXJwA15f198eVui4CUivXotzLBDKY 2013-07- 4dT04:30:27Z change=1 # addr=17oJds8kaN8LP8kuAkWTco6ZM7BGXFC3gk
 [... many more keys ...]
+[... 他にも多くのキーが出てきます ...]
 
 $
 ----
@@ -678,6 +690,8 @@ $ bitcoin-cli getbalance
 [TIP]
 ====
 ((("getbalance command (bitcoin-cli)","unconfirmed transactions and")))((("unconfirmed transactions","getbalance command and")))If the transaction has not yet confirmed, the balance returned by +getbalance+ will be zero. The configuration option "minconf" determines the minimum number of confirmations that are required before a transaction shows in the balance.(((range="endofrange", startref="ix_ch03-asciidoc22")))(((range="endofrange", startref="ix_ch03-asciidoc21")))(((range="endofrange", startref="ix_ch03-asciidoc20")))(((range="endofrange", startref="ix_ch03-asciidoc19")))(((range="endofrange", startref="ix_ch03-asciidoc18")))(((range="endofrange", startref="ix_ch03-asciidoc17")))(((range="endofrange", startref="ix_ch03-asciidoc16")))(((range="endofrange", startref="ix_ch03-asciidoc15")))(((range="endofrange", startref="ix_ch03-asciidoc14")))(((range="endofrange", startref="ix_ch03-asciidoc13")))(((range="endofrange", startref="ix_ch03-asciidoc12")))(((range="endofrange", startref="ix_ch03-asciidoc11")))(((range="endofrange", startref="ix_ch03-asciidoc10")))(((range="endofrange", startref="ix_ch03-asciidoc9")))
+
+((("getbalance command (bitcoin-cli)","unconfirmed transactions and")))((("unconfirmed transactions","getbalance command and")))もしトランザクションがまだ検証されていなければ、+getbalance+が返す残高は0になります。"minconf"オプションは、何回トランザクションが検証されれば残高に表示するかを設定しています。(((range="endofrange", startref="ix_ch03-asciidoc22")))(((range="endofrange", startref="ix_ch03-asciidoc21")))(((range="endofrange", startref="ix_ch03-asciidoc20")))(((range="endofrange", startref="ix_ch03-asciidoc19")))(((range="endofrange", startref="ix_ch03-asciidoc18")))(((range="endofrange", startref="ix_ch03-asciidoc17")))(((range="endofrange", startref="ix_ch03-asciidoc16")))(((range="endofrange", startref="ix_ch03-asciidoc15")))(((range="endofrange", startref="ix_ch03-asciidoc14")))(((range="endofrange", startref="ix_ch03-asciidoc13")))(((range="endofrange", startref="ix_ch03-asciidoc12")))(((range="endofrange", startref="ix_ch03-asciidoc11")))(((range="endofrange", startref="ix_ch03-asciidoc10")))(((range="endofrange", startref="ix_ch03-asciidoc9")))
 ====
 
 
@@ -721,6 +735,8 @@ $ bitcoin-cli gettransaction 9ca8f969bd3ef5ec2a8685660fdbf7a8bd365524c2e1fc66<?p
 [TIP]
 ====
 Transaction IDs are not authoritative until a transaction has been confirmed. Absence of a transaction hash in the blockchain does not mean the transaction was not processed. This is known as((("transaction malleability"))) "transaction malleability," because transaction hashes can be modified prior to confirmation in a block. After confirmation, the txid is immutable and authoritative.
+
+トランザクションIDはトランザクションが検証されるまで信頼できるものではありません。ブロックチェーン内にトランザクションハッシュがないということは、トランザクションがまだ処理されていないということを意味するわけではありません。これは((("transaction malleability"))) "トランザクション展性" と呼ばれるもので、トランザクションハッシュはブロック内で検証される前は修正され得るのです。検証された後、txidは不変になり信頼できるものになります。
 ====
 
 The transaction form shown with the command +gettransaction+ is the simplified form. To retrieve the full transaction code and decode it, we will use two commands: +getrawtransaction+ and +decoderawtransaction+. First, +getrawtransaction+ takes the _transaction hash (txid)_ as a parameter and returns the full transaction as a "raw" hex string, exactly as it exists on the bitcoin network:
@@ -842,7 +858,7 @@ Here, we see the new information in the entries +blockhash+ (the hash of the blo
 
 [[txindex]]
 .Transaction Database Index and txindex Option
-.トランザクションデータベースとtxindexオプション
+.トランザクションデータベースインデックスとtxindexオプション
 ****
 ((("transaction database index")))By default, Bitcoin Core builds a database containing _only_ the transactions related to the user's wallet. If you want to be able to access _any_ transaction with commands like +gettransaction+, you need to configure Bitcoin Core to build a complete transaction index, which can be achieved with the((("txindex option (Bitcoin Core)"))) +txindex+ option. Set +txindex=1+ in the Bitcoin Core configuration file (usually found in your home directory under _.bitcoin/bitcoin.conf_). Once you change this parameter, you need to restart bitcoind and wait for it to rebuild the index.(((range="endofrange", startref="ix_ch03-asciidoc30")))(((range="endofrange", startref="ix_ch03-asciidoc29")))(((range="endofrange", startref="ix_ch03-asciidoc28")))(((range="endofrange", startref="ix_ch03-asciidoc27")))(((range="endofrange", startref="ix_ch03-asciidoc26")))(((range="endofrange", startref="ix_ch03-asciidoc25")))(((range="endofrange", startref="ix_ch03-asciidoc24")))(((range="endofrange", startref="ix_ch03-asciidoc23"))) 
 
@@ -899,6 +915,7 @@ $ bitcoin-cli getblock 000000000000000051d2e759c63a26e247f185ecb7926ed7a6624b<?p
         "9ca8f969bd3ef5ec2a8685660fdbf7a8bd365524c2e1fc66c309acbae2c14ae3",
 
 #[... many more transactions ...]
+#[... 多くのトランザクションができますが省略 ...]
 
     ],
     "time" : 1392660808,
@@ -1138,6 +1155,8 @@ As you might notice, the transaction contains an empty +scriptSig+ because we ha
 [TIP]
 ====
 ((("wallets","signing transactions with")))An encrypted wallet must be unlocked before a transaction is signed because signing requires access to the secret keys in the wallet.
+
+((("wallets","signing transactions with")))暗号化されたウォレットでは、トランザクションを署名する前にウォレットのロックを解除しなければいけません。というのは、署名をするにはウォレットの秘密鍵にアクセスする必要があるためです。
 ====
 
 ++++
@@ -1310,6 +1329,8 @@ https://github.com/richardkiss/pycoin[pycoin]:: ((("pycoin library")))Another Py
 
 Many more libraries exist in a variety of other programming languages and more are created all the time. 
 
+他にもいろいろなプログラミング言語で実装された多くのライブラリがあり、常に新しいライブラリが作り出されています。
+
 [[libbitcoin]]
 ==== Libbitcoin and Bitcoin Explorer
 ==== LibbitcoinとBitcoin Explorer
@@ -1320,26 +1341,39 @@ The ((("libbitcoin library")))((("libraries, alternative","libbitcoin library"))
 
 The bx commands offer many of the same capabilities as the bitcoind client commands we illustrated in this chapter. The bx commands also offer some key management and manipulation tools that are not offered by bitcoind, including type-2 deterministic keys and mnemonic key encoding, as well as stealth address, payment, and query support.
 
+bxコマンドはこの章で説明したbitcoindクライアントコマンドと同じ機能を多く持っています。bxコマンドはまた、bitcoindでは提供されていないいくつかの重要な管理ツールや操作ツールも持っており、ステルスアドレスやステルス支払い、ステルスクエリのサポートだけでなくtype-2決定性キーやmnemonicキーエンコーディングも提供されています。????
+
+
 ===== Installing Bitcoin Explorer
+===== Bitcoin Explorerインストール
 
 ((("Bitcoin Explorer","installing")))To use Bitcoin Explorer, simply https://github.com/libbitcoin/libbitcoin-explorer/wiki/Download[download the signed executable for your operating system]. Builds are available for mainnet and testnet for Linux, OS X, and Windows.
 
+((("Bitcoin Explorer","installing")))Bitcoin Explorerを使うには、単に https://github.com/libbitcoin/libbitcoin-explorer/wiki/Download[あなたが使用しているOSに合った署名済み実行ファイルをダウンロードしてください]。Linux、OS X、Windowsであれば、ビルドはmainnetとtestnetともに可能です。
+
 Type +bx+ with no parameters to display the list of all available commands (see <<appdx_bx>>).
 
-Bitcoin Explorer also provides an installer for https://github.com/libbitcoin/libbitcoin-explorer/wiki/Build[building from sources on Linux and OS X, as well as Visual Studio projects for Windows]. Sources can also be built manually using Autotools. These also install the ((("libbitcoin library","installing")))libbitcoin library dependency.
+引数なしで +bx+ と入力すると、利用可能な全てのコマンドリストが表示されます(<<appdx_bx>>参照)。
 
 [TIP]
 ====
 Bitcoin Explorer offers many useful commands for encoding and decoding addresses, and converting to and from different formats and representations. Use them to explore the various formats such as Base16 (hex), Base58, Base58Check, Base64, etc.
+
+Bitcoin Explorerは、アドレスのエンコードやデコード、異なったフォーマットや表現方法への変換のための多くの有用なコマンドを提供しています。Base16(１６進数) やBase58、Base58Check、Base64などいろいろなフォーマットをこれらのコマンドを使って調べてみてください。
 ====
 
 ===== Installing Libbitcoin
+===== libbitcoinインストール
 
 ((("libbitcoin library","installing")))The libbitcoin library provides an installer for https://github.com/libbitcoin/libbitcoin/wiki/Build[building from sources on Linux and OS X, as well as Visual Studio projects for Windows]. Sources can also be built manually using Autotools.
+
+Bitcoin Explorerはまた https://github.com/libbitcoin/libbitcoin-explorer/wiki/Build[WindowsのためのVisual Studioプロジェクトだけでなく、LinuxやOS X上でソースコードから構築するインストーラも提供されています]。Autotoolsを使って手動でソースコードから構築することもできます。これらを使うと((("libbitcoin library","installing")))libbitcoinの依存ライブラリも一緒にインストールされます。
 
 [TIP]
 ====
 The Bitcoin Explorer installer installs both bx and the libbitcoin library, so if you have built bx from sources, you can skip this step.
+
+Bitcoin Explorerインストーラはbxとlibbitcoinライブラリ両方をインストールします。もしbxをソースコードから構築した場合はこのステップをスキップすることができます。
 ====
 
 ==== pycoin

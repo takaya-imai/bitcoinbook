@@ -81,6 +81,7 @@ Bitcoinネットワークは、攻撃に強く、また効率的なルールに�
 
 [[tx_data_structure]]
 .The structure of a transaction
+.トランザクションの構造
 [options="header"]
 |=======
 |Size| Field | Description
@@ -90,6 +91,13 @@ Bitcoinネットワークは、攻撃に強く、また効率的なルールに�
 | 1–9 bytes (VarInt) | Output Counter | How many outputs are included
 | Variable | Outputs | One or more transaction outputs
 | 4 bytes | Locktime | A Unix timestamp or block number
+| 4 bytes | Version | このトランザクションがどのルールに従っているかを指定
+| 1–9 bytes (VarInt) | Input Counter | いくつのインプットが含まれているか
+| Variable | Inputs | １つまたは複数のトランザクションインプット
+| 1–9 bytes (VarInt) | Output Counter | いくつのアウトプットが含まれているか
+| Variable | Outputs | １つまたは複数のトランザクションアウトプット
+| 4 bytes | Locktime | Unixタイムスタンプ、またはブロック高
+|=======
 |=======
 
 .Transaction Locktime
@@ -111,11 +119,13 @@ Bitcoinネットワークは、攻撃に強く、また効率的なルールに�
 [TIP]
 ====
 ((("accounts")))((("balances")))There are no accounts or balances in bitcoin; there are only _unspent transaction outputs_ (UTXO) scattered in the blockchain. 
+
+((("accounts")))((("balances")))Bitcoinに口座も残高もありません。あるのは単にブロックチェーンの中に散らばった _未使用トランザクションアウトプット_ (UTXO)だけです。
 ====
 
 A UTXO can have an arbitrary value denominated as a multiple of((("satoshis"))) satoshis.  Just like dollars can be divided down to two decimal places as cents, bitcoins can be divided down to eight decimal places as satoshis. Although UTXO can be any arbitrary value, once created it is indivisible just like a coin that cannot be cut in half. If a UTXO is larger than the desired value of a transaction, it must still be consumed in its entirety and change must be generated in the transaction. ((("change, making")))In other words, if you have a 20 bitcoin UTXO and want to pay 1 bitcoin, your transaction must consume the entire 20 bitcoin UTXO and produce two outputs: one paying 1 bitcoin to your desired recipient and another paying 19 bitcoin in change back to your wallet. As a result, most bitcoin transactions will generate change. 
 
-UTXOは ((("satoshis"))) satoshi を単位とした任意の値を持つことができます。ドルがセントという２桁の十進数を持つように、bitcoinはsatoshiという８桁の十進数を持ちます。UTXOは任意の値ですが、一度作られるとコインのように２つに切ることができません。((("change, making"))) 別の言い方をすると、もし20bitcoinのUTXOを持っていて1bitcoinだけ使いたいとすると、トランザクションは20bitcoinのUTXOを消費しなければならないため２つのアウトプットを作らなければいけません。１つは支払った1bitcoin、もう１つはあなたのウォレットに戻ってくるおつりの19bitcoinです。結果として、ほぼ多くのBitcoinトランザクションはおつりを生成します。????
+UTXOは ((("satoshis"))) satoshi を単位とした任意の値を持つことができます。ドルがセントというさらに下の２桁の十進数を持つように、bitcoinはsatoshiという８桁の十進数を持ちます。UTXOは任意の値ですが、一度作られるとコインのように２つに切ることができません。((("change, making"))) 別の言い方をすると、もし20bitcoinのUTXOを持っていて1bitcoinだけ使いたいとすると、トランザクションは20bitcoinのUTXOを消費しなければならないため２つのアウトプットを作らなければいけません。１つは支払った1bitcoin、もう１つはあなたのウォレットに戻ってくるおつりの19bitcoinです。結果として、ほぼ多くのBitcoinトランザクションはおつりを生成します。
 
 Imagine a shopper buying a $1.50 beverage, reaching into her wallet and trying to find a combination of coins and bank notes to cover the $1.50 cost. The shopper will choose exact change if available (a dollar bill and two quarters), or a combination of smaller denominations (six quarters), or if necessary, a larger unit such as a five dollar bank note. If she hands too much money, say $5, to the shop owner, she will expect $3.50 change, which she will return to her wallet and have available for future transactions.
 
@@ -123,7 +133,7 @@ $1.50の飲み物を買う人を想像してみましょう。彼女の財布か
 
 Similarly, a bitcoin transaction must be created from a user's UTXO in whatever denominations that user has available. Users cannot cut a UTXO in half any more than they can cut a dollar bill in half and use it as currency. The user's wallet application will typically select from the user's available UTXO various units to compose an amount greater than or equal to the desired transaction amount. 
 
-同様に、Bitcoinトランザクションはユーザが使用可能なUTXOから作られます。ユーザはUTXOを半分に割ることはできません。ウォレットは通常ユーザの利用可能なUTXOを選び、トランザクションに必要な金額以上になるように組み合わせます。????
+同様に、Bitcoinトランザクションはユーザが使用可能なUTXOから作られます。ユーザはUTXOを半分に割ることはできません。ウォレットは通常ユーザの利用可能なUTXOを選び、トランザクションに必要な金額以上になるように組み合わせます。
 
 As with real life, the bitcoin application can use several strategies to satisfy the purchase amount: combining several smaller units, finding exact change, or using a single unit larger than the transaction value and making change. All of this complex assembly of spendable UTXO is done by the user's wallet automatically and is invisible to users. It is only relevant if you are programmatically constructing raw transactions from UTXO. 
 
@@ -140,6 +150,8 @@ The exception to the output and input chain is a special type of transaction cal
 [TIP]
 ====
 What comes first? Inputs or outputs, the chicken or the egg? Strictly speaking, outputs come first because coinbase transactions, which generate new bitcoin, have no inputs and create outputs from nothing. 
+
+最初に何が来るでしょうか？インプットそれともアウトプット、鶏それとも卵？厳密に言って、アウトプットが最初に来ます。なぜなら、新しいbitcoinを生成するcoinbaseトランザクションはインプットを持っておらず、何もないところからアウトプットを作るからです。
 ====
 
 [[tx_outs]]
@@ -170,12 +182,16 @@ locing scriptの中で使われているトランザクションスクリプト�
 
 [[tx_out_structure]]
 .The structure of a transaction output
+.トランザクションアウトプットの構造
 [options="header"]
 |=======
 |Size| Field | Description
 | 8 bytes | Amount | Bitcoin value in satoshis (10^-8^ bitcoin)
 | 1-9 bytes (VarInt) | Locking-Script Size | Locking-Script length in bytes, to follow
 | Variable | Locking-Script | A script defining the conditions needed to spend the output
+| 8 bytes | Amount | satoshi単位(10^-8^ bitcoin)のbitcoin額
+| 1-9 bytes (VarInt) | Locking-Script Size | 次に続くlocking scriptのバイト長
+| Variable | Locking-Script | アウトプットを使用するために必要な条件を定義したscript
 |=======
 
 In <<get_utxo>>, we use the blockchain.info API to find the unspent outputs (UTXO) of a specific address.
@@ -184,6 +200,7 @@ In <<get_utxo>>, we use the blockchain.info API to find the unspent outputs (UTX
 
 [[get_utxo]]
 .A script that calls the blockchain.info API to find the UTXO related to an address
+.あるBitcoinアドレスに関連したUTXOを見つけ出す blockchain.info APIを呼び出すスクリプト
 ====
 [source, python]
 ----
@@ -197,6 +214,7 @@ Running the script, we see a list of transaction IDs, a colon, the index number 
 
 [[get_utxo_run]]
 .Running the get-utxo.py script
+.get-utxo.py スクリプトの実行
 ====
 [source,bash]
 ----
@@ -234,6 +252,7 @@ In <<select_utxo>>, we show the use of a "greedy" algorithm to select from avail
 
 [[select_utxo]]
 .A script for calculating how much total bitcoin will be issued
+.支払いに総額いくらのbitcoinが必要となるかを計算するためのスクリプト
 ====
 [source, python]
 ----
@@ -247,6 +266,7 @@ If we run the _select-utxo.py_ script without a parameter, it will attempt to co
 
 [[select_utxo_run]]
 .Running the select-utxo.py script
+.select-utxo.py スクリプトの実行
 ====
 ----
 $ python select-utxo.py 50000000
@@ -261,6 +281,7 @@ Once the UTXO is selected, the wallet then produces unlocking scripts containing
 
 [[tx_in_structure]]
 .The structure of a transaction input
+.トランザクションインプットの構造
 [options="header"]
 |=======
 |Size| Field | Description
@@ -269,11 +290,21 @@ Once the UTXO is selected, the wallet then produces unlocking scripts containing
 | 1-9 bytes (VarInt) | Unlocking-Script Size | Unlocking-Script length in bytes, to follow
 | Variable | Unlocking-Script | A script that fulfills the conditions of the UTXO locking script.
 | 4 bytes | Sequence Number | Currently disabled Tx-replacement feature, set to 0xFFFFFFFF
+| 32 bytes | Transaction Hash | 使われるUTXOを含むトランザクションハッシュ
+| 4 bytes | Output Index | 使われるUTXOのトランザクション内インデックス、一番最初のアウトプットの場合は0
+| 1-9 bytes (VarInt) | Unlocking-Script Size | unlocking-scriptのバイト長
+| Variable | Unlocking-Script | UTXOのlocking scriptを満たすscript
+| 4 bytes | Sequence Number | 現在使用不可になっているCurrently disabled Tx-replacement feature, set to 0xFFFFFFFF
+|=======^M
 |=======
 
 [NOTE]
 ====
 The sequence number is used to override a transaction prior to the expiration of the transaction locktime, which is a feature that is currently disabled in bitcoin. Most transactions set this value to the maximum integer value (0xFFFFFFFF) and it is ignored by the bitcoin network. If the transaction has a nonzero locktime, at least one of its inputs must have a sequence number below 0xFFFFFFFF in order to enable locktime.(((range="endofrange", startref="ix_ch05-asciidoc5")))
+
+sequence numberはトランザクションを置き換える
+ほとんどのトランザクションではこの値を整数最大値(0xFFFFFFFF)に設定し、Bitcoinネットワークでは無視されています。
+もしトランザクションが0ではないlocktimeを持っているとすると、少なくともこのトランザクションのインプットのうちの１つがlocktimeを有効にするために0xFFFFFFFFよりも小さいsequence numberを持たなければいけないです。
 ====
 
 [[tx_fees]]
@@ -309,6 +340,7 @@ The current algorithm used by miners to prioritize transactions for inclusion in
 
 [[tx_fee_equation]]
 .Transaction fees are implied, as the excess of inputs minus outputs:
+.トランザクション手数料はインプットとアウトプットの差として暗に含められています。
 ----
 Fees = Sum(Inputs) – Sum(Outputs)
 ----
@@ -324,6 +356,8 @@ For example, if you consume a 20-bitcoin UTXO to make a 1-bitcoin payment, you m
 [WARNING]
 ====
 If you forget to add a change output in a manually constructed transaction, you will be paying the change as a transaction fee. "Keep the change!" might not be what you intended.
+
+手動でトランザクションを構築したときにもしおつりのアウトプットを追加し忘れてしまうと、おつり分をトランザクション手数料として払ってしまうことになります。"おつりを守りなさい！"というのは、通常の支払いの感覚からすると不思議に感じるかもしれません。
 ====
 
 Let's see how this works in practice, by looking at Alice's coffee purchase again. Alice wants to spend 0.015 bitcoin to pay for coffee. To ensure this transaction is processed promptly, she will want to include a transaction fee, say 0.001. That will mean that the total cost of the transaction will be 0.016. Her wallet must therefore source a set of UTXO that adds up to 0.016 bitcoin or more and, if necessary, create change. Let's say her wallet has a 0.2-bitcoin UTXO available. It will therefore need to consume this UTXO, create one output to Bob's Cafe for 0.015, and a second output with 0.184 bitcoin in change back to her own wallet, leaving 0.001 bitcoin unallocated, as an implicit fee for the transaction. 
@@ -340,7 +374,7 @@ Eugeniaのウォレットは１個の大きなトランザクションを作ろ�
 
 Eugenia's wallet application will calculate the appropriate fee by measuring the size of the transaction and multiplying that by the per-kilobyte fee. Many wallets will overpay fees for larger transactions to ensure the transaction is processed promptly. The higher fee is not because Eugenia is spending more money, but because her transaction is more complex and larger in size—the fee is independent of the transaction's bitcoin value.(((range="endofrange", startref="ix_ch05-asciidoc8")))(((range="endofrange", startref="ix_ch05-asciidoc7"))) 
 
-Eugeniaのウォレットはトランザクションのデータサイズと1KBあたりの手数料を掛け合わせて適切な手数料を計算することになります。多くのウォレットは大きなトランザクションに対して手数料を多めに払っています。これは、トランザクションを迅速に処理してもらうためです。より高い手数料は????
+Eugeniaのウォレットはトランザクションのデータサイズと1KBあたりの手数料を掛け合わせて適切な手数料を計算することになります。多くのウォレットは大きなトランザクションに対して手数料を多めに払っています。これは、トランザクションを迅速に処理してもらうためです。高い手数料を払うのはEugeniaが多くのお金を使っているからではなく、トランザクションがより複雑でよりデータサイズが大きいからです。トランザクション手数料の額はトランザクションのbitcoin額とは無関係なのです。(((range="endofrange", startref="ix_ch05-asciidoc8")))(((range="endofrange", startref="ix_ch05-asciidoc7")))
 
 [[tx_chains]]
 === Transaction Chaining and Orphan Transactions
@@ -364,11 +398,11 @@ There is a limit to the number of orphan transactions stored in memory, to preve
 
 ((("scripts", id="ix_ch05-asciidoc9", range="startofrange")))((("transactions","script language for", id="ix_ch05-asciidoc10", range="startofrange")))((("transactions","validation", id="ix_ch05-asciidoc11", range="startofrange")))((("validation (transaction)", id="ix_ch05-asciidoc12", range="startofrange")))Bitcoin clients validate transactions by executing a script, written in a Forth-like scripting language. Both the locking script (encumbrance) placed on a UTXO and the unlocking script that usually contains a signature are written in this scripting language. When a transaction is validated, the unlocking script in each input is executed alongside the corresponding locking script to see if it satisfies the spending condition. 
 
-((("scripts", id="ix_ch05-asciidoc9", range="startofrange")))((("transactions","script language for", id="ix_ch05-asciidoc10", range="startofrange")))((("transactions","validation", id="ix_ch05-asciidoc11", range="startofrange")))((("validation (transaction)", id="ix_ch05-asciidoc12", range="startofrange")))Bitcoinクライアントはスクリプトを実行することでトランザクションの有効性をチェックします。UTXOにあるlocking script(解除条件)と通常署名を含んでいるunlocking scriptはこのスクリプト言語で書かれています。トランザクションが有効かチェックされるときは、資金の使用条件を満たしているかどうかをみるためにそれぞれのインプットにあるunlocking scriptが対応したlocking scriptとともに実行されます。????
+((("scripts", id="ix_ch05-asciidoc9", range="startofrange")))((("transactions","script language for", id="ix_ch05-asciidoc10", range="startofrange")))((("transactions","validation", id="ix_ch05-asciidoc11", range="startofrange")))((("validation (transaction)", id="ix_ch05-asciidoc12", range="startofrange")))Bitcoinクライアントはscriptを実行することでトランザクションの有効性をチェックします。UTXOにあるlocking script(解除条件)と通常署名を含んでいるunlocking scriptはこのscript言語で書かれています。トランザクションが有効かチェックされるときは、資金の使用条件を満たしているかどうかをみるためにそれぞれのインプットにあるunlocking scriptが対応したlocking scriptとともに実行されます。
 
 Today, most transactions processed through the bitcoin network have the form "Alice pays Bob" and are based on the same script called a Pay-to-Public-Key-Hash script. However, the use of scripts to lock outputs and unlock inputs means that through use of the programming language, transactions can contain an infinite number of conditions. Bitcoin transactions are not limited to the "Alice pays Bob" form and pattern.  
 
-今日、Bitcoinネットワークを通して処理される多くのトランザクションは"アリスがボブに支払う"というような形式になっており、Pay-to-Public-Key-Hash scriptと呼ばれる同じスクリプトに基づきます。???? しかし、アウトプットをロックしインプットを解錠するスクリプトを使うことは、プログラミング言語を通してトランザクションが無限個の条件を含められることを意味します。???? Bitcoinトランザクションは"アリスがボブに支払う"というような形式には何の制約もないのです。????
+今日、Bitcoinネットワークを通して処理される多くのトランザクションは"アリスがボブに支払う"というような形式になっており、Pay-to-Public-Key-Hash scriptと呼ばれるscriptに基づいています。しかし、アウトプットをロックしインプットを解錠するscriptを使うことは、プログラミング言語を通してトランザクションに無限個の条件を含められることを意味します。"アリスがボブに支払う"という形式に対してBitcoinトランザクションは何の制約も受けていないのです。
 
 This is only the tip of the iceberg of possibilities that can be expressed with this scripting language. In this section, we will demonstrate the components of the bitcoin transaction scripting language and show how it can be used to express complex conditions for spending and how those conditions can be satisfied by unlocking scripts. 
 
@@ -377,6 +411,8 @@ This is only the tip of the iceberg of possibilities that can be expressed with 
 [TIP]
 ====
 Bitcoin transaction validation is not based on a static pattern, but instead is achieved through the execution of a scripting language. This language allows for a nearly infinite variety of conditions to be expressed. This is how bitcoin gets the power of "programmable money."
+
+Bitcoinトランザクションの有効性チェックは静的なパターンに基づいているわけではなく、script言語の実行を通して行われています。この言語はほとんど無限個の条件を表現することができます。このようにしてBitcoinは"プログラム可能な通貨"を実現しているのです。
 ====
 
 ==== Script Construction (Lock + Unlock)
@@ -404,7 +440,7 @@ In the original bitcoin client, the unlocking and locking scripts were concatena
 
 First, the unlocking script is executed, using the stack execution engine. If the unlocking script executed without errors (e.g., it has no "dangling" operators left over), the main stack (not the alternate stack) is copied and the locking script is executed. If the result of executing the locking script with the stack data copied from the unlocking script is "TRUE," the unlocking script has succeeded in resolving the conditions imposed by the locking script and, therefore, the input is a valid authorization to spend the UTXO. If any result other than "TRUE" remains after execution of the combined script, the input is invalid because it has failed to satisfy the spending conditions placed on the UTXO. Note that the UTXO is permanently recorded in the blockchain, and therefore is invariable and is unaffected by failed attempts to spend it by reference in a new transaction. Only a valid transaction that correctly satisfies the conditions of the UTXO results in the UTXO being marked as "spent" and removed from the set of available (unspent) UTXO.
 
-最初に、スタック実行エンジンを使ってunlocking scriptが実行されます。もしunlocking scriptがエラーなく(例えば、"dangling" operatorが何も残っていないなど????)実行されると、メインスタック(代替スタックではなく)がコピーされlocking scriptが実行されます。もしunlocking scriptからコピーされたスタックデータとともに実行されたlocking scriptの結果が"真"なら、unlocking scriptはlocking scriptによって課されていた条件を解くことに成功したということです。よって、インプットはUTXOを使用する有効な権限を持っているということになります。もし"真"以外が実行結果に残ってしまっているのであれば、インプットは有効ではありません。UTXOに置いてある使用条件を満たすことができなかったからです。UTXOは永遠的にブロックチェーンに記録され、よって変化せず新しいトランザクション???? 正しくUTXOの条件を満たす有効なトランザクションだけがUTXOの中に"使用済み"と記載され、使用可能な(未使用)UTXOのセットから削除されるのです。
+最初に、スタック実行エンジンを使ってunlocking scriptが実行されます。もしunlocking scriptがエラーなく(例えば、"まだ実行されていない"オペレータが何も残っていないなど)実行されると、メインスタック(代替スタックではなく)がコピーされlocking scriptが実行されます。もしunlocking scriptからコピーされたスタックデータとともに実行されたlocking scriptの結果が"真"なら、unlocking scriptはlocking scriptによって課されていた条件を解くことに成功したということです。よって、インプットはUTXOを使用する有効な権限を持っているということになります。もし"真"以外が実行結果に残ってしまっているのであれば、インプットは有効ではありません。UTXOに置いてある使用条件を満たすことができなかったからです。重要なこととして、UTXOはブロックチェーンに永遠に記録され続けるため成功しなかった場合UTXOであるという状態は変化せず、何度新しいトランザクションがUTXOを不正に使用しようとしてもUTXOは全く影響を受けません。UTXOの条件を正しく満たす有効なトランザクションだけがUTXOに"使用済み"という印をつけ、使用可能な(未使用)UTXOのセットから削除させることができるのです。
 
 <<scriptSig_and_scriptPubKey>> is an example of the unlocking and locking scripts for the most common type of bitcoin transaction (a payment to a public key hash), showing the combined script resulting from the concatenation of the unlocking and locking scripts prior to script validation. 
 
@@ -412,6 +448,7 @@ First, the unlocking script is executed, using the stack execution engine. If th
 
 [[scriptSig_and_scriptPubKey]]
 .Combining scriptSig and scriptPubKey to evaluate a transaction script
+.トランザクションscriptを評価するためのscriptSigとscriptPubKeyの結合
 image::images/msbt_0501.png["scriptSig_and_scriptPubKey"]
 
 
@@ -483,12 +520,15 @@ As we saw in the step-by-step example in <<simplemath_script>>, when this script
 
 [[simplemath_script]]
 .Bitcoin's script validation doing simple math
+.Bitcoinのscript検証を使って簡単な算数をやってみる。
 image::images/msbt_0502.png["TxScriptSimpleMathExample"]
 
 
 [TIP]
 ====
 Transactions are valid if the top result on the stack is TRUE (noted as ++&#x7b;0x01&#x7d;++), any other non-zero value or if the stack is empty after script execution. Transactions are invalid if the top value on the stack is FALSE (a zero-length empty value, noted as ++&#x7b;&#x7d;++) or if script execution is halted explicitly by an operator, such as OP_VERIFY, OP_RETURN, or a conditional terminator such as OP_ENDIF. See <<tx_script_ops>> for details.
+
+もしスタックの一番上に真( ++&#x7b;0x01&#x7d;++ のように表現されます)、または真ではないが０以外の値があればトランザクションは有効と検証されたことになります。または、script実行後にスタックに空値ではなく何も残っていなかった場合もトランザクションは有効と検証されたことになります。トランザクションが無効になってしまう場合は、スタックの一番上に偽(a zero-length empty value,  ++&#x7b;&#x7d;++ のように表現される長さ０の空値)がある場合や、OP_VERIFYやOP_RETURNまたはOP_ENDIFのような条件付き終了オペレータなどによって明示的にscript実行が終了させられる場合です。詳細については <<tx_script_ops>> を参照してください。
 ====
 
 
@@ -569,6 +609,7 @@ Figures pass:[<xref linkend="P2PubKHash1" xrefstyle="select: labelnumber"/>] and
 
 [[P2PubKHash1]]
 .Evaluating a script for a P2PKH transaction (Part 1 of 2)
+.P2PKHトランザクションにおけるscriptの評価(1/2)
 image::images/msbt_0503.png["Tx_Script_P2PubKeyHash_1"]
 
 
@@ -610,6 +651,7 @@ This script is a simple invocation of the +CHECKSIG+ operator, which validates t
 
 [[P2PubKHash2]]
 .Evaluating a script for a P2PKH transaction (Part 2 of 2)
+.P2PKHトランザクションにおけるscriptの評価(2/2)
 image::images/msbt_0504.png["Tx_Script_P2PubKeyHash_2"]
 
 [[multisig]]
@@ -654,6 +696,8 @@ or any combination of two signatures from the private keys corresponding to the 
 [NOTE]
 ==== 
 ((("CHECKMULTISIG implementation")))The prefix +OP_0+ is required because of a bug in the original implementation of +CHECKMULTISIG+ where one item too many is popped off the stack. It is ignored by +CHECKMULTISIG+ and is simply a placeholder.
+
+((("CHECKMULTISIG implementation")))最初に置かれている +OP_0+ は +CHECKMULTISIG+ のオリジナルの実装にバグがありそれを補完するために必要となっています。このバグというのは、 +CHECKMULTISIG+ を実行した時に処理に関係のないスタック上のアイテムを余分に１つpopしてしまうというバグです。 +CHECKMULTISIG+ 処理は事実 +OP_0+ を無視して実行され、 +OP_0+ は単なる空箱のようなものになっています。
 ====
 
 The two scripts together would form the combined validation script:
@@ -680,7 +724,7 @@ When executed, this combined script will evaluate to TRUE if, and only if, the u
 
 ((("blockchains","storing unrelated information in")))The use of bitcoin's blockchain to store data unrelated to bitcoin payments is a controversial subject. Many developers consider such use abusive and want to discourage it. Others view it as a demonstration of the powerful capabilities of blockchain technology and want to encourage such experimentation. Those who object to the inclusion of non-payment data argue that it causes "blockchain bloat," burdening those running full bitcoin nodes with carrying the cost of disk storage for data that the blockchain was not intended to carry. Moreover, such transactions create UTXO that cannot be spent, using the destination bitcoin address as a free-form 20-byte field. Because the address is used for data, it doesn't correspond to a private key and the resulting UTXO can _never_ be spent; it's a fake payment. These transactions that can never be spent are therefore never removed from the UTXO set and cause the size of the UTXO database to forever increase, or "bloat."
 
-((("blockchains","storing unrelated information in")))bitcoinの支払いと無関係なデータをブロックチェーン上に記録することは物議を引き起こしました。多くの開発者たちはこのようなブロックチェーンの使い方を汚いものと考え、思いとどまらせようと考えました。またある人たちはこれがブロックチェーンテクノロジーの強力な拡張性を示すものと感じ、このような実験を押し進めようと考えました。支払いと関係のないデータを含めることに反対な人たちはこれにより"ブロックチェーンの肥大化"を引き起こすと考えており、ブロックチェーンが本来運ぶ必要のなかったデータのためにディスクストレージのコストが増大しfull nodeを動作させているサーバのコストが増えてしまうと考えました。さらに、このようなトランザクションは使用されないUTXOを作り出し、送り先Bitcoinアドレスの領域20byteを自由に使える領域として使ってしまいます。このBitcoinアドレスはデータのために使われるので、これは秘密鍵に対応しておらず _決して使われない_ UTXOを結果として生み出してしまうのです。これはあたかも偽物の支払いのようになってしまいます。決して使われないこれらのトランザクションはUTXOセットから決して削除されず、永遠にUTXOデータベースのサイズを大きくし続け、"肥大化"させてしまいます。
+((("blockchains","storing unrelated information in")))bitcoinの支払いと無関係なデータをブロックチェーン上に記録することは物議を引き起こしました。多くの開発者たちはこのようなブロックチェーンの使い方を汚いものと考え、思いとどまらせようと考えました。またある人たちはこれがブロックチェーンテクノロジーの強力な拡張性を示すものと感じ、このような実験を押し進めようとしました。支払いと関係のないデータを含めることに反対な人たちはこれにより"ブロックチェーンの肥大化"を引き起こすと考えており、ブロックチェーンが本来運ぶ必要のなかったデータのためにディスクストレージのコストが増大しfull nodeを動作させているサーバのコストが増えてしまうと考えました。さらに、このようなトランザクションは使用されないUTXOを作り出し、送り先Bitcoinアドレスの領域20byteを自由に使える領域として使ってしまいます。このBitcoinアドレスはデータのために使われるので、これは秘密鍵に対応しておらず _決して使われない_ UTXOを結果として生み出してしまうのです。これはあたかも偽物の支払いのようになってしまいます。決して使われないこれらのトランザクションはUTXOセットから決して削除されず、永遠にUTXOデータベースのサイズを大きくし続け、"肥大化"させてしまいます。
 
 In version 0.9 of the Bitcoin Core client, a compromise was reached with the introduction of the +OP_RETURN+ operator. +OP_RETURN+ allows developers to add 80 bytes of nonpayment data to a transaction output. However, unlike the use of "fake" UTXO, the +OP_RETURN+ operator creates an explicitly _provably unspendable_ output, which does not need to be stored in the UTXO set. +OP_RETURN+ outputs are recorded on the blockchain, so they consume disk space and contribute to the increase in the blockchain's size, but they are not stored in the UTXO set and therefore do not bloat the UTXO memory pool and burden full nodes with the cost of more expensive RAM. 
 
@@ -708,9 +752,13 @@ A standard transaction (one that conforms to the +isStandard()+ checks) can have
 
 Two new command-line options have been added in Bitcoin Core as of version 0.10. The option +datacarrier+ controls relay and mining of OP_RETURN transactions, with the default set to "1" to allow them. The option +datacarriersize+ takes a numeric argument specifying the maximum size in bytes of the OP_RETURN data, 40 bytes by default.
 
+現在のBitcoin Coreバージョン0.10では２つの新しいコマンドラインオプションが追加されました。 +datacarrier+ オプションはOP_RETURNトランザクションのリレーとマイニングを行うかどうかをコントロールしており、デフォルトは"1"でリレーとマイニングの実行を許可するものになっています。 +datacarriersize+ オプションは数値を引数として取りOP_RETURNデータの最大バイトサイズを指定します。この最大バイトサイズのデフォルトは40バイトです。
+
 [NOTE]
 ====
 OP_RETURN was initially proposed with a limit of 80 bytes, but the limit was reduced to 40 bytes when the feature was released. In February 2015, in version 0.10 of Bitcoin Core, the limit was raised back to 80 bytes. Nodes may choose not to relay or mine OP_RETURN, or only relay and mine OP_RETURN containing less than 80 bytes of data.
+
+OP_RETURNは最初80バイトの制限を付けた形で提案されていましたが、この機能が実際にリリースされた時に制限が40バイトに削減されました。2015年2月にリリースされたBitcoin Coreバージョン0.10の中で、この制限は80バイトに引き上げられました。ノードはOP_RETURNトランザクションをリレー、マイニングしないか、または単にリレーだけして80バイトより小さいデータを持つOP_RETURNトランザクションだけをマイニングするか、を選べるようになっています。
 ====
 
 [[p2sh]]
@@ -723,7 +771,7 @@ OP_RETURN was initially proposed with a limit of 80 bytes, but the limit was red
 
 In <<ch01_intro_what_is_bitcoin>> we introduced Mohammed, an electronics importer based in Dubai. Mohammed's company uses bitcoin's multi-signature feature extensively for its corporate accounts. Multi-signature scripts are one of the most common uses of bitcoin's advanced scripting capabilities and are a very powerful feature. Mohammed's company uses a multi-signature script for all customer payments, known in accounting terms as "accounts receivable," or AR. With the multi-signature scheme, any payments made by customers are locked in such a way that they require at least two signatures to release, from Mohammed and one of his partners or from his attorney who has a backup key. A multi-signature scheme like that offers corporate governance controls and protects against theft, embezzlement, or loss. 
 
-<<ch01_intro_what_is_bitcoin>>で、ドバイで電子機器の輸入業をやっているムハンマドを紹介しました。ムハンマドの会社は会社の口座のために広範囲にBitcoinのマルチシグネチャー機能を利用しています。マルチシグネチャースクリプトはBitcoinの先進的なスクリプト言語の主要な使い方の１つで、とても強力な機能です。ムハンマドの会社は全ての顧客からの支払い(会計用語で"売掛金")にマルチシグネチャーを使っています。マルチシグネチャースキームを使い、顧客による全ての支払いは次のような方法で安全性を担保しています。支払いを実行するには少なくとも２つの署名が必要であり、登録されている人はムハンマド、彼のパートナーのうちの１人、バックアップキーを持っている彼の代理人です。このようなマルチシグネチャースキームはコーポレートガバナンスを提供し、盗難、横領、または紛失を防ぐ役割があります。
+<<ch01_intro_what_is_bitcoin>>で、ドバイで電子機器の輸入業をやっているムハンマドを紹介しました。ムハンマドの会社は会社の口座のためにいろいろなタイミングでBitcoinのマルチシグネチャー機能を利用しています。マルチシグネチャースクリプトはBitcoinの先進的なスクリプト言語の主要な使い方の１つで、とても強力な機能です。ムハンマドの会社は全ての顧客からの支払い(会計用語で"売掛金")にマルチシグネチャーを使っています。マルチシグネチャースキームを使い、顧客による全ての支払いは次のような方法で安全性を担保しています。支払いを実行するには少なくとも２つの署名が必要であり、登録されている人はムハンマド、彼のパートナーのうちの１人、バックアップキーを持っている彼の代理人です。このようなマルチシグネチャースキームはコーポレートガバナンスを提供し、盗難、横領、または紛失を防ぐ役割があります。
 
 The resulting script is quite long and looks like this:
 
@@ -736,7 +784,7 @@ The resulting script is quite long and looks like this:
     
 Although multi-signature scripts are a powerful feature, they are cumbersome to use. Given the preceding script, Mohammed would have to communicate this script to every customer prior to payment. Each customer would have to use special bitcoin wallet software with the ability to create custom transaction scripts, and each customer would have to understand how to create a transaction using custom scripts. Furthermore, the resulting transaction would be about five times larger than a simple payment transaction, because this script contains very long public keys. The burden of that extra-large transaction would be borne by the customer in the form of fees. Finally, a large transaction script like this would be carried in the UTXO set in RAM in every full node, until it was spent. All of these issues make using complex output scripts difficult in practice. 
 
-マルチシグネチャースクリプトはとても強力な機能ですが、これは扱いにくいものなのです。というのは、ハンマドは支払いをする前にこのスクリプトについて全ての顧客に説明する必要があるためです。それぞれの顧客は特別なトランザクションスクリプトを作ることができる特別なウォレットを使う必要があり、また特別なスクリプトを使ってどのようにトランザクションを作ればよいか理解する必要があります。さらに、このスクリプトがとても長い公開鍵を含んでいるため、作られたトランザクションは単純な支払いトランザクションと比べて約５倍も大きいのです。余分に大きいトランザクションの負担が顧客ごとのトランザクション手数料として乗っかってきます。最終的に、このような大きなトランザクションスクリプトは使用されるまで全てのfull nodeのRAM内のUTXOセットに保持されます。このような問題点によって実用上、複雑なアウトプットスクリプトの使用が難しくなってしまうのです。
+マルチシグネチャースクリプトはとても強力な機能ですが、これは扱いにくいものなのです。というのは、ムハンマドは支払いをする前にこのスクリプトについて全ての顧客に説明する必要があるためです。それぞれの顧客は特別なトランザクションスクリプトを作ることができる特別なウォレットを使う必要があり、また特別なスクリプトを使ってどのようにトランザクションを作ればよいか理解する必要があります。さらに、このスクリプトがとても長い公開鍵を含んでいるため、作られたトランザクションのデータサイズは単純な支払いトランザクションと比べて約５倍も大きいのです。余分に大きいトランザクションの負担が顧客ごとのトランザクション手数料として乗っかってきます。最終的に、このような大きなトランザクションスクリプトは使用されるまで全てのfull nodeのRAM内のUTXOセットに保持されます。このような問題点によって実用上、複雑なアウトプットスクリプトの使用が難しくなってしまうのです。
 
 Pay-to-script-hash (P2SH) was developed to resolve these practical difficulties and to make the use of complex scripts as easy as a payment to a bitcoin address. With P2SH payments, the complex locking script is replaced with its digital fingerprint, a cryptographic hash. When a transaction attempting to spend the UTXO is presented later, it must contain the script that matches the hash, in addition to the unlocking script. In simple terms, P2SH means "pay to a script matching this hash, a script that will be presented later when this output is spent." 
 
@@ -748,6 +796,7 @@ P2SHトランザクションでは、ハッシュによって置き換えられ�
 
 [[without_p2sh]]
 .Complex script without P2SH
+.P2SHを使用しない複雑なscript
 |=======
 | Locking Script | 2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 OP_CHECKMULTISIG
 | Unlocking Script | Sig1 Sig2   
@@ -755,6 +804,7 @@ P2SHトランザクションでは、ハッシュによって置き換えられ�
 
 [[with_p2sh]]
 .Complex script as P2SH
+.P2SHを使用した複雑なscript
 |=======
 | Redeem Script | 2 PubKey1 PubKey2 PubKey3 PubKey4 PubKey5 5 OP_CHECKMULTISIG
 | Locking Script | OP_HASH160 <20-byte hash of redeem script> OP_EQUAL
@@ -763,7 +813,7 @@ P2SHトランザクションでは、ハッシュによって置き換えられ�
 
 As you can see from the tables, with P2SH the complex script that details the conditions for spending the output (redeem script) is not presented in the locking script. Instead, only a hash of it is in the locking script and the redeem script itself is presented later, as part of the unlocking script when the output is spent. This shifts the burden in fees and complexity from the sender to the recipient (spender) of the transaction. 
 
-テーブルにある通りP2SHのほうは、アウトプットを使用するための詳細条件が書かれた複雑なスクリプトがlocking scriptにはありません。その代わり、redeem scriptのハッシュだけがlocking scriptにはあり、redeem script自身はアウトプットが使用されるときのunlocking scriptの一部としてあとで提供されます。
+上記表にある通り、P2SHの場合locking scriptにアウトプットを使用するための詳細条件が書かれた複雑なスクリプトがありません。その代わり、redeem scriptのハッシュだけがlocking scriptにはあり、redeem script自身はアウトプットが使用されるときのunlocking scriptの一部としてあとで提供されます。
 
 Let's look at Mohammed's company, the complex multi-signature script, and the resulting P2SH scripts. 
 
@@ -779,7 +829,7 @@ First, the multi-signature script that Mohammed's company uses for all incoming 
 
 If the placeholders are replaced by actual public keys (shown here as 520-bit numbers starting with 04) you can see that this script becomes very long:
 
-上記のplaceholderを実際の公開鍵(04から始まる520bitの数値)に置き換えてみると、以下のようにとても長くなってしまうことが分かるはずです。
+上記の大なり小なり括弧を実際の公開鍵(04から始まる520bitの数値)に置き換えてみると、以下のようにとても長くなってしまうことが分かるはずです。
 
 ----
 2 
@@ -796,7 +846,7 @@ This entire script can instead be represented by a 20-byte cryptographic hash, b
 
 A P2SH transaction locks the output to this hash instead of the longer script, using the locking script:
 
-P2SHトランザクションは、以下のような長いスクリプトの代わりにこのハッシュを含めたlocking scriptでアウトプットをロックしています。
+P2SHトランザクションは、長いスクリプトの代わりにこのハッシュを含めたlocking scriptでアウトプットをロックしています。
 
 ----
 OP_HASH160 54c557e07dde5bb6cb791c7a540e0a4796f5e97e OP_EQUAL
@@ -818,7 +868,7 @@ The two scripts are combined in two stages. First, the redeem script is checked 
 ----
 If the redeem script hash matches, the unlocking script is executed on its own, to unlock the redeem script:
 
-もしredeem scriptハッシュが合っていれば、unlocking scriptはredeem scriptwp解除するために実行されます。
+もしredeem scriptハッシュが合っていれば、unlocking scriptはredeem scriptを解除するために実行されます。
 
 ----
 <Sig1> <Sig2> 2 PK1 PK2 PK3 PK4 PK5 5 OP_CHECKMULTISIG
@@ -878,5 +928,8 @@ redeem scriptはP2SHアウトプットを使用しようとするまでBitcoin�
 [WARNING]
 ====
 ((("Pay-to-Script-Hash (P2SH)","locking scripts")))P2SH locking scripts contain the hash of a redeem script, which gives no clues as to the content of the redeem script itself. The P2SH transaction will be considered valid and accepted even if the redeem script is invalid. You might accidentally lock bitcoin in such a way that it cannot later be spent.(((range="endofrange", startref="ix_ch05-asciidoc19")))(((range="endofrange", startref="ix_ch05-asciidoc18")))(((range="endofrange", startref="ix_ch05-asciidoc17")))(((range="endofrange", startref="ix_ch05-asciidoc0"))) 
+
+((("Pay-to-Script-Hash (P2SH)","locking scripts")))
+P2SH locking scriptはredeem scriptのハッシュを含んでいます。これは、?????
 ====
 
