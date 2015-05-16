@@ -98,7 +98,6 @@ Bitcoinネットワークは、攻撃に強く、また効率的なルールに�
 | Variable | Outputs | １つまたは複数のトランザクションアウトプット
 | 4 bytes | Locktime | Unixタイムスタンプ、またはブロック高
 |=======
-|=======
 
 .Transaction Locktime
 ****
@@ -428,7 +427,7 @@ Bitcoinトランザクションの有効性チェックは静的なパターン�
 
 ((("unlocking scripts","transaction validation and")))An unlocking script is a script that "solves," or satisfies, the conditions placed on an output by a locking script and allows the output to be spent. Unlocking scripts are part of every transaction input, and most of the time they contain a digital signature produced by the user's wallet from his or her private key. Historically, the unlocking script is called _scriptSig_, because it usually contained a digital signature. In most bitcoin applications, the source code refers to the unlocking script as +scriptSig+. In this book, we refer to it as an "unlocking script" to acknowledge the much broader range of locking script requirements, because not all unlocking scripts must contain signatures.
 
-((("unlocking scripts","transaction validation and")))unlocking scriptは、locking scriptによってアウトプットに置かれた条件を"解く"または満たすスクリプトで、アウトプットが使用できるようにします。unlocking scriptは全てのトランザクションインプットの一部であり、ほとんどの場合秘密鍵からウォレットが作り出したデジタル署名を含んでいます。歴史的に、unlocking scriptが通常デジタル署名を含んでいるためunlocking scriptは _scriptSig_ と呼ばれています。多くのBitcoinアプリケーションのソースコードの中では、unlocking scriptを +scriptSig+ と呼んでいます。この本では、全てのunlocking scriptが署名を含んでいなければいけないわけではないため、locking scriptに必要なものをより多く得るためにそれを "unlocking script"と呼ぶことにします。????
+((("unlocking scripts","transaction validation and")))unlocking scriptは、locking scriptによってアウトプットに置かれた条件を"解く"または満たすスクリプトで、アウトプットを使用できるようにします。unlocking scriptは全てのトランザクションインプットの一部であり、ほとんどの場合秘密鍵からウォレットが作り出したデジタル署名を含んでいます。歴史的に、unlocking scriptが通常デジタル署名を含んでいるためunlocking scriptは _scriptSig_ と呼ばれています。多くのBitcoinアプリケーションのソースコードの中では、unlocking scriptを +scriptSig+ と呼んでいます。この本では、これを"unlocking script"と呼ぶことにしています。というのは、全てのunlocking scriptが署名を含んでいなければいけないわけではなく、locking scriptの解除をするために必要なものは署名以外にもあるということに気づいてもらうためです。
 
 Every bitcoin client will validate transactions by executing the locking and unlocking scripts together. For each input in the transaction, the validation software will first retrieve the UTXO referenced by the input. That UTXO contains a locking script defining the conditions required to spend it. The validation software will then take the unlocking script contained in the input that is attempting to spend this UTXO and execute the two scripts. 
 
@@ -923,7 +922,10 @@ P2SH redeem scriptの中にP2SHを置くことはできませんという点に�
 
 Note that because the redeem script is not presented to the network until you attempt to spend a P2SH output, if you lock an output with the hash of an invalid transaction it will be processed regardless. However, you will not be able to spend it because the spending transaction, which includes the redeem script, will not be accepted because it is an invalid script. This creates a risk, because you can lock bitcoin in a P2SH that cannot be spent later. The network will accept the P2SH encumbrance even if it corresponds to an invalid redeem script, because the script hash gives no indication of the script it represents. 
 
-redeem scriptはP2SHアウトプットを使用しようとするまでBitcoinネットワークに提供されません。このため、もし無効なトランザクションのハッシュを伴ったアウトプットをロックする場合、お構いなしに処理されます。???? しかし、これは使うことができません。なぜなら、無効なスクリプトであるためredeem scriptを含むトランザクションの使用は受け入れられないためです。???? ????
+redeem scriptはP2SHアウトプットを使用しようとするまでBitcoinネットワークに提供されません。このため、もし無効なトランザクションのハッシュを伴ったアウトプットをロックする場合はお構いなしに処理されます。しかし、このアウトプットを使うことはできません。なぜなら、このアウトプットを使用しようとするトランザクションはredeem scriptを含んでいますが、このscriptが無効であるためトランザクションが受理されないのです。
+あとで使用することができないP2SHにbitcoinをロックしてしまっているため、これはリスクです。
+たとえ無効なredeem scriptだとしてもBitcoinネットワークはP2SH解除条件をを受理します。
+なぜなら、このscriptハッシュはこのscriptの兆候を与えていないためです。
 
 [WARNING]
 ====

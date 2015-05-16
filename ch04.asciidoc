@@ -994,7 +994,7 @@ image::images/msbt_0410.png["HDWalletFromRootSeed"]
 
 The root seed is input into the HMAC-SHA512 algorithm and the resulting hash is used to create a _master private key_ (m) and a _master chain code_. The master private key (m) then generates a corresponding master public key (M), using the normal elliptic curve multiplication process +m * G+ that we saw earlier in this chapter. The chain code is used to introduce entropy in the function that creates child keys from parent keys, as we will see in the next section.
 
-ルートシードはHMAC-SHA512アルゴリズムに対するインプットであり、結果として出力されたハッシュは _マスター秘密鍵_ (m)と _マスターチェーンコード_ を生成することに使われます。マスター秘密鍵(m)は対応したマスター公開鍵(M)を生成し、このときこの章の最初に見た標準的な楕円曲線上のスカラー倍算プロセス +m * G+ が使われています。このチェーンコードは親キーから子キーを生成するプロセスの中でエントロピーを導入するために使われます。????
+ルートシードはHMAC-SHA512アルゴリズムに対するインプットであり、結果として出力されたハッシュは _マスター秘密鍵_ (m)と _マスターチェーンコード_ を生成するために使われます。マスター秘密鍵(m)は対応したマスター公開鍵(M)を生成し、このときこの章の最初に見た標準的な楕円曲線上のスカラー倍算プロセス +m * G+ が使われています。次の章で見るように、このチェーンコードは親キーから子キーを生成するプロセスの中でエントロピー(乱雑さ)を導入するために使われます。
 
 ===== Private child key derivation
 ===== プライベートchild key derivation
@@ -1017,7 +1017,7 @@ child key derivation関数は一方向ハッシュ関数をベースにしてお
 
 The chain code is used to introduce seemingly random data to the process, so that the index is not sufficient to derive other child keys. Thus, having a child key does not make it possible to find its siblings, unless you also have the chain code. The initial chain code seed (at the root of the tree) is made from random data, while subsequent chain codes are derived from each parent chain code. 
 
-チェーンコードは表面的にランダムなデータを導入するのに使われ、インデックスはその他の子キーを生成するのに十分ではないです。???? このため、子キーを保持することは、もしチェーンコードも持っていないとすると、他の子キーを見つけることができなくなってしまいます。???? 次のチェーンコードがそれぞれの親チェーンコードから導ける間、最初のチェーンコードシード(ツリー構造のルート)はランダムなデータから作られます。???? 
+チェーンコードは表面的にランダムなデータを導入するのに使われます。このため、チェーンコードなくインデックスだけではその他の子キーを生成することはできません。子キーを保持していたとしても、もしチェーンコードも持っていなければ他の子キーを見つけることはできないのです。最初のチェーンコードシード(ツリー構造のルート)はランダムなデータから作られ、次のチェーンコードはそれぞれの親チェーンコードから作られます。
 
 These three items are combined and hashed to generate children keys, as follows.
 
@@ -1077,7 +1077,7 @@ Think of an extended key as the root of a branch in the tree structure of the HD
 ====
 An extended key consists of a private or public key and chain code. An extended key can create children, generating its own branch in the tree structure. Sharing an extended key gives access to the entire branch. 
 
-拡張キーは秘密鍵または公開鍵、チェーンコードで構成されています。拡張キーは子供を生成し、ツリー構造の中に子供自身のブランチを作り出していくことができます。拡張キーを共有することで、ブランチ全体にアクセスすることができます。????
+拡張キーは秘密鍵または公開鍵、チェーンコードで構成されています。拡張キーは子供を生成し、ツリー構造の中に子供自身のブランチを作り出していくことができます。拡張キーを共有することで、ブランチ全体を参照することができます。
 ==== 
 
 ((("Base58Check encoding","extended keys and")))Extended keys are encoded using Base58Check, to easily export and import between different BIP0032-compatible wallets. The Base58Check coding for extended keys uses a special version number that results in the prefix "xprv" and "xpub" when encoded in Base58 characters, to make them easily recognizable. Because the extended key is 512 or 513 bits, it is also much longer than other Base58Check-encoded strings we have seen previously.
@@ -1343,8 +1343,7 @@ $ bx script-encode < script | bx sha256 | bx ripemd160 | bx base58check-encode -
 ====
 P2SH is not necessarily the same as a multi-signature standard transaction. A P2SH address _most often_ represents a multi-signature script, but it might also represent a script encoding other types of transactions. 
 
-P2SHは必然的にマルチシグネチャ標準トランザクションとは違うものになります。
-P2SHアドレスは _ほぼ常に_ マルチシグネチャscriptを表しますが、
+P2SHはマルチシグネチャーの標準トランザクションというわけでありません。P2SHアドレスは _ほぼ常に_ マルチシグネチャーscriptを表しますが、他のトランザクションタイプのscriptを表す可能性もあるのです。
 ====
 
 ===== Multi-signature addresses and P2SH
@@ -1506,7 +1505,7 @@ In both cases, one of the risks of using a single fixed address (rather than a s
 
 So does a vanity address increase security? If Eugenia generates the vanity address +1Kids33q44erFfpeXrmDSz7zEqG2FesZEN+, users are likely to look at the vanity pattern word _and a few characters beyond_, for example noticing the "1Kids33" part of the address. That would force an attacker to generate a vanity address matching at least six characters (two more), expending an effort that is 3,364 times (58 &#x00D7; 58) higher than the effort Eugenia expended for her four-character vanity. Essentially, the effort Eugenia expends (or pays a vanity pool for) "pushes" the attacker into having to produce a longer pattern vanity. If Eugenia pays a pool to generate an 8-character vanity address, the attacker would be pushed into the realm of 10 characters, which is infeasible on a personal computer and expensive even with a custom vanity-mining rig or vanity pool. What is affordable for Eugenia becomes unaffordable for the attacker, especially if the potential reward of fraud is not high enough to cover the cost of the vanity address generation.(((range="endofrange", startref="ix_ch04-asciidoc27")))(((range="endofrange", startref="ix_ch04-asciidoc26"))) 
 
-vanity addressはセキュリティを向上させるのでしょうか？Eugeniaがvanity address +1Kids33q44erFfpeXrmDSz7zEqG2FesZEN+ を作ったとすると、人々はvanityパターンの単語 _と次の数文字_ だけを見て正しいかどうかを見ます。例えば、"1Kids33"だけです。悪意ある者は６文字か８文字だけ合っているvanity addressを作り、3,364回(58 &#x00D7; 58)????
+vanity addressはセキュリティを向上させるのでしょうか？Eugeniaがvanity address +1Kids33q44erFfpeXrmDSz7zEqG2FesZEN+ を作ったとすると、人々はvanityパターンの単語 _と次の数文字_ だけを見て正しいかどうかを見ます。例えば、"1Kids33"だけです。悪意ある者は最初の６文字か８文字だけ合っているvanity addressを作りますが、２文字多く一致しているvanity addressを生成する労力はEugeniaが4文字のvanity addressを作るために使った労力の3,364倍(58 &#x00D7; 58)です。本質的に、Eugeniaがつぎ込んだ(またはvanityプールにアドレス生成を頼んだ)労力が多ければ、この悪意ある者はさらに長いvanityパターンの作成を"強いられる"ことになります。もしEugeniaが8文字のvanity addressの生成を頼んでいたとすると、この悪意ある者は10文字のvanity addressを作らなければいけません。これはパーソナルコンピュータ上では実行できずカスタマイズされたvanity-mining rigやvanityプールでさえ高価になってしまいます。特にもし詐欺を行うことで悪意ある者が得られる報酬がvanity addressの生成コストをカバーするほど高くないなら、Eugeniaには入手可能なアドレスでもこの攻撃者には入手不可能になります。(((range="endofrange", startref="ix_ch04-asciidoc27")))(((range="endofrange", startref="ix_ch04-asciidoc26")))
 
 [[paper_wallets]]
 ==== Paper Wallets
