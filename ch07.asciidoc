@@ -88,11 +88,13 @@ A second way to identify a block is by its position in the blockchain, called th
 
 Unlike the block hash, the block height is not a unique identifier. Although a single block will always have a specific and invariant block height, the reverse is not true—the block height does not always identify a single block. Two or more blocks might have the same block height, competing for the same position in the blockchain. This scenario is discussed in detail in the section <<forks>>. The block height is also not a part of the block's data structure; it is not stored within the block. Each node dynamically identifies a block's position (height) in the blockchain when it is received from the bitcoin network. The block height might also be stored as metadata in an indexed database table for faster retrieval. 
 
-ブロックハッシュと違って、ブロック高はユニークな識別子ではありません。１つのブロックは特定のブロック高が割り当てられていますが、逆は真ではありません。２つまたはもっと多くのブロックが同じブロック高を持っているかもしれないからです。これは、ブロックチェーン内の同じ場所をマイナーが競争して取得使用としているためです。どのようにしてこれが起こるのかについては<<forks>>の節で詳細に説明します。ブロック高はまたブロックのデータの一部でもありません。それぞれのノードは、Bitcoinネットワークからブロックを受け取ったときにこのブロックがブロックチェーン内のどこの位置(ブロック高)にあるのかをブロック高を使うことなくブロックハッシュから動的に特定します。ただこのブロック高は、ブロックチェーンからすばやくブロック情報を取得する目的でデータベースにメタデータとして保存されている可能性はあります。
-    
+ブロックハッシュと違って、ブロック高はユニークな識別子ではありません。１つのブロックは特定のブロック高が割り当てられていますが、逆は真ではありません。２つまたはもっと多くのブロックが同じブロック高を持っているかもしれないからです。これは、ブロックチェーン内の同じ場所をマイナーが競争して取得しようとしているためです。どのようにしてこれが起こるのかについては<<forks>>の節で詳細に説明します。ブロック高はまたブロックのデータの一部でもありません。それぞれのノードは、Bitcoinネットワークからブロックを受け取ったときにこのブロックがブロックチェーン内のどこの位置(ブロック高)にあるのかをブロック高を使うことなくブロックハッシュから動的に特定します。ただこのブロック高は、ブロックチェーンからすばやくブロック情報を取得する目的でデータベースにメタデータとして保存されている可能性はあります。
+
 [TIP]
 ====
 A block's _block hash_ always identifies a single block uniquely. A block also always has a specific _block height_. However, it is not always the case that a specific block height can identify a single block. Rather, two or more blocks might compete for a single position in the blockchain. 
+
+ブロックの _ブロックハッシュ_ は常に1つのブロックを一意に指定します。ブロックはまた常に特定の _ブロック高_ を持っています。しかし、常に特定のブロック高は1つのブロックを指定できるというわけではないのです。これは、２つまたはもっと多くのブロックがブロックチェーン内の１つ位置の取り合いをしているかもしれないためです。
 ====
 
 === The Genesis Block
@@ -104,11 +106,11 @@ A block's _block hash_ always identifies a single block uniquely. A block also a
 
 Every node always starts with a blockchain of at least one block because the genesis block is statically encoded within the bitcoin client software, such that it cannot be altered. Every node always "knows" the genesis block's hash and structure, the fixed time it was created, and even the single transaction within. Thus, every node has the starting point for the blockchain, a secure "root" from which to build a trusted blockchain. 
 
-全てのノードは１つのブロックのブロックチェーンからいつも始まります。というのは、起源ブロックは変更できないようにBitcoinクライアントにハードコーディングされているためです。全てのノードは起源ブロックのハッシュとデータ、作成された日時、１つのトランザクションが含まれていることを"知って"おり、これにより信頼されたブロックチェーンを構築するときの安全な"根幹"を持つことができるのです。????
+全てのノードは１つのブロックのブロックチェーンからいつも始まります。というのは、起源ブロックは変更できないようにBitcoinクライアントにハードコーディングされているためです。全てのノードは起源ブロックのハッシュとデータ、作成された日時、１つのトランザクションが含まれていることを"知って"おり、これにより信頼されたブロックチェーンを構築するときの安全な"根幹"を持つことができるのです。
 
 ((("Bitcoin Core client","genesis block in")))See the statically encoded genesis block inside the Bitcoin Core client, in http://bit.ly/1x6rcwP[chainparams.cpp].
 
-((("Bitcoin Core client","genesis block in")))Bitcoin Coreクライアントの内部にハードコーディングされた起源ブロックは、 http://bit.ly/1x6rcwP[chainparams.cpp] を参照してみてください。
+((("Bitcoin Core client","genesis block in")))Bitcoin Coreクライアントの内部にハードコーディングされた起源ブロックを見るには、 http://bit.ly/1x6rcwP[chainparams.cpp] を参照してみてください。
 
 The following identifier hash belongs to the genesis block: 
 
@@ -155,7 +157,7 @@ $ bitcoind getblock 000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8c
 
 The genesis block contains a hidden message within it. The coinbase transaction input contains the text "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks." This message was intended to offer proof of the earliest date this block was created, by referencing the headline of the British newspaper _The Times_. It also serves as a tongue-in-cheek reminder of the importance of an independent monetary system, with bitcoin's launch occurring at the same time as an unprecedented worldwide monetary crisis. The message was embedded in the first block by Satoshi Nakamoto, bitcoin's creator. 
 
-起源ブロックには隠されたメッセージが含まれています。coinbase transactionインプットには"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks."(リーマンショックの影響を受けた銀行へのイギリス政府からの資金援助に関する記事????)という文章が記載されています。このメッセージはイギリスの新聞 _タイムズ紙_ のヘッドラインを参照することで起源ブロックが2009年1月3日以前になかったことの証明になっています。また、皮肉にも銀行と独立した重要な通貨システムであるBitcoinが稼働し始め、前例のない全世界共通通貨の稼働という決定的な出来事が起きたリマインダーにもなっているのです。????
+起源ブロックには隠されたメッセージが含まれています。coinbaseトランザクションインプットには"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks."(リーマンショックの影響を受けた銀行へのイギリス政府からの資金援助に関する記事)という文章が記載されています。このメッセージはイギリスの新聞 _タイムズ紙_ のヘッドラインを参照することで起源ブロックが2009年1月3日以前になかったことの証明になっています。また、皮肉にも銀行と独立した重要な通貨システムであるBitcoinが稼働し始め、前例のない全世界共通通貨の稼働という決定的な出来事が起きたリマインダーにもなっているのです。このメッセージはBitcoinの創造者であるSatoshi Nakamotoによって最初のブロックに埋め込まれたものです。
 
 === Linking Blocks in the Blockchain
 === ブロックチェーン内でのブロック連結
@@ -212,6 +214,7 @@ _merkle tree_ は ((("binary hash tree")) _二分ハッシュ木_ と呼ばれ�
 
 [[chain_of_blocks]]
 .Blocks linked in a chain, by reference to the previous block header hash
+.ブロックヘッダにあるprevious block hashの参照によってチェーン内で連結されているブロック。
 image::images/msbt_0701.png[]
 
 Merkle trees are used in bitcoin to summarize all the transactions in a block, producing an overall digital fingerprint of the entire set of transactions, providing a very efficient process to verify whether a transaction is included in a block. A((("Merkle trees","constructing"))) Merkle tree is constructed by recursively hashing pairs of nodes until there is only one hash, called the _root_, or _merkle root_. The cryptographic hash algorithm used in bitcoin's merkle trees is SHA256 applied twice, also known as double-SHA256. 
@@ -244,6 +247,7 @@ The process continues until there is only one node at the top, the node known as
 
 [[simple_merkle]]
 .Calculating the nodes in a merkle tree
+.merkle tree内での各ノードのハッシュ値計算
 image::images/msbt_0702.png["merkle_tree"]
 
 Because the merkle tree is a binary tree, it needs an even number of leaf nodes. If there is an odd number of transactions to summarize, the last transaction hash will be duplicated to create an even number of leaf nodes, also known as a((("balanced trees"))) _balanced tree_. This is shown in <<merkle_tree_odd>>, where transaction C is duplicated.
@@ -252,6 +256,7 @@ merkle treeは二分木であるため、葉ノードが偶数個になる必要
 
 [[merkle_tree_odd]]
 .Duplicating one data element achieves an even number of data elements
+.1つのデータ要素を二重で使うことで偶数個のデータ要素を持ったmerkle treeを構成
 image::images/msbt_0703.png["merkle_tree_odd"]
 
 The same method for constructing a tree from four transactions can be generalized to construct trees of any size. In bitcoin it is common to have several hundred to more than a thousand transactions in a single block, which are summarized in exactly the same way, producing just 32 bytes of data as the single merkle root. In <<merkle_tree_large>>, you will see a tree built from 16 transactions. Note that although the root looks bigger than the leaf nodes in the diagram, it is the exact same size, just 32 bytes. Whether there is one transaction or a hundred thousand transactions in the block, the merkle root always summarizes them into 32 bytes. 
@@ -260,6 +265,7 @@ The same method for constructing a tree from four transactions can be generalize
 
 [[merkle_tree_large]]
 .A merkle tree summarizing many data elements
+.多くのデータ要素をまとめているmerkle tree
 image::images/msbt_0704.png["merkle_tree_large"]
 
 To prove that a specific transaction is included in a block, a node only needs to produce +log~2~(N)+ 32-byte hashes, constituting an((("authentication path")))((("merkle path"))) _authentication path_ or _merkle path_ connecting the specific transaction to the root of the tree. This is especially important as the number of transactions increases, because the base-2 logarithm of the number of transactions increases much more slowly. This allows bitcoin nodes to efficiently produce paths of 10 or 12 hashes (320–384 bytes), which can provide proof of a single transaction out of more than a thousand transactions in a megabyte-size block. 
@@ -268,10 +274,11 @@ To prove that a specific transaction is included in a block, a node only needs t
 
 In <<merkle_tree_path>>, a node can prove that a transaction K is included in the block by producing a merkle path that is only four 32-byte hashes long (128 bytes total). The path consists of the four hashes (noted in blue in <<merkle_tree_path>>) H~L~, H~IJ~, H~MNOP~ and H~ABCDEFGH~. With those four hashes provided as an authentication path, any node can prove that H~K~ (noted in green in the diagram) is included in the merkle root by computing four additional pair-wise hashes H~KL~, H~IJKL~, H~IJKLMNOP~, and the merkle tree root (outlined in a dotted line in the diagram). 
 
-<<merkle_tree_path>>図にある通り、Bitcoinノードはたった４つの32バイトハッシュ(全部で128バイト)を使ったmerkle pathを作り出すことであるトランザクションKがブロックに含まれていることを証明できるのです。このmerkle pathは４つのハッシュ H~L~ 、 H~IJ~ 、 H~MNOP~ 、 H~ABCDEFGH~ から構成されます(これらハッシュは<<merkle_tree_path>>図に青い四角で記されています)。これらの４つのハッシュがauthentication pathとして提示されると、あらゆるBitcoinノードは H~K~ (<<merkle_tree_path>>図に緑の四角で表示)がmerkle rootに含まれているということを対となる追加の４つのハッシュ、H~KL~ 、 H~IJKL~ 、 H~IJKLMNOP~ 、 merkle tree root を計算することで示すことができます(<<merkle_tree_path>>図に点線で縁取られた四角で表示)。????
+<<merkle_tree_path>>図にある通り、Bitcoinノードはたった４つの32バイトハッシュ(全部で128バイト)を使ったmerkle pathを作り出すことで、あるトランザクションKがブロックに含まれていることを証明できるのです。このmerkle pathは４つのハッシュ H~L~ 、 H~IJ~ 、 H~MNOP~ 、 H~ABCDEFGH~ から構成されます(これらハッシュは<<merkle_tree_path>>図に青い四角で記されています)。これらの４つのハッシュがauthentication pathとして提示されると、あらゆるBitcoinノードは H~K~ (<<merkle_tree_path>>図に緑の四角で表示)がmerkle rootに含まれているということを対となる追加の４つのハッシュ、H~KL~ 、 H~IJKL~ 、 H~IJKLMNOP~ 、 merkle tree root を計算することで示すことができます(<<merkle_tree_path>>図に点線で縁取られた四角で表示)。
 
 [[merkle_tree_path]]
 .A merkle path used to prove inclusion of a data element
+.データ要素が含まれていることの証明に使われるmerkle path
 image::images/msbt_0705.png["merkle_tree_path"]
 
 
@@ -298,6 +305,7 @@ include::code/merkle.cpp[]
 
 [[merkle_example_run]]
 .Compiling and running the merkle example code
+.merkle例コードのコンパイルと実行
 ====
 [source,bash]
 ----
@@ -323,6 +331,7 @@ merkle treeの効率性はブロックのデータサイズスケールが大き
 
 [[block_structure2]]
 .Merkle tree efficiency
+.merkle treeの効率性
 [options="header"]
 |=======
 |Number of transactions| Approx. size of block | Path size (hashes) | Path size (bytes)
@@ -345,4 +354,4 @@ As you can see from the table, while the block size increases rapidly, from 4 KB
 
 Consider, for example, an SPV node that is interested in incoming payments to an address contained in its wallet. The SPV node will establish a bloom filter on its connections to peers to limit the transactions received to only those containing addresses of interest. When a peer sees a transaction that matches the bloom filter, it will send that block using a((("merkleblock message"))) +merkleblock+ message. The +merkleblock+ message contains the block header as well as a merkle path that links the transaction of interest to the merkle root in the block. The SPV node can use this merkle path to connect the transaction to the block and verify that the transaction is included in the block. The SPV node also uses the block header to link the block to the rest of the blockchain. The combination of these two links, between the transaction and block, and between the block and blockchain, proves that the transaction is recorded in the blockchain. All in all, the SPV node will have received less than a kilobyte of data for the block header and merkle path, an amount of data that is more than a thousand times less than a full block (about 1 megabyte currently).(((range="endofrange", startref="ix_ch07-asciidoc0")))
 
-例として、ウォレット内にあるBitcoinアドレスへの支払いにだけ関心のあるSPVノードを考えてみましょう。SPVノードは、ウォレット内のBitcoinアドレスを含むトランザクションだけを取得するためピアにbloom filterを送ります。ピアはbloom filterに合致するトランザクションを確認し、((("merkleblock message"))) +merkleblock+ messageを使ってブロック情報を送り返します。この +merkleblock+ messageにはブロックヘッダとmerkle pathが含まれており、このmerkle pathはSPVノードにとって関心のあるトランザクションからmerkle rootへの経路です。SPVノードはこのmerkle pathを使って関心のあるトランザクションを参照しブロック内に含まれていることを確認し、またブロックヘッダを使いブロックをブロックチェーンの残りと結びつけます。???? ２つの連結の組み合わせ、トランザクションとブロック、ブロックとブロックチェーン、を使うことでこのトランザクションがブロックチェーンに記録されているということを確認します。SPVノードはブロックヘッダに対するデータとmerkle pathに関するデータという1KB以下のデータを受け取ることになり、full nodeと比べて１０００分の１以下のデータを保持するだけで済むことになります(現在だと1MB程度)。(((range="endofrange", startref="ix_ch07-asciidoc0")))
+例として、ウォレット内にあるBitcoinアドレスへの支払いにだけ関心のあるSPVノードを考えてみましょう。SPVノードは、ウォレット内のBitcoinアドレスを含むトランザクションだけを取得するためピアにbloom filterを送ります。ピアはbloom filterに合致するトランザクションを確認し、((("merkleblock message"))) +merkleblock+ messageを使ってブロック情報を送り返します。この +merkleblock+ messageにはブロックヘッダとmerkle pathが含まれており、このmerkle pathはSPVノードにとって関心のあるトランザクションからmerkle rootへの経路です。SPVノードはこのmerkle pathを使って関心のあるトランザクションを参照しブロック内に含まれていることを確認し、またブロックヘッダを使いブロックをブロックチェーンの残りと結びつけます。２つの連結の組み合わせ、トランザクションとブロック、ブロックとブロックチェーン、を使うことでこのトランザクションがブロックチェーンに記録されているということを確認します。SPVノードはブロックヘッダに対するデータとmerkle pathに関するデータという1KB以下のデータを受け取ることになり、full nodeと比べて１０００分の１以下のデータを保持するだけで済むことになります(現在だと1MB程度)。(((range="endofrange", startref="ix_ch07-asciidoc0")))

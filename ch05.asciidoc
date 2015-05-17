@@ -770,7 +770,7 @@ OP_RETURNは最初80バイトの制限を付けた形で提案されていまし
 
 In <<ch01_intro_what_is_bitcoin>> we introduced Mohammed, an electronics importer based in Dubai. Mohammed's company uses bitcoin's multi-signature feature extensively for its corporate accounts. Multi-signature scripts are one of the most common uses of bitcoin's advanced scripting capabilities and are a very powerful feature. Mohammed's company uses a multi-signature script for all customer payments, known in accounting terms as "accounts receivable," or AR. With the multi-signature scheme, any payments made by customers are locked in such a way that they require at least two signatures to release, from Mohammed and one of his partners or from his attorney who has a backup key. A multi-signature scheme like that offers corporate governance controls and protects against theft, embezzlement, or loss. 
 
-<<ch01_intro_what_is_bitcoin>>で、ドバイで電子機器の輸入業をやっているムハンマドを紹介しました。ムハンマドの会社は会社の口座のためにいろいろなタイミングでBitcoinのマルチシグネチャー機能を利用しています。マルチシグネチャースクリプトはBitcoinの先進的なスクリプト言語の主要な使い方の１つで、とても強力な機能です。ムハンマドの会社は全ての顧客からの支払い(会計用語で"売掛金")にマルチシグネチャーを使っています。マルチシグネチャースキームを使い、顧客による全ての支払いは次のような方法で安全性を担保しています。支払いを実行するには少なくとも２つの署名が必要であり、登録されている人はムハンマド、彼のパートナーのうちの１人、バックアップキーを持っている彼の代理人です。このようなマルチシグネチャースキームはコーポレートガバナンスを提供し、盗難、横領、または紛失を防ぐ役割があります。
+<<ch01_intro_what_is_bitcoin>>で、ドバイで電子機器の輸入業をやっているムハンマドを紹介しました。ムハンマドの会社は会社の口座のためにBitcoinのマルチシグネチャー機能を利用しています。マルチシグネチャースクリプトはBitcoinの先進的なスクリプト言語の主要な使い方の１つで、とても強力な機能です。ムハンマドの会社は全ての顧客からの支払い(会計用語で"売掛金")にマルチシグネチャーを使っています。マルチシグネチャースキームを使い、顧客による全ての支払いは次のような方法で安全性を担保しています。支払いを実行するには少なくとも２つの署名が必要であり、登録されている人はムハンマド、彼のパートナーのうちの１人、バックアップキーを持っている彼の代理人です。このようなマルチシグネチャースキームはコーポレートガバナンスを提供し、盗難、横領、または紛失を防ぐ役割があります。
 
 The resulting script is quite long and looks like this:
 
@@ -918,20 +918,16 @@ As of version 0.9.2 of the Bitcoin Core client, P2SH transactions can contain an
 
 Note that you are not able to put a P2SH inside a P2SH redeem script, because the P2SH specification is not recursive. You are also still not able to use +OP_RETURN+ in a redeem script because +OP_RETURN+ cannot be redeemed by definition.
 
-P2SH redeem scriptの中にP2SHを置くことはできませんという点に注意してください。というのは、P2SHの設計で再帰ができないようになっているためです。また、 +OP_RETURN+ は定義によって回収されることができないので、まだredeem scriptの中で +OP_RETURN+ を使用することはできません。
+P2SH redeem scriptの中にP2SHを置くことはできないという点に注意してください。というのは、P2SHの設計で再帰ができないようになっているためです。また、まだredeem scriptの中で +OP_RETURN+ を使用することはできません。 +OP_RETURN+ は定義によってあとでこれを含むアウトプットを使用するということができないためです。
 
 Note that because the redeem script is not presented to the network until you attempt to spend a P2SH output, if you lock an output with the hash of an invalid transaction it will be processed regardless. However, you will not be able to spend it because the spending transaction, which includes the redeem script, will not be accepted because it is an invalid script. This creates a risk, because you can lock bitcoin in a P2SH that cannot be spent later. The network will accept the P2SH encumbrance even if it corresponds to an invalid redeem script, because the script hash gives no indication of the script it represents. 
 
-redeem scriptはP2SHアウトプットを使用しようとするまでBitcoinネットワークに提供されません。このため、もし無効なトランザクションのハッシュを伴ったアウトプットをロックする場合はお構いなしに処理されます。しかし、このアウトプットを使うことはできません。なぜなら、このアウトプットを使用しようとするトランザクションはredeem scriptを含んでいますが、このscriptが無効であるためトランザクションが受理されないのです。
-あとで使用することができないP2SHにbitcoinをロックしてしまっているため、これはリスクです。
-たとえ無効なredeem scriptだとしてもBitcoinネットワークはP2SH解除条件をを受理します。
-なぜなら、このscriptハッシュはこのscriptの兆候を与えていないためです。
+注意点として、redeem scriptはP2SHアウトプットを使用しようとするまでBitcoinネットワークに提供されません。このため、もし無効なトランザクションのハッシュを伴ったアウトプットをロックした場合も、お構いなしにBitcoinノードの検証をパスします。しかし、このアウトプットを使うことはできません。なぜなら、このアウトプットを使用しようとするトランザクションはredeem scriptを含んでいますが、このscriptが無効であるためトランザクションが受理されないのです。これはリスクを生み出してしまいます。というのは、あとで使用することができないP2SHにbitcoinがロックされてしまうためです。このredeem scriptハッシュだけではredeem scriptが無効であるか分からないため、たとえ無効なredeem scriptだとしてもBitcoinネットワークはP2SH解除条件をパスしてしまうでしょう。
 
 [WARNING]
 ====
 ((("Pay-to-Script-Hash (P2SH)","locking scripts")))P2SH locking scripts contain the hash of a redeem script, which gives no clues as to the content of the redeem script itself. The P2SH transaction will be considered valid and accepted even if the redeem script is invalid. You might accidentally lock bitcoin in such a way that it cannot later be spent.(((range="endofrange", startref="ix_ch05-asciidoc19")))(((range="endofrange", startref="ix_ch05-asciidoc18")))(((range="endofrange", startref="ix_ch05-asciidoc17")))(((range="endofrange", startref="ix_ch05-asciidoc0"))) 
 
-((("Pay-to-Script-Hash (P2SH)","locking scripts")))
-P2SH locking scriptはredeem scriptのハッシュを含んでいます。これは、?????
+((("Pay-to-Script-Hash (P2SH)","locking scripts")))P2SH locking scriptはredeem scriptのハッシュを含んでいます。このハッシュは、redeem scriptそのものの推測に関して一切ヒントを与えません。もしこのredeem scriptが無効だったとしてもP2SHトランザクションは有効だと考えられ受け入れられてしまいます。間違ってあとで使えないような方法でbitcoinをロックしてしまうかもしれません。(((range="endofrange", startref="ix_ch05-asciidoc19")))(((range="endofrange", startref="ix_ch05-asciidoc18")))(((range="endofrange", startref="ix_ch05-asciidoc17")))(((range="endofrange", startref="ix_ch05-asciidoc0")))
 ====
 
