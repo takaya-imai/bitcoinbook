@@ -1159,10 +1159,15 @@ Bitcoin's block interval of 10 minutes is a design compromise between fast confi
 10分間というBitcoinのブロック間隔は、確認までにかかる時間(トランザクションの確定)とフォークが生じる確率の間の妥協点なのです。ブロック間隔をより短くすればトランザクションをより早く確定できますが、ブロックチェーンのフォークがより頻繁に起こってしまうことになります。一方、ブロック間隔を長くすればフォークの数は減りますが、トランザクションの確定に時間がかかることになります。(((range="endofrange", startref="ix_ch08-asciidoc22")))(((range="endofrange", startref="ix_ch08-asciidoc21")))(((range="endofrange", startref="ix_ch08-asciidoc20")))(((range="endofrange", startref="ix_ch08-asciidoc19")))(((range="endofrange", startref="ix_ch08-asciidoc18")))
 
 === Mining and the Hashing Race
+=== マイニングとハッシュ化競争
 
 ((("hashing race", id="ix_ch08-asciidoc23", range="startofrange")))((("mining","hashing race and", id="ix_ch08-asciidoc24", range="startofrange")))((("processing power and hash racing", id="ix_ch08-asciidoc25", range="startofrange")))Bitcoin mining is an extremely competitive industry. The hashing power has increased exponentially every year of bitcoin's existence. Some years the growth has reflected a complete change of technology, such as in 2010 and 2011 when many miners switched from using CPU mining to((("graphical processing units (GPUs)","processing power of"))) GPU mining and((("field programmable gate array (FPGA)"))) field programmable gate array (FPGA) mining. In 2013 the introduction of((("Application Specific Integrated Circuit (ASIC)"))) ASIC mining lead to another giant leap in mining power, by placing the SHA256 function directly on silicon chips specialized for the purpose of mining. The first such chips could deliver more mining power in a single box than the entire bitcoin network in 2010.
 
+((("hashing race", id="ix_ch08-asciidoc23", range="startofrange")))((("mining","hashing race and", id="ix_ch08-asciidoc24", range="startofrange")))((("processing power and hash racing", id="ix_ch08-asciidoc25", range="startofrange")))Bitcoinマイニングは極度に競争が激しい業界です。ハッシングパワーはBitcoinが現れてから毎年指数関数的に増加してきています。ここ数年の成長はテクノロジーの進化を反映しており、例えば2010年、2011年は多くのマイナーがCPUマイニングから ((("graphical processing units (GPUs)","processing power of"))) GPUマイニングと ((("field programmable gate array (FPGA)"))) フィールドプログラマブルゲートアレイ(FGPA)マイニングに変えたためです。2013年は ((("Application Specific Integrated Circuit (ASIC)"))) ASICマイニングが始まり、もう一つのマイニングパワーの急激な上昇が起こりました。ASICマイニングは、SHA256関数を直接にシリコンチップ上に記述することでマイニングに特化させた方法です。そのような最初のチップは、2010年時点のBitcoinネットワーク全体よりもマイニングパワーを提供することができました。????
+
 The following list shows the total hashing power of the bitcoin network, over the first five years of operation:
+
+以下のリストは最初の５年間におけるBitcoinネットワークの総ハッシングパワーを表しています。
 
 2009:: 0.5 MH/sec–8 MH/sec (16&#x00D7; growth)
 2010:: 8 MH/sec–116 GH/sec (14,500&#x00D7; growth)
@@ -1173,25 +1178,37 @@ The following list shows the total hashing power of the bitcoin network, over th
 
 In the chart in <<network_hashing_power>>, we see the bitcoin network's hashing power increase over the past two years. As you can see, the competition between miners and the growth of bitcoin has resulted in an exponential increase in the hashing power (total hashes per second across the network).
 
+<<network_hashing_power>>のチャートにある通り、Bitcoinネットワークのハッシングパワーは過去２年間で増加しています。見てわかるように、マイナーとBitcoinの成長の間の競争によってハッシングパワー(Bitcoinネットワーク全体の秒間総生成ハッシュ数)が指数関数的に増加してきています。
+
 [[network_hashing_power]]
 .Total hashing power, gigahashes per second, over two years
+.総ハッシングパワー(GHash/秒、過去2年間)
 image::images/msbt_0807.png["NetworkHashingRate"]
 
 ((("difficulty target","hashing power and")))As the amount of hashing power applied to mining bitcoin has exploded, the difficulty has risen to match it. The difficulty metric in the chart shown in <<bitcoin_difficulty>> is measured as a ratio of current difficulty over minimum difficulty (the difficulty of the first block).
 
+((("difficulty target","hashing power and")))マイニングに注ぎ込まれるハッシングパワーの量が爆発的に増えてきたため、difficultyもそれに合わせて上昇してきました。<<bitcoin_difficulty>>に示されているチャートにあるdifficultyの数値は、現在のdifficultyを最小difficulty(最初のブロックのdifficulty)で割った率で計算されています。
+
 [[bitcoin_difficulty]]
 .Bitcoin's mining difficulty metric, over two years
+.過去２年間のBitcoinのマイニングdifficulty推移
 image::images/msbt_0808.png["BitcoinDifficulty"]
 
 In the last two years, the ASIC mining chips have become increasingly denser, approaching the cutting edge of silicon fabrication with a feature size (resolution) of 22 nanometers (nm). Currently, ASIC manufacturers are aiming to overtake general-purpose CPU chip manufacturers, designing chips with a feature size of 16nm, because the profitability of mining is driving this industry even faster than general computing. There are no more giant leaps left in bitcoin mining, because the industry has reached the forefront of((("Moore's Law"))) Moore's Law, which stipulates that computing density will double approximately every 18 months. Still, the mining power of the network continues to advance at an exponential pace as the race for higher density chips is matched ((("data centers, mining with")))with a race for higher density data centers where thousands of these chips can be deployed. It's no longer about how much mining can be done with one chip, but how many chips can be squeezed into a building, while still dissipating the heat and providing adequate power.
 
+最近の２年間は、ASICマイニングチップがより高密度になってきており、シリコン製作における22ナノメートル(nm)の加工寸法(分解能)限界値に近づいてきています。現在、ASICメーカーは汎用CPUチップメーカーを追い越そうとしており、16nm加工寸法チップを設計しています。マイニングの収益性が高いため汎用計算機よりも一層強くこの業界を引っ張っているのです。ただBitcoinマイニングに関してさらなる急激な上昇は残されていません。というのは、18ヶ月毎に半導体の集積密度が約２倍になるという ((("Moore's Law"))) ムーアの法則の先端にまで達してしまっているためです。より高密度なチップが ((("data centers, mining with"))) 数千チップを配置できるより高密度なデータセンターに求められているので、まだBitcoinネットワークのマイニングパワーは指数関数的なペースで進化し続けていっています。???? もはや１つのチップでどれだけのマイニングができるかではなく、熱をうまく散らして十分なパワーを提供しつついくつのチップをどれだけデータセンターに詰め込むことができるかになってきています。
+
 [[extra_nonce]]
 ==== The Extra Nonce Solution
+==== extra nonceによる方法
 
 ((("block headers","computing power and")))((("difficulty target","computing power and")))((("difficulty target","extra nonce solution and")))((("nonce","extra")))((("extra nonce solution to increasing difficulty targets")))((("hashing race","extra nonce solutions")))Since 2012, bitcoin mining has evolved to resolve a fundamental limitation in the structure of the block header. In the early days of bitcoin, a miner could find a block by iterating through the nonce until the resulting hash was below the target. As difficulty increased, miners often cycled through all 4 billion values of the nonce without finding a block. However, this was easily resolved by updating the block timestamp to account for the elapsed time. Because the timestamp is part of the header, the change would allow miners to iterate through the values of the nonce again with different results.  Once mining hardware exceeded 4 GH/sec, however, this approach became increasingly difficult because the nonce values were exhausted in less than a second. As ASIC mining equipment started pushing and then exceeding the TH/sec hash rate, the mining software needed more space for nonce values in order to find valid blocks. The timestamp could be stretched a bit, but moving it too far into the future would cause the block to become invalid. A new source of "change" was needed in the block header. The solution was to use the coinbase transaction as a source of extra nonce values. Because the coinbase script can store between 2 and 100 bytes of data, miners started using that space as extra nonce space, allowing them to explore a much larger range of block header values to find valid blocks. The coinbase transaction is included in the merkle tree, which means that any change in the coinbase script causes the merkle root to change. Eight bytes of extra nonce, plus the 4 bytes of "standard" nonce allow miners to explore a total 2^96^ (8 followed by 28 zeros) possibilities _per second_ without having to modify the timestamp. If, in the future, miners could run through all these possibilities, they could then modify the timestamp. There is also more space in the coinbase script for future expansion of the extra nonce space.
 
+((("block headers","computing power and")))((("difficulty target","computing power and")))((("difficulty target","extra nonce solution and")))((("nonce","extra")))((("extra nonce solution to increasing difficulty targets")))((("hashing race","extra nonce solutions")))2012年からBitcoinマイニングはブロックヘッダ構造にある制限を解決しながら発展してきました。Bitcoinの初期、difficulty targetが低くnonceを使って解を得られるまではマイナーはnonceを繰り返し使うことでブロックを発見できました。difficultyが大きくなっていくにつれて、マイナーはブロックを発見することなくnonceの４億通り全てを使ってしまうことが頻繁に起きるようになっていました。しかし、これはマイニング経過時間を把握するためのブロックのタイムスタンプを更新することで簡単に解決されました。このタイムスタンプはヘッダの一部であるため、タイムスタンプが変わることでマイナーはnonceの値を繰り返し使い、異なるハッシュ値を得ることができるのです。しかし、一度マイニングハードウェアの処理速度が4GH/秒を超えると、この方法は難しくなってきました。というのは、nonceが１秒以内使い尽くされてしまうからです。ASICマイニングが始まるとハッシュレートはTH/秒を超え、マイニングソフトウェアは有効なブロックを見つけるためにより広いnonceスペースが必要になってきました。タイムスタンプを少し引き延ばすことはできましたが、タイムスタンプを将来に移動することはブロックを無効にしてしまうことになります。???? ブロックヘッダの中のどこかに"変更"が必要になってきました。これに対する解はcoinbaseトランザクションにextra nonceを入れるというものです。coinbaseスクリプトは2byteから100byteのデータを記録できるため、マイナーはこのスペースをextra nonceとして使い始め、より大きいブロックヘッダの範囲を探索してブロックを見つけることができるようになりました。coinbaseトランザクションはmerkle treeに含められているため、coinbaseスクリプトにあるどんな変更もmerkle rootを変化させることになります。8byte extra nonceと"標準"の4byte nonceを使って、マイナーはタイムスタンプを変えることなく _秒間_ 2^96^ 個(8のあとに28個の0が続く数)の探索ができるようになりました。もし将来マイナーがこれら全ての可能性を調べ尽くせるようになれば、タイムスタンプを修正してマイニングをするようになるでしょう。また、将来のextra nonceスペースの拡張のためcoinbaseスクリプトにはさらに大きいスペースがあります。
+
 [[mining_pools]]
 ==== Mining Pools
+==== マイニングプール
 
 ((("hashing race","mining pools", id="ix_ch08-asciidoc26", range="startofrange")))((("mining pools", id="ix_ch08-asciidoc27", range="startofrange")))In this highly competitive environment,((("solo miners"))) individual miners working alone (also known as solo miners) don't stand a chance. The likelihood of them finding a block to offset their electricity and hardware costs is so low that it represents a gamble, like playing the lottery. Even the fastest consumer ASIC mining system cannot keep up with commercial systems that stack tens of thousands of these chips in giant warehouses near hydro-electric power stations. Miners now collaborate to form mining pools, pooling their hashing power and sharing the reward among thousands of participants. By participating in a pool, miners get a smaller share of the overall reward, but typically get rewarded every day, reducing uncertainty.
 
