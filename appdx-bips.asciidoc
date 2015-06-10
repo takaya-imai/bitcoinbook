@@ -36,6 +36,7 @@ Bitcoin改善提案は https://github.com/bitcoin/bips[GitHub] 上のバージ�
 
 |[[bip0010]]10|https://github.com/bitcoin/bips/blob/master/bip-0010.mediawiki|Multi-Sig Transaction Distribution |Alan
 Reiner |Informational |Draft
+|[[bip0010]]10|https://github.com/bitcoin/bips/blob/master/bip-0010.mediawiki|Multi-Sig Transaction Distribution |Alan
 Reiner |Informational |草案
 
 |[[bip0011]]11|https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki|M-of-N Standard Transactions |Gavin
@@ -118,6 +119,7 @@ Wuille |Informational |承認
 
 |[[bip0033]]33|https://github.com/bitcoin/bips/blob/master/bip-0033.mediawiki|Stratized Nodes |Amir Taaki |Standard
 |Draft
+|[[bip0033]]33|https://github.com/bitcoin/bips/blob/master/bip-0033.mediawiki|Stratized Nodes |Amir Taaki |Standard
 |草案
 
 |[[bip0034]]34|https://github.com/bitcoin/bips/blob/master/bip-0034.mediawiki|Block v2, Height in coinbase |Gavin
@@ -154,7 +156,7 @@ keys |Slush |Standard |Draft
 |[[bip0040]]40||Stratumワイヤープロトコル |Slush |Standard |BIP番号割り当て済み
 
 |[[bip0041]]41||Stratum mining protocol |Slush |Standard |BIP number allocated
-|[[bip0041]]41||Stratumマイニングプロトコル |Slush |Standard |BStandard |BIP番号割り当て済み
+|[[bip0041]]41||Stratumマイニングプロトコル |Slush |Standard |BIP番号割り当て済み
 
 |[[bip0042]]42|https://github.com/bitcoin/bips/blob/master/bip-0042.mediawiki|A finite monetary supply for bitcoin
 |Pieter Wuille |Standard |Draft
@@ -171,6 +173,8 @@ Wallets |Slush |Standard |Draft
 |[[bip0044]]44|https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki|階層的ウォレットの複数アカウント階層構造
  |Slush |Standard |草案
 
+|[[bip0050]]50|https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki|March 2013 Chain Fork Post-Mortem |Gavin
+Andresen |Informational |Draft
 |[[bip0050]]50|https://github.com/bitcoin/bips/blob/master/bip-0050.mediawiki|2013年3月に起きたブロックチェーンフォークに関する事後分析 |Gavin
 Andresen |Informational |草案
 
