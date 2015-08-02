@@ -293,17 +293,14 @@ Once the UTXO is selected, the wallet then produces unlocking scripts containing
 | 4 bytes | Output Index | 使われるUTXOのトランザクション内インデックス、一番最初のアウトプットの場合は0
 | 1-9 bytes (VarInt) | Unlocking-Script Size | unlocking-scriptのバイト長
 | Variable | Unlocking-Script | UTXOのlocking scriptを満たすscript
-| 4 bytes | Sequence Number | 現在使用不可になっているCurrently disabled Tx-replacement feature, set to 0xFFFFFFFF
-|=======^M
+| 4 bytes | Sequence Number | 現在トランザクション置き換えは使用不可になっている、 0xFFFFFFFF に設定
 |=======
 
 [NOTE]
 ====
 The sequence number is used to override a transaction prior to the expiration of the transaction locktime, which is a feature that is currently disabled in bitcoin. Most transactions set this value to the maximum integer value (0xFFFFFFFF) and it is ignored by the bitcoin network. If the transaction has a nonzero locktime, at least one of its inputs must have a sequence number below 0xFFFFFFFF in order to enable locktime.(((range="endofrange", startref="ix_ch05-asciidoc5")))
 
-sequence numberはトランザクションを置き換える
-ほとんどのトランザクションではこの値を整数最大値(0xFFFFFFFF)に設定し、Bitcoinネットワークでは無視されています。
-もしトランザクションが0ではないlocktimeを持っているとすると、少なくともこのトランザクションのインプットのうちの１つがlocktimeを有効にするために0xFFFFFFFFよりも小さいsequence numberを持たなければいけないです。
+sequence numberは、トランザクションのlocktimeが無効になる前にトランザクションを書き換えるために使われますが、現在この機能は使用不可になっています。ほとんどのトランザクションではこの値を整数最大値(0xFFFFFFFF)に設定し、この場合Bitcoinネットワークで無視されます。もしトランザクションが0ではないlocktimeを持っているとすると、少なくともこのトランザクションのインプットのうちの１つがlocktimeを有効にするために0xFFFFFFFFよりも小さいsequence numberを持たなければいけないのです。(((range="endofrange", startref="ix_ch05-asciidoc5")))
 ====
 
 [[tx_fees]]

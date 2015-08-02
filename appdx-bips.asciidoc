@@ -36,7 +36,7 @@ Bitcoin改善提案は https://github.com/bitcoin/bips[GitHub] 上のバージ�
 
 |[[bip0010]]10|https://github.com/bitcoin/bips/blob/master/bip-0010.mediawiki|Multi-Sig Transaction Distribution |Alan
 Reiner |Informational |Draft
-|[[bip0010]]10|https://github.com/bitcoin/bips/blob/master/bip-0010.mediawiki|Multi-Sig Transaction Distribution |Alan
+|[[bip0010]]10|https://github.com/bitcoin/bips/blob/master/bip-0010.mediawiki|マルチシグトランザクション配布 |Alan
 Reiner |Informational |草案
 
 |[[bip0011]]11|https://github.com/bitcoin/bips/blob/master/bip-0011.mediawiki|M-of-N Standard Transactions |Gavin
@@ -119,7 +119,7 @@ Wuille |Informational |承認
 
 |[[bip0033]]33|https://github.com/bitcoin/bips/blob/master/bip-0033.mediawiki|Stratized Nodes |Amir Taaki |Standard
 |Draft
-|[[bip0033]]33|https://github.com/bitcoin/bips/blob/master/bip-0033.mediawiki|Stratized Nodes |Amir Taaki |Standard
+|[[bip0033]]33|https://github.com/bitcoin/bips/blob/master/bip-0033.mediawiki|Stratizedノード |Amir Taaki |Standard
 |草案
 
 |[[bip0034]]34|https://github.com/bitcoin/bips/blob/master/bip-0034.mediawiki|Block v2, Height in coinbase |Gavin

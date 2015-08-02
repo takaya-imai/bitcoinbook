@@ -2,6 +2,7 @@
 [appendix]
 
 == Bitcoin Explorer (bx) Commands
+== Bitcoin Explorer (bx) コマンド
 
 ((("Bitcoin Explorer commands","commands in", id="ix_appdx-bx-asciidoc0", range="startofrange")))
 
@@ -87,11 +88,18 @@ wrap-encode
 
 For more information, see the https://github.com/libbitcoin/libbitcoin-explorer[Bitcoin Explorer home page] and https://github.com/libbitcoin/libbitcoin-explorer/wiki[Bitcoin Explorer user documentation].
 
+さらに詳しい情報については、 https://github.com/libbitcoin/libbitcoin-explorer[Bitcoin Explorer home page] と https://github.com/libbitcoin/libbitcoin-explorer/wiki[Bitcoin Explorer user documentation] を参照してください。
+
 === Examples of bx command use
+=== bxコマンドの使用例
 
 Let's look at some examples of using Bitcoin Explorer commands to experiment with keys and addresses:
 
+Bitcoin Explorerコマンドによるいくつかの例を使って、キーとアドレスの実験をしてみましょう。
+
 Generate a random "seed" value using the((("Bitcoin Explorer","seed command")))((("seed command (bx)"))) +seed+ command, which uses the operating system's random number generator. Pass the seed to the((("Bitcoin Explorer","ec-new command")))((("ec-new command (bx)"))) +ec-new+ command to generate a new private key. We save the standard output into the file _private_key_:
+
+((("Bitcoin Explorer","seed command")))((("seed command (bx)"))) +seed+ コマンドを使ってランダムな"シード"を生成してみましょう。このseedコマンドは、オペレーティングシステムの乱数生成器を使います。この生成したシードを ((("Bitcoin Explorer","ec-new command")))((("ec-new command (bx)"))) +ec-new+ コマンドに渡して、新しい秘密鍵を生成します。標準出力に出てきたものを _private_key_ というファイルに記録しておきます。
 
 ----
 $ bx seed | bx ec-new > private_key
@@ -101,6 +109,8 @@ $ cat private_key
 
 Now, generate the public key from that private key using the((("Bitcoin Explorer","ec-to-public command")))((("ec-to-public command (bx)"))) +ec-to-public+ command. We pass the _private_key_ file into the standard input and save the standard output of the command into a new file _public_key_:
 
+次に、 ((("Bitcoin Explorer","ec-to-public command")))((("ec-to-public command (bx)"))) +ec-to-public+ コマンドを使って秘密鍵から公開鍵を生成してみましょう。 _private_key_ を標準入力に渡してあげて標準出力に出てきたものを新しいファイル _public_key_ に記録します。
+
 ----
 $ bx ec-to-public < private_key > public_key
 $ cat public_key 
@@ -109,6 +119,8 @@ $ cat public_key
 
 We can reformat the +public_key+ as an address using the((("Bitcoin Explorer","ec-to-address command")))((("ec-to-address command (bx)"))) +ec-to-address+ command. We pass the _public_key_ into standard input:
 
++public_key+ を ((("Bitcoin Explorer","ec-to-address command")))((("ec-to-address command (bx)"))) +ec-to-address+ コマンドを使ってBitcoinアドレスに形式を変換できます。 _public_key_ をコマンドに渡してあげます。
+
 ----
 $ bx ec-to-address < public_key 
 17re1S4Q8ZHyCP8Kw7xQad1Lr6XUzWUnkG
@@ -116,7 +128,11 @@ $ bx ec-to-address < public_key
 
 Keys generated in this manner produce a type-0 nondeterministic wallet. That means that each key is generated from an independent seed. Bitcoin Explorer commands can also generate keys deterministically, in accordance with BIP0032. In this case, a "master" key is created from a seed and then extended deterministically to produce a tree of subkeys, resulting in a type-2 deterministic wallet.
 
+上記の方法で生成した鍵を使うとtype-0非決定性ウォレットができます。この意味は、それぞれの鍵が独立なシードから生成されているということです。Bitcoin ExplorerコマンドはまたBIP0032に従って決定性的に鍵の生成ができます。この場合、"マスター"キーはシードから生成され、決定性的に拡張されサブキーツリーを生成します。この形で作られたものがtype-2決定性ウォレットです。
+
 First, we we use the((("Bitcoin Explorer","seed command")))((("seed command (bx)"))) +seed+ and((("Bitcoin Explorer","hd-new command")))((("hd-new command (bx)"))) +hd-new+ commands to generate a master key that will be used as the basis to derive a hierarchy of keys.
+
+最初に、 ((("Bitcoin Explorer","seed command")))((("seed command (bx)"))) +seed+ と ((("Bitcoin Explorer","hd-new command")))((("hd-new command (bx)"))) +hd-new+ コマンドを使って鍵の階層を導出する基礎として使われるマスターキーを生成します。
 
 ----
 $ bx seed > seed
@@ -129,6 +145,8 @@ xprv9s21ZrQH143K2BEhMYpNQoUvAgiEjArAVaZaCTgsaGe6LsAnwubeiTcDzd23mAoyizm9cApe51gN
 ----
 
 We now use the((("Bitcoin Explorer","hd-private command")))((("hd-private command (bx)"))) +hd-private+ command to generate a hardened "account" key and a sequence of two private keys within the account.
+
+((("Bitcoin Explorer","hd-private command")))((("hd-private command (bx)"))) +hd-private+ コマンドを使って強化された"account"鍵を生成し、口座内に２つの秘密鍵の列を作ります。
 
 ----
 $ bx hd-private --hard < master > account
@@ -144,6 +162,8 @@ xprv9xHfb6w1vX9xjc8XbN4GN86jzNAZ6xHEqYxzbLB4fzHFd6VqCLPGRZFsdjsuMVERadbgDbziCRJr
 
 Next we use the((("Bitcoin Explorer","hd-public command")))((("hd-public command (bx)"))) +hd-public+ command to generate the corresponding sequence of two public keys.
 
+次に、((("Bitcoin Explorer","hd-public command")))((("hd-public command (bx)"))) +hd-public+ コマンドを使って秘密鍵に対応した２つの公開鍵の列を生成します。
+
 ----
 $ bx hd-public --index 0 < account
 xpub6BH1zcTuktiFu43rUZ2gXqLgzu5F3tLEeTQ5t6iE3aQtM2VMTxMcyLN9fYHiGhGpQe9QQYmqL2eYPFJ3vezHz5wzaSW4FiGrseNDR4LKqTy
@@ -153,6 +173,8 @@ xpub6BH1zcTuktiFx6CzhPbGjG3UYQ13WR16CmtbPiagEKpEVtpyjshWyMaMV1cn7nUPUkgQHPVXJVqs
 ----
 
 The public keys can also be derived from their corresponding private keys using the((("Bitcoin Explorer","hd-to-public command")))((("hd-to-public command (bx)"))) +hd-to-public+ command.
+
+公開鍵はまた ((("Bitcoin Explorer","hd-to-public command")))((("hd-to-public command (bx)"))) +hd-to-public+ コマンドで導きだすこともできます。
 
 ----
 $ bx hd-private --index 0 < account | bx hd-to-public
@@ -164,7 +186,11 @@ xpub6BH1zcTuktiFx6CzhPbGjG3UYQ13WR16CmtbPiagEKpEVtpyjshWyMaMV1cn7nUPUkgQHPVXJVqs
 
 We can generate a practically limitless number of keys in a deterministic chain, all derived from a single seed. This technique is used in many wallet applications to generate keys that can be backed up and restored with a single seed value. This is easier than having to back up the wallet with all its randomly generated keys every time a new key is created.
 
+決定性チェーンの中で生成できる鍵の数には実用上制限はなく、全て単一のシードから導出されます。この手法は多くのウォレットで使用され、バックアップしておき単一のシードからリストアしたりすることができる鍵を生成しています。
+
 The seed can be encoded using the((("Bitcoin Explorer","mnemonic-encode command")))((("mnemonic-encode command (bx)"))) +mnemonic-encode+ command.
+
+このシードは ((("Bitcoin Explorer","mnemonic-encode command")))((("mnemonic-encode command (bx)"))) +mnemonic-encode+ コマンドを使ってmnemonic codeの形でエンコードしておくことができます。
 
 ----
 $ bx hd-mnemonic < seed > words
@@ -173,9 +199,13 @@ adore repeat vision worst especially veil inch woman cast recall dwell appreciat
 
 The seed can then be decoded using the((("Bitcoin Explorer","mnemonic-decode command")))((("mnemonic-decode command (bx)"))) +mnemonic-decode+ command.
 
+このシードは逆に ((("Bitcoin Explorer","mnemonic-decode command")))((("mnemonic-decode command (bx)"))) +mnemonic-decode+ コマンドを使ってmnemonic codeをデコードして得ることができます。
+
 ----
 $ bx mnemonic-decode < words
 eb68ee9f3df6bd4441a9feadec179ff1
 ----
 
 Mnemonic encoding can make the seed easier to record and even remember.(((range="endofrange", startref="ix_appdx-bx-asciidoc0")))
+
+mnemonicエンコードはシードを記録しておきやすく、また思い出しやすくするために作られます。(((range="endofrange", startref="ix_appdx-bx-asciidoc0")))

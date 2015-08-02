@@ -25,9 +25,9 @@
 | OP_2 to OP_16 | 0x52 to 0x60 |  For OP_N, push the value "N" onto the stack. E.g., OP_2 pushes "2"
 | OP_0 または OP_FALSE | 0x00 | 空アレイがスタック上にpushされる
 | 1-75 | 0x01-0x4b | 次のNバイトをスタック上にpushする、Nは1から75バイト
-| OP_PUSHDATA1 | 0x4c | The next script byte contains N, push the following N bytes onto the stack
-| OP_PUSHDATA2 | 0x4d | The next two script bytes contain N, push the following N bytes onto the stack
-| OP_PUSHDATA4 | 0x4e | The next four script bytes contain N, push the following N bytes onto the stack
+| OP_PUSHDATA1 | 0x4c | 次のscriptバイトがNを含んでいれば、そのNバイトをスタック上にpush
+| OP_PUSHDATA2 | 0x4d | 次の２つのscriptバイトがNを含んでいれば、そのNバイトをスタック上にpush
+| OP_PUSHDATA4 | 0x4e | 次の４つのscriptバイトがNを含んでいれば、そのNバイトをスタック上にpush
 | OP_1NEGATE | 0x4f | "-1"をスタック上にpush
 | OP_RESERVED | 0x50 | 停止 - まだ実行されていないOP_IF内でなければ不正なトランザクション
 | OP_1 or OP_TRUE| 0x51 | "1"をスタック上にpush
@@ -216,8 +216,8 @@
 | OP_MUL | 0x95 | 使用不可(一番上の２つのアイテムを掛け合わせる)
 | OP_DIV | 0x96 | 使用不可(２番目のアイテムを１番目のアイテムで割る)
 | OP_MOD | 0x97 | 使用不可(２番目のアイテムを１番目のアイテムで割ったときの余り)
-| OP_LSHIFT | 0x98 | 使用不可(Disabled (shift second item left by first item number of bits)
-| OP_RSHIFT | 0x99 | Disabled (shift second item right by first item number of bits)
+| OP_LSHIFT | 0x98 | 使用不可(２番目のアイテムを最初のアイテムのbit数だけ左にシフト)
+| OP_RSHIFT | 0x99 | 使用不可(２番目のアイテムを最初のアイテムのbit数だけ右にシフト)
 | OP_BOOLAND | 0x9a | 一番上の２つのアイテムのANDをとる
 | OP_BOOLOR | 0x9b | 一番上の２つのアイテムのORをとる
 | OP_NUMEQUAL | 0x9c | 一番上の２つのアイテムが同じ数値であれば真を返却
@@ -257,7 +257,7 @@
 | OP_SHA256 | 0xa8 | １番目のアイテムのSHA256ハッシュを返却
 | OP_HASH160 | 0xa9 | １番目のアイテムのRIPEMD160(SHA256(x))ハッシュを返却
 | OP_HASH256 | 0xaa | １番目のアイテムのSHA256(SHA256(x))ハッシュを返却
-| OP_CODESEPARATOR | 0xab | Mark the beginning of signature-checked data
+| OP_CODESEPARATOR | 0xab | 署名チェック済みのデータの最初に印を置く
 | OP_CHECKSIG | 0xac | 公開鍵と署名をpopしたのち、トランザクションのハッシュ化データに対して署名が有効であるかを検証し、有効であれば真を返却
 | OP_CHECKSIGVERIFY | 0xad | CHECKSIGと同じだが、もし真でなければ停止のためにOP_VERIFYを実行
 | OP_CHECKMULTISIG | 0xae | 与えられたそれぞれの署名と公開鍵のペアに対してCHECKSIGを実行。結果は全て真でなければならない。この実装には余分な値をpopしてしまうというバグがあり、回避策としてOP_NOPをOP_CHECKMULTISIGの前に置く

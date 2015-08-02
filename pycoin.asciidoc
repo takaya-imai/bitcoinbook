@@ -1,7 +1,11 @@
 
 The Python library pycoin (http://github.com/richardkiss/pycoin), originally written and maintained by Richard Kiss, is a Python-based library that supports manipulation of bitcoin keys and transactions, even supporting the scripting language enough to properly deal with non-standard transactions. As of June, 2014, the latest released version is 0.42, and all examples here are based on that version; be warned that it is still under active development, so later versions may have differences in API or command-line tools.
 
+Pythonライブラリ pycoin (http://github.com/richardkiss/pycoin) はBitcoinキーやトランザクションの操作をサポートしているPythonベースライブラリです。元々Richard Kissによって書かれメンテナンスされているライブラリです。このライブラリは非標準トランザクションを適切に扱うことができるscript言語さえもサポートしています。2014年6月現在、最新バージョンは0.42です。ここにある全ての例コードはこのバージョンをベースにしています。注意点として、このライブラリはまだ活発に開発されているため、より新しいバージョンではAPIやコマンドラインツールの挙動が変わっているかもしれません。
+
 The pycoin library supports both Python 2 (2.7.x) and Python 3 (after 3.3), and comes with some handy command-line utilities, ku and tx.
+
+このpycoinライブラリはPython 2 (2.7.x)とPython 3 (after 3.3)を両方ともサポートしており、使いやすいコマンドラインツールkuとtxが付属しています。
 
 
 To install:
@@ -38,6 +42,8 @@ The command-line utility ```ku``` ("key utility") is Swiss Army knife for manipu
 
 Create a BIP32 Key using the default entropy sources of GPG and /dev/random:
 
+GPGと _/dev/random_ のデフォルトのエントロピー源を用いBIP32キーを作成します:
+
     $ ku create
 
     input           : create
@@ -73,6 +79,8 @@ Create a BIP32 Key using the default entropy sources of GPG and /dev/random:
 Create a BIP32 key from a passphrase:
 
 *THE PASSPHRASE IN THIS EXAMPLE IS WAY TOO EASY TO GUESS.*
+
+*この*
 
       $ ku P:foo
 
@@ -188,6 +196,8 @@ Generate the corresponding WIFS:
 
 Check that it works by choosing a BIP32 string (the one corresponding to subkey 0/3):
 
+BIP32文字列 (サブキー 0/3 に対応) を１つ選び、うまく動作するかチェック:
+
     $ ku -W xprv9xWkBDfyBXmZsA85GyWj9uYPyoQv826YAadKWMaaEosNrFBKgj2TqWuiWY3zuqxYGpHfv9cnGj5P7e8EskpzKL1Y8Gk9aX6QbryA5raK73p
     L2L2PZdorybUqkPjrmhem4Ax5EJvP7ijmxbNoQKnmTDMrqemY8UF
     $ ku -a xprv9xWkBDfyBXmZsA85GyWj9uYPyoQv826YAadKWMaaEosNrFBKgj2TqWuiWY3zuqxYGpHfv9cnGj5P7e8EskpzKL1Y8Gk9aX6QbryA5raK73p
@@ -195,7 +205,11 @@ Check that it works by choosing a BIP32 string (the one corresponding to subkey 
 
 Yep, looks familiar.
 
+思った通り、前にあったものが出てきました。
+
 From secret exponent:
+
+secret exponentから作成:
 
     $ ku 1
 
@@ -219,6 +233,8 @@ From secret exponent:
      uncompressed   : 1EHNa6Q4Jz2uvNExL497mE43ikXhwF6kZm
 
 Litecoin version:
+
+Litecoinバージョン:
 
     $ ku -nL 1
 
@@ -247,6 +263,8 @@ Dogecoin WIF:
     QNcdLVw8fHkixm6NNyN6nVwxKek4u7qrioRbQmjxac5TVoTtZuot
 
 From public pair (on Testnet):
+
+公開鍵ペア(テストネット上)から生成:
 
     $ ku -nT 55066263022277343669578718895168534326250603453777594175500187360389116729240,even
 

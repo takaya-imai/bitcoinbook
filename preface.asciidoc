@@ -15,40 +15,71 @@ This book is mostly intended for coders. If you can use a programming language, 
 
 The leafcutter ant is a species that exhibits highly complex behavior in a colony super-organism, but each individual ant operates on a set of simple rules driven by social interaction and the exchange of chemical scents (pheromones). Per Wikipedia: "Next to humans, leafcutter ants form the largest and most complex animal societies on Earth." Leafcutter ants don't actually eat leaves, but rather use them to farm a fungus, which is the central food source for the colony. Get that? These ants are farming! 
 
+ハキリアリはコロニー超個体の中で高度に複雑な振る舞いを示している生物です。しかし、それぞれの個体としてのアリは社会的な相互作用や化学的な匂い(フェロモン)によって引き起こされる単純なルールの集まりに従って作業をしています。Wikipediaによると、"ハキリアリは地球上で最大規模で最も複雑な動物社会を形成しています"とあります。ハキリアリは実際に葉を食べるわけではありませんが、むしろこれら葉を菌の繁殖のために使っています。この菌というのは、コロニーの中心的な食料の原料なのです。分かりますか？これらのアリは農業を行っているのです！
+
 Although ants form a caste-based society and have a queen for producing offspring, there is no central authority or leader in an ant colony. The highly intelligent and sophisticated behavior exhibited by a multimillion-member colony is an emergent property from the interaction of the individuals in a social network. 
+
+アリはカースト的な社会を構成し、子孫を作るために女王を持っています。アリのコロニーには中心的な権威やリーダーは存在しません。百万匹が暮らすコロニーで示される高度に知的で洗練された振る舞いは、社会的なネットワークの中で個々の相互作用から生まれる創発特性なのです。
 
 Nature demonstrates that decentralized systems can be resilient and can produce emergent complexity and incredible sophistication without the need for a central authority, hierarchy, or complex parts.
 
+自然は、分散システムは快活であり創発的複雑さや信じられないような知的素養　中心的な権威や階層、複雑な部品を必要とすることなく
+
 Bitcoin is a highly sophisticated decentralized trust network that can support a myriad of financial processes. Yet, each node in the bitcoin network follows a few simple mathematical rules. The interaction between many nodes is what leads to the emergence of the sophisticated behavior, not any inherent complexity or trust in any single node. Like an ant colony, the bitcoin network is a resilient network of simple nodes following simple rules that together can do amazing things without any central coordination.
 
+Bitcoinは高度に知的に発達した分散された信用ネットワークです。この信用ネットワークは無数の経済的プロセスをサポートできます。
+まだBitcoinネットワークのそれぞれのノードはいくつかの数学的ルールに従っています。
+多くのノード間の相互作用がどんな洗練された    個々のノードに対する固有の複雑さや信用なしに
+アリのコロニーのように、Bitcoinネットワークは単純なルールに従う複数の単純なノードによって生じる快活的ネットワークです。
+
 === Conventions Used in This Book
+=== この本で使用される表記規約
 
 The following typographical conventions are used in this book:
 
+この本では以下の表記規約を使用します。
+
 _Italic_:: Indicates new terms, URLs, email addresses, filenames, and file extensions.
+
+_イタリック_:: 新しい用語、URL、Eメールアドレス、ファイル名、ファイル拡張子を表す
 
 +Constant width+:: Used for program listings, as well as within paragraphs to refer to program elements such as variable or function names, databases, data types, environment variables, statements, and keywords.
 
++等幅(Constant width)+:: プログラムを表示するときに使用され、また変数や関数名、データベース、データタイプ、環境変数、ステートメント、キーワードなどプログラムの一要素を表現するときにも使用される
+
 **`Constant width bold`**:: Shows commands or other text that should be typed literally by the user.
 
+**`等幅太字(Constant width bold)`**:: ユーザに文字通り入力されるべきコマンドやその他テキストを表す
+
 _++Constant width italic++_:: Shows text that should be replaced with user-supplied values or by values determined by context.
+
+_++等幅イタリック(Constant width italic)++_:: ユーザ側の環境や文脈によって変わる値によって置き換えられるべきテキストを表す
 
 
 [TIP]
 ====
 This icon signifies a tip, suggestion, or general note.
+
+このアイコンは、ヒントや提案、一般的な示唆を表します。
 ====
 
 [WARNING]
 ====
 This icon indicates a warning or caution.
+
+このアイコンは、警告や注意を表します。
 ====
 
 === Code Examples
+=== コード例
 
 The examples are illustrated in Python, C++, and using the command line of a Unix-like operating system such as Linux or Mac OS X. All code snippets are available in the https://github.com/aantonop/bitcoinbook[GitHub repository] in the _code_ subdirectory of the main repo. Fork the book code, try the code examples, or submit corrections via GitHub. 
 
+例はPythonやC++で説明されており、LinuxまたはMac OS XのようなUnixライクなオペレーティングシステムのコマンドラインを使って実行できます。全てのコードスニペットは https://github.com/aantonop/bitcoinbook[GitHub repository] のメインリポジトリの _code_ ディレクトリにあります。この本にあるコードをフォークして、コード例を試してみてください。そして、修正点があればGitHub(のPullRequest)を通してご連絡をお願いします。
+
 All the code snippets can be replicated on most operating systems with a minimal installation of compilers and interpreters for the corresponding languages. Where necessary, we provide basic installation instructions and step-by-step examples of the output of those instructions. 
+
+全てのコードスニペットは、言語に対応したコンパイラとインタプリタを最小のインストール(依存関係が少ない)とほとんどのオペレーティングシステム上で複製することができ、
 
 Some of the code snippets and code output have been reformatted for print. In all such cases, the lines have been split by a backslash (\) character, followed by a newline character. When transcribing the examples, remove those two characters and join the lines again and you should see identical results as shown in the example. 
 
