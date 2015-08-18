@@ -552,7 +552,7 @@ Bitcoinの発展の最初の数年は、開発者たちがBitcoin参照クライ
 
 Check the source code of the Bitcoin Core client (the reference implementation) to see what is currently allowed as a valid transaction script. 
 
-どんなスクリプトが有効なトランザクションスクリプトとして現在許可されているかを見るためにBitcoin Coreクライアント(参照実装)のソースコードをチェックしてみましょう。
+どんなスクリプトが有効なトランザクションスクリプトとして現在許可されているかを見るためにBitcoin Coreクライアント(リファレンス実装)のソースコードをチェックしてみましょう。
 
 The five standard types of transaction scripts are pay-to-public-key-hash (P2PKH), public-key, multi-signature (limited to 15 keys), pay-to-script-hash (P2SH), and data output (OP_RETURN), which are described in more detail in the following sections.
 
