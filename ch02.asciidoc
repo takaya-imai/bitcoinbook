@@ -1,17 +1,17 @@
 [[ch02_bitcoin_overview]]
 == How Bitcoin Works
-== Bitcoinはどのように動作するのか？
+== Bitcoinはどのように動作するか
 
 === Transactions, Blocks, Mining, and the Blockchain
 === トランザクション、ブロック、マイニング、ブロックチェーン
 
 ((("bitcoin","implementation of", id="ix_ch02-asciidoc0", range="startofrange")))The bitcoin system, unlike traditional banking and payment systems, is based on de-centralized trust. Instead of a central trusted authority, in bitcoin, trust is achieved as an emergent property from the interactions of different participants in the bitcoin system. In this chapter, we will examine bitcoin from a high level by tracking a single transaction through the bitcoin system and watch as it becomes "trusted" and accepted by the bitcoin mechanism of distributed consensus and is finally recorded on the blockchain, the distributed ledger of all transactions.
 
-((("bitcoin","implementation of", id="ix_ch02-asciidoc0", range="startofrange")))今まであるような銀行サービスや支払いの方法と違って、Bitcoinは特定の機関に管理されないdecentrized-trustを基礎にしています。特定の機関による管理の代わりに、Bitcoinでは信用管理をBitcoinの仕組みに参加している個々の参加者同士の相互協力から生まれる創発特性によって作っています。この章では、Bitcoinの１つのトランザクションを追ってみることで、詳細にBitcoinの仕組みを説明したいと思います。また、分散された合意形成によるBitcoinの仕組みによってトランザクションが"信用"され受け入れられ、最後に全てのトランザクションの分散元帳であるブロックチェーンにトランザクションが記録されます。
+((("bitcoin","implementation of", id="ix_ch02-asciidoc0", range="startofrange")))今まであるような銀行サービスや支払いの方法と違って、Bitcoinは特定の機関に管理されないde-centralized trustを基礎にしています。特定の機関による管理の代わりに、BitcoinではBitcoinの仕組みに参加している個々の参加者同士の相互協力から生まれる創発特性によって信用管理をしています。この章では、Bitcoinの1つのトランザクションを追ってみることで、詳細にBitcoinの仕組みを説明していきます。また、分散された合意によるBitcoinの仕組みによってトランザクションが"信用"され受け入れられ、最後に全てのトランザクションの分散元帳であるブロックチェーンにトランザクションが記録されます。
 
 Each example is based on an actual transaction made on the bitcoin network, simulating the interactions between the users (Joe, Alice, and Bob) by sending funds from one wallet to another. While tracking a transaction through the bitcoin network and blockchain, we will use a((("blockchain explorer websites"))) _blockchain explorer_ site to visualize each step. A blockchain explorer is a web application that operates as a bitcoin search engine, in that it allows you to search for addresses, transactions, and blocks and see the relationships and flows between them.
 
-以下に出てくる例を使って、実際に行われているトランザクションをシミュレートしてみましょう。この例の登場人物はジョー、アリス、ボブで、それぞれの間であるウォレットからあるウォレットへ資産を送るというものです。Bitcoinネットワークのトランザクションやブロックチェーンを追うとき、個々の詳細なステップを可視化するために((("blockchain explorer websites"))) _blockchain explorer_ sitesを使います。blockchain explorerはウェブアプリケーションで、Bitcoinアドレスやトランザクション、ブロックの変化を追うことができる検索エンジンのように使えます。
+以下に出てくる例を使って、実際に行われているトランザクションをシミュレートしてみましょう。この例の登場人物はJoe、Alice、Bobで、それぞれの間であるウォレットからあるウォレットへ資産を送るというものです。Bitcoinネットワークのトランザクションやブロックチェーンを追うとき、個々の詳細なステップを可視化するために((("blockchain explorer websites"))) _blockchain explorer_ sitesを使います。blockchain explorerはウェブアプリケーションで、Bitcoinアドレスやトランザクション、ブロックの変化を追うことができる検索エンジンのように使えます。
 
 Popular blockchain explorers include: ((("blockchain.info website")))((("blockexplorer.com")))((("blockr.io website")))((("insight.bitpay.com")))
 
@@ -25,7 +25,6 @@ Popular blockchain explorers include: ((("blockchain.info website")))((("blockex
 Each of these has a search function that can take an address, transaction hash, or block number and find the equivalent data on the bitcoin network and blockchain. With each example, we will provide a URL that takes you directly to the relevant entry, so you can study it in detail.
 
 それぞれのblockchain explorerではBitcoinアドレスやトランザクションハッシュ、ブロック番号を元に検索でき、Bitcoinネットワークやブロックチェーン上にあるデータと同じデータを探せます。また、それぞれの例には直接データが見れるようにURLを書いておきましたので、詳細はURLの先で確認してみてください。
-
 
 ==== Bitcoin Overview
 ==== Bitcoin概観
@@ -45,8 +44,7 @@ image::images/msbt_0201.png["Bitcoin Overview"]
 
 ((("transactions", id="ix_ch02-asciidoc1", range="startofrange")))((("transactions","simple example of", id="ix_ch02-asciidoc2", range="startofrange")))Alice, introduced in the previous chapter, is a new user who has just acquired her first bitcoin. In <<getting_first_bitcoin>>, Alice met with her friend Joe to exchange some cash for bitcoin. The transaction created by Joe funded Alice's wallet with 0.10 BTC. Now Alice will make her first retail transaction, buying a cup of coffee at Bob's coffee shop in Palo Alto, California. Bob's coffee shop recently started accepting bitcoin payments, by adding a bitcoin option to his point-of-sale system. The prices at Bob's Cafe are listed in the local currency (US dollars), but at the register, customers have the option of paying in either dollars or bitcoin. Alice places her order for a cup of coffee and Bob enters the transaction at the register. The point-of-sale system will convert the total price from US dollars to bitcoins at the prevailing market rate and display the prices in both currencies, as well as show a QR code containing a _payment request_ for this transaction (see <<payment-request-QR>>):
 
-((("transactions", id="ix_ch02-asciidoc1", range="startofrange")))((("transactions","simple example of", id="ix_ch02-asciidoc2", range="startofrange")))前の章に出てきたアリスは初めてBitcoinを手にしたところです。<<getting_first_bitcoin>>でお分かりの通り、アリスは友達のジョーと会って、キャッシュをBitcoinと交換したのです。ジョーからアリスは0.10BTCを受け取りました。アリスは今ちょうど最初のトランザクションを作成して、最近Bitcoinでの支払いを始めたPalo AltoのボブのコーヒーショップでBitcoinでの支払いをするところです。ボブのコーヒーショップではアメリカドルの値段表示しかありませんが、支払いをするときにアメリカドルで払うのかBitcoinで払うのかを決められるのです。アリスはコーヒーを注文しボブはレジにこの注文を入力します。すると、POSシステムは直近のレートでアメリカドルでの代金をBitcoinでの代金に変換して、両方の金額を表示してくれます。このとき、図にあるようなQRコードも一緒に出してくれます。(<<payment-request-QR>>参照)
-
+((("transactions", id="ix_ch02-asciidoc1", range="startofrange")))((("transactions","simple example of", id="ix_ch02-asciidoc2", range="startofrange")))前の章に出てきたAliceは初めてbitcoinを手にしたところです。<<getting_first_bitcoin>>でお分かりの通り、Aliceは友達のJoeと会って、現金をbitcoinと交換したのです。JoeからAliceは0.10BTCを受け取りました。Aliceは今ちょうど最初のトランザクションを作成して、最近bitcoinでの支払いを始めたPalo Altoのボブのコーヒーショップでbitcoinでの支払いをするところです。Bobのコーヒーショップではローカル通貨(米ドル)の値段表示しかありませんが、支払いをするときに米ドルで払うのかbitcoinで払うのかを決められるのです。Aliceはコーヒーを注文しBobはレジにこの注文を入力しました。すると、POSシステムは直近のレートで米ドルでの代金をbitcoinでの代金に変換して、両方の金額を表示してくれます。このとき、図にあるようなQRコードも一緒に出してくれます。(<<payment-request-QR>>図参照)
 
 ----
 Total:
@@ -57,12 +55,12 @@ $1.50 USD
 
 [[payment-request-QR]]
 .Payment request QR code (Hint: Try to scan this!)
-.支払い要求QRコード(ヒント: スキャンしてみてください！)
+.支払いリクエストQRコード(ちょっとスキャンしてみてください！)
 image::images/msbt_0202.png["payment-request"]
 
 [[payment-request-URL]]
 .The payment request QR code encodes the following URL, defined in BIP0021:
-.この支払い要求QRコードはBIP0021にあるプロトコルに沿って次のようなURLに変換されます。 
+.この支払いリクエストQRコードはBIP0021にあるプロトコルに沿って次のようなURLに変換されます。
 ----
 bitcoin:1GdK9UzpHBzqzX2A9JFP3Di4weBwqgmoQA?
 amount=0.015&
@@ -82,20 +80,20 @@ A description for the payment: "Purchase at Bob's Cafe"
 ====
 ((("QR codes","payment requests as")))Unlike a QR code that simply contains a destination bitcoin address, a payment request is a QR-encoded URL that contains a destination address, a payment amount, and a generic description such as "Bob's Cafe." This allows a bitcoin wallet application to prefill the information used to send the payment while showing a human-readable description to the user. You can scan the QR code with a bitcoin wallet application to see what Alice would see. 
 
-((("QR codes","payment requests as")))送り先Bitcoinアドレスを単に含んでいるQRコードと違って、支払い要求は送り先Bitcoinアドレス、支払い総額、"Bob's Cafe"のような一般的な説明文を含んでいるQRコードでエンコードされたURLです。これは、人間が読める説明をユーザに示している間に、Bitcoinウォレットが支払いを行うために使う情報をあらかじめ埋めておくようにするためです。あのQRコードをBitcoinウォレットでスキャンすると、アリスが見ているものを見ることができます。
+((("QR codes","payment requests as")))送り先Bitcoinアドレスだけを含んでいるQRコードと違って、支払いリクエストは送り先Bitcoinアドレス、支払い総額、"Bob's Cafe"のような一般的な説明文を含んでいる、QRコードでエンコードされたURLです。これは、Bitcoinウォレットが支払いを行うために使う情報を、ユーザに人間が読める説明文を示している間に、あらかじめ埋めておくようにするためです。あのQRコードをBitcoinウォレットでスキャンすると、Aliceが見ているものを見ることができます。
 ====
 
 Bob says, "That's one-dollar-fifty, or fifteen millibits."
 
-ボブは言いました。"15ドルです。bitcoinでの支払いであれば15mBTCです。"
+Bobは言いました。"15ドルです。bitcoinでの支払いであれば15mBTCです。"
 
 Alice uses her smartphone to scan the barcode on display. Her smartphone shows a payment of +0.0150 BTC+ to +Bob's Cafe+ and she selects +Send+ to authorize the payment. Within a few seconds (about the same amount of time as a credit card authorization), Bob would see the transaction on the register, completing the transaction.
 
-アリスがスマートフォンを使って表示されているQRコードをスキャンすると、スマートフォンに0.0150BTCと表示され支払いをするのに彼女は"送る"ボタンを押しました。数秒後レジにトランザクションが表示されボブはトランザクションの完了を確認しました(処理時間はクレジットカードでの承認に必要な時間と同じくらいです)。
+Aliceがスマートフォンを使って表示されているQRコードをスキャンすると、スマートフォンに +0.0150BTC+ と表示され +Bobのコーヒーショップ+ への支払いをするのに彼女は +送る+ ボタンを押しました。数秒後レジにトランザクションが表示されBobはトランザクションの完了を確認しました(処理時間はクレジットカードでの承認に必要な時間と同じくらいです)。
 
 In the following sections we will examine this transaction in more detail, see how Alice's wallet constructed it, how it was propagated across the network, how it was verified, and finally, how Bob can spend that amount in subsequent transactions.
 
-この後の節では、もっと詳細にトランザクションの内容を説明し、アリスのウォレットがどのようにしてトランザクションを実行したのか、トランザクション情報はどのようにしてBitcoinネットワークに流れ、どのように検証されたのか、送られたBitcoinをボブは次回どのように使うことができるのか、を見ていきます。
+この後の節では、もっと詳細にトランザクションの内容を説明し、Aliceのウォレットがどのようにしてトランザクションを実行したのか、トランザクション情報はどのようにしてBitcoinネットワークに流れ、どのように検証されたのか、送られたbitcoinをBobは次回どのように使うことができるのか、を見ていきます。
 
 [NOTE]
 ====
@@ -110,22 +108,22 @@ Bitcoinネットワークは断片化した様々な額で取引ができます�
 
 ((("transactions","defined")))In simple terms, a transaction tells the network that the owner of a number of bitcoins has authorized the transfer of some of those bitcoins to another owner. The new owner can now spend these bitcoins by creating another transaction that authorizes transfer to another owner, and so on, in a chain of ownership. 
 
-((("transactions","defined")))シンプルに言って、トランザクションとはbitcoinの所有者が他の人にbitcoinを送ったことを認めたことをBitcoinネットワークに示すことです。このためそのbitcoinを受け取った新しい所有者が受け取ったbitcoinを使うには、新しい所有者が他の人にbitcoinを送ったことを認めたことを示す別のトランザクションを作らなければいけません。
+((("transactions","defined")))シンプルに言って、トランザクションとはbitcoinの所有者が他の人にbitcoinを送ったと認めたことをBitcoinネットワークに示すことです。このため、新しい所有者が受け取ったbitcoinを使うには、新しい所有者が他の人にbitcoinを送ったと認めたことを示す別のトランザクションを作らなければいけません。
 
 Transactions are like lines in a double-entry bookkeeping ledger. ((("inputs, defined")))In simple terms, each transaction contains one or more "inputs," which are debits against a bitcoin account. ((("outputs, defined")))On the other side of the transaction, there are one or more "outputs," which are credits added to a bitcoin account. The inputs and outputs (debits and credits) do not necessarily add up to the same amount. Instead, outputs add up to slightly less than inputs and the difference represents an implied "transaction fee," which is a small payment collected by the miner who includes the transaction in the ledger. A bitcoin transaction is shown as a bookkeeping ledger entry in <<transaction-double-entry>>. 
 
-トランザクションは複式簿記の個々の取引行のようなものです。((("inputs, defined")))簡単に言えば、それぞれのトランザクションは１個または複数の"インプット"を持っているため、トランザクションにはBitcoinアドレスの借り方にこの"インプット"が記載されています。((("outputs, defined")))また、それぞれのトランザクションは１個または複数の"アウトプット"を持っているため、トランザクションにはBitcoinアドレスの貸し方に"アウトプット"が記載されています。インプットとアウトプット(それぞれ借り方と貸し方)は同じ額になるようにならず、わずかにインプットのほうが大きいようになります。この差が取引手数料であり、元帳の中にあるトランザクションからマイナーがかき集めたものです。<<transaction-double-entry>>図には、Bitcoinトランザクションを簿記的に書いてあります。
+トランザクションは複式簿記の個々の取引行のようなものです。((("inputs, defined")))簡単に言えば、それぞれのトランザクションは1個または複数の"インプット"を持っているため、トランザクションにはBitcoinアドレスの借り方にこの"インプット"が記載されています。((("outputs, defined")))また、それぞれのトランザクションは1個または複数の"アウトプット"を持っているため、トランザクションにはBitcoinアドレスの貸し方に"アウトプット"が記載されています。インプットとアウトプット(それぞれ借り方と貸し方)は同じ額になるようにはならず、わずかにインプットのほうが大きいようになります。この差がトランザクション手数料であり、元帳の中にあるトランザクションからマイナーがかき集めることになるものです。<<transaction-double-entry>>図には、bitcoinトランザクションを簿記的に書いてあります。
 
 The transaction also contains proof of ownership for each amount of bitcoin (inputs) whose value is transferred, in the form of a digital signature from the owner, which can be independently validated by anyone. In bitcoin terms, "spending" is signing a transaction that transfers value from a previous transaction over to a new owner identified by a bitcoin address. 
 
-トランザクションはそれぞれのトランザクションの所有権証明としての面も含んでいます。この所有権証明はデジタル署名の形になっており、このデジタル署名は所有者とは独立に誰か他の人によって検証されるようになっています。ビットコイン用語で、"bitcoinを使う"とはトランザクションに署名することです。
+トランザクションはそれぞれのトランザクションの所有権証明としての面も含んでいます。この所有権証明はデジタル署名の形になっており、このデジタル署名は所有者とは独立に誰か他の人によって検証されるようになっています。Bitcoinの用語で、"bitcoinを使う"とはトランザクションに署名することです。
 
 
 [TIP]
 ====
 _Transactions_ move value from _transaction inputs_ to _transaction outputs_. An input is where the coin value is coming from, usually a previous transaction's output. A transaction output assigns a new owner to the value by associating it with a key. The destination key is called an _encumbrance_. It imposes a requirement for a signature for the funds to be redeemed in future transactions. Outputs from one transaction can be used as inputs in a new transaction, thus creating a chain of ownership as the value is moved from address to address (see <<blockchain-mnemonic>>). 
 
-_トランザクション_ は _トランザクションインプット_ から _トランザクションアウトプット_ に価値を移動します。インプットはどこからbitcoinが来たかを示し、通常前のトランザクションのアウトプットになります。トランザクションアウトプットは、このbitcoinを鍵と紐付けることで新しい所有者にこのbitcoinを割り当てます。この鍵は _解除条件_ と呼ばれるものです。解除条件は、資金を将来のトランザクションで使用するときに必要とされる署名に対する必要条件になります。1つのトランザクションからのアウトプットは新しいトランザクションの中でインプットとして使用され、これにより価値があるアドレスから別のアドレスに移動するときに所有者の連鎖を作り出していくのです(<<blockchain-mnemonic>>参照)。
+_トランザクション_ は _トランザクションインプット_ から _トランザクションアウトプット_ に価値を移動します。インプットはどこからbitcoinが来たかを示し、通常は前のトランザクションのアウトプットになります。トランザクションアウトプットは、このbitcoinを鍵と紐付けることで新しい所有者にこのbitcoinを割り当てます。この鍵は _解除条件_ と呼ばれるものです。解除条件は、資金を将来トランザクションで使用するときに必要とされる署名に対する必要条件になります。1つのトランザクションからのアウトプットは新しいトランザクションの中でインプットとして使用され、これにより価値があるアドレスから別のアドレスに移動するときに所有者の連鎖を作り出していくのです(<<blockchain-mnemonic>>図参照)。
 ====
 
 [[transaction-double-entry]]
@@ -140,7 +138,7 @@ image::images/msbt_0204.png["Transaction chain"]
 
 Alice's payment to Bob's Cafe uses a previous transaction as its input. In the previous chapter Alice received bitcoin from her friend Joe in return for cash. That transaction has a number of bitcoins locked (encumbered) against Alice's key. Her new transaction to Bob's Cafe references the previous transaction as an input and creates new outputs to pay for the cup of coffee and receive change. The transactions form a chain, where the inputs from the latest transaction correspond to outputs from previous transactions. Alice's key provides the signature that unlocks those previous transaction outputs, thereby proving to the bitcoin network that she owns the funds. She attaches the payment for coffee to Bob's address, thereby "encumbering" that output with the requirement that Bob produces a signature in order to spend that amount. This represents a transfer of value between Alice and Bob. This chain of transactions, from Joe to Alice to Bob, is illustrated in <<blockchain-mnemonic>>.
 
-アリスがボブのコーヒーショップで支払いをするときは、ジョーからアリスへの前のトランザクションをこのトランザクションのインプットに使います。前の章で、アリスは現金と引き換えにジョーからbitcoinを受け取りました。このトランザクションはアリスの秘密鍵でロックされています。アリスからボブへの新しいトランザクションは、ジョーからアリスへの前のトランザクションの内容を参照することで新しいトランザクションのインプットを作り、コーヒー代の支払いとおつりの受け取りのトランザクションアウトプットを作成します。トランザクションはチェーンの形を取っていて、最新のトランザクションのインプットは前のトランザクションのアウトプットに対応しています。アリスの秘密鍵は前のトランザクションのアウトプットを解錠し、それによってこのアウトプットにある資金がアリスのものであるとBitcoinネットワークに示すのです。アリスはコーヒー代をボブのBitcoinアドレスへの新しいトランザクションアウトプットに付けます。ボブのBitcoinアドレスにひも付けることによって、このアウトプットを使うためにボブは署名を生成しなければならなくなり、このアウトプットが他者の使用から "守られる" ことになるのです。これによりこの価値の転送がアリスとボブの間のものであるということを証明しています。<<blockchain-mnemonic>>図がこのトランザクションのチェーンを説明しています。
+AliceがBobのコーヒーショップで支払いをするときは、JoeからAliceへのトランザクションをこのトランザクションのインプットに使います。前の章で、Aliceは現金と引き換えにJoeからbitcoinを受け取りました。このトランザクションはAliceの秘密鍵でロックされています。AliceからBobへの新しいトランザクションは、JoeからAliceへのトランザクションの内容を参照することで新しいトランザクションのインプットを作り、コーヒー代の支払いとおつりの受け取りのトランザクションアウトプットを作成します。トランザクションはチェーンの形を取っていて、最新のトランザクションのインプットは前のトランザクションのアウトプットに対応しています。Aliceの秘密鍵は前のトランザクションのアウトプットを解錠し、それによってこのアウトプットにある資金がAliceのものであるとBitcoinネットワークに示すのです。Aliceはコーヒー代をBobのBitcoinアドレスへの新しいトランザクションアウトプットに付けます。BobのBitcoinアドレスにひも付けることによって、このアウトプットを使うためにBobは署名を生成しなければならなくなり、このアウトプットが他者の使用から "守られる" ことになるのです。これによりこの価値の転送がAliceとBobの間のものであるということを証明しています。<<blockchain-mnemonic>>図がこのトランザクションのチェーンを説明しています。
 
 
 ==== Common Transaction Forms
@@ -157,7 +155,7 @@ image::images/msbt_0205.png["Common Transaction"]
 
 Another common form of transaction is one that aggregates several inputs into a single output (see <<transaction-aggregating>>). This represents the real-world equivalent of exchanging a pile of coins and currency notes for a single larger note. Transactions like these are sometimes generated by wallet applications to clean up lots of smaller amounts that were received as change for payments.
 
-別のトランザクション形式は、いくつかのインプットを集めて１つのアウトプットにまとめる形です(<<transaction-aggregating>>参照)。これは現実にあるコインや紙幣をまとめて大きな紙幣にするトランザクションと同じです。これらのトランザクションはおつりとして受け取った小さな額をまとめるためにときどきウォレットで作られます。
+別のトランザクション形式は、いくつかのインプットを集めて1つのアウトプットにまとめる形です(<<transaction-aggregating>>図参照)。これは現実にあるコインや少額紙幣をまとめて大きな額の紙幣にするトランザクションと同じです。これらのトランザクションはときどきウォレットで作られ、おつりとして受け取った小さな額をまとめるために使われます。
 
 [[transaction-aggregating]]
 .Transaction aggregating funds
@@ -178,7 +176,7 @@ image::images/msbt_0207.png["Distributing Transaction"]
 
 ((("transactions","constructing", id="ix_ch02-asciidoc4", range="startofrange")))Alice's wallet application contains all the logic for selecting appropriate inputs and outputs to build a transaction to Alice's specification. Alice only needs to specify a destination and an amount and the rest happens in the wallet application without her seeing the details. ((("offline transactions")))Importantly, a wallet application can construct transactions even if it is completely offline. Like writing a check at home and later sending it to the bank in an envelope, the transaction does not need to be constructed and signed while connected to the bitcoin network. It only has to be sent to the network eventually for it to be executed.
 
-((("transactions","constructing", id="ix_ch02-asciidoc4", range="startofrange")))アリスのウォレットで、適切なインプットとアウトプットを選ぶ処理はすでに実装されています。アリスが決めなければいけないのは、どこに送るかということと、いくら送るかということだけで、残りはウォレットが自動的に実行してくれます。((("offline transactions")))重要なこととして、ウォレットはネットワークに繋がっていなくてもトランザクションを組むことができます。ちょうど小切手だけ家で書いておいてあとで銀行に送るように、Bitcoinネットワークに繋がっているときに作られたり署名されたりするわけではないのです。最終的に送られればいいだけです。
+((("transactions","constructing", id="ix_ch02-asciidoc4", range="startofrange")))Aliceのウォレットで、適切なインプットとアウトプットを選ぶ処理はすでに実装されています。Aliceが決めなければいけないのは、どこに送るかということと、いくら送るかということだけで、残りはウォレットが自動的に実行してくれます。((("offline transactions")))重要なこととして、ウォレットはネットワークに繋がっていなくてもトランザクションを組むことができます。ちょうど小切手だけ家で書いておいてあとで銀行に送るように、Bitcoinネットワークに繋がっているときに作られたり、署名されたりするわけではないのです。最終的に送られればいいだけです。
 
 
 ==== Getting the Right Inputs
@@ -186,11 +184,11 @@ image::images/msbt_0207.png["Distributing Transaction"]
 
 ((("transactions","inputs, getting", id="ix_ch02-asciidoc5", range="startofrange")))Alice's wallet application will first have to find inputs that can pay for the amount she wants to send to Bob. Most wallet applications keep a small database of "unspent transaction outputs" that are locked (encumbered) with the wallet's own keys. Therefore, Alice's wallet would contain a copy of the transaction output from Joe's transaction, which was created in exchange for cash (see <<getting_first_bitcoin>>). A bitcoin wallet application that runs as a full-index client actually contains a copy of every unspent output from every transaction in the blockchain. This allows a wallet to construct transaction inputs as well as quickly verify incoming transactions as having correct inputs. However, because a full-index client takes up a lot of disk space, most user wallets run "lightweight" clients that track only the user's own unspent outputs. 
 
-((("transactions","inputs, getting", id="ix_ch02-asciidoc5", range="startofrange")))アリスのウォレットはインプットを最初に探します。というのは、ボブに送ることができる額がウォレットにあるかを確認しなければいけないためです。ほとんどのウォレットは未使用トランザクションアウトプットを保持するデータベースを持っていて、ウォレットの秘密鍵でロックされています。アリスのウォレットはジョーから送金された時のアウトプットのコピーを持っています(<<getting_first_bitcoin>>参照)。full-indexを持っているBitcoinウォレットは、ブロックチェーンにある全てのトランザクションのアウトプットのコピーを実際持っています。これはウォレットがトランザクションインプットを作成するとともにすばやく支払える額の未使用アウトプットがあるかどうかを確認するためです。しかし、full-indexウォレットは多くのデータ容量を持っている必要があるため、ほとんどのウォレットは軽量ウォレットというウォレットの所有者の未使用アウトプットのみを保持しているものになっています。
+((("transactions","inputs, getting", id="ix_ch02-asciidoc5", range="startofrange")))Aliceのウォレットはインプットを最初に探します。というのは、Bobに送ることができる金額がウォレットにあるかを確認しなければいけないためです。ほとんどのウォレットは未使用トランザクションアウトプットを保持するデータベースを持っていて、ウォレットの秘密鍵でロックされています。AliceのウォレットはJoeから送金された時のアウトプットのコピーを持っています(<<getting_first_bitcoin>>図参照)。フルインデックスを持っているBitcoinウォレットは、ブロックチェーンにある全てのトランザクションアウトプットのコピーを実際持っています。これはウォレットがトランザクションインプットを作成するとともにすばやく支払える金額の未使用アウトプットがあるかどうかを確認するためです。しかし、フルインデックスウォレットは多くのデータ容量を持っている必要があるため、ほとんどのウォレットは軽量ウォレットというウォレットの所有者の未使用アウトプットのみを保持しているものになっています。
 
 ((("wallets","blockchain storage in")))If the wallet application does not maintain a copy of unspent transaction outputs, it can query the bitcoin network to retrieve this information, using a variety of APIs available by different providers or by asking a full-index node using the bitcoin JSON RPC API. <<example_2-1>> shows a RESTful API request, constructed as an HTTP GET command to a specific URL. This URL will return all the unspent transaction outputs for an address, giving any application the information it needs to construct transaction inputs for spending. We use the simple command-line HTTP client((("cURL HTTP client"))) _cURL_ to retrieve the response.
 
-((("wallets","blockchain storage in")))もしウォレットが未使用アウトプットのコピーを保持していない場合、この情報を取得するためにBitcoinネットワークに聞きに行くことができます。この場合いろいろな種類のAPIを通して聞きに行ったり、full-indexを持っているノードにJSON RPC APIを通して聞きに行ったりということができます。<<example_2-1>>はRESTfull APIを使って聞きに行ったものです。RESTful APIというのは特定のURLに対してHTTP GETコマンドを発行して情報を得るための仕組みです。このURLは、あるBitcoinアドレスが持っている未使用トランザクションアウトプットを全て返します。そして、この情報を元にウォレットはトランザクションインプットを作成します。以下では、((("cURL HTTP client"))) _cURL_ というRESTful APIを使うためのシンプルなコマンドを使っています。
+((("wallets","blockchain storage in")))もしウォレットが未使用アウトプットのコピーを保持していない場合、この情報を取得するためにBitcoinネットワークに問い合わせに行くことができます。この場合いろいろな種類のAPIを通して問い合わせに行ったり、フルインデックスを持っているノードにJSON RPC APIを通して問い合わせに行ったりということができます。<<example_2-1>>はRESTfull APIを使って問い合わせに行ったものです。RESTful APIというのは特定のURLに対してHTTP GETコマンドを発行して情報を得るための仕組みです。このURLは、あるBitcoinアドレスが持っている未使用トランザクションアウトプットを全て返します。そして、この情報を元にウォレットはトランザクションインプットを作成します。以下では、((("cURL HTTP client"))) _cURL_ というRESTful APIを使うためのシンプルなコマンドを使っています。
 
 [[example_2-1]]
 .Look up all the unspent outputs for Alice's bitcoin address
@@ -229,18 +227,18 @@ $ curl https://blockchain.info/unspent?active=1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK
 
 The response in <<example_2-2>> shows one unspent output (one that has not been redeemed yet) under the ownership of Alice's address +1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK+. The response includes the reference to the transaction in which this unspent output is contained (the payment from Joe) and its value in satoshis, at 10 million, equivalent to 0.10 bitcoin. With this information, Alice's wallet application can construct a transaction to transfer that value to new owner addresses.
 
-<<example_2-2>>にある通りRESTful APIから返ってきたresponseには１つの未使用アウトプットがあります。これは、アリスのBitcoinアドレス 1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK が所有しているものです。このresponseにはトランザクションの詳細が載っていて、未使用アウトプットがsatoshiという単位(1000万satoshiが0.10bitcoinと同価値)で書かれています。この情報を元に、アリスのウォレットは他のBitcoinアドレスに送るためのトランザクションを作ることができるのです。
+<<example_2-2>>にある通りRESTful APIから返ってきたresponseには1つの未使用アウトプットがあります。これは、AliceのBitcoinアドレス +1Cdid9KFAaatwczBwBttQcwXYCpvK8h7FK+ が所有しているものです。このresponseにはトランザクションの詳細が載っていて、未使用アウトプットがsatoshiという単位(1000万satoshiが0.10bitcoinと同価値)で書かれています。この情報を元に、Aliceのウォレットは他のBitcoinアドレスに送るためのトランザクションを作ることができるのです。
 
 [TIP]
 ====
 View the http://bit.ly/1tAeeGr[transaction from Joe to Alice].
 
-http://bit.ly/1tAeeGr[ジョーからアリスへのトランザクション]を見てみましょう。
+http://bit.ly/1tAeeGr[JoeからAliceへのトランザクション]を見てみましょう。
 ====
 
 As you can see, Alice's wallet contains enough bitcoins in a single unspent output to pay for the cup of coffee. Had this not been the case, Alice's wallet application might have to "rummage" through a pile of smaller unspent outputs, like picking coins from a purse until it could find enough to pay for coffee. In both cases, there might be a need to get some change back, which we will see in the next section, as the wallet application creates the transaction outputs (payments).(((range="endofrange", startref="ix_ch02-asciidoc5")))
 
-今まで見てきたように、アリスのウォレットはコーヒーの代金を払うのに十分な１つの未使用アウトプットを持っていることが分かります。この場合は１つの未使用アウトプットでしたがそうでなければ、アリスのウォレットはもっと小さい未使用アウトプットをかき集めないといけないかもしれません。ちょうど財布の中からコインを１つずつ取り出してコーヒーの支払いができる額になるまでごそごそ探すように。いずれの場合でも、ウォレットがトランザクションアウトプットを作成するときにおつりをアリスに戻す必要があるかもしれません。(((range="endofrange", startref="ix_ch02-asciidoc5")))
+今まで見てきたように、Aliceのウォレットはコーヒーの代金を払うのに十分な1つの未使用アウトプットを持っていることが分かります。この場合は1つの未使用アウトプットでしたが、そうでなければAliceのウォレットはもっと小さい未使用アウトプットをかき集めないといけないかもしれません。ちょうど財布の中からコインを1つずつ取り出してコーヒーの支払いができる額になるまでごそごそ探すように。いずれの場合でも、ウォレットがトランザクションアウトプットを作成するときにはおつりをAliceに戻す必要があるかもしれません。(((range="endofrange", startref="ix_ch02-asciidoc5")))
 
 
 ==== Creating the Outputs
@@ -248,19 +246,19 @@ As you can see, Alice's wallet contains enough bitcoins in a single unspent outp
 
 ((("transactions","outputs, creating")))A transaction output is created in the form of a script that creates an encumbrance on the value and can only be redeemed by the introduction of a solution to the script. In simpler terms, Alice's transaction output will contain a script that says something like, "This output is payable to whoever can present a signature from the key corresponding to Bob's public address." Because only Bob has the wallet with the keys corresponding to that address, only Bob's wallet can present such a signature to redeem this output. Alice will therefore "encumber" the output value with a demand for a signature from Bob. 
 
-((("transactions","outputs, creating")))トランザクションアウトプットはscriptの形で作成されます。このscriptは資金を使用する際の制約条件であり、このscriptに対する解を導入することでのみ解除されます。より簡単に言うと、このscriptは「このアウトプットはボブのpublicアドレスに対応した秘密鍵から作成された署名を送れる方ならどなたにでも支払いができます」というようなことを言っています。ボブだけがボブのpublicアドレスに対応した秘密鍵を保持しているウォレットを持っているので、ボブのウォレットだけがこのアウトプットを復号するさきほどの署名を送れるのです。よって、アリスはアウトプットを復号しようとしてもボブの署名を要求されてしまい邪魔されてしまいます。
+((("transactions","outputs, creating")))トランザクションアウトプットはscriptの形で作成されます。このscriptは資金を使用する際の制約条件であり、このscriptに対する解を導入することでのみ解除されます。より簡単に言うと、このscriptは「このアウトプットはBobのpublicアドレスに対応した秘密鍵から作成された署名を送れる方ならどなたでも支払いができます」という意味です。Bobだけが対応した秘密鍵を保持しているウォレットを持っているので、このウォレットだけがこのアウトプットを復号するさきほどの署名を送れるのです。よって、Aliceはアウトプットを復号しようとしてもBobの署名を要求されてしまい邪魔されてしまいます。
 
 This transaction will also include a second output, because Alice's funds are in the form of a 0.10 BTC output, too much money for the 0.015 BTC cup of coffee. Alice will need 0.085 BTC in change. Alice's change payment is created _by Alice's wallet_ in the very same transaction as the payment to Bob. Essentially, Alice's wallet breaks her funds into two payments: one to Bob, and one back to herself. She can then use the change output in a subsequent transaction, thus spending it later. 
 
-このトランザクションはまたおつりという２つ目のアウトプットも含んでいます。というのは、アリスの資産は0.10BTCになっていて、この金額はコーヒー一杯の金額0.015BTCよりも大きい金額だからです。このためアリスは、0.085BTCのおつりを受け取ることになります。アリスへのおつりの支払い処理は、アリスのウォレットによってボブへの支払い処理と一緒に作られます。アリスのウォレットは彼女の資産を２つの支払い処理に分けて行います。１つは、ボブへのもの、もう１つは彼女自身へのものです。彼女は次のトランザクションのときにおつりのアウトプットを使うことができます。のちほどこのアウトプットを使用することになります。
+このトランザクションはまた、おつりという2つ目のアウトプットも含んでいます。というのは、Aliceの資産は0.10BTCになっていて、この金額はコーヒー一杯の金額0.015BTCよりも大きい金額だからです。このためAliceは、0.085BTCのおつりを受け取ることになります。Aliceへのおつりの支払い処理は、アリスのウォレットによってBobへの支払い処理と一緒に作られます。Aliceのウォレットは彼女の資産を2つの支払い処理に分けて行います。1つは、Bobへのもの、もう1つは彼女自身へのものです。彼女は次のトランザクションのときにおつりのアウトプットを使うことができます。のちほどこのアウトプットを使用することになります。
 
 Finally, for the transaction to be processed by the network in a timely fashion, Alice's wallet application will add a small fee. This is not explicit in the transaction; it is implied by the difference between inputs and outputs. If instead of taking 0.085 in change, Alice creates only 0.0845 as the second output, there will be 0.0005 BTC (half a millibitcoin) left over. The input's 0.10 BTC is not fully spent with the two outputs, because they will add up to less than 0.10. The resulting difference is the _transaction fee_ that is collected by the miner as a fee for including the transaction in a block and putting it on the blockchain ledger.
 
-最終的に、Bitcoinネットワークでトランザクションが処理される直前に、アリスのウォレットは少ない手数料を加えます。これは支払いのときに明示的に表示されるのではなく、トランザクションでのインプットとアウトプットとの差額として暗に表示されます。おつりとして0.085BTCを得る代わりにアリスは0.0845BTCだけをおつりとしてアウトプットを得るとすると、0.0005BTC(1mBTCの半分)が残ることになります。インプットとしての0.10BTCは完全に２つのアウトプットに分けられるのではないのです。アウトプットを全て足したとき0.10BTCよりも小さいからです。この差額は、マイナーがブロックにトランザクションを含めて、ブロックチェーンにトランザクションを組み込むときに集められトランザクション手数料となります。
+最終的に、Bitcoinネットワークでトランザクションが処理される直前に、Aliceのウォレットは少ない取引手数料を加えます。これは支払いのときに明示的に表示されるのではなく、トランザクションでのインプットとアウトプットとの差額として暗に表示されます。Aliceがおつりとして0.085BTCを得る代わりに0.0845BTCだけをおつりとして得るとすると、0.0005BTC(1mBTCの半分)が残ることになります。インプットとしての0.10BTCは完全に2つのアウトプットに分けられるわけではないのです。アウトプットを全て足したとき0.10BTCよりも小さいからです。この差額は、マイナーがブロックにトランザクションを含めて、ブロックチェーンにトランザクションを組み込むときに集められトランザクション手数料となります。
 
 The resulting transaction can be seen using a blockchain explorer web application, as shown in <<transaction-alice>>.
 
-結果的に作られたトランザクションは、<<transaction-alice>>にある通り、blockchain explorerを使って見ることができます。
+結果的に作られたトランザクションは、<<transaction-alice>>図にある通り、blockchain explorerを使って見ることができます。
 
 [[transaction-alice]]
 .Alice's transaction to Bob's Cafe
@@ -280,36 +278,36 @@ http://bit.ly/1u0FIGs[アリスからからボブのコーヒーショップへ�
 
 ((("transactions","adding to ledger")))The transaction created by Alice's wallet application is 258 bytes long and contains everything necessary to confirm ownership of the funds and assign new owners. Now, the transaction must be transmitted to the bitcoin network where it will become part of the distributed ledger (the blockchain). In the next section we will see how a transaction becomes part of a new block and how the block is "mined." Finally, we will see how the new block, once added to the blockchain, is increasingly trusted by the network as more blocks are added.
 
-((("transactions","adding to ledger")))アリスのウォレットで作られるトランザクションは258バイトで、資産の所有者を確認し新しい所有者を割り当てるのに必要な全てがここに含まれています。今、トランザクションは分散元帳であるブロックチェーンの一部になるためにBitcoinネットワークに送信されなければいけません。この節では、どのようにトランザクションが新しいブロックの一部になるのか、どのようにブロックが "マイニング" されるのか、を確認していきます。そして、ブロックチェーンに加えられた新しいブロックの信用が、さらに多くのブロックがブロックチェーンに加えられることでどのようにますます大きくなっていくのかを見ていきます。
+((("transactions","adding to ledger")))Aliceのウォレットで作られるトランザクションは258バイトで、資産の所有者を確認し新しい所有者を割り当てるのに必要な全てがここに含まれています。これから、このトランザクションは分散元帳であるブロックチェーンの一部になるためにBitcoinネットワークに送信されなければいけません。この節では、どのようにトランザクションが新しいブロックの一部になるのか、どのようにブロックが "マイニング" されるのか、を確認していきます。そして、ブロックチェーンに加えられた新しいブロックの信用が、さらに多くのブロックがブロックチェーンに加えられることでどのようにますます大きくなっていくのかを見ていきます。
 
 
 ===== Transmitting the transaction
-===== トランザクションのBitcoinネットワークへの送信
+===== Bitcoinネットワークへのトランザクションの送信
 
 ((("transactions","transmitting")))((("transmitting transactions")))Because the transaction contains all the information necessary to process, it does not matter how or where it is transmitted to the bitcoin network. The bitcoin network is a peer-to-peer network, with each bitcoin client participating by connecting to several other bitcoin clients. The purpose of the bitcoin network is to propagate transactions and blocks to all participants. 
 
-((("transactions","transmitting")))((("transmitting transactions")))トランザクションはブロックチェーンに取り込まれるために必要な情報を全て持っているため、どのように、またどこでそれがBitcoinネットワークに送信されるかは問題ではありません。Bitcoinネットワークはpeer-to-peerネットワークであり、個々のBitcoinクライアントがいくつかの他のBitcoinクライアントとつながってBitcoinネットワークに参加しています。Bitcoinネットワークの目的は、トランザクションとブロックを全てのBitcoinクライアントに伝えて行くことなのです。
+((("transactions","transmitting")))((("transmitting transactions")))トランザクションはブロックチェーンに取り込まれるための情報を全て持っているため、どのように、またどこでそれがBitcoinネットワークに送信されるかは問題ではありません。Bitcoinネットワークはpeer-to-peerネットワークであり、個々のBitcoinクライアントがいくつかの他のBitcoinクライアントとつながってBitcoinネットワークに参加しています。Bitcoinネットワークの目的は、トランザクションとブロックを全てのBitcoinクライアントに伝えて行くことなのです。
 
 ===== How it propagates
 ===== どのようにBitcoinネットワークを伝わって行くのか
 
 ((("transactions","propagating")))Alice's wallet application can send the new transaction to any of the other bitcoin clients it is connected to over any Internet connection: wired, WiFi, or mobile. Her bitcoin wallet does not have to be connected to Bob's bitcoin wallet directly and she does not have to use the Internet connection offered by the cafe, though both those options are possible, too. Any bitcoin network node (other client) that receives a valid transaction it has not seen before will immediately forward it to other nodes to which it is connected. Thus, the transaction rapidly propagates out across the peer-to-peer network, reaching a large percentage of the nodes within a few seconds. 
 
-((("transactions","propagating")))アリスのウォレットは新しいトランザクションを、有線LANまたはWiFi、モバイルでインターネットに繋がっている任意の他のBitcoinクライアントに送信します。アリスのウォレットはボブのウォレットと直接繋がっている必要はなく、カフェが提供しているインターネットアクセスポイントを使う必要もないのです。有効なトランザクションを受け取ったBitcoinクライアントはすぐに繋がっている他のBitcoinクライアントにトランザクションを転送します。よって、このトランザクションは迅速にpeer-to-peerネットワークを伝わって行き、数秒以内にほとんどのBitcoinクライアントに到達します。
+((("transactions","propagating")))Aliceのウォレットは、有線LANまたはWiFi、モバイルでインターネットに繋がっているどのBitcoinクライアントにも新しいトランザクションを送信します。AliceのウォレットはBobのウォレットと直接繋がっている必要はなく、カフェが提供しているインターネットアクセスポイントを使う必要もないのです。有効なトランザクションを受け取ったBitcoinクライアントはすぐに繋がっている他のBitcoinクライアントにトランザクションを転送します。よって、このトランザクションは迅速にpeer-to-peerネットワークを伝わって行き、数秒以内にほとんどのBitcoinクライアントに到達します。
 
 
 ===== Bob's view
-===== ボブの視点でみたときは
+===== Bobの視点でみたときは
 
 If Bob's bitcoin wallet application is directly connected to Alice's wallet application, Bob's wallet application might be the first node to receive the transaction. However, even if Alice's wallet sends the transaction through other nodes, it will reach Bob's wallet within a few seconds. Bob's wallet will immediately identify Alice's transaction as an incoming payment because it contains outputs redeemable by Bob's keys. Bob's wallet application can also independently verify that the transaction is well formed, uses previously unspent inputs, and contains sufficient transaction fees to be included in the next block. At this point Bob can assume, with little risk, that the transaction will shortly be included in a block and confirmed. 
 
-ボブのウォレットが直接アリスのウォレットと繋がっている場合は、ボブのウォレットはトランザクションを一番最初に伝えられるBitcoinクライアントとなるかもしれません。しかし、たとえアリスのウォレットが他のBitcoinクライアントを通してトランザクションを送ったとしても、トランザクションは数秒以内にボブのウォレットに到達するでしょう。ボブのウォレットはすぐにアリスのトランザクションをボブへの支払いであると認識します。というのは、このトランザクションはボブの秘密鍵で復号できるアウトプットになっているからです。ボブのウォレットは他のBitcoinクライアントとは独立に、このトランザクションが正規の形式であるどうか、未使用インプットを使っているかどうか、次のブロックに入る十分なトランザクション手数料を含んでいるかどうか、を確認します。この時点では、ボブは小さなリスクとしてこのトランザクションがブロックに含められ検証された状態であると仮定しています。
+Bobのウォレットが直接Aliceのウォレットと繋がっている場合、Bobのウォレットがトランザクションを一番最初に伝えられるBitcoinクライアントとなるかもしれません。しかし、たとえAliceのウォレットが他のBitcoinクライアントを通してトランザクションを送ったとしても、トランザクションは数秒以内にBobのウォレットに到達するでしょう。BobのウォレットはすぐにこのトランザクションをBobへの支払いであると認識します。というのは、このトランザクションはBobの秘密鍵で復号できるアウトプットになっているからです。Bobのウォレットは他のBitcoinクライアントとは独立に、このトランザクションが正規の形式であるどうか、未使用インプットを使っているかどうか、次のブロックに入る十分なトランザクション手数料を含んでいるかどうか、を確認します。小さなリスクではありますが、この時点ではまだ、このトランザクションがブロックに含められ承認された状態であると仮定しています。
 
 [TIP]
 ====
 ((("transactions","accepting without confirmations")))A common misconception about bitcoin transactions is that they must be "confirmed" by waiting 10 minutes for a new block, or up to 60 minutes for a full six confirmations. Although confirmations ensure the transaction has been accepted by the whole network, such a delay is unnecessary for small-value items such as a cup of coffee. A merchant may accept a valid small-value transaction with no confirmations, with no more risk than a credit card payment made without an ID or a signature, as merchants routinely accept today.(((range="endofrange", startref="ix_ch02-asciidoc4")))(((range="endofrange", startref="ix_ch02-asciidoc1")))
 
-((("transactions","accepting without confirmations")))Bitcoinトランザクションに関するよくある勘違いは、"検証"のために新しいブロックが生成されるまで10分間または完全な６回の検証のために60分間待たなければならないということです。検証はトランザクションがBitcoinネットワーク全体から受理されたことを保証しますが、このような遅延はコーヒー代のような少額の場合必要ではありません。確認がなくても、個人IDや署名がないクレジットカードよりリスクが小さいなら、店舗側は有効な少額トランザクションを受け入れるかもしれません。(((range="endofrange", startref="ix_ch02-asciidoc4")))(((range="endofrange", startref="ix_ch02-asciidoc1")))
+((("transactions","accepting without confirmations")))Bitcoinトランザクションに関するよくある勘違いは、"承認"のために新しいブロックが生成されるまで10分間待たなければならない、または完全な6回の承認のために60分間待たなければならない、ということです。承認はトランザクションがBitcoinネットワーク全体から受理されたことを保証しますが、このような遅延はコーヒー代のような少額の場合必要ではありません。承認がなくても、個人IDや署名がないクレジットカードよりリスクが小さいなら、店舗側は有効な少額トランザクションを受け入れるかもしれません。(((range="endofrange", startref="ix_ch02-asciidoc4")))(((range="endofrange", startref="ix_ch02-asciidoc1")))
 ====
 
 === Bitcoin Mining
@@ -327,7 +325,7 @@ The bitcoin system of trust is based on computation. Transactions are bundled in
 * Mining creates trust by ensuring that transactions are only confirmed if enough computational power was devoted to the block that contains them. More blocks mean more computation, which means more trust. 
 
 * マイニングはそれぞれのブロックの中に新しいbitcoinを作り出します。これはあたかも中央銀行が新しいお金を印刷するようなものです。作り出されるbitcoinの量はブロックごとに決められており、時間とともに減少していきます。
-* マイニングは、十分な計算量がブロックにつぎ込まれた場合のみトランザクションが検証されたことを保証し信用を作り出します。多くのブロックの信用のためには多くの計算が必要であり、この多くの計算が信用を意味します。
+* マイニングは、十分な計算量がブロックにつぎ込まれた場合のみトランザクションが承認されたことを保証し信用を作り出します。多くのブロックの信用のためには多くの計算が必要であり、この多くの計算が信用を意味します。
 
 
 A good way to describe mining is like a giant competitive game of sudoku that resets every time someone finds a solution and whose difficulty automatically adjusts so that it takes approximately 10 minutes to find a solution. Imagine a giant sudoku puzzle, several thousand rows and columns in size. If I show you a completed puzzle you can verify it quite quickly. However, if the puzzle has a few squares filled and the rest are empty, it takes a lot of work to solve! The difficulty of the sudoku can be adjusted by changing its size (more or fewer rows and columns), but it can still be verified quite easily even if it is very large. The "puzzle" used in bitcoin is based on a cryptographic hash and exhibits similar characteristics: it is asymmetrically hard to solve but easy to verify, and its difficulty can be adjusted.
@@ -363,7 +361,7 @@ https://blockchain.info/block-height/277316[Alice's transaction]にこのブロ�
 
 A few minutes later, a new block, #277317, is mined by another miner. Because this new block is based on the previous block (#277316) that contained Alice's transaction, it added even more computation on top of that block, thereby strengthening the trust in those transactions. The block containing Alice's transaction is counted as one "confirmation" of that transaction. Each block mined on top of the one containing the transaction is an additional confirmation. As the blocks pile on top of each other, it becomes exponentially harder to reverse the transaction, thereby making it more and more trusted by the network. 
 
-数分後に、新しいブロック #277317 はもう１人のマイナーによって掘り出されました。この新しいブロックはアリスのトランザクションを含んだ前のブロック #277316 を元にしているため、新しいブロックはもっとたくさんの計算量をブロックの先頭に追加しました。これによって、トランザクションの信用が強化されるのです。アリスのトランザクションを含んでいるこの新しいブロックは、 "検証" １回とカウントされ、アリスのトランザクションが含まれるブロックの上に乗っかったそれぞれのブロックはさらに検証を積み増します。このブロックが積み重なるにつれて、指数関数的にトランザクションをやり直す反対取引が難しくなり、よってBitcoinネットワークによってさらに信用されることになるのです。
+数分後に、新しいブロック #277317 は別のマイナーによって掘り出されました。この新しいブロックはAliceのトランザクションを含んだ前のブロック #277316 を元にしています。このため、#277316が掘り出されたときよりもっとたくさんの計算がブロックに注ぎ込まれ、よりAliceのトランザクションの信用が強化されることになるのです。Aliceのトランザクションを含んでいるこの新しいブロックは、 "承認" 1回とカウントされ、Aliceのトランザクションが含まれるブロックの上に乗っかったそれぞれのブロックはさらに承認を積み増します。このブロックが積み重なるにつれて、指数関数的にトランザクションをやり直す反対取引が難しくなり、よってBitcoinネットワークによってさらに信用されることになるのです。
 
 In the diagram in <<block-alice1>>  we can see block #277316, which contains Alice's transaction. Below it are 277,316 blocks (including block #0), linked to each other in a chain of blocks (blockchain) all the way back to block #0, known as the _genesis block_. Over time, as the "height" in blocks increases, so does the computation difficulty for each block and the chain as a whole. The blocks mined after the one that contains Alice's transaction act as further assurance, as they pile on more computation in a longer and longer chain. By convention, any block with more than six confirmations is considered irrevocable, because it would require an immense amount of computation to invalidate and recalculate six blocks. We will examine the process of mining and the way it builds trust in more detail in <<ch8>>.
 
