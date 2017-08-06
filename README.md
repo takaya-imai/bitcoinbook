@@ -22,3 +22,8 @@ Thank you O'Reilly!
 # Translations
 
 If you are interested in translating this book, please contact the author at info@bitcoinbook.info, for coordination. In some countries, I can help you coordinate with the local offices of O'Reilly Media for local print editions.
+
+# 第１版オープンエディションの日本語版の補足
+
+2014年12月末から2015年4月頃まで今井が単独でgithubで翻訳を行っていましたが、その後、Transifex上にAndreas氏が作った翻訳プロジェクトで翻訳を続けてきました。
+第１版オープンエディション日本語版の完全版は https://www.bitcoinbook.info/translations-of-mastering-bitcoin/ からPDFとしてダウンロードできます。
